@@ -14,7 +14,12 @@ class Pelanggan extends Migration
     public function up()
     {
         Schema::create('tb_pelanggan', function (Blueprint $table) {
-            $table->id();
+            $table->string('code_pelanggan', 20)->primary();
+            $table->string('nama', 191);
+            $table->string('no_telp', 20)->unique();
+            $table->float('deposit');
+            $table->float('hutang');
+            $table->enum('status', ['M', 'R'])->comment('M: member, R: regular');
             $table->timestamps();
         });
     }

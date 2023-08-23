@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Lapangan extends Migration
+class UsersRoleId extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class Lapangan extends Migration
      */
     public function up()
     {
-        Schema::create('tb_lapangan', function (Blueprint $table) {
-            $table->id();
-            $table->string('label', 191)->unique();
-            $table->text('deskripsi');
-            $table->float('harga_normal');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('role_id')->constrained('tb_role', 'id')->nullOnDelete();
         });
     }
 
@@ -29,6 +25,8 @@ class Lapangan extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_lapangan');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('role_id');
+        });
     }
 }

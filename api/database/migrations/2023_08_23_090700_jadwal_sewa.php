@@ -15,7 +15,13 @@ class JadwalSewa extends Migration
     {
         Schema::create('tb_jadwal_sewa', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->dateTime('start');
+            $table->dateTime('end');
+            $table->enum('status', ['F', 'U'])->comment('F: Finished, U: Unfinished');
+            $table->foreignId('lapangan_id')->constrained('tb_lapangan', 'id')->cascadeOnDelete();
+            $table->foreignId('transaksi_id')->constrained('tb_transaksi', 'id')->cascadeOnDelete();
+            $table->foreignId('pelanggan_id')->constrained('tb_pelanggan', 'code_pelanggan')->cascadeOnDelete();
+            // $table->timestamps();
         });
     }
 

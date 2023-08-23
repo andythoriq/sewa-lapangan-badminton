@@ -13,8 +13,11 @@ class Peran extends Migration
      */
     public function up()
     {
-        Schema::create('tb_peran', function (Blueprint $table) {
+        Schema::create('tb_role', function (Blueprint $table) {
             $table->id();
+            $table->string('label', 191)->unique();
+            $table->text('menu');
+            $table->enum('status', ['Y', 'N'])->comment('Y: Active, N: Inactive');
             $table->timestamps();
         });
     }
