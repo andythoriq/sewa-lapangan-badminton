@@ -1,11 +1,15 @@
 import React from 'react';
-import './App.css';
 import Login from './component/index';
+import './component/indec.css';
+
 
 function App() {
   return (
     <div>
       <Login/>
+      
+          <div className='canva'></div>
+        
     </div>
   );
 }
