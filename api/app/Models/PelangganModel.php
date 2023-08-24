@@ -11,14 +11,19 @@ class PelangganModel extends Model
 
     protected $table = 'tb_pelanggan';
 
-    // protected $with = [''];
-
     protected $fillable = [
-        // 'code_pelanggan',
+        'code_pelanggan',
         'nama',
         'no_telp',
         'deposit',
         'hutang',
         'status'
     ];
+
+    protected $with = ['rentals'];
+
+    public function rentals(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(JadwalSewaModel::class, 'pelanggan_id', 'code_pelanggan');
+    }
 }

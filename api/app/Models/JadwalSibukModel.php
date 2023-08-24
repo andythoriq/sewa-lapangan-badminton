@@ -11,8 +11,6 @@ class JadwalSibukModel extends Model
 
     protected $table = 'tb_jadwal_sibuk';
 
-    // protected $with = [''];
-
     protected $fillable = [
         'start',
         'end'
@@ -20,4 +18,10 @@ class JadwalSibukModel extends Model
 
     protected $timestamps = false;
 
+    protected $with = ['lapangan'];
+
+    public function lapangan(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(LapanganModel::class, 'lapangan_id', 'id');
+    }
 }

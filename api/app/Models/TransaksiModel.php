@@ -11,10 +11,15 @@ class TransaksiModel extends Model
 
     protected $table = 'tb_transaksi';
 
-    // protected $with = [''];
-
     protected $fillable = [
         'total_harga',
         'total_jam'
     ];
+
+    protected $with = ['rentals'];
+
+    public function rentals(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(JadwalSewaModel::class, 'transaksi_id', 'id');
+    }
 }
