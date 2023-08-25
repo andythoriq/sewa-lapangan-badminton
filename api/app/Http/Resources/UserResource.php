@@ -13,11 +13,23 @@ class UserResource extends JsonResource
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
 
-     public static $wrap = 'user';
+    public static $wrap = 'user';
 
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'name' => $this->name,
+            'email' => $this->email,
+            'no_telp' => $this->no_telp,
+            'status' => $this->status,
+            'role' => [
+                'label' => $this->role->label,
+                'menu' => $this->role->menu,
+                'status' => $this->role->status,
+            ],
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
     }
 
 }

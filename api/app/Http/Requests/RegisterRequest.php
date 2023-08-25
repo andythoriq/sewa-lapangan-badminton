@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -37,6 +38,8 @@ class RegisterRequest extends FormRequest
 
     public function doRegister()
     {
-        User::create($this->validated());
+        $validated = $this->validated();
+        $validated['password'] = Hash::make($validated['password']);
+        User::create($validated);
     }
 }

@@ -16,12 +16,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->prefix('/api')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
 
     /** AUTH ROUTES  */
     Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware('auth:sanctum');
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware('auth:sanctum');
 
     /** USER ROUTES  */
     Route::post('/me', [UserController::class, 'me']);
+
 });

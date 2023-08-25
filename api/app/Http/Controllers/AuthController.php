@@ -2,20 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RegisterRequest;
-use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        return new UserResource();
+        $token = $request->getToken();
+        return response()->json(['token' => $token], 201, ['success' => 'Success login.']);
     }
 
     public function register(RegisterRequest $request)
     {
         $request->doRegister();
-        return response(['message' => 'Created'], 201);
+        return response()->json(null, 201, ['success' => 'Success register.']);
+    }
+
+    public function logout(Request $request)
+    {
+
+        return response(null,204, ['success' => 'Success logout.']);
     }
 }
