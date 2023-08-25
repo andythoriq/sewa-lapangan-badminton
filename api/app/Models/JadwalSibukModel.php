@@ -18,7 +18,7 @@ class JadwalSibukModel extends Model
 
     protected $timestamps = false;
 
-    protected $with = ['lapangan'];
+    // protected $with = ['lapangan'];
 
     public function lapangan(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

@@ -18,7 +18,7 @@ class LapanganModel extends Model
         'harga_normal'
     ];
 
-    protected $with = ['rentals', 'peak_times'];
+    // protected $with = ['rentals', 'peak_times'];
 
     public function rentals(): HasMany
     {

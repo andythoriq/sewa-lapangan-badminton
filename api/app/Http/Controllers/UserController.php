@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function me(Request $request)
     {
-        return new UserResource($request->user());
+        return new UserResource($request->user()->loadMissing('role:id,label,menu,status'));
     }
 
     public function edit(Request $request)

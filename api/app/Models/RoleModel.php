@@ -16,7 +16,7 @@ class RoleModel extends Model
         'status'
     ];
 
-    protected $with = ['users'];
+    // protected $with = ['users'];
 
     public function users(): \Illuminate\Database\Eloquent\Relations\HasMany
     {

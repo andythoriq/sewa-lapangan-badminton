@@ -20,7 +20,7 @@ class JadwalSewaModel extends Model
 
     protected $timestamps = false;
 
-    protected $with = ['transaksi', 'pelanggan', 'lapangan'];
+    // protected $with = ['transaksi', 'pelanggan', 'lapangan'];
 
     public function transaksi(): BelongsTo
     {

@@ -16,7 +16,7 @@ class TransaksiModel extends Model
         'total_jam'
     ];
 
-    protected $with = ['rentals'];
+    // protected $with = ['rentals'];
 
     public function rentals(): \Illuminate\Database\Eloquent\Relations\HasMany
     {

@@ -20,7 +20,7 @@ class PelangganModel extends Model
         'status'
     ];
 
-    protected $with = ['rentals'];
+    // protected $with = ['rentals'];
 
     public function rentals(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
