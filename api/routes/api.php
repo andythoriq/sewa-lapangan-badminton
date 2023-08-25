@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware('auth:sanctum');
     Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware('auth:sanctum');
 
-    /** USER ROUTES  */
+    /** USER (ADMIN) ROUTES  */
     Route::post('/me', [UserController::class, 'me']);
 
 });
