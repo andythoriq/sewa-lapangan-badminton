@@ -16,6 +16,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // User::factory()->has(RoleModel::factory()->count(1))->count(10)->create();
-        RoleModel::factory()->has(User::factory()->count(10))->count(1)->create();
+        RoleModel::factory()->has(User::factory()->count(5))->count(5)->create();
     }
 }
