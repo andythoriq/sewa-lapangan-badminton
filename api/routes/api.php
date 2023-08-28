@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\JadwalLiburController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
 use Illuminate\Support\Facades\Route;
@@ -40,4 +41,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/user/{user}', [UserController::class, 'update'])->name('update-user');
     Route::delete('/user/{user}', [UserController::class, 'delete']);
 
+    /** Master Jadwal Libur
+     * middleware: users super admin */
+    Route::get('/jadwal-libur', [JadwalLiburController::class, 'index']);
+    Route::post('/jadwal-libur', [JadwalLiburController::class, 'create']);
+    Route::put('/jadwal-libur/{jadwal_libur}', [JadwalLiburController::class, 'update']);
+    Route::delete('/jadwal-libur/{jadwal_libur}', [JadwalLiburController::class, 'delete']);
 });

@@ -18,7 +18,7 @@ class JadwalSewaModel extends Model
         'status'
     ];
 
-    protected $timestamps = false;
+    public $timestamps = false;
 
     // protected $with = ['transaksi', 'pelanggan', 'lapangan'];
 
