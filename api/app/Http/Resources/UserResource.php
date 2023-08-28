@@ -28,7 +28,6 @@ class UserResource extends JsonResource
                 'status' => $this->role->status,
             ],
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
     }
 

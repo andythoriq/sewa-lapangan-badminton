@@ -20,6 +20,10 @@ class PelangganModel extends Model
         'status'
     ];
 
+    protected $primaryKey = 'code_pelanggan';
+
+    protected $keyType = "string";
+
     // protected $with = ['rentals'];
 
     public function rentals(): \Illuminate\Database\Eloquent\Relations\HasMany
