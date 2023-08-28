@@ -20,6 +20,7 @@ class Pelanggan extends Migration
             $table->float('deposit');
             $table->float('hutang');
             $table->enum('status', ['M', 'R'])->comment('M: member, R: regular');
+            $table->dateTime('masa_aktif_member')->nullable();
             $table->timestamps();
         });
     }

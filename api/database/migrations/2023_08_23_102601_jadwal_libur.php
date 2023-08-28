@@ -15,6 +15,7 @@ class JadwalLibur extends Migration
     {
         Schema::create('tb_jadwal_libur', function (Blueprint $table) {
             $table->id();
+            $table->string('label', 191);
             $table->dateTime('start');
             $table->dateTime('end');
             // $table->timestamps();

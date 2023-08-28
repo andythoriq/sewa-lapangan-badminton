@@ -21,4 +21,14 @@ class UserController extends Controller
     {
 
     }
+
+    public function delete()
+    {
+
+    }
+
+    public function index()
+    {
+
+    }
 }
