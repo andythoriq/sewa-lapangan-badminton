@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\AuthRequest;
+use App\Http\Resources\UserResource;
 
 class AuthController extends Controller
 {
@@ -23,5 +24,10 @@ class AuthController extends Controller
     {
         $request->user()->tokens()->delete();
         return response(null,204, ['success' => 'Token deleted.']);
+    }
+
+    public function me(Request $request)
+    {
+        return new UserResource($request->user()->loadMissing('role:id,label,menu,status'));
     }
 }
