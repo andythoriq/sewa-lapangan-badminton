@@ -29,21 +29,25 @@ class AuthRequest extends FormRequest
     {
         $validation = [];
         switch ($this->route()->getName()) {
+            case 'update-user':
+            case 'create-user':
             case 'register':
                 $validation = [
                     'name' => ['required', 'string', 'max:90'],
-                    'email' => ['required', 'string', 'email', 'max:90', 'unique:users,email'],
-                    'no_telp' => ['required', 'string', 'max:16', 'unique:users,no_telp'],
+                    'email' => ['required', 'string', 'email', 'max:90', 'unique:users,email,' . $this->user->id],
+                    'no_telp' => ['required', 'string', 'max:16', 'unique:users,no_telp,' . $this->user->id],
                     'status' => ['required', 'string', 'in:Y,N'],
                     'role_id' => ['required', 'exists:tb_role,id'],
                     'password' => ['required', Password::defaults()],
                 ];
+                break;
 
             case 'login':
                 $validation = [
                     'email' => ['required', 'email'],
                     'password' => ['required'],
                 ];
+                break;
         }
         return $validation;
     }
@@ -60,10 +64,25 @@ class AuthRequest extends FormRequest
         return $user->createToken('token')->plainTextToken;
     }
 
-    public function doRegister()
+    public function createUser()
     {
         $validated = $this->validated();
         $validated['password'] = Hash::make($validated['password']);
         User::create($validated);
+    }
+
+    public function updateUser(User $user)
+    {
+        $user->fill($this->validated());
+        $user->saveOrFail();
+    }
+
+    public function deleteUser(User $user)
+    {
+        if ($user->id === auth()->id()) {
+            auth()->logout();
+        }
+        $user->tokens()->delete();
+        $user->delete();
     }
 }

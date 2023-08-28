@@ -22,13 +22,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login')->withoutMiddleware('auth:sanctum');
     Route::post('/register', [AuthController::class, 'register'])->name('register')->withoutMiddleware('auth:sanctum');
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/me', [UserController::class, 'me']);
+    Route::get('/me', [AuthController::class, 'me']);
 
     /** User Role
      * middleware: users super admin */
-    Route::get('/user/role', [UserRoleController::class, 'index']);
-    Route::get('/user/role/{role}', [UserRoleController::class, 'show']);
-    Route::post('/user/role', [UserRoleController::class, 'create']);
-    Route::put('/user/role/{role}', [UserRoleController::class, 'update']);
-    Route::delete('/user/role/{role}', [UserRoleController::class, 'delete']);
+    Route::get('/role', [UserRoleController::class, 'index']);
+    Route::get('/role/{role}', [UserRoleController::class, 'show']);
+    Route::post('/role', [UserRoleController::class, 'create']);
+    Route::put('/role/{role}', [UserRoleController::class, 'update']);
+    Route::delete('/role/{role}', [UserRoleController::class, 'delete']);
+
+    /** USER MANAGEMENT
+     * middleware: users super admin */
+    Route::get('/user', [UserController::class, 'index']);
+    Route::get('/user/{user}', [UserController::class, 'show']);
+    Route::post('/user', [UserController::class, 'create'])->name('create-user');
+    Route::put('/user/{user}', [UserController::class, 'update'])->name('update-user');
+    Route::delete('/user/{user}', [UserController::class, 'delete']);
+
 });
