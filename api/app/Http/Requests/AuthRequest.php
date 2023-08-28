@@ -79,9 +79,6 @@ class AuthRequest extends FormRequest
 
     public function deleteUser(User $user)
     {
-        if ($user->id === auth()->id()) {
-            auth()->logout();
-        }
         $user->tokens()->delete();
         $user->delete();
     }
