@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserRoleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,9 +19,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function () {
 
     /** AUTH ROUTES  */
-    Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware('auth:sanctum');
-    Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware('auth:sanctum');
+    Route::post('/login', [AuthController::class, 'login'])->name('login')->withoutMiddleware('auth:sanctum');
+    Route::post('/register', [AuthController::class, 'register'])->name('register')->withoutMiddleware('auth:sanctum');
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [UserController::class, 'me']);
 
+    /** User Role
+     * middleware: users super admin */
+    Route::get('/user/role', [UserRoleController::class, 'index']);
+    Route::get('/user/role/{role}', [UserRoleController::class, 'show']);
+    Route::post('/user/role', [UserRoleController::class, 'create']);
+    Route::put('/user/role', [UserRoleController::class, 'update']);
+    Route::delete('/user/role', [UserRoleController::class, 'delete']);
 });

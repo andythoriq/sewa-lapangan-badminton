@@ -3,21 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\AuthRequest;
 
 class AuthController extends Controller
 {
-    public function login(LoginRequest $request)
+    public function login(AuthRequest $request)
     {
         $token = $request->getToken();
         return response()->json(['token' => $token], 201, ['success' => 'Logged in successfully.']);
     }
 
-    public function register(RegisterRequest $request)
+    public function register(AuthRequest $request)
     {
         $request->doRegister();
-        return response()->json(null, 201, ['success' => 'Registration successfully.']);
+        return response(null, 201, ['success' => 'Registration successfully.']);
     }
 
     public function logout(Request $request)
