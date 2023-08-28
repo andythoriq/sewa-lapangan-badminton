@@ -29,6 +29,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/role', [UserRoleController::class, 'index']);
     Route::get('/user/role/{role}', [UserRoleController::class, 'show']);
     Route::post('/user/role', [UserRoleController::class, 'create']);
-    Route::put('/user/role', [UserRoleController::class, 'update']);
-    Route::delete('/user/role', [UserRoleController::class, 'delete']);
+    Route::put('/user/role/{role}', [UserRoleController::class, 'update']);
+    Route::delete('/user/role/{role}', [UserRoleController::class, 'delete']);
 });
