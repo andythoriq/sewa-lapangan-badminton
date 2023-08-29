@@ -19,10 +19,10 @@ class LapanganCollection extends ResourceCollection
     {
         return $this->collection->map(function($lapangan){
             return [
-                'id' => $this->id,
-                'label' => $this->label,
-                'image_path' => $this->image_path,
-                'harga_normal' => $this->harga_normal
+                'id' => $lapangan->id,
+                'label' => $lapangan->label,
+                'image_path' => $lapangan->image_path,
+                'harga_normal' => $lapangan->harga_normal
             ];
         });
     }

@@ -30,12 +30,12 @@ class LapanganController extends Controller
     public function update(LapanganRequest $request, LapanganModel $lapangan)
     {
         $request->updateLapangan($lapangan);
-        return response(null, 204, ['success' => 'Lapangan updated.']);
+        return response(null, 204, ['success' => 'Lapangan data updated.']);
     }
 
-    public function delete()
+    public function delete(LapanganModel $lapangan)
     {
-        dd('delete');
-        return response(null, 204, ['success' => 'Lapangan deleted.']);
+        $lapangan->deleteOrFail();
+        return response(null, 204, ['success' => 'Lapangan data deleted.']);
     }
 }

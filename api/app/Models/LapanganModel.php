@@ -14,6 +14,7 @@ class LapanganModel extends Model
 
     protected $fillable = [
         'label',
+        'image_path',
         'deskripsi',
         'harga_normal'
     ];

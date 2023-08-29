@@ -27,6 +27,7 @@ class LapanganRequest extends FormRequest
         return [
             'label' => ['required', 'string', 'max:90'],
             'image_path' => ['required', 'string', 'max:255'],
+            // 'image_path' => ['required', 'image', 'max:5000', 'mimes:png,jpg,jpeg'],
             'deskripsi' => ['required', 'max:191'],
             'harga_normal' => ['required', 'numeric', 'min:0.01', 'max:1000000.00']
         ];
@@ -42,3 +43,16 @@ class LapanganRequest extends FormRequest
         $lapangan->updateOrFail($this->validated());
     }
 }
+
+// create
+// if ($request->hasFile('image')) {
+//     $request->file('image')->move('product-image/', $request->file('image')->getClientOriginalName());
+//     $new_product->image = $request->file('image')->getClientOriginalName();
+//     $new_product->save();
+// }
+
+// update
+// if ($request->hasFile('image')) {
+//     $request->file('image')->move('product-image/', $request->file('image')->getClientOriginalName());
+//     $product->update(['image' => $request->file('image')->getClientOriginalName()]);
+// }
