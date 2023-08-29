@@ -16,6 +16,7 @@ class Lapangan extends Migration
         Schema::create('tb_lapangan', function (Blueprint $table) {
             $table->id();
             $table->string('label', 191)->unique();
+            $table->string('image_path', 255);
             $table->text('deskripsi');
             $table->float('harga_normal');
             $table->timestamps();

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JadwalLiburController;
+use App\Http\Controllers\LapanganController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
 
     /** User Role
-     * middleware: users super admin */
+     * middleware: peng-urus role, peng-urus users, super admin, can't delete&update super admin */
     Route::get('/role', [UserRoleController::class, 'index']);
     Route::get('/role/{role}', [UserRoleController::class, 'show']);
     Route::post('/role', [UserRoleController::class, 'create']);
@@ -34,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/role/{role}', [UserRoleController::class, 'delete']);
 
     /** USER MANAGEMENT
-     * middleware: users super admin */
+     * middleware: peng-urus users, super admin */
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/user/{user}', [UserController::class, 'show']);
     Route::post('/user', [UserController::class, 'create'])->name('create-user');
@@ -42,9 +43,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/user/{user}', [UserController::class, 'delete']);
 
     /** Master Jadwal Libur
-     * middleware: users super admin */
+     * middleware: peng-urus jadwal, peng-urus jadwal libur, super admin */
     Route::get('/jadwal-libur', [JadwalLiburController::class, 'index']);
     Route::post('/jadwal-libur', [JadwalLiburController::class, 'create']);
     Route::put('/jadwal-libur/{jadwal_libur}', [JadwalLiburController::class, 'update']);
     Route::delete('/jadwal-libur/{jadwal_libur}', [JadwalLiburController::class, 'delete']);
+
+    /** Master Lapangan
+     * middleware: peng-urus lapangan, super admin */
+    Route::get('/lapangan', [LapanganController::class, 'index']);
+    Route::get('/lapangan/{lapangan}', [LapanganController::class, 'show']);
+    Route::post('/lapangan', [LapanganController::class, 'create']);
+    Route::put('/lapangan/{lapangan}', [LapanganController::class, 'update']);
+    Route::delete('/lapangan/{lapangan}', [LapanganController::class, 'delete']);
 });
