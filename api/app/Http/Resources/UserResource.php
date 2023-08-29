@@ -26,8 +26,7 @@ class UserResource extends JsonResource
                 'label' => $this->role->label,
                 'menu' => $this->role->menu,
                 'status' => $this->role->status,
-            ],
-            'created_at' => $this->created_at,
+            ]
         ];
     }
 
