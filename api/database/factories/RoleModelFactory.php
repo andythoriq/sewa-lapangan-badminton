@@ -15,7 +15,7 @@ class RoleModelFactory extends Factory
     {
         return [
             'label' => $this->faker->word(),
-            'menu' =>  implode(', ', $this->getRandomWordInArray(rand(1, 5))),
+            'menu' =>  implode(', ', $this->getRandomWordInArray(rand(3, 6))),
             'status' => 'Y'
         ];
     }

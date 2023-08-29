@@ -29,6 +29,6 @@ class Peran extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_peran');
+        Schema::dropIfExists('tb_role');
     }
 }
