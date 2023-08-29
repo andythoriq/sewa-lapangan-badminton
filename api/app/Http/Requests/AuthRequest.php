@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
@@ -27,6 +28,7 @@ class AuthRequest extends FormRequest
      */
     public function rules()
     {
+        $id = isset($this->user) ? ($this->user->id ?? null) : null;
         $validation = [];
         switch ($this->route()->getName()) {
             case 'update-user':
@@ -34,8 +36,8 @@ class AuthRequest extends FormRequest
             case 'register':
                 $validation = [
                     'name' => ['required', 'string', 'max:90'],
-                    'email' => ['required', 'string', 'email', 'max:90', 'unique:users,email,' . $this->user->id],
-                    'no_telp' => ['required', 'string', 'max:16', 'unique:users,no_telp,' . $this->user->id],
+                    'email' => ['required', 'string', 'email', 'max:90', Rule::unique('users', 'email')->ignore($id)],
+                    'no_telp' => ['required', 'string', 'max:16', Rule::unique('users', 'no_telp')->ignore($id)],
                     'status' => ['required', 'string', 'in:Y,N'],
                     'role_id' => ['required', 'exists:tb_role,id'],
                     'password' => ['required', Password::defaults()],

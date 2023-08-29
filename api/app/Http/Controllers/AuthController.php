@@ -11,7 +11,7 @@ class AuthController extends Controller
     public function login(AuthRequest $request)
     {
         $token = $request->getToken();
-        return response()->json(['token' => $token], 201, ['success' => 'Logged in successfully.']);
+        return response()->json($token, 201, ['success' => 'Logged in successfully.']);
     }
 
     public function register(AuthRequest $request)

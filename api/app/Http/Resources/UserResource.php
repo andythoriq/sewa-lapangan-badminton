@@ -13,7 +13,7 @@ class UserResource extends JsonResource
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
 
-    public static $wrap = 'user';
+    public static $wrap = null;
 
     public function toArray($request)
     {

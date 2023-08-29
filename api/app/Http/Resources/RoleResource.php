@@ -13,7 +13,7 @@ class RoleResource extends JsonResource
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
 
-    public static $wrap = 'role';
+    public static $wrap = null;
 
     public function toArray($request)
     {

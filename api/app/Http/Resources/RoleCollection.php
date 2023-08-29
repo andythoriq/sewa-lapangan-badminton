@@ -13,7 +13,7 @@ class RoleCollection extends ResourceCollection
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
 
-    public static $wrap = 'roles';
+    public static $wrap = null;
 
     public function toArray($request)
     {
