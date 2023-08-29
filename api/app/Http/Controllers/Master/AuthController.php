@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\AuthRequest;
+use App\Http\Requests\UserRequest as AuthRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 

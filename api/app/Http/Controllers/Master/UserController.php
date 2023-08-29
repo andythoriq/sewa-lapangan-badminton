@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserCollection;
-use App\Http\Requests\AuthRequest as UserRequest;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
