@@ -17,10 +17,10 @@ class Pelanggan extends Migration
             $table->string('code_pelanggan', 20)->primary()->unique();
             $table->string('nama', 191);
             $table->string('no_telp', 20)->unique();
-            $table->float('deposit');
-            $table->float('hutang');
+            $table->float('deposit')->nullable()->default(null);
+            $table->float('hutang')->nullable()->default(null);
             $table->enum('status', ['M', 'R'])->comment('M: member, R: regular');
-            $table->dateTime('masa_aktif_member')->nullable();
+            $table->dateTime('masa_aktif_member')->nullable()->default(null);
             $table->timestamps();
         });
     }

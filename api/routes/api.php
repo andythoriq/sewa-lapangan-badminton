@@ -1,11 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\JadwalLiburController;
-use App\Http\Controllers\LapanganController;
-use App\Http\Controllers\Master\PelangganController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserRoleController;
+use App\Http\Controllers\Master\{AuthController, JadwalLiburController, LapanganController, PelangganController, UserController, UserRoleController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,10 +54,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/lapangan/{lapangan}', [LapanganController::class, 'delete']);
 
     /** PELANGGAN
-    * middleware: pelanggan-handle, regular-handle, member-handle, admin */
-    Route::get('/pelanggan', [PelangganController::class, 'index']);
-    Route::get('/pelanggan/{pelanggan}');
-    Route::post('/pelanggan');
-    Route::put('/pelanggan/{pelanggan}');
-    Route::delete('/pelanggan/{pelanggan}');
+     * middleware: pelanggan-handle, regular-handle, member-handle, admin */
+    Route::prefix('/pelanggan/member')->group(function(){
+        Route::get('/', [PelangganController::class, 'index_M']);
+        Route::get('/{pelanggan}', [PelangganController::class, 'show_M']);
+        Route::post('/', [PelangganController::class, 'create_M']);
+        Route::put('/{pelanggan}', [PelangganController::class, 'update_M']);
+        Route::delete('/{pelanggan}', [PelangganController::class, 'delete_M']);
+    });
+    Route::prefix('/pelanggan/regular')->group(function () {
+        Route::get('/', [PelangganController::class, 'index_R']);
+        Route::get('/{pelanggan}', [PelangganController::class, 'show_R']);
+        Route::post('/', [PelangganController::class, 'create_R']);
+        Route::put('/{pelanggan}', [PelangganController::class, 'update_R']);
+        Route::delete('/{pelanggan}', [PelangganController::class, 'delete_R']);
+    });
+
 });
