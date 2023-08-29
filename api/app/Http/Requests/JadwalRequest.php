@@ -38,7 +38,6 @@ class JadwalRequest extends FormRequest
 
     public function updateJadwalLibur(JadwalLiburModel $jadwalLibur)
     {
-        $jadwalLibur->fill($this->validated());
-        $jadwalLibur->saveOrFail();
+        $jadwalLibur->updateOrFail($this->validated());
     }
 }

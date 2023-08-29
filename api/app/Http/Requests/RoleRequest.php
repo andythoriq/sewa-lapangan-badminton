@@ -38,7 +38,6 @@ class RoleRequest extends FormRequest
 
     public function updateRole(RoleModel $role)
     {
-        $role->fill($this->validated());
-        $role->saveOrFail();
+        $role->updateOrFail($this->validated());
     }
 }

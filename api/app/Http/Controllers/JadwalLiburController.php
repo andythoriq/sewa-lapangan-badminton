@@ -28,7 +28,7 @@ class JadwalLiburController extends Controller
 
     public function delete(JadwalLiburModel $jadwal_libur)
     {
-        $jadwal_libur->delete();
+        $jadwal_libur->deleteOrFail();
         return response(null, 204, ['success' => 'Jadwal libur deleted.']);
     }
 }

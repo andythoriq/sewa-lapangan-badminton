@@ -29,7 +29,7 @@ class UserRoleController extends Controller
 
     public function delete(RoleModel $role)
     {
-        $role->delete();
+        $role->deleteOrFail();
         return response(null, 204, ['success' => 'Role deleted.']);
     }
 

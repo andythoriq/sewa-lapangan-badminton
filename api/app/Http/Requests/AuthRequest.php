@@ -75,13 +75,12 @@ class AuthRequest extends FormRequest
 
     public function updateUser(User $user)
     {
-        $user->fill($this->validated());
-        $user->saveOrFail();
+        $user->updateOrFail($this->validated());
     }
 
     public function deleteUser(User $user)
     {
         $user->tokens()->delete();
-        $user->delete();
+        $user->deleteOrFail();
     }
 }
