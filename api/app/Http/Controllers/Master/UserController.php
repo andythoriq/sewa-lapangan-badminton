@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Master;
 
-use App\Http\Requests\AuthRequest as UserRequest;
-use App\Http\Resources\UserCollection;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\UserCollection;
+use App\Http\Requests\AuthRequest as UserRequest;
 
 class UserController extends Controller
 {

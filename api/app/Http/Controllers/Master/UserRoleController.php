@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Master;
 
-use App\Http\Requests\RoleRequest;
-use App\Http\Resources\RoleCollection;
-use App\Http\Resources\RoleResource;
 use App\Models\RoleModel;
+use App\Http\Requests\RoleRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\RoleResource;
+use App\Http\Resources\RoleCollection;
 
 class UserRoleController extends Controller
 {

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Master;
 
 use Illuminate\Http\Request;
 use App\Models\JadwalLiburModel;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\JadwalRequest;
 
 class JadwalLiburController extends Controller

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JadwalLiburController;
 use App\Http\Controllers\LapanganController;
+use App\Http\Controllers\Master\PelangganController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
 
     /** User Role
-     * middleware: peng-urus role, peng-urus users, super admin, can't delete&update super admin */
+     * middleware: role-handle, user-handle, admin, can't delete&update super admin */
     Route::get('/role', [UserRoleController::class, 'index']);
     Route::get('/role/{role}', [UserRoleController::class, 'show']);
     Route::post('/role', [UserRoleController::class, 'create']);
@@ -35,7 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/role/{role}', [UserRoleController::class, 'delete']);
 
     /** USER MANAGEMENT
-     * middleware: peng-urus users, super admin */
+     * middleware: user-handle, admin */
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/user/{user}', [UserController::class, 'show']);
     Route::post('/user', [UserController::class, 'create'])->name('create-user');
@@ -43,17 +44,25 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/user/{user}', [UserController::class, 'delete']);
 
     /** Master Jadwal Libur
-     * middleware: peng-urus jadwal, peng-urus jadwal libur, super admin */
+     * middleware: jadwal-handle, jadwal-libur-handle, admin */
     Route::get('/jadwal-libur', [JadwalLiburController::class, 'index']);
     Route::post('/jadwal-libur', [JadwalLiburController::class, 'create']);
     Route::put('/jadwal-libur/{jadwal_libur}', [JadwalLiburController::class, 'update']);
     Route::delete('/jadwal-libur/{jadwal_libur}', [JadwalLiburController::class, 'delete']);
 
     /** Master Lapangan
-     * middleware: peng-urus lapangan, super admin */
+     * middleware: lapangan-lapangan, admin */
     Route::get('/lapangan', [LapanganController::class, 'index']);
     Route::get('/lapangan/{lapangan}', [LapanganController::class, 'show']);
     Route::post('/lapangan', [LapanganController::class, 'create']);
     Route::put('/lapangan/{lapangan}', [LapanganController::class, 'update']);
     Route::delete('/lapangan/{lapangan}', [LapanganController::class, 'delete']);
+
+    /** PELANGGAN
+    * middleware: pelanggan-handle, regular-handle, member-handle, admin */
+    Route::get('/pelanggan', [PelangganController::class, 'index']);
+    Route::get('/pelanggan/{pelanggan}');
+    Route::post('/pelanggan');
+    Route::put('/pelanggan/{pelanggan}');
+    Route::delete('/pelanggan/{pelanggan}');
 });

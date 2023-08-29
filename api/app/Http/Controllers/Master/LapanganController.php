@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Master;
 
-use App\Http\Requests\LapanganRequest;
-use App\Http\Resources\LapanganCollection;
-use App\Http\Resources\LapanganResource;
-use App\Models\LapanganModel;
 use Illuminate\Http\Request;
+use App\Models\LapanganModel;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\LapanganRequest;
+use App\Http\Resources\LapanganResource;
+use App\Http\Resources\LapanganCollection;
 
 class LapanganController extends Controller
 {
