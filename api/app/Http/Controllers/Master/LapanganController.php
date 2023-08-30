@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Master;
 use Illuminate\Http\Request;
 use App\Models\LapanganModel;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LapanganRequest;
-use App\Http\Resources\LapanganResource;
-use App\Http\Resources\LapanganCollection;
+use App\Http\Requests\Master\LapanganRequest;
+use App\Http\Resources\Master\LapanganResource;
+use App\Http\Resources\Master\LapanganCollection;
 
 class LapanganController extends Controller
 {

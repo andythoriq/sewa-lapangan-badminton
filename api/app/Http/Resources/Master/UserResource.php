@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Master;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RoleResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,10 +18,16 @@ class RoleResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'label' => $this->label,
-            'menu' => $this->menu,
+            'name' => $this->name,
+            'email' => $this->email,
+            'no_telp' => $this->no_telp,
             'status' => $this->status,
-            'users' => $this->whenLoaded('users', fn() => collect($this->users)->map(fn($user) => ['id' => $user->id, 'name' => $user->name]))
+            'role' => [
+                'label' => $this->role->label,
+                'menu' => $this->role->menu,
+                'status' => $this->role->status,
+            ]
         ];
     }
+
 }

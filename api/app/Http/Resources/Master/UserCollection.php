@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Master;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class RoleCollection extends ResourceCollection
+class UserCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -17,11 +17,11 @@ class RoleCollection extends ResourceCollection
 
     public function toArray($request)
     {
-        return $this->collection->map(function ($role) {
+        return $this->collection->map(function($user){
             return [
-                'id' => $role->id,
-                'label' => $role->label,
-                'status' => $role->status
+                'id' => $user->id,
+                'name' => $user->name,
+                'status' => $user->status
             ];
         });
     }

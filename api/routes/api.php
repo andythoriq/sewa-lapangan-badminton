@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Master\{AuthController, JadwalLiburController, LapanganController, PelangganController, UserController, UserRoleController};
+use App\Http\Controllers\Master\{AuthController, JadwalLiburController, LapanganController, PelangganController, UserController, UserRoleController, JadwalSewaController};
+use App\Http\Controllers\PenyewaanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
 
     /** User Role
-     * middleware: role-handle, user-handle, admin, can't delete&update super admin */
+     * role/policy: role-handle, user-handle, admin, can't delete&update super admin */
     Route::get('/role', [UserRoleController::class, 'index']);
     Route::get('/role/{role}', [UserRoleController::class, 'show']);
     Route::post('/role', [UserRoleController::class, 'create']);
@@ -31,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/role/{role}', [UserRoleController::class, 'delete']);
 
     /** USER MANAGEMENT
-     * middleware: user-handle, admin */
+     * role/policy: user-handle, admin */
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/user/{user}', [UserController::class, 'show']);
     Route::post('/user', [UserController::class, 'create'])->name('create-user');
@@ -39,14 +40,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/user/{user}', [UserController::class, 'delete']);
 
     /** Master Jadwal Libur
-     * middleware: jadwal-handle, jadwal-libur-handle, admin */
+     * role/policy: jadwal-handle, jadwal-libur-handle, admin */
     Route::get('/jadwal-libur', [JadwalLiburController::class, 'index']);
     Route::post('/jadwal-libur', [JadwalLiburController::class, 'create']);
     Route::put('/jadwal-libur/{jadwal_libur}', [JadwalLiburController::class, 'update']);
     Route::delete('/jadwal-libur/{jadwal_libur}', [JadwalLiburController::class, 'delete']);
 
     /** Master Lapangan
-     * middleware: lapangan-lapangan, admin */
+     * role/policy: lapangan-handle, admin */
     Route::get('/lapangan', [LapanganController::class, 'index']);
     Route::get('/lapangan/{lapangan}', [LapanganController::class, 'show']);
     Route::post('/lapangan', [LapanganController::class, 'create']);
@@ -54,7 +55,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/lapangan/{lapangan}', [LapanganController::class, 'delete']);
 
     /** PELANGGAN
-     * middleware: pelanggan-handle, regular-handle, member-handle, admin */
+     * role/policy: pelanggan-handle, pelanggan-regular-handle, pelanggan-member-handle, admin */
     Route::prefix('/pelanggan/member')->group(function(){
         Route::get('/', [PelangganController::class, 'index_M']);
         Route::get('/{pelanggan}', [PelangganController::class, 'show_M']);
@@ -69,5 +70,26 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{pelanggan}', [PelangganController::class, 'update_R']);
         Route::delete('/{pelanggan}', [PelangganController::class, 'delete_R']);
     });
+
+    /** Jadwal Sewa
+     * role/policy: pelanggan-handle, jadwal-handle, jadwal-sewa-handle, admin */
+    Route::get('/jadwal-sewa', [JadwalSewaController::class, 'index']);
+    Route::get('/jadwal-sewa/{jadwal_sewa}', [JadwalSewaController::class, 'show']);
+    Route::put('/jadwal-sewa/{jadwal_sewa}', [JadwalSewaController::class, 'update']);
+    Route::delete('/jadwal-sewa/{jadwal_sewa}', [JadwalSewaController::class, 'delete']);
+
+    /** Transaksi
+     * role/policy: transaksi-handle, admin */
+
+
+    /**
+     * Penyewaan / Create Jadwal Sewa
+     */
+    Route::post('/penyewaan', PenyewaanController::class);
+
+
+    /**
+     * Transaksi / Create Transaksi
+     */
 
 });

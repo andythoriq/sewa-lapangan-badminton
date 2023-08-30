@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Master;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\UserRequest as AuthRequest;
+use App\Http\Requests\Master\UserRequest as AuthRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\Master\UserResource;
 
 class AuthController extends Controller
 {

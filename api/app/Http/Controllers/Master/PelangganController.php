@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PelangganRequest;
-use App\Http\Resources\PelangganCollection;
-use App\Http\Resources\PelangganResource;
+use App\Http\Requests\Master\PelangganRequest;
+use App\Http\Resources\Master\PelangganCollection;
+use App\Http\Resources\Master\PelangganResource;
 use App\Models\PelangganModel;
 use Illuminate\Http\Request;
 

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Master;
 
 use App\Models\RoleModel;
-use App\Http\Requests\RoleRequest;
+use App\Http\Requests\Master\RoleRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\RoleResource;
-use App\Http\Resources\RoleCollection;
+use App\Http\Resources\Master\RoleResource;
+use App\Http\Resources\Master\RoleCollection;
 
 class UserRoleController extends Controller
 {

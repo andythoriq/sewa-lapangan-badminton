@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Master;
 
 use App\Models\PelangganModel;
 use Illuminate\Validation\Rule;
@@ -39,19 +39,27 @@ class PelangganRequest extends FormRequest
     public function createMember()
     {
         $pelanggan = $this->validated();
-        $pelanggan['code_pelanggan'] = 'm' . date('Ym'); /* tinggal nilai berurutan */
+        $pelanggan['code_pelanggan'] = $this->getFormattedCP('m');
         PelangganModel::create($pelanggan);
     }
 
     public function createRegular()
     {
         $pelanggan = $this->validated();
-        $pelanggan['code_pelanggan'] = 'r' . date('Ym'); /* tinggal nilai berurutan */
+        $pelanggan['code_pelanggan'] = $this->getFormattedCP('r');
         PelangganModel::create($pelanggan);
     }
 
     public function updatePelanggan(PelangganModel $pelanggan)
     {
         $pelanggan->updateOrFail($this->validated());
+    }
+
+    private function getFormattedCP(string $prefix) : string
+    {
+        $max_code_pelanggan =  PelangganModel::max('code_pelanggan') ?? 0;
+        $incremented = (string) ($max_code_pelanggan + 1);
+
+        return $prefix . date('Ym') . str_pad($incremented, 3, '0', STR_PAD_LEFT);
     }
 }

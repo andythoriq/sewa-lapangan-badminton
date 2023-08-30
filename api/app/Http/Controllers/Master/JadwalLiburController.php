@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Master;
 use Illuminate\Http\Request;
 use App\Models\JadwalLiburModel;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\JadwalRequest;
+use App\Http\Requests\Master\JadwalRequest;
 
 class JadwalLiburController extends Controller
 {
     public function index()
     {
         $jadwal = JadwalLiburModel::all();
-        return response()->json(['jadwal' => $jadwal]);
+        return response()->json($jadwal);
     }
 
     public function create(JadwalRequest $request)
