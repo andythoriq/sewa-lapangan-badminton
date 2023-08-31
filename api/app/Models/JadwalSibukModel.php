@@ -13,7 +13,8 @@ class JadwalSibukModel extends Model
 
     protected $fillable = [
         'start',
-        'end'
+        'end',
+        'lapangan_id'
     ];
 
 
