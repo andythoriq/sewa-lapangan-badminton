@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Rule;
 // use Illuminate\Contracts\Validation\ValidatorAwareRule;
 use Illuminate\Contracts\Validation\DataAwareRule;
 
-class Year200 implements Rule, DataAwareRule
+class Year2000 implements Rule, DataAwareRule
 {
     /**
      * Create a new rule instance.

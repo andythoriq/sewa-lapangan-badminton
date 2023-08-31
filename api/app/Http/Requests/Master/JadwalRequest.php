@@ -4,7 +4,7 @@ namespace App\Http\Requests\Master;
 
 use App\Models\JadwalLiburModel;
 use App\Models\JadwalSibukModel;
-// use App\Rules\Year200;
+// use App\Rules\Year2000;
 use Illuminate\Foundation\Http\FormRequest;
 
 class JadwalRequest extends FormRequest
