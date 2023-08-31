@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\Master\{AuthController, JadwalLiburController, LapanganController, PelangganController, UserController, UserRoleController, JadwalSewaController};
-use App\Http\Controllers\PenyewaanController;
+use App\Http\Controllers\Master\{AuthController, JadwalLiburController, LapanganController, PelangganController, UserController, UserRoleController, JadwalSewaController, JadwalSibukController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,12 +38,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/user/{user}', [UserController::class, 'update'])->name('update-user');
     Route::delete('/user/{user}', [UserController::class, 'delete']);
 
-    /** Master Jadwal Libur
+    /** Master Jadwal Libur / jadwal libur gor
      * role/policy: jadwal-handle, jadwal-libur-handle, admin */
     Route::get('/jadwal-libur', [JadwalLiburController::class, 'index']);
-    Route::post('/jadwal-libur', [JadwalLiburController::class, 'create']);
-    Route::put('/jadwal-libur/{jadwal_libur}', [JadwalLiburController::class, 'update']);
+    Route::post('/jadwal-libur', [JadwalLiburController::class, 'create'])->name('jadwal-libur-create');
+    Route::put('/jadwal-libur/{jadwal_libur}', [JadwalLiburController::class, 'update'])->name('jadwal-libur-update');
     Route::delete('/jadwal-libur/{jadwal_libur}', [JadwalLiburController::class, 'delete']);
+
+    /** Master Jadwal Sibuk / jadwal sibuk lapangan
+     * role/policy: jadwal-handle, jadwal-sibuk-handle, admin */
+    Route::get('/jadwal-sibuk', [JadwalSibukController::class, 'index']);
+    Route::get('/jadwal-sibuk/{jadwal_sibuk}', [JadwalSibukController::class, 'show']);
+    Route::post('/jadwal-sibuk', [JadwalSibukController::class, 'create'])->name('jadwal-sibuk-create');
+    Route::put('/jadwal-sibuk/{jadwal_sibuk}', [JadwalSibukController::class, 'update'])->name('jadwal-sibuk-update');
+    Route::delete('/jadwal-sibuk/{jadwal_sibuk}', [JadwalSibukController::class, 'delete']);
 
     /** Master Lapangan
      * role/policy: lapangan-handle, admin */
@@ -54,7 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/lapangan/{lapangan}', [LapanganController::class, 'update']);
     Route::delete('/lapangan/{lapangan}', [LapanganController::class, 'delete']);
 
-    /** PELANGGAN
+    /** Master PELANGGAN
      * role/policy: pelanggan-handle, pelanggan-regular-handle, pelanggan-member-handle, admin */
     Route::prefix('/pelanggan/member')->group(function(){
         Route::get('/', [PelangganController::class, 'index_M']);
@@ -71,25 +78,16 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{pelanggan}', [PelangganController::class, 'delete_R']);
     });
 
-    /** Jadwal Sewa
+    /** Master Jadwal Sewa
      * role/policy: pelanggan-handle, jadwal-handle, jadwal-sewa-handle, admin */
     Route::get('/jadwal-sewa', [JadwalSewaController::class, 'index']);
     Route::get('/jadwal-sewa/{jadwal_sewa}', [JadwalSewaController::class, 'show']);
-    Route::put('/jadwal-sewa/{jadwal_sewa}', [JadwalSewaController::class, 'update']);
+    Route::post('/penyewaan', [JadwalSewaController::class, 'create'])->name('create-jadwal-sewa');
+    Route::put('/jadwal-sewa/{jadwal_sewa}', [JadwalSewaController::class, 'update'])->name('update-jadwal-sewa');
     Route::delete('/jadwal-sewa/{jadwal_sewa}', [JadwalSewaController::class, 'delete']);
 
     /** Transaksi
      * role/policy: transaksi-handle, admin */
 
-
-    /**
-     * Penyewaan / Create Jadwal Sewa
-     */
-    Route::post('/penyewaan', PenyewaanController::class);
-
-
-    /**
-     * Transaksi / Create Transaksi
-     */
 
 });
