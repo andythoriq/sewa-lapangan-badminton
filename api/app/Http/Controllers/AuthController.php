@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Master;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\Master\UserRequest as AuthRequest;
+use App\Http\Requests\AuthRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Master\UserResource;
 
@@ -17,7 +17,7 @@ class AuthController extends Controller
 
     public function register(AuthRequest $request)
     {
-        $request->createUser();
+        $request->register();
         return response(null, 201, ['success' => 'Registration successfully.']);
     }
 

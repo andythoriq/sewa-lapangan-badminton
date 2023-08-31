@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Master\{AuthController, JadwalLiburController, LapanganController, PelangganController, UserController, UserRoleController, JadwalSewaController, JadwalSibukController};
-use App\Http\Controllers\PenyewaanController;
+use App\Http\Controllers\Master\{JadwalLiburController, LapanganController, PelangganController, UserController, UserRoleController, JadwalSewaController, JadwalSibukController};
+use App\Http\Controllers\{AuthController, PenyewaanController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,26 +17,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    /** AUTH ROUTES  */
-    Route::post('/login', [AuthController::class, 'login'])->name('login')->withoutMiddleware('auth:sanctum');
-    Route::post('/register', [AuthController::class, 'register'])->name('register')->withoutMiddleware('auth:sanctum');
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/me', [AuthController::class, 'me']);
-
     /** User Role
-     * role/policy: role-handle, user-handle, admin, can't delete&update super admin */
+     * role/policy: role-handle, user-handle, admin, can't delete&update admin */
     Route::get('/role', [UserRoleController::class, 'index']);
     Route::get('/role/{role}', [UserRoleController::class, 'show']);
     Route::post('/role', [UserRoleController::class, 'create']);
     Route::put('/role/{role}', [UserRoleController::class, 'update']);
     Route::delete('/role/{role}', [UserRoleController::class, 'delete']);
 
-    /** USER MANAGEMENT
+    /** User Management
      * role/policy: user-handle, admin */
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/user/{user}', [UserController::class, 'show']);
-    Route::post('/user', [UserController::class, 'create'])->name('create-user');
-    Route::put('/user/{user}', [UserController::class, 'update'])->name('update-user');
+    Route::post('/user', [UserController::class, 'create']);
+    Route::put('/user/{user}', [UserController::class, 'update']);
     Route::delete('/user/{user}', [UserController::class, 'delete']);
 
     /** Master Jadwal Libur / jadwal libur gor
@@ -91,6 +85,15 @@ Route::middleware('auth:sanctum')->group(function () {
      * role/policy: transaksi-handle, admin */
 
     /** End of master data */
+
+    /** Penyewaan
+     * role/policy: penyewaan-handle, admin */
     Route::post('/penyewaan', PenyewaanController::class);
 
+    /** AUTH ROUTES
+     * role/policy: admin */
+    Route::post('/login', [AuthController::class, 'login'])->name('login')->withoutMiddleware('auth:sanctum');
+    Route::post('/register', [AuthController::class, 'register'])->name('register')->withoutMiddleware('auth:sanctum');
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
 });
