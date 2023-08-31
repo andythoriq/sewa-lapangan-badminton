@@ -16,7 +16,7 @@ class JadwalSibukModel extends Model
         'end'
     ];
 
-    public $timestamps = false;
+
 
     // protected $with = ['lapangan'];
 

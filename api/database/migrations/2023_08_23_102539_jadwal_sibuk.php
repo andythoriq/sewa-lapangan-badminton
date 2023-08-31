@@ -15,10 +15,10 @@ class JadwalSibuk extends Migration
     {
         Schema::create('tb_jadwal_sibuk', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('start');
-            $table->dateTime('end');
+            $table->dateTime('start')->default('2000-01-01 00:00:00');
+            $table->dateTime('end')->default('2000-01-01 00:00:00');
             $table->foreignId('lapangan_id')->constrained('tb_lapangan', 'id')->cascadeOnDelete();
-            // $table->timestamps();
+            $table->timestamps();
         });
     }
 

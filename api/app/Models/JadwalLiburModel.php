@@ -17,5 +17,5 @@ class JadwalLiburModel extends Model
         'end'
     ];
 
-    public $timestamps = false;
+
 }

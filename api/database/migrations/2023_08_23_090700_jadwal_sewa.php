@@ -19,10 +19,10 @@ class JadwalSewa extends Migration
             $table->dateTime('end');
             $table->enum('status', ['F', 'U'])->comment('F: Finished, U: Unfinished');
             $table->foreignId('lapangan_id')->constrained('tb_lapangan', 'id')->cascadeOnDelete();
-            $table->foreignId('transaksi_id')->constrained('tb_transaksi', 'id')->cascadeOnDelete();
+            $table->foreignId('transaksi_id')->nullable()->constrained('tb_transaksi', 'id')->cascadeOnDelete();
             $table->string('pelanggan_id', 20);
             $table->foreign('pelanggan_id')->references('code_pelanggan')->on('tb_pelanggan')->cascadeOnDelete();
-            // $table->timestamps();
+            $table->timestamps();
         });
     }
 
