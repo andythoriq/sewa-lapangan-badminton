@@ -22,6 +22,7 @@ class PelangganResource extends JsonResource
             'no_telp' => $this->no_telp,
             'deposit' => $this->deposit,
             'hutang' => $this->hutang,
+            'status' => $this->status,
             'jadwal_sewa' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
                 'id' => $rental->id,
                 'start' => $rental->start,
@@ -29,8 +30,8 @@ class PelangganResource extends JsonResource
                 'status' => $rental->status
             ]))
         ];
-        if (isset($this->masa_aktif_member)) {
-            $result['masa_aktif_member'] = $this->masa_aktif_member;
+        if (isset($this->masa_aktif_member) || $this->status == 'M' || $this->status == 'm') {
+            $result['masa_aktif_member'] = $this->masa_aktif_member ?? '';
         }
         return $result;
     }
