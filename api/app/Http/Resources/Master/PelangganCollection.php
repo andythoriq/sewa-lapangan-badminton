@@ -24,7 +24,7 @@ class PelangganCollection extends ResourceCollection
                 'deposit' => $pelanggan->deposit,
                 'hutang' => $pelanggan->hutang
             ];
-            if (isset($pelanggan->masa_aktif_member)) {
+            if (isset($pelanggan->masa_aktif_member) || $pelanggan->status == 'M' || $pelanggan->status == 'm') {
                 $result['masa_aktif_member'] = $pelanggan->masa_aktif_member;
             }
             return $result;

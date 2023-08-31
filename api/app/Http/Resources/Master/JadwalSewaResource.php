@@ -28,8 +28,8 @@ class JadwalSewaResource extends JsonResource
                 'harga_normal' => $this->lapangan->harga_normal
             ],
             'transaksi' => [
-                'total_harga' => $this->transaksi->total_harga,
-                'total_jam' => $this->transaksi->total_jam,
+                'total_harga' => $this->transaksi->total_harga ?? '',
+                'total_jam' => $this->transaksi->total_jam ?? '',
             ],
             'pelanggan' => [
                 'nama' => $this->pelanggan->nama,
