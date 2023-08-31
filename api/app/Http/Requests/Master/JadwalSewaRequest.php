@@ -32,7 +32,7 @@ class JadwalSewaRequest extends FormRequest
                 $validation = [
                     'rentals' => ['required', 'array', 'min:1', 'in:start,end,status,lapangan_id,transaksi_id,pelanggan_id'],
                     'rentals.*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d H:i:s')],
-                    'rentals.*.end' => ['required', 'date', 'date_format:Y-m-d H:i:s'],
+                    'rentals.*.end' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:rentals.*.start'],
                     'rentals.*.status' => ['required', 'string', 'in:F,U'],
                     'rentals.*.lapangan_id' => ['required', 'integer', 'exists:tb_lapangan,id'],
                     'rentals.*.transaksi_id' => ['nullable', 'integer', 'exists:tb_transaksi,id'],
@@ -43,7 +43,7 @@ class JadwalSewaRequest extends FormRequest
            case 'update-jadwal-sewa':
                 $validation = [
                     'start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . $this->created_at],
-                    'end' => ['required', 'date', 'date_format:Y-m-d H:i:s'],
+                    'end' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:start'],
                     'status' => ['required', 'string', 'in:F,U'],
                     'lapangan_id' => ['required', 'integer', 'exists:tb_lapangan,id'],
                     'transaksi_id' => ['nullable', 'integer', 'exists:tb_transaksi,id'],

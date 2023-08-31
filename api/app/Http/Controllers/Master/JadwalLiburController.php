@@ -11,7 +11,7 @@ class JadwalLiburController extends Controller
 {
     public function index()
     {
-        $jadwal = JadwalLiburModel::all();
+        $jadwal = JadwalLiburModel::select(['id', 'label', 'end', 'start'])->get();
         return response()->json($jadwal);
     }
 
