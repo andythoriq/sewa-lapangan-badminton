@@ -15,7 +15,10 @@ class JadwalSewaModel extends Model
     protected $fillable = [
         'start',
         'end',
-        'status'
+        'status',
+        'lapangan_id',
+        'transaksi_id',
+        'pelanggan_id'
     ];
 
 

@@ -2,11 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\ClashChecking;
 use App\Models\JadwalSewaModel;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PenyewaanRequest extends FormRequest
 {
+    use ClashChecking;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -39,6 +41,7 @@ class PenyewaanRequest extends FormRequest
     {
         $data = $this->validated();
         for ($i = 0; $i < count($data); $i++) {
+            $this->collideCheck($data[$i]['start'], $data[$i]['end'], $data[$i]['lapangan_id']);
             $data[$i]['created_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
             $data[$i]['updated_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
         }

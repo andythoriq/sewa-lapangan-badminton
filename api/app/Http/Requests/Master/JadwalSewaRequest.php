@@ -2,12 +2,13 @@
 
 namespace App\Http\Requests\Master;
 
+use App\Traits\ClashChecking;
 use App\Models\JadwalSewaModel;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class JadwalSewaRequest extends FormRequest
 {
+    use ClashChecking;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -48,11 +49,13 @@ class JadwalSewaRequest extends FormRequest
 
     public function createJadwalSewa()
     {
+        $this->collideCheck($this->start, $this->end, $this->lapangan_id);
         JadwalSewaModel::create($this->validated());
     }
 
     public function updateJadwalSewa(JadwalSewaModel $jadwal)
     {
+        $this->collideCheck($this->start, $this->end, $this->lapangan_id);
         $jadwal->updateOrFail($this->validated());
     }
 }
