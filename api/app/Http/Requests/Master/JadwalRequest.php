@@ -4,7 +4,7 @@ namespace App\Http\Requests\Master;
 
 use App\Models\JadwalLiburModel;
 use App\Models\JadwalSibukModel;
-use App\Rules\Year200;
+// use App\Rules\Year200;
 use Illuminate\Foundation\Http\FormRequest;
 
 class JadwalRequest extends FormRequest
@@ -27,7 +27,7 @@ class JadwalRequest extends FormRequest
     public function rules()
     {
         $validation = [
-            'start' => ['required', 'date', 'date_format:Y-m-d H:i:s', new Year200],
+            'start' => ['required', 'date', 'date_format:Y-m-d H:i:s'],
             'end' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:start']
         ];
 
