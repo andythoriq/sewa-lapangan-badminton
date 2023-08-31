@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Master\{AuthController, JadwalLiburController, LapanganController, PelangganController, UserController, UserRoleController, JadwalSewaController, JadwalSibukController};
+use App\Http\Controllers\PenyewaanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -82,12 +83,14 @@ Route::middleware('auth:sanctum')->group(function () {
      * role/policy: pelanggan-handle, jadwal-handle, jadwal-sewa-handle, admin */
     Route::get('/jadwal-sewa', [JadwalSewaController::class, 'index']);
     Route::get('/jadwal-sewa/{jadwal_sewa}', [JadwalSewaController::class, 'show']);
-    Route::post('/penyewaan', [JadwalSewaController::class, 'create'])->name('create-jadwal-sewa');
+    Route::post('/jadwal-sewa', [JadwalSewaController::class, 'create'])->name('create-jadwal-sewa');
     Route::put('/jadwal-sewa/{jadwal_sewa}', [JadwalSewaController::class, 'update'])->name('update-jadwal-sewa');
     Route::delete('/jadwal-sewa/{jadwal_sewa}', [JadwalSewaController::class, 'delete']);
 
     /** Transaksi
      * role/policy: transaksi-handle, admin */
 
+    /** End of master data */
+    Route::post('/penyewaan', PenyewaanController::class);
 
 });
