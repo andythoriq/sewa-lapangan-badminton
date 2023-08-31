@@ -14,7 +14,7 @@ class JadwalSibukController extends Controller
     public function index()
     {
         $jadwal = JadwalSibukModel::select(['id', 'start', 'end'])->get();
-        return new JadwalSibukCollection($jadwal);
+        return response()->json($jadwal);
     }
 
     public function show(JadwalSibukModel $jadwal_sibuk)
