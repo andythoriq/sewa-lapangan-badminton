@@ -4,7 +4,7 @@ namespace App\Http\Resources\Master;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class LapanganCollection extends ResourceCollection
+class CourtCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -17,12 +17,12 @@ class LapanganCollection extends ResourceCollection
 
     public function toArray($request)
     {
-        return $this->collection->map(function($lapangan){
+        return $this->collection->map(function($court){
             return [
-                'id' => $lapangan->id,
-                'label' => $lapangan->label,
-                'image_path' => $lapangan->image_path,
-                'harga_normal' => $lapangan->harga_normal
+                'id' => $court->id,
+                'label' => $court->label,
+                'image_path' => $court->image_path,
+                'normal_price' => $court->normal_price
             ];
         });
     }

@@ -4,7 +4,7 @@ namespace App\Http\Resources\Master;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class JadwalSibukResource extends JsonResource
+class PeakTimeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,12 +17,12 @@ class JadwalSibukResource extends JsonResource
     {
         return [
             'start' => $this->start,
-            'end' => $this->end,
-            'lapangan' => [
-                'label' => $this->lapangan->label,
-                'image_path' => $this->lapangan->image_path,
-                'deskripsi' => $this->lapangan->deskripsi,
-                'harga_normal' => $this->lapangan->harga_normal
+            'finish' => $this->finish,
+            'court' => [
+                'label' => $this->court->label,
+                'image_path' => $this->court->image_path,
+                'description' => $this->court->description,
+                'normal_price' => $this->court->normal_price
             ]
         ];
     }

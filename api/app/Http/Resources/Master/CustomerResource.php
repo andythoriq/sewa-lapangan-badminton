@@ -4,7 +4,7 @@ namespace App\Http\Resources\Master;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PelangganResource extends JsonResource
+class CustomerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,19 +19,19 @@ class PelangganResource extends JsonResource
     {
         $result = [
             'nama' => $this->nama,
-            'no_telp' => $this->no_telp,
+            'phone_number' => $this->phone_number,
             'deposit' => $this->deposit,
-            'hutang' => $this->hutang,
+            'debt' => $this->debt,
             'status' => $this->status,
-            'jadwal_sewa' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
+            'rental' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
                 'id' => $rental->id,
                 'start' => $rental->start,
                 'end' => $rental->end,
                 'status' => $rental->status
             ]))
         ];
-        if (isset($this->masa_aktif_member) || $this->status == 'M' || $this->status == 'm') {
-            $result['masa_aktif_member'] = $this->masa_aktif_member ?? '';
+        if (isset($this->member_active_period) || $this->status == 'M' || $this->status == 'm') {
+            $result['member_active_period'] = $this->member_active_period ?? '';
         }
         return $result;
     }

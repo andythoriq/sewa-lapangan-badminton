@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Master\RoleResource;
 use App\Http\Resources\Master\RoleCollection;
 
-class UserRoleController extends Controller
+class RoleController extends Controller
 {
     public function index()
     {

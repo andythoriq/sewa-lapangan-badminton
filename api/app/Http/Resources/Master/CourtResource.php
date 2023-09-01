@@ -4,7 +4,7 @@ namespace App\Http\Resources\Master;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LapanganResource extends JsonResource
+class CourtResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,18 +20,18 @@ class LapanganResource extends JsonResource
         return [
             'label' => $this->label,
             'image_path' => $this->image_path,
-            'deskripsi' => $this->deskripsi,
-            'harga_normal' => $this->harga_normal,
-            'jadwal_sewa' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
+            'description' => $this->description,
+            'normal_price' => $this->normal_price,
+            'rental' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
                 'id' => $rental->id,
                 'start' => $rental->start,
                 'end' => $rental->end,
                 'status' => $rental->status
             ])),
-            'jadwal_sibuk' => $this->whenLoaded('peak_times', fn() => collect($this->peak_times)->map(fn($jadwal) => [
-                'id' => $jadwal->id,
-                'start' => $jadwal->start,
-                'end' => $jadwal->end
+            'peak_time' => $this->whenLoaded('peak_times', fn() => collect($this->peak_times)->map(fn($peak_time) => [
+                'id' => $peak_time->id,
+                'start' => $peak_time->start,
+                'end' => $peak_time->end
             ]))
         ];
     }

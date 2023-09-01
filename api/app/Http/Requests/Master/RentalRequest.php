@@ -3,10 +3,10 @@
 namespace App\Http\Requests\Master;
 
 use App\Traits\ClashChecking;
-use App\Models\JadwalSewaModel;
+use App\Models\RentalModel;
 use Illuminate\Foundation\Http\FormRequest;
 
-class JadwalSewaRequest extends FormRequest
+class RentalRequest extends FormRequest
 {
     use ClashChecking;
     /**
@@ -29,17 +29,17 @@ class JadwalSewaRequest extends FormRequest
         $validation = [
             'end' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:start'],
             'status' => ['required', 'string', 'in:F,U'],
-            'lapangan_id' => ['required', 'integer', 'exists:tb_lapangan,id'],
-            'transaksi_id' => ['nullable', 'integer', 'exists:tb_transaksi,id'],
-            'pelanggan_id' => ['required', 'string', 'exists:tb_pelanggan,code_pelanggan'],
+            'court_id' => ['required', 'integer', 'exists:tb_court,id'],
+            'transaction_id' => ['nullable', 'integer', 'exists:tb_transaction,id'],
+            'customer_id' => ['required', 'string', 'exists:tb_customer,customer_code'],
         ];
 
         switch ($this->route()->getName()) {
-            case 'create-jadwal-sewa':
+            case 'create-rental':
                 $validation['start'] = ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d H:i:s')];
                 break;
 
-            case 'update-jadwal-sewa':
+            case 'update-rental':
                 $validation['start'] = ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . $this->created_at];
                 break;
         }
@@ -47,15 +47,15 @@ class JadwalSewaRequest extends FormRequest
         return $validation;
     }
 
-    public function createJadwalSewa()
+    public function createRental()
     {
-        $this->collideCheck($this->start, $this->end, $this->lapangan_id);
-        JadwalSewaModel::create($this->validated());
+        $this->collideCheck($this->start, $this->end, $this->court_id);
+        RentalModel::create($this->validated());
     }
 
-    public function updateJadwalSewa(JadwalSewaModel $jadwal)
+    public function updateRental(RentalModel $rental)
     {
-        $this->collideCheck($this->start, $this->end, $this->lapangan_id);
-        $jadwal->updateOrFail($this->validated());
+        $this->collideCheck($this->start, $this->end, $this->court_id);
+        $rental->updateOrFail($this->validated());
     }
 }

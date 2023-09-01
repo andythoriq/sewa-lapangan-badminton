@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Master\{JadwalLiburController, LapanganController, PelangganController, UserController, UserRoleController, JadwalSewaController, JadwalSibukController};
+use App\Http\Controllers\Master\{CloseDateController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController};
 use App\Http\Controllers\{AuthController, PenyewaanController};
 use Illuminate\Support\Facades\Route;
 
@@ -19,11 +19,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     /** User Role
      * role/policy: role-handle, user-handle, admin, can't delete&update admin */
-    Route::get('/role', [UserRoleController::class, 'index']);
-    Route::get('/role/{role}', [UserRoleController::class, 'show']);
-    Route::post('/role', [UserRoleController::class, 'create']);
-    Route::put('/role/{role}', [UserRoleController::class, 'update']);
-    Route::delete('/role/{role}', [UserRoleController::class, 'delete']);
+    Route::get('/role', [RoleController::class, 'index']);
+    Route::get('/role/{role}', [RoleController::class, 'show']);
+    Route::post('/role', [RoleController::class, 'create']);
+    Route::put('/role/{role}', [RoleController::class, 'update']);
+    Route::delete('/role/{role}', [RoleController::class, 'delete']);
 
     /** User Management
      * role/policy: user-handle, admin */
@@ -34,55 +34,55 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/user/{user}', [UserController::class, 'delete']);
 
     /** Master Jadwal Libur / jadwal libur gor
-     * role/policy: jadwal-handle, jadwal-libur-handle, admin */
-    Route::get('/jadwal-libur', [JadwalLiburController::class, 'index']);
-    Route::post('/jadwal-libur', [JadwalLiburController::class, 'create'])->name('jadwal-libur-create');
-    Route::put('/jadwal-libur/{jadwal_libur}', [JadwalLiburController::class, 'update'])->name('jadwal-libur-update');
-    Route::delete('/jadwal-libur/{jadwal_libur}', [JadwalLiburController::class, 'delete']);
+     * role/policy: jadwal-handle, close-date-handle, admin */
+    Route::get('/close-date', [CloseDateController::class, 'index']);
+    Route::post('/close-date', [CloseDateController::class, 'create'])->name('close-date-create');
+    Route::put('/close-date/{close_date}', [CloseDateController::class, 'update'])->name('close-date-update');
+    Route::delete('/close-date/{close_date}', [CloseDateController::class, 'delete']);
 
     /** Master Jadwal Sibuk / jadwal sibuk lapangan
      * role/policy: jadwal-handle, jadwal-sibuk-handle, admin */
-    Route::get('/jadwal-sibuk', [JadwalSibukController::class, 'index']);
-    Route::get('/jadwal-sibuk/{jadwal_sibuk}', [JadwalSibukController::class, 'show']);
-    Route::post('/jadwal-sibuk', [JadwalSibukController::class, 'create'])->name('jadwal-sibuk-create');
-    Route::put('/jadwal-sibuk/{jadwal_sibuk}', [JadwalSibukController::class, 'update'])->name('jadwal-sibuk-update');
-    Route::delete('/jadwal-sibuk/{jadwal_sibuk}', [JadwalSibukController::class, 'delete']);
+    Route::get('/peak-time', [PeakTimeController::class, 'index']);
+    Route::get('/peak-time/{peak_time}', [PeakTimeController::class, 'show']);
+    Route::post('/peak-time', [PeakTimeController::class, 'create'])->name('peak-time-create');
+    Route::put('/peak-time/{peak_time}', [PeakTimeController::class, 'update'])->name('peak-time-update');
+    Route::delete('/peak-time/{peak_time}', [PeakTimeController::class, 'delete']);
 
     /** Master Lapangan
      * role/policy: lapangan-handle, admin */
-    Route::get('/lapangan', [LapanganController::class, 'index']);
-    Route::get('/lapangan/{lapangan}', [LapanganController::class, 'show']);
-    Route::post('/lapangan', [LapanganController::class, 'create']);
-    Route::put('/lapangan/{lapangan}', [LapanganController::class, 'update']);
-    Route::delete('/lapangan/{lapangan}', [LapanganController::class, 'delete']);
+    Route::get('/court', [CourtController::class, 'index']);
+    Route::get('/court/{court}', [CourtController::class, 'show']);
+    Route::post('/court', [CourtController::class, 'create']);
+    Route::put('/court/{court}', [CourtController::class, 'update']);
+    Route::delete('/court/{court}', [CourtController::class, 'delete']);
 
-    /** Master PELANGGAN
-     * role/policy: pelanggan-handle, pelanggan-regular-handle, pelanggan-member-handle, admin */
-    Route::prefix('/pelanggan/member')->group(function(){
-        Route::get('/', [PelangganController::class, 'index_M']);
-        Route::get('/{pelanggan}', [PelangganController::class, 'show_M']);
-        Route::post('/', [PelangganController::class, 'create_M']);
-        Route::put('/{pelanggan}', [PelangganController::class, 'update_M']);
-        Route::delete('/{pelanggan}', [PelangganController::class, 'delete_M']);
+    /** Master Customer
+     * role/policy: customer-handle, customer-regular-handle, customer-member-handle, admin */
+    Route::prefix('/customer/member')->group(function(){
+        Route::get('/', [CustomerController::class, 'index_M']);
+        Route::get('/{customer}', [CustomerController::class, 'show_M']);
+        Route::post('/', [CustomerController::class, 'create_M']);
+        Route::put('/{customer}', [CustomerController::class, 'update_M']);
+        Route::delete('/{customer}', [CustomerController::class, 'delete_M']);
     });
-    Route::prefix('/pelanggan/regular')->group(function () {
-        Route::get('/', [PelangganController::class, 'index_R']);
-        Route::get('/{pelanggan}', [PelangganController::class, 'show_R']);
-        Route::post('/', [PelangganController::class, 'create_R']);
-        Route::put('/{pelanggan}', [PelangganController::class, 'update_R']);
-        Route::delete('/{pelanggan}', [PelangganController::class, 'delete_R']);
+    Route::prefix('/customer/regular')->group(function () {
+        Route::get('/', [CustomerController::class, 'index_R']);
+        Route::get('/{customer}', [CustomerController::class, 'show_R']);
+        Route::post('/', [CustomerController::class, 'create_R']);
+        Route::put('/{customer}', [CustomerController::class, 'update_R']);
+        Route::delete('/{customer}', [CustomerController::class, 'delete_R']);
     });
 
     /** Master Jadwal Sewa
-     * role/policy: pelanggan-handle, jadwal-handle, jadwal-sewa-handle, admin */
-    Route::get('/jadwal-sewa', [JadwalSewaController::class, 'index']);
-    Route::get('/jadwal-sewa/{jadwal_sewa}', [JadwalSewaController::class, 'show']);
-    Route::post('/jadwal-sewa', [JadwalSewaController::class, 'create'])->name('create-jadwal-sewa');
-    Route::put('/jadwal-sewa/{jadwal_sewa}', [JadwalSewaController::class, 'update'])->name('update-jadwal-sewa');
-    Route::delete('/jadwal-sewa/{jadwal_sewa}', [JadwalSewaController::class, 'delete']);
+     * role/policy: customer-handle, jadwal-handle, jadwal-sewa-handle, admin */
+    Route::get('/rental', [RentalController::class, 'index']);
+    Route::get('/rental/{rental}', [RentalController::class, 'show']);
+    Route::post('/rental', [RentalController::class, 'create'])->name('create-rental');
+    Route::put('/rental/{rental}', [RentalController::class, 'update'])->name('update-rental');
+    Route::delete('/rental/{rental}', [RentalController::class, 'delete']);
 
-    /** Transaksi
-     * role/policy: transaksi-handle, admin */
+    /** Transaction
+     * role/policy: transaction-handle, admin */
 
     /** End of master data */
 
