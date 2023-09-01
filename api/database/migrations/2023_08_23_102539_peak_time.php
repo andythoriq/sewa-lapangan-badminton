@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Transaksi extends Migration
+class JadwalSibuk extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class Transaksi extends Migration
      */
     public function up()
     {
-        Schema::create('tb_transaksi', function (Blueprint $table) {
+        Schema::create('tb_peak_time', function (Blueprint $table) {
             $table->id();
-            $table->float('total_harga');
-            $table->float('total_jam');
+            $table->dateTime('start');
+            $table->dateTime('finish');
+            $table->foreignId('court_id')->constrained('tb_court', 'id')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class Transaksi extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_transaksi');
+        Schema::dropIfExists('tb_peak_time');
     }
 }

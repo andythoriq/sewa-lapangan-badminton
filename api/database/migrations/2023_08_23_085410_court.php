@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class JadwalSibuk extends Migration
+class Lapangan extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class JadwalSibuk extends Migration
      */
     public function up()
     {
-        Schema::create('tb_jadwal_sibuk', function (Blueprint $table) {
+        Schema::create('tb_court', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('start');
-            $table->dateTime('end');
-            $table->foreignId('lapangan_id')->constrained('tb_lapangan', 'id')->cascadeOnDelete();
+            $table->string('label', 191)->unique();
+            $table->string('image_path', 255)->nullable();
+            $table->text('description');
+            $table->float('normal_price');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class JadwalSibuk extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_jadwal_sibuk');
+        Schema::dropIfExists('tb_court');
     }
 }

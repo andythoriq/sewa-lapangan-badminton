@@ -13,11 +13,11 @@ class JadwalLibur extends Migration
      */
     public function up()
     {
-        Schema::create('tb_jadwal_libur', function (Blueprint $table) {
+        Schema::create('tb_close_date', function (Blueprint $table) {
             $table->id();
             $table->string('label', 191);
-            $table->dateTime('start');
-            $table->dateTime('end');
+            $table->date('start');
+            $table->date('finish');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class JadwalLibur extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_jadwal_libur');
+        Schema::dropIfExists('tb_close_date');
     }
 }

@@ -13,14 +13,15 @@ class Pelanggan extends Migration
      */
     public function up()
     {
-        Schema::create('tb_pelanggan', function (Blueprint $table) {
-            $table->string('code_pelanggan', 20)->primary()->unique();
-            $table->string('nama', 191);
-            $table->string('no_telp', 20)->unique();
+        Schema::create('tb_customer', function (Blueprint $table) {
+            $table->string('customer_code', 20)->primary()->unique();
+            $table->string('name', 191);
+            $table->string('phone_number', 20)->unique();
             $table->float('deposit')->nullable()->default(null);
-            $table->float('hutang')->nullable()->default(null);
+            $table->float('debt')->nullable()->default(null);
             $table->enum('status', ['M', 'R'])->comment('M: member, R: regular');
-            $table->dateTime('masa_aktif_member')->nullable()->default(null);
+            $table->dateTime('member_active_period')->nullable()->default(null);
+            $table->string('member_booking_code', 90)->nullable()->default(null);
             $table->timestamps();
         });
     }
@@ -32,6 +33,6 @@ class Pelanggan extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_pelanggan');
+        Schema::dropIfExists('tb_customer');
     }
 }
