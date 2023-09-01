@@ -37,4 +37,10 @@ class RentalController extends Controller
         $rental->delete();
         return response(null, 204, ['success' => 'Rental data deleted.']);
     }
+
+    public function create_multiple(RentalRequest $request)
+    {
+        $request->createMultipleRental();
+        return response(null, 201, ['success' => 'Multiple rental Created.']);
+    }
 }

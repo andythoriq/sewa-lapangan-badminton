@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Master\{CloseTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController};
-use App\Http\Controllers\{AuthController, PenyewaanController};
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,16 +36,16 @@ Route::middleware('auth:sanctum')->group(function () {
     /** Master Close time / close time gor
      * role/policy: schedule-handle, close-time-handle, admin */
     Route::get('/close-time', [CloseTimeController::class, 'index']);
-    Route::post('/close-time', [CloseTimeController::class, 'create'])->name('close-time-create');
-    Route::put('/close-time/{close_time}', [CloseTimeController::class, 'update'])->name('close-time-update');
+    Route::post('/close-time', [CloseTimeController::class, 'create']);
+    Route::put('/close-time/{close_time}', [CloseTimeController::class, 'update']);
     Route::delete('/close-time/{close_time}', [CloseTimeController::class, 'delete']);
 
     /** Master Peak time / peak time court
      * role/policy: schedule-handle, peak-time-handle, admin */
     Route::get('/peak-time', [PeakTimeController::class, 'index']);
     Route::get('/peak-time/{peak_time}', [PeakTimeController::class, 'show']);
-    Route::post('/peak-time', [PeakTimeController::class, 'create'])->name('peak-time-create');
-    Route::put('/peak-time/{peak_time}', [PeakTimeController::class, 'update'])->name('peak-time-update');
+    Route::post('/peak-time', [PeakTimeController::class, 'create']);
+    Route::put('/peak-time/{peak_time}', [PeakTimeController::class, 'update']);
     Route::delete('/peak-time/{peak_time}', [PeakTimeController::class, 'delete']);
 
     /** Master Court
@@ -78,6 +78,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/rental', [RentalController::class, 'index']);
     Route::get('/rental/{rental}', [RentalController::class, 'show']);
     Route::post('/rental', [RentalController::class, 'create'])->name('create-rental');
+    Route::post('/create-multiple-rental', [RentalController::class, 'create_multiple'])->name('create-multiple-rental');
     Route::put('/rental/{rental}', [RentalController::class, 'update'])->name('update-rental');
     Route::delete('/rental/{rental}', [RentalController::class, 'delete']);
 
@@ -85,10 +86,6 @@ Route::middleware('auth:sanctum')->group(function () {
      * role/policy: transaction-handle, admin */
 
     /** End of master data */
-
-    /** Penyewaan
-     * role/policy: penyewaan-handle, admin */
-    Route::post('/penyewaan', PenyewaanController::class);
 
     /** AUTH ROUTES
      * role/policy: admin */
