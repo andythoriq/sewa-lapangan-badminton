@@ -5,17 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JadwalLiburModel extends Model
+class OpenTimeModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'tb_jadwal_libur';
+    protected $table = 'tb_open_time';
 
     protected $fillable = [
-        'label',
         'start',
-        'end'
+        'finish'
     ];
-
-
 }
