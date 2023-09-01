@@ -15,10 +15,10 @@ trait ClashChecking
 
         $jadwal_sewa = JadwalSewaModel::select(['start', 'end'])->where('lapangan_id', $court_id)->get();
 
-        foreach($jadwal_sewa as $field)
+        foreach($jadwal_sewa as $court)
         {
-            $existingStart = Carbon::parse($field->start);
-            $existingEnd = Carbon::parse($field->end);
+            $existingStart = Carbon::parse($court->start);
+            $existingEnd = Carbon::parse($court->end);
 
             if (
                 ($newStart->between($existingStart, $existingEnd) || $newEnd->between($existingStart, $existingEnd)) ||
