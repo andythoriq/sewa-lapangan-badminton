@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class LapanganModelFactory extends Factory
+class CourtModelFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,8 +16,8 @@ class LapanganModelFactory extends Factory
         return [
             'label' => $this->faker->word(),
             'image_path' => $this->faker->word() . '.' . 'png',
-            'deskripsi' => $this->faker->text(),
-            'harga_normal' => $this->faker->randomFloat(2, 60_000, 100_000)
+            'description' => $this->faker->text(),
+            'normal_price' => $this->faker->randomFloat(2, 60_000, 100_000)
         ];
     }
 }

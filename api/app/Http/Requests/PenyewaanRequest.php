@@ -27,9 +27,9 @@ class PenyewaanRequest extends FormRequest
     public function rules()
     {
         return [
-            'rentals' => ['required', 'array', 'min:1', 'in:start,end,status,court_id,transaction_id,pelanggan_id'],
+            'rentals' => ['required', 'array', 'min:1', 'in:start,finish,status,court_id,transaction_id,customer_id'],
             'rentals.*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d H:i:s')],
-            'rentals.*.end' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:rentals.*.start'],
+            'rentals.*.finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:rentals.*.start'],
             'rentals.*.status' => ['required', 'string', 'in:F,U'],
             'rentals.*.court_id' => ['required', 'integer', 'exists:tb_court,id'],
             'rentals.*.transaction_id' => ['nullable', 'integer', 'exists:tb_transaction,id'],
@@ -41,7 +41,7 @@ class PenyewaanRequest extends FormRequest
     {
         $data = $this->validated();
         for ($i = 0; $i < count($data); $i++) {
-            $this->collideCheck($data[$i]['start'], $data[$i]['end'], $data[$i]['lapangan_id']);
+            $this->collideCheck($data[$i]['start'], $data[$i]['finish'], $data[$i]['court_id']);
             $data[$i]['created_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
             $data[$i]['updated_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
         }

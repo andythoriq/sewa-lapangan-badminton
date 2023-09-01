@@ -25,13 +25,13 @@ class CourtResource extends JsonResource
             'rental' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
                 'id' => $rental->id,
                 'start' => $rental->start,
-                'end' => $rental->end,
+                'finish' => $rental->finish,
                 'status' => $rental->status
             ])),
             'peak_time' => $this->whenLoaded('peak_times', fn() => collect($this->peak_times)->map(fn($peak_time) => [
                 'id' => $peak_time->id,
                 'start' => $peak_time->start,
-                'end' => $peak_time->end
+                'finish' => $peak_time->finish
             ]))
         ];
     }

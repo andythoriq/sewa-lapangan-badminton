@@ -15,7 +15,7 @@ class PenyewaanController extends Controller
      */
     public function __invoke(PenyewaanRequest $request)
     {
-        $request->createMultipleJadwalSewa();
+        $request->createMultipleRental();
         return response(null, 201, ['success' => 'Penyewaan done.']);
     }
 }

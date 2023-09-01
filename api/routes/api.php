@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Master\{CloseDateController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController};
+use App\Http\Controllers\Master\{CloseTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController};
 use App\Http\Controllers\{AuthController, PenyewaanController};
 use Illuminate\Support\Facades\Route;
 
@@ -33,23 +33,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/user/{user}', [UserController::class, 'update']);
     Route::delete('/user/{user}', [UserController::class, 'delete']);
 
-    /** Master Jadwal Libur / jadwal libur gor
-     * role/policy: jadwal-handle, close-date-handle, admin */
-    Route::get('/close-date', [CloseDateController::class, 'index']);
-    Route::post('/close-date', [CloseDateController::class, 'create'])->name('close-date-create');
-    Route::put('/close-date/{close_date}', [CloseDateController::class, 'update'])->name('close-date-update');
-    Route::delete('/close-date/{close_date}', [CloseDateController::class, 'delete']);
+    /** Master Close time / close time gor
+     * role/policy: schedule-handle, close-time-handle, admin */
+    Route::get('/close-time', [CloseTimeController::class, 'index']);
+    Route::post('/close-time', [CloseTimeController::class, 'create'])->name('close-time-create');
+    Route::put('/close-time/{close_time}', [CloseTimeController::class, 'update'])->name('close-time-update');
+    Route::delete('/close-time/{close_time}', [CloseTimeController::class, 'delete']);
 
-    /** Master Jadwal Sibuk / jadwal sibuk lapangan
-     * role/policy: jadwal-handle, jadwal-sibuk-handle, admin */
+    /** Master Peak time / peak time court
+     * role/policy: schedule-handle, peak-time-handle, admin */
     Route::get('/peak-time', [PeakTimeController::class, 'index']);
     Route::get('/peak-time/{peak_time}', [PeakTimeController::class, 'show']);
     Route::post('/peak-time', [PeakTimeController::class, 'create'])->name('peak-time-create');
     Route::put('/peak-time/{peak_time}', [PeakTimeController::class, 'update'])->name('peak-time-update');
     Route::delete('/peak-time/{peak_time}', [PeakTimeController::class, 'delete']);
 
-    /** Master Lapangan
-     * role/policy: lapangan-handle, admin */
+    /** Master Court
+     * role/policy: court-handle, admin */
     Route::get('/court', [CourtController::class, 'index']);
     Route::get('/court/{court}', [CourtController::class, 'show']);
     Route::post('/court', [CourtController::class, 'create']);
@@ -73,8 +73,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{customer}', [CustomerController::class, 'delete_R']);
     });
 
-    /** Master Jadwal Sewa
-     * role/policy: customer-handle, jadwal-handle, jadwal-sewa-handle, admin */
+    /** Master Rental
+     * role/policy: customer-handle, schedule-handle, rental-handle, admin */
     Route::get('/rental', [RentalController::class, 'index']);
     Route::get('/rental/{rental}', [RentalController::class, 'show']);
     Route::post('/rental', [RentalController::class, 'create'])->name('create-rental');

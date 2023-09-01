@@ -27,11 +27,12 @@ class RentalRequest extends FormRequest
     public function rules()
     {
         $validation = [
-            'end' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:start'],
+            'finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:start'],
             'status' => ['required', 'string', 'in:F,U'],
             'court_id' => ['required', 'integer', 'exists:tb_court,id'],
             'transaction_id' => ['nullable', 'integer', 'exists:tb_transaction,id'],
             'customer_id' => ['required', 'string', 'exists:tb_customer,customer_code'],
+            'user_id' => ['required', 'string', 'exists:users,id']
         ];
 
         switch ($this->route()->getName()) {
@@ -49,13 +50,13 @@ class RentalRequest extends FormRequest
 
     public function createRental()
     {
-        $this->collideCheck($this->start, $this->end, $this->court_id);
+        $this->collideCheck($this->start, $this->finish, $this->court_id);
         RentalModel::create($this->validated());
     }
 
     public function updateRental(RentalModel $rental)
     {
-        $this->collideCheck($this->start, $this->end, $this->court_id);
+        $this->collideCheck($this->start, $this->finish, $this->court_id);
         $rental->updateOrFail($this->validated());
     }
 }

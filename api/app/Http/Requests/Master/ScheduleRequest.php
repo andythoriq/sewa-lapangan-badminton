@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Master;
 
-use App\Models\CloseDateModel;
+use App\Models\CloseTimeModel;
 // use App\Rules\Year2000;
 use App\Models\PeakTimeModel;
 use Illuminate\Foundation\Http\FormRequest;
@@ -32,8 +32,8 @@ class ScheduleRequest extends FormRequest
         ];
 
         switch ($this->route()->getName()) {
-            case 'close-date-create':
-            case 'close-date-update':
+            case 'close-time-create':
+            case 'close-time-update':
                 $validation['label'] = ['required', 'string', 'max:90'];
                 break;
 
@@ -46,14 +46,14 @@ class ScheduleRequest extends FormRequest
         return $validation;
     }
 
-    public function createCloseDate()
+    public function createCloseTime()
     {
-        CloseDateModel::create($this->validated());
+        CloseTimeModel::create($this->validated());
     }
 
-    public function updateCloseDate(CloseDateModel $close_date)
+    public function updateCloseTime(CloseTimeModel $close_time)
     {
-        $close_date->updateOrFail($this->validated());
+        $close_time->updateOrFail($this->validated());
     }
 
     public function createPeakTime()

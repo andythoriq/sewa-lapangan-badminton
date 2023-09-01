@@ -26,7 +26,7 @@ class CustomerResource extends JsonResource
             'rental' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
                 'id' => $rental->id,
                 'start' => $rental->start,
-                'end' => $rental->end,
+                'finish' => $rental->finish,
                 'status' => $rental->status
             ]))
         ];

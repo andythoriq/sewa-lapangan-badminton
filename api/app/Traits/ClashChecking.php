@@ -3,29 +3,29 @@
 namespace App\Traits;
 
 use Illuminate\Support\Carbon;
-use App\Models\JadwalSewaModel;
+use App\Models\RentalModel;
 use Illuminate\Validation\ValidationException;
 
 trait ClashChecking
 {
-    public function collideCheck(string $start, string $end, int $court_id)
+    public function collideCheck(string $start, string $finish, int $court_id)
     {
         $newStart = Carbon::parse($start, 'Asia/Jakarta');
-        $newEnd = Carbon::parse($end, 'Asia/Jakarta');
+        $newFinish = Carbon::parse($finish, 'Asia/Jakarta');
 
-        $jadwal_sewa = JadwalSewaModel::select(['start', 'end'])->where('lapangan_id', $court_id)->get();
+        $rental = RentalModel::select(['start', 'finish'])->where('court_id', $court_id)->get();
 
-        foreach($jadwal_sewa as $court)
+        foreach($rental as $court)
         {
             $existingStart = Carbon::parse($court->start);
-            $existingEnd = Carbon::parse($court->end);
+            $existingFinish = Carbon::parse($court->finish);
 
             if (
-                ($newStart->between($existingStart, $existingEnd) || $newEnd->between($existingStart, $existingEnd)) ||
-                ($existingStart->between($newStart, $newEnd) || $existingEnd->between($newStart, $newEnd))
+                ($newStart->between($existingStart, $existingFinish) || $newFinish->between($existingStart, $existingFinish)) ||
+                ($existingStart->between($newStart, $newFinish) || $existingFinish->between($newStart, $newFinish))
             ) {
                 throw ValidationException::withMessages([
-                    'error' => ['Start dan End bentrok dengan waktu penyewaan yang sudah ada.'],
+                    'error' => ['Start dan Finish bentrok dengan yang sudah ada.'],
                 ]);
             }
         }

@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class JadwalSewaModelFactory extends Factory
+class CloseTimeModelFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -14,9 +14,9 @@ class JadwalSewaModelFactory extends Factory
     public function definition()
     {
         return [
+            'label' => $this->faker->unique()->word(),
             'start' => $this->faker->dateTimeBetween('2023-09-01 00:00:00', '2023-10-01 00:00:00'),
-            'end' => $this->faker->dateTimeBetween('2023-11-01 00:00:00', '2023-12-01 00:00:00'),
-            'status' => 'U'
+            'finish' => $this->faker->dateTimeBetween('2023-11-01 00:00:00', '2023-12-01 00:00:00')
         ];
     }
 }
