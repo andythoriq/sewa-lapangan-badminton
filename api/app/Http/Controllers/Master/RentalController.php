@@ -17,18 +17,18 @@ class RentalController extends Controller
 
     public function show(RentalModel $rental)
     {
-        return new RentalResource($rental);
+        return new RentalResource($rental->loadMissing(['court', 'transaction', 'customer', 'admin:name,email,phone_number,status,role']));
     }
 
     public function create(RentalRequest $request)
     {
-        $request->Rental();
+        $request->createRental();
         return response(null, 201, ['success' => 'Created New Rental data.']);
     }
 
     public function update(RentalRequest $request, RentalModel $rental)
     {
-        $request->Rental($rental);
+        $request->updateRental($rental);
         return response(null, 204, ['success' => 'Rental data updated.']);
     }
 

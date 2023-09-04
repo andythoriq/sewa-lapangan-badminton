@@ -3,29 +3,27 @@
 namespace App\Traits;
 
 use Illuminate\Support\Carbon;
-use App\Models\RentalModel;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Validation\ValidationException;
 
-trait ClashChecking
+trait CollideCheck
 {
-    public function collideCheck(string $start, string $finish, int $court_id)
+    public function collideCheck(string $start, string $finish, Collection $schedules)
     {
         $newStart = Carbon::parse($start, 'Asia/Jakarta');
         $newFinish = Carbon::parse($finish, 'Asia/Jakarta');
 
-        $rental = RentalModel::select(['start', 'finish'])->where('court_id', $court_id)->get();
-
-        foreach($rental as $court)
+        foreach($schedules as $schedule)
         {
-            $existingStart = Carbon::parse($court->start);
-            $existingFinish = Carbon::parse($court->finish);
+            $existingStart = Carbon::parse($schedule->start);
+            $existingFinish = Carbon::parse($schedule->finish);
 
             if (
                 ($newStart->between($existingStart, $existingFinish) || $newFinish->between($existingStart, $existingFinish)) ||
                 ($existingStart->between($newStart, $newFinish) || $existingFinish->between($newStart, $newFinish))
             ) {
                 throw ValidationException::withMessages([
-                    'error' => ['Start dan Finish bentrok dengan yang sudah ada.'],
+                    'start' => ['Start dan Finish bentrok dengan yang sudah ada.'],
                 ]);
             }
         }

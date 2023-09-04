@@ -2,13 +2,14 @@
 
 namespace App\Http\Requests\Master;
 
-use App\Traits\ClashChecking;
+use App\Traits\CollideCheck;
 use App\Models\RentalModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RentalRequest extends FormRequest
 {
-    use ClashChecking;
+    use CollideCheck;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -63,13 +64,13 @@ class RentalRequest extends FormRequest
 
     public function createRental()
     {
-        $this->collideCheck($this->start, $this->finish, $this->court_id);
+        $this->collideCheck($this->start, $this->finish, $this->getCourtSchedules($this->court_id));
         RentalModel::create($this->validated());
     }
 
     public function updateRental(RentalModel $rental)
     {
-        $this->collideCheck($this->start, $this->finish, $this->court_id);
+        $this->collideCheck($this->start, $this->finish, $this->getCourtSchedules($this->court_id));
         $rental->updateOrFail($this->validated());
     }
 
@@ -77,10 +78,15 @@ class RentalRequest extends FormRequest
     {
         $data = $this->validated();
         for ($i = 0; $i < count($data); $i++) {
-            $this->collideCheck($data[$i]['start'], $data[$i]['finish'], $data[$i]['court_id']);
+            $this->collideCheck($data[$i]['start'], $data[$i]['finish'], $this->getCourtSchedules($data[$i]['court_id']));
             $data[$i]['created_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
             $data[$i]['updated_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
         }
         RentalModel::insert($data);
+    }
+
+    private function getCourtSchedules(int $court_id)
+    {
+        return RentalModel::select(['start', 'finish'])->where('court_id', $court_id)->get();
     }
 }

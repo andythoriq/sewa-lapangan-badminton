@@ -17,7 +17,7 @@ class RentalResource extends JsonResource
 
     public function toArray($request)
     {
-        $result = [
+        return [
             'start' => $this->start,
             'finish' => $this->finish,
             'status' => $this->status,
@@ -32,18 +32,25 @@ class RentalResource extends JsonResource
                 'total_hour' => $this->transaction->total_hour ?? '',
             ],
             'customer' => [
-                'nama' => $this->customer->nama,
+                'name' => $this->customer->name,
                 'phone_number' => $this->customer->phone_number,
                 'deposit' => $this->customer->deposit,
                 'debt' => $this->customer->debt,
                 'status' => $this->customer->status,
+                'member_active_period' => $this->customer->member_active_period ?? '',
+                'member_booking_code' => $this->customer->member_booking_code ?? ''
+            ],
+            'admin' => [
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+                'phone_number' => $this->user->phone_number,
+                'status' => $this->user->status,
+                'role' => [
+                    'label' => $this->user->role->label,
+                    'menu' => $this->user->role->menu,
+                    'status' => $this->user->role->status
+                ]
             ],
         ];
-
-        if(isset($this->customer->member_active_period) || $this->customer->status == 'm' || $this->customer->status == 'M'){
-            $result['customer']['member_active_period'] = $this->customer->member_active_period ?? '';
-        }
-
-        return $result;
     }
 }
