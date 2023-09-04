@@ -40,11 +40,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/close-time/{close_time}', [CloseTimeController::class, 'update']);
     Route::delete('/close-time/{close_time}', [CloseTimeController::class, 'delete']);
 
+    /** Master Open time
+     * role/policy:  */
+
     /** Master Peak time / peak time court
      * role/policy: schedule-handle, peak-time-handle, admin */
     Route::get('/peak-time', [PeakTimeController::class, 'index']);
     Route::get('/peak-time/{peak_time}', [PeakTimeController::class, 'show']);
     Route::post('/peak-time', [PeakTimeController::class, 'create']);
+    Route::post('/create-multiple-peak-time', [PeakTimeController::class, 'create_multiple'])->name('create-multiple-peak-time');
     Route::put('/peak-time/{peak_time}', [PeakTimeController::class, 'update']);
     Route::delete('/peak-time/{peak_time}', [PeakTimeController::class, 'delete']);
 

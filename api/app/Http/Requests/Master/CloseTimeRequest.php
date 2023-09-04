@@ -25,7 +25,7 @@ class CloseTimeRequest extends FormRequest
     public function rules()
     {
         return [
-            'start' => ['required', 'date', 'date_format:Y-m-d H:i:s'],
+            'start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d H:i:s')],
             'finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:start'],
             'label' => ['required', 'string', 'max:90'],
         ];

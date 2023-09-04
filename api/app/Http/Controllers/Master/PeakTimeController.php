@@ -37,4 +37,10 @@ class PeakTimeController extends Controller
         $peak_time->deleteOrFail();
         return response(null, 204, ['success' => 'Peak time updated.']);
     }
+
+    public function create_multiple(PeakTimeRequest $request)
+    {
+        $request->createMultiplePeakTime();
+        return response(null, 201, ['success' => 'Multiple peak time Created.']);
+    }
 }

@@ -47,7 +47,7 @@ class RentalRequest extends FormRequest
 
             case 'create-multiple-rental':
                 $validation = [
-                    'rentals' => ['required', 'array', 'min:1', 'in:start,finish,status,court_id,transaction_id,customer_id'],
+                    'rentals' => ['required', 'array', 'min:1', 'in:start,finish,status,court_id,transaction_id,customer_id,user_id'],
                     'rentals.*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d H:i:s')],
                     'rentals.*.finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:rentals.*.start'],
                     'rentals.*.status' => ['required', 'string', 'in:F,U'],

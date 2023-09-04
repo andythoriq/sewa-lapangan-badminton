@@ -8,7 +8,7 @@ use Illuminate\Validation\ValidationException;
 
 trait CollideCheck
 {
-    public function collideCheck(string $start, string $finish, Collection $schedules)
+    public function collideCheck(string $start, string $finish, Collection|array $schedules)
     {
         $newStart = Carbon::parse($start, 'Asia/Jakarta');
         $newFinish = Carbon::parse($finish, 'Asia/Jakarta');
