@@ -21,7 +21,7 @@ class Customer extends Migration
             $table->float('debt')->nullable()->default(null);
             $table->enum('status', ['M', 'R'])->comment('M: member, R: regular');
             $table->dateTime('member_active_period')->nullable()->default(null);
-            $table->string('member_booking_code', 90)->nullable()->default(null);
+            $table->string('member_booking_code', 191)->nullable()->default(null);
             $table->timestamps();
         });
     }

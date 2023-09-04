@@ -4,7 +4,7 @@ namespace App\Http\Resources\Master;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CustomerResource extends JsonResource
+class MemberResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,22 +17,21 @@ class CustomerResource extends JsonResource
 
     public function toArray($request)
     {
-        $result = [
-            'nama' => $this->nama,
+        return [
+            'name' => $this->name,
             'phone_number' => $this->phone_number,
             'deposit' => $this->deposit,
             'debt' => $this->debt,
             'status' => $this->status,
+            'member_active_period' => $this->member_active_period,
+            'member_booking_code' => $this->member_booking_code,
             'rental' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
                 'id' => $rental->id,
                 'start' => $rental->start,
                 'finish' => $rental->finish,
-                'status' => $rental->status
+                'price' => $rental->price,
+                'status' => $rental->status,
             ]))
         ];
-        if (isset($this->member_active_period) || $this->status == 'M' || $this->status == 'm') {
-            $result['member_active_period'] = $this->member_active_period ?? '';
-        }
-        return $result;
     }
 }

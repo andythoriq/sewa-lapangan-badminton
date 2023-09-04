@@ -15,7 +15,7 @@ class CustomerModelFactory extends Factory
     {
         return [
             'customer_code' => 'm20230100' . $this->faker->unique()->numberBetween(1, 999),
-            'nama' => $this->faker->name(),
+            'name' => $this->faker->name(),
             'phone_number' => $this->faker->unique()->phoneNumber(),
             'deposit' => $this->faker->randomFloat(2, 50_000, 60_000),
             'debt' => $this->faker->randomFloat(2, 60_000, 100_000),

@@ -4,7 +4,7 @@ namespace App\Http\Resources\Master;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class CustomerCollection extends ResourceCollection
+class MemberCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -18,16 +18,13 @@ class CustomerCollection extends ResourceCollection
     public function toArray($request)
     {
         return $this->collection->map(function ($customer) {
-            $result = [
+            return [
                 'code_customer' => $customer->code_customer,
-                'nama' => $customer->nama,
+                'name' => $customer->name,
                 'deposit' => $customer->deposit,
-                'debt' => $customer->debt
+                'debt' => $customer->debt,
+                'member_active_period' => $customer->member_active_period,
             ];
-            if (isset($customer->member_active_period) || $customer->status == 'M' || $customer->status == 'm') {
-                $result['member_active_period'] = $customer->member_active_period;
-            }
-            return $result;
         });
     }
 }
