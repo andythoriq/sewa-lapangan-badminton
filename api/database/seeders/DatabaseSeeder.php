@@ -63,5 +63,6 @@ class DatabaseSeeder extends Seeder
         ]);
         CourtModel::factory()->has(PeakTimeModel::factory()->count(3), 'rentals')->count(3)->create();
         CustomerModel::factory()->count(35)->create();
+        RentalModel::factory()->count(20)->create();
     }
 }

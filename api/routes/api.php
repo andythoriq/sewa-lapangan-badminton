@@ -100,12 +100,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/rental/{rental}', [RentalController::class, 'delete']);
 
     /** Transaction
-     * abilities/policy/role: transaction-handle, admin */
+     * abilities/policy/role: transaction-handle, rental-handle, admin */
 
     /** End of master data */
 
     /** AUTH ROUTES
-     * abilities/policy/role: admin */
+     * abilities/policy/role: auth-handle */
     Route::post('/login', [AuthController::class, 'login'])->name('login')->withoutMiddleware('auth:sanctum');
     Route::post('/register', [AuthController::class, 'register'])->name('register')->withoutMiddleware('auth:sanctum');
     Route::post('/logout', [AuthController::class, 'logout']);
