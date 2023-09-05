@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CloseTime extends Migration
+class Holiday extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CloseTime extends Migration
      */
     public function up()
     {
-        Schema::create('tb_close_time', function (Blueprint $table) {
+        Schema::create('tb_holiday', function (Blueprint $table) {
             $table->id();
             $table->string('label', 90);
             $table->date('start');
@@ -29,6 +29,6 @@ class CloseTime extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_close_time');
+        Schema::dropIfExists('tb_holiday');
     }
 }

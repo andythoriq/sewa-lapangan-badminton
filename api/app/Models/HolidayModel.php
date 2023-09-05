@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CloseTimeModel extends Model
+class HolidayModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'tb_close_time';
+    protected $table = 'tb_holiday';
 
     protected $fillable = [
         'label',

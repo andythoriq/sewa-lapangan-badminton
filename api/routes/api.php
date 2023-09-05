@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\Master\{CloseTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController};
+use App\Http\Controllers\Master\{HolidayController, ConfigController, OpenTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController};
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Master\OpenTimeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function () {
 
     /** Master User Role
-     * role/policy: role-handle, user-handle, admin, can't delete&update admin */
+     * abilities/policy/role: role-handle, user-handle, admin, can't delete&update admin */
     Route::get('/role', [RoleController::class, 'index']);
     Route::get('/role/{role}', [RoleController::class, 'show']);
     Route::post('/role', [RoleController::class, 'create']);
@@ -27,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/role/{role}', [RoleController::class, 'delete']);
 
     /** Master User Management
-     * role/policy: user-handle, admin */
+     * abilities/policy/role: user-handle, admin */
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/user/{user}', [UserController::class, 'show']);
     Route::post('/user', [UserController::class, 'create']);
@@ -35,31 +34,30 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/user/{user}', [UserController::class, 'delete']);
 
     /** Master Configuration
-     * role/policy: configuration-handle, admin */
-    Route::get('/config');
-    Route::post('/config');
-    Route::post('/create-multiple/config');
-    Route::put('/config/{config}');
-    Route::delete('/config/{config}');
+     * abilities/policy/role: configuration-handle, admin */
+    Route::get('/config', [ConfigController::class, 'index']);
+    Route::get('/config/{config}', [ConfigController::class, 'show']);
+    Route::post('/config', [ConfigController::class, 'create']);
+    Route::put('/config/{config}', [ConfigController::class, 'update']);
+    Route::delete('/config/{config}', [ConfigController::class, 'delete']);
 
-    /** Master Close time / close time gor
-     * role/policy: schedule-handle, close-time-handle, admin */
-    Route::get('/close-time', [CloseTimeController::class, 'index']);
-    Route::post('/close-time', [CloseTimeController::class, 'create']);
-    Route::post('/create-multiple-close-time', [CloseTimeController::class, 'create_multiple'])->name('create-multiple-close-time');
-    Route::put('/close-time/{close_time}', [CloseTimeController::class, 'update']);
-    Route::delete('/close-time/{close_time}', [CloseTimeController::class, 'delete']);
+    /** Master Holiday
+     * abilities/policy/role: schedule-handle, holiday-handle, admin */
+    Route::get('/holiday', [HolidayController::class, 'index']);
+    Route::post('/holiday', [HolidayController::class, 'create']);
+    Route::post('/create-multiple-holiday', [HolidayController::class, 'create_multiple'])->name('create-multiple-holiday');
+    Route::put('/holiday/{holiday}', [HolidayController::class, 'update']);
+    Route::delete('/holiday/{holiday}', [HolidayController::class, 'delete']);
 
     /** Master Open time
-     * role/policy: schedule-handle, open-time-handle, admin */
+     * abilities/policy/role: schedule-handle, open-time-handle, admin */
     Route::get('/open-time', [OpenTimeController::class, 'index']);
     Route::post('/open-time', [OpenTimeController::class, 'create']);
-    Route::post('/open-time', [OpenTimeController::class, 'create_multiple'])->name('create-multiple-open-time');
     Route::put('/open-time/{open_time}', [OpenTimeController::class, 'update']);
     Route::delete('/open-time/{open_time}', [OpenTimeController::class, 'delete']);
 
     /** Master Peak time / peak time court
-     * role/policy: schedule-handle, peak-time-handle, admin */
+     * abilities/policy/role: schedule-handle, peak-time-handle, admin */
     Route::get('/peak-time', [PeakTimeController::class, 'index']);
     Route::get('/peak-time/{peak_time}', [PeakTimeController::class, 'show']);
     Route::post('/peak-time', [PeakTimeController::class, 'create']);
@@ -68,7 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/peak-time/{peak_time}', [PeakTimeController::class, 'delete']);
 
     /** Master Court
-     * role/policy: court-handle, admin */
+     * abilities/policy/role: court-handle, admin */
     Route::get('/court', [CourtController::class, 'index']);
     Route::get('/court/{court}', [CourtController::class, 'show']);
     Route::post('/court', [CourtController::class, 'create']);
@@ -76,7 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/court/{court}', [CourtController::class, 'delete']);
 
     /** Master Customer
-     * role/policy: customer-handle, admin, customer-member-handle, customer-regular-handle */
+     * abilities/policy/role: customer-handle, admin, customer-member-handle, customer-regular-handle */
     Route::prefix('/customer/member')->group(function(){
         Route::get('/', [CustomerController::class, 'index_M']);
         Route::get('/{customer}', [CustomerController::class, 'show_M']);
@@ -93,7 +91,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     /** Master Rental
-     * role/policy: customer-handle, schedule-handle, rental-handle, admin */
+     * abilities/policy/role: customer-handle, schedule-handle, rental-handle, admin */
     Route::get('/rental', [RentalController::class, 'index']);
     Route::get('/rental/{rental}', [RentalController::class, 'show']);
     Route::post('/rental', [RentalController::class, 'create'])->name('create-rental');
@@ -102,12 +100,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/rental/{rental}', [RentalController::class, 'delete']);
 
     /** Transaction
-     * role/policy: transaction-handle, admin */
+     * abilities/policy/role: transaction-handle, admin */
 
     /** End of master data */
 
     /** AUTH ROUTES
-     * role/policy: admin */
+     * abilities/policy/role: admin */
     Route::post('/login', [AuthController::class, 'login'])->name('login')->withoutMiddleware('auth:sanctum');
     Route::post('/register', [AuthController::class, 'register'])->name('register')->withoutMiddleware('auth:sanctum');
     Route::post('/logout', [AuthController::class, 'logout']);

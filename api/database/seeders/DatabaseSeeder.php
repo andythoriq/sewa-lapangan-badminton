@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\CloseTimeModel;
+use App\Models\HolidayModel;
 use App\Models\OpenTimeModel;
 use App\Models\RentalModel;
 use App\Models\PeakTimeModel;
@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory()->has(RoleModel::factory()->count(1))->count(10)->create();
         RoleModel::factory(3)->has(User::factory(3))->create();
-        CloseTimeModel::factory()->count(16)->create();
+        HolidayModel::factory()->count(16)->create();
         OpenTimeModel::factory()->count(14)->create();
         CourtModel::factory()->has(PeakTimeModel::factory()->count(3), 'rentals')->count(3)->create();
         CustomerModel::factory()->count(35)->create();

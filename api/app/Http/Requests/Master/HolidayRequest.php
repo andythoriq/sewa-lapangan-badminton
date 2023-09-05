@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests\Master;
 
-use App\Models\CloseTimeModel;
-use App\Models\PeakTimeModel;
+use App\Models\HolidayModel;
 use App\Traits\CollideCheck;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CloseTimeRequest extends FormRequest
+class HolidayRequest extends FormRequest
 {
     use CollideCheck;
     /**
@@ -32,30 +31,30 @@ class CloseTimeRequest extends FormRequest
             'finish' => ['required', 'date', 'date_format:Y-m-d', 'after:start'],
             'label' => ['required', 'string', 'max:90'],
         ];
-        if($this->route()->getName() == 'create-multiple-close-time'){
+        if($this->route()->getName() == 'create-multiple-holiday'){
             $validation = [
-                'close_times' => ['required', 'array', 'min:1', 'in:label,start,finish'],
-                'close_times.*.label' => ['required', 'string', 'max:90'],
-                'close_times.*.start' => ['required', 'date', 'date_format:Y-m-d', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d')],
-                'close_times.*.finish' => ['required', 'date', 'date_format:Y-m-d', 'after:close_times.*.start']
+                'holidays' => ['required', 'array', 'min:1', 'in:label,start,finish'],
+                'holidays.*.label' => ['required', 'string', 'max:90'],
+                'holidays.*.start' => ['required', 'date', 'date_format:Y-m-d', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d')],
+                'holidays.*.finish' => ['required', 'date', 'date_format:Y-m-d', 'after:holidays.*.start']
             ];
         }
         return $validation;
     }
 
-    public function createCloseTime()
+    public function createHoliday()
     {
         $this->collideCheck($this->start, $this->finish, $this->getSchedules());
-        CloseTimeModel::create($this->validated());
+        HolidayModel::create($this->validated());
     }
 
-    public function updateCloseTime(CloseTimeModel $close_time)
+    public function updateHoliday(HolidayModel $holiday)
     {
         $this->collideCheck($this->start, $this->finish, $this->getSchedules());
-        $close_time->updateOrFail($this->validated());
+        $holiday->updateOrFail($this->validated());
     }
 
-    public function createMultipleCloseTime()
+    public function createMultipleHoliday()
     {
         $data = $this->validated();
         for ($i = 0; $i < count($data); $i++) {
@@ -63,10 +62,11 @@ class CloseTimeRequest extends FormRequest
             $data[$i]['created_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
             $data[$i]['updated_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
         }
+        HolidayModel::insert($data);
     }
 
     private function getSchedules()
     {
-        return PeakTimeModel::select(['start', 'finish'])->get();
+        return HolidayModel::select(['start', 'finish'])->get();
     }
 }
