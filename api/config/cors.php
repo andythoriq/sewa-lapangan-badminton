@@ -15,7 +15,13 @@ return [
     |
     */
 
-    'paths' => ['api/*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+
+    // fetch('/sanctum/csrf-cookie')
+    // .then(response => {
+        // Token XSRF telah diinisialisasi dalam cookie
+        // Anda dapat melanjutkan dengan permintaan HTTP yang memerlukan XSRF-TOKEN
+    // });
 
     'allowed_methods' => ['*'],
 
