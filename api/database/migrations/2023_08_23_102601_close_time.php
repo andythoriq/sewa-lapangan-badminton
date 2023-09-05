@@ -15,7 +15,7 @@ class CloseTime extends Migration
     {
         Schema::create('tb_close_time', function (Blueprint $table) {
             $table->id();
-            $table->string('label', 191);
+            $table->string('label', 90);
             $table->date('start');
             $table->date('finish');
             $table->timestamps();

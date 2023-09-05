@@ -20,7 +20,7 @@ class Rental extends Migration
             $table->enum('status', ['F', 'U'])->comment('F: Finished, U: Unfinished');
             $table->float('price');
             $table->foreignId('court_id')->constrained('tb_court', 'id')->cascadeOnDelete();
-            $table->foreignId('transaction_id')->nullable()->constrained('tb_transaction', 'id')->cascadeOnDelete();
+            $table->foreignId('transaction_id')->nullable()->default(null)->constrained('tb_transaction', 'id')->cascadeOnDelete();
             $table->string('customer_id', 20);
             $table->foreign('customer_id')->references('customer_code')->on('tb_customer')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete();

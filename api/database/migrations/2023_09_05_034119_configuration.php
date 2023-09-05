@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UsersRoleId extends Migration
+class Configuration extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class UsersRoleId extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('role_id')->constrained('tb_role', 'id')->cascadeOnDelete();
+        Schema::create('tb_configuration', function (Blueprint $table) {
+            $table->id();
+            $table->string('slug', 90);
+            $table->mediumText('description');
+            $table->text('value');
+            $table->timestamps();
         });
     }
 
@@ -25,9 +29,6 @@ class UsersRoleId extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['role_id']);
-            $table->dropColumn('role_id');
-        });
+        Schema::dropIfExists('tb_configuration');
     }
 }

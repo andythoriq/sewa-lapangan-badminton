@@ -15,13 +15,16 @@ class Customer extends Migration
     {
         Schema::create('tb_customer', function (Blueprint $table) {
             $table->string('customer_code', 20)->primary()->unique();
-            $table->string('name', 191);
+            $table->string('name', 90);
             $table->string('phone_number', 20)->unique();
             $table->float('deposit')->nullable()->default(null);
             $table->float('debt')->nullable()->default(null);
-            $table->enum('status', ['M', 'R'])->comment('M: member, R: regular');
+            $table->enum('membership_status', ['M', 'R'])->comment('M: member, R: regular');
+            $table->enum('status', ['Y', 'N'])->comment('Y: Active, N: Inactive');
             $table->dateTime('member_active_period')->nullable()->default(null);
             $table->string('member_booking_code', 191)->nullable()->default(null);
+            $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
