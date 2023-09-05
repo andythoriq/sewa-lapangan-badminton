@@ -12,7 +12,7 @@ class CourtController extends Controller
 {
     public function index()
     {
-        $court = CourtModel::select(['id', 'label', 'image_path', 'normal_price'])->get();
+        $court = CourtModel::select(['id', 'label', 'image_path', 'initial_price'])->get();
         return new CourtCollection($court);
     }
 

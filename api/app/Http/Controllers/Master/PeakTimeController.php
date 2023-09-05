@@ -17,7 +17,7 @@ class PeakTimeController extends Controller
 
     public function show(PeakTimeModel $peak_time)
     {
-        return new PeakTimeResource($peak_time->loadMissing('court:id,label,image_path,description,normal_price'));
+        return new PeakTimeResource($peak_time->loadMissing('court:id,label,image_path,description,initial_price'));
     }
 
     public function create(PeakTimeRequest $request)

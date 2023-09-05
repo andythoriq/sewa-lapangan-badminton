@@ -30,7 +30,7 @@ class CourtRequest extends FormRequest
             // 'image_path' => ['required', 'image', 'max:5000', 'mimes:png,jpg,jpeg'],
             'image_path' => ['nullable', 'image', 'max:5000', 'mimes:png,jpg,jpeg'],
             'description' => ['required', 'max:120'],
-            'normal_price' => ['required', 'numeric', 'min:0.01', 'max:1000000.00']
+            'initial_price' => ['required', 'numeric', 'min:0.01', 'max:1000000.00']
         ];
     }
 

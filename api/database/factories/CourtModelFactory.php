@@ -15,9 +15,9 @@ class CourtModelFactory extends Factory
     {
         return [
             'label' => $this->faker->word(),
-            'image_path' => $this->faker->word() . '.' . 'png',
+            'image_path' => null,
             'description' => $this->faker->text(),
-            'normal_price' => $this->faker->randomFloat(2, 60_000, 100_000)
+            'initial_price' => $this->faker->randomElement([10_000.00, 15_000.00, 20_000.00, 25_000.00, 30_000.00])
         ];
     }
 }

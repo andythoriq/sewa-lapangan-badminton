@@ -21,7 +21,7 @@ class CourtResource extends JsonResource
             'label' => $this->label,
             'image_path' => $this->image_path,
             'description' => $this->description,
-            'normal_price' => $this->normal_price,
+            'initial_price' => $this->initial_price,
             'rental' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
                 'id' => $rental->id,
                 'start' => $rental->start,

@@ -18,7 +18,7 @@ class Court extends Migration
             $table->string('label', 90)->unique();
             $table->string('image_path', 255)->nullable()->default(null);
             $table->mediumText('description');
-            $table->float('normal_price');
+            $table->float('initial_price');
             // $table->float('per_30_mnt_price');
             $table->timestamps();
         });

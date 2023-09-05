@@ -25,7 +25,7 @@ class RentalResource extends JsonResource
                 'label' => $this->court->label,
                 'image_path' => $this->court->image_path,
                 'description' => $this->court->description,
-                'normal_price' => $this->court->normal_price
+                'initial_price' => $this->court->initial_price
             ],
             'transaction' => [
                 'total_price' => $this->transaction->total_price ?? '',

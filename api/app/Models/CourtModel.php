@@ -16,7 +16,7 @@ class CourtModel extends Model
         'label',
         'image_path',
         'description',
-        'normal_price'
+        'initial_price'
     ];
 
     public function rentals(): HasMany
