@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Master\{CloseTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController};
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Master\OpenTimeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    /** User Role
+    /** Master User Role
      * role/policy: role-handle, user-handle, admin, can't delete&update admin */
     Route::get('/role', [RoleController::class, 'index']);
     Route::get('/role/{role}', [RoleController::class, 'show']);
@@ -25,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/role/{role}', [RoleController::class, 'update']);
     Route::delete('/role/{role}', [RoleController::class, 'delete']);
 
-    /** User Management
+    /** Master User Management
      * role/policy: user-handle, admin */
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/user/{user}', [UserController::class, 'show']);
@@ -33,15 +34,29 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/user/{user}', [UserController::class, 'update']);
     Route::delete('/user/{user}', [UserController::class, 'delete']);
 
+    /** Master Configuration
+     * role/policy: configuration-handle, admin */
+    Route::get('/config');
+    Route::post('/config');
+    Route::post('/create-multiple/config');
+    Route::put('/config/{config}');
+    Route::delete('/config/{config}');
+
     /** Master Close time / close time gor
      * role/policy: schedule-handle, close-time-handle, admin */
     Route::get('/close-time', [CloseTimeController::class, 'index']);
     Route::post('/close-time', [CloseTimeController::class, 'create']);
+    Route::post('/create-multiple-close-time', [CloseTimeController::class, 'create_multiple'])->name('create-multiple-close-time');
     Route::put('/close-time/{close_time}', [CloseTimeController::class, 'update']);
     Route::delete('/close-time/{close_time}', [CloseTimeController::class, 'delete']);
 
     /** Master Open time
-     * role/policy:  */
+     * role/policy: schedule-handle, open-time-handle, admin */
+    Route::get('/open-time', [OpenTimeController::class, 'index']);
+    Route::post('/open-time', [OpenTimeController::class, 'create']);
+    Route::post('/open-time', [OpenTimeController::class, 'create_multiple'])->name('create-multiple-open-time');
+    Route::put('/open-time/{open_time}', [OpenTimeController::class, 'update']);
+    Route::delete('/open-time/{open_time}', [OpenTimeController::class, 'delete']);
 
     /** Master Peak time / peak time court
      * role/policy: schedule-handle, peak-time-handle, admin */
@@ -61,7 +76,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/court/{court}', [CourtController::class, 'delete']);
 
     /** Master Customer
-     * role/policy: customer-handle, customer-regular-handle, customer-member-handle, admin */
+     * role/policy: customer-handle, admin, customer-member-handle, customer-regular-handle */
     Route::prefix('/customer/member')->group(function(){
         Route::get('/', [CustomerController::class, 'index_M']);
         Route::get('/{customer}', [CustomerController::class, 'show_M']);

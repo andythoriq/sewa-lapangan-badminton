@@ -4,7 +4,6 @@ namespace App\Http\Requests\Master;
 
 use App\Traits\CollideCheck;
 use App\Models\RentalModel;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RentalRequest extends FormRequest
