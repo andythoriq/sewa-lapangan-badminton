@@ -9,6 +9,8 @@ class ConfigModel extends Model
 {
     use HasFactory;
 
+    protected $table = 'tb_configuration';
+
     protected $fillable = [
         'slug',
         'description',
