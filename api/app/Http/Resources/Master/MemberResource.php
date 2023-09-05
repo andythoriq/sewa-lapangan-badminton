@@ -23,6 +23,7 @@ class MemberResource extends JsonResource
             'deposit' => $this->deposit,
             'debt' => $this->debt,
             'status' => $this->status,
+            'membership_status' => $this->membership_status,
             'member_active_period' => $this->member_active_period,
             'member_booking_code' => $this->member_booking_code,
             'rental' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [

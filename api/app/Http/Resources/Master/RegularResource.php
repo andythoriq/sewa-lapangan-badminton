@@ -21,6 +21,7 @@ class RegularResource extends JsonResource
             'deposit' => $this->deposit,
             'debt' => $this->debt,
             'status' => $this->status,
+            'membership_status' => $this->membership_status,
             'rental' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
                 'id' => $rental->id,
                 'start' => $rental->start,

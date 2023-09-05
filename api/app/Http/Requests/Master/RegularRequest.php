@@ -30,10 +30,11 @@ class RegularRequest extends FormRequest
         $customer_code = isset($this->customer) ? ($this->customer->customer_code ?? null) : null;
         return [
             'name' => ['required', 'string', 'max:90'],
-            'phone_number' => ['required', 'string', 'max:16', Rule::unique('tb_customer', 'phone_number')->ignore($customer_code, 'customer_code')],
+            'phone_number' => ['required', 'string', 'max:20', Rule::unique('tb_customer', 'phone_number')->ignore($customer_code, 'customer_code')],
             'deposit' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
             'debt' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
-            'status' => ['required', 'string', 'in:M,R'],
+            'status' => ['required', 'string', 'in:Y,N'],
+            'membership_status' => ['required', 'string', 'in:M,R'],
         ];
     }
 

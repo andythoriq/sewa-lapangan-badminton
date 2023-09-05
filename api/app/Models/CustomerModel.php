@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class CustomerModel extends Model
+class CustomerModel extends User
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens, Notifiable;
 
     protected $table = 'tb_customer';
 
@@ -17,6 +20,7 @@ class CustomerModel extends Model
         'phone_number',
         'deposit',
         'debt',
+        'membership_status',
         'status',
         'member_active_period',
         'member_booking_code'
@@ -25,6 +29,11 @@ class CustomerModel extends Model
     protected $primaryKey = 'customer_code';
 
     protected $keyType = "string";
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     public function rentals(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
