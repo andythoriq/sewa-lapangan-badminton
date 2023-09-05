@@ -31,10 +31,4 @@ class OpenTimeController extends Controller
         $open_time->deleteOrFail();
         return response(null, 204, ['success' => 'Open time deleted.']);
     }
-
-    public function create_multiple(OpenTimeRequest $request)
-    {
-        $request->createMultipleOpenTime();
-        return response(null, 201, ['success' => 'Multiple open time created.']);
-    }
 }

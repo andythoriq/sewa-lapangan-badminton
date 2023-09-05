@@ -4,6 +4,7 @@ namespace App\Http\Requests\Master;
 
 use App\Models\RoleModel;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RoleRequest extends FormRequest
 {
@@ -24,8 +25,9 @@ class RoleRequest extends FormRequest
      */
     public function rules()
     {
+        $id = isset($this->role) ? ($this->role->id ?? null) : null;
         return [
-            'label' => ['required', 'string', 'max:90'],
+            'label' => ['required', 'string', 'max:90', Rule::unique('tb_role', 'label')->ignore($id)],
             'menu' => ['required', 'max:191'],
             'status' => ['required', 'string', 'in:Y,N'],
         ];

@@ -65,6 +65,7 @@ class PeakTimeRequest extends FormRequest
             $data[$i]['created_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
             $data[$i]['updated_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
         }
+        PeakTimeModel::insert($data);
     }
 
     private function getSchedules()
