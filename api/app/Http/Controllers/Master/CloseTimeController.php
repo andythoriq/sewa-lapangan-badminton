@@ -31,4 +31,10 @@ class CloseTimeController extends Controller
         $close_time->deleteOrFail();
         return response(null, 204, ['success' => 'Deleted close time data.']);
     }
+
+    public function create_multiple(CloseTimeRequest $request)
+    {
+        $request->createMultipleCloseTime();
+        return response(null, 201, ['success' => 'Multiple close time created.']);
+    }
 }

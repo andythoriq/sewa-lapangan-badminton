@@ -23,7 +23,7 @@ trait CollideCheck
                 ($existingStart->between($newStart, $newFinish) || $existingFinish->between($newStart, $newFinish))
             ) {
                 throw ValidationException::withMessages([
-                    'start' => ['Start dan Finish bentrok dengan yang sudah ada.'],
+                    'start' => ['Start and Finish collide with existing ones. Add one second to avoid collision.'],
                 ]);
             }
         }

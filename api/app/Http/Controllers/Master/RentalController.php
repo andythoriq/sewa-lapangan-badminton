@@ -34,7 +34,7 @@ class RentalController extends Controller
 
     public function delete(RentalModel $rental)
     {
-        $rental->delete();
+        $rental->deleteOrFail();
         return response(null, 204, ['success' => 'Rental data deleted.']);
     }
 
