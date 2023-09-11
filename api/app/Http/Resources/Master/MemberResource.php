@@ -25,12 +25,12 @@ class MemberResource extends JsonResource
             'status' => $this->status,
             'membership_status' => $this->membership_status,
             'member_active_period' => $this->member_active_period,
-            'rental' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
+            'rentals' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
                 'id' => $rental->id,
                 'start' => $rental->start,
                 'finish' => $rental->finish,
-                'price' => $rental->price,
                 'status' => $rental->status,
+                'price' => $rental->price,
             ]))
         ];
     }

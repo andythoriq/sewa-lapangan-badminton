@@ -23,6 +23,7 @@ class RentalResource extends JsonResource
             'start' => $this->start,
             'finish' => $this->finish,
             'status' => $this->getAndChangeRentalStatus($this->start, $this->finish, $this->resource),
+            'price' => $this->price,
             'court' => [
                 'label' => $this->court->label,
                 'image_path' => $this->court->image_path,
