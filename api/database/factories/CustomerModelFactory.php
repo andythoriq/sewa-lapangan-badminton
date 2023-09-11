@@ -25,9 +25,7 @@ class CustomerModelFactory extends Factory
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',// password
             'remember_token' => Str::random(10),
             // 'member_active_period' => $this->faker->dateTimeBetween('2023-01-01 00:00:00', '2023-12-30 00:00:00'),
-            // 'member_booking_code' => Str::random(20),
             'member_active_period' => null,
-            'member_booking_code' => null
         ];
     }
 }

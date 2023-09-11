@@ -34,13 +34,13 @@ class RegularRequest extends FormRequest
             'deposit' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
             'debt' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
             'status' => ['required', 'string', 'in:Y,N'],
-            'membership_status' => ['required', 'string', 'in:M,R'],
         ];
     }
 
     public function createRegular()
     {
         $customer = $this->validated();
+        $customer['membership_status'] = 'R';
         $customer['customer_code'] = $this->getFormattedCode('r');
         CustomerModel::create($customer);
     }
