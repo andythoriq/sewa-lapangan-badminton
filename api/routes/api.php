@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Master\{HolidayController, ConfigController, OpenTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController};
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\{AuthCustomerController, AuthAdminController};
+use App\Http\Controllers\Master\{HolidayController, ConfigController, OpenTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController, TransactionController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,96 +18,127 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function () {
 
     /** Master User Role
-     * abilities/policy/role: role-handle, user-handle, admin, can't delete&update admin */
-    Route::get('/role', [RoleController::class, 'index']);
-    Route::get('/role/{role}', [RoleController::class, 'show']);
-    Route::post('/role', [RoleController::class, 'create']);
-    Route::put('/role/{role}', [RoleController::class, 'update']);
-    Route::delete('/role/{role}', [RoleController::class, 'delete']);
+     * policy/role: user-handle, admin */
+    Route::controller(RoleController::class)->group(function(){
+        Route::get('/role', 'index');
+        Route::get('/role/{role}', 'show');
+        Route::post('/role', 'create');
+        Route::put('/role/{role}', 'update');
+        Route::delete('/role/{role}', 'delete');
+    });
 
     /** Master User Management
-     * abilities/policy/role: user-handle, admin */
-    Route::get('/user', [UserController::class, 'index']);
-    Route::get('/user/{user}', [UserController::class, 'show']);
-    Route::post('/user', [UserController::class, 'create']);
-    Route::put('/user/{user}', [UserController::class, 'update']);
-    Route::delete('/user/{user}', [UserController::class, 'delete']);
+     * policy/role: user-handle, admin */
+    Route::controller(UserController::class)->group(function(){
+        Route::get('/user', 'index');
+        Route::get('/user/{user}', 'show');
+        Route::post('/user', 'create');
+        Route::put('/user/{user}', 'update');
+        Route::delete('/user/{user}', 'delete');
+    });
 
     /** Master Configuration
-     * abilities/policy/role: configuration-handle, admin */
-    Route::get('/config', [ConfigController::class, 'index']);
-    Route::get('/config/{config}', [ConfigController::class, 'show']);
-    Route::post('/config', [ConfigController::class, 'create']);
-    Route::put('/config/{config}', [ConfigController::class, 'update']);
-    Route::delete('/config/{config}', [ConfigController::class, 'delete']);
+     * policy/role: configuration-handle, admin */
+    Route::controller(ConfigController::class)->group(function(){
+        Route::get('/config', 'index');
+        Route::get('/config/{config}', 'show');
+        Route::post('/config', 'create');
+        Route::put('/config/{config}', 'update');
+        Route::delete('/config/{config}', 'delete');
+    });
 
     /** Master Holiday
-     * abilities/policy/role: schedule-handle, holiday-handle, admin */
-    Route::get('/holiday', [HolidayController::class, 'index']);
-    Route::post('/holiday', [HolidayController::class, 'create']);
-    Route::post('/create-multiple-holiday', [HolidayController::class, 'create_multiple'])->name('create-multiple-holiday');
-    Route::put('/holiday/{holiday}', [HolidayController::class, 'update']);
-    Route::delete('/holiday/{holiday}', [HolidayController::class, 'delete']);
+     * policy/role: schedule-handle, admin */
+    Route::controller(HolidayController::class)->group(function(){
+        Route::get('/holiday', 'index');
+        Route::post('/holiday', 'create');
+        Route::post('/create-multiple-holiday', 'create_multiple')->name('create-multiple-holiday');
+        Route::put('/holiday/{holiday}', 'update');
+        Route::delete('/holiday/{holiday}', 'delete');
+    });
 
     /** Master Open time
-     * abilities/policy/role: schedule-handle, open-time-handle, admin */
-    Route::get('/open-time', [OpenTimeController::class, 'index']);
-    Route::post('/open-time', [OpenTimeController::class, 'create']);
-    Route::put('/open-time/{open_time}', [OpenTimeController::class, 'update']);
-    Route::delete('/open-time/{open_time}', [OpenTimeController::class, 'delete']);
+     * policy/role: schedule-handle, admin */
+    Route::controller(OpenTimeController::class)->group(function(){
+        Route::get('/open-time', 'index');
+        Route::post('/open-time', 'create');
+        Route::put('/open-time/{open_time}', 'update');
+        Route::delete('/open-time/{open_time}', 'delete');
+    });
 
     /** Master Peak time / peak time court
-     * abilities/policy/role: schedule-handle, peak-time-handle, admin */
-    Route::get('/peak-time', [PeakTimeController::class, 'index']);
-    Route::get('/peak-time/{peak_time}', [PeakTimeController::class, 'show']);
-    Route::post('/peak-time', [PeakTimeController::class, 'create']);
-    Route::post('/create-multiple-peak-time', [PeakTimeController::class, 'create_multiple'])->name('create-multiple-peak-time');
-    Route::put('/peak-time/{peak_time}', [PeakTimeController::class, 'update']);
-    Route::delete('/peak-time/{peak_time}', [PeakTimeController::class, 'delete']);
+     * policy/role: schedule-handle, admin */
+    Route::controller(PeakTimeController::class)->group(function(){
+        Route::get('/peak-time', 'index');
+        Route::get('/peak-time/{peak_time}', 'show');
+        Route::post('/peak-time', 'create');
+        Route::post('/create-multiple-peak-time', 'create_multiple')->name('create-multiple-peak-time');
+        Route::put('/peak-time/{peak_time}', 'update');
+        Route::delete('/peak-time/{peak_time}', 'delete');
+    });
 
     /** Master Court
-     * abilities/policy/role: court-handle, admin */
-    Route::get('/court', [CourtController::class, 'index']);
-    Route::get('/court/{court}', [CourtController::class, 'show']);
-    Route::post('/court', [CourtController::class, 'create']);
-    Route::put('/court/{court}', [CourtController::class, 'update']);
-    Route::delete('/court/{court}', [CourtController::class, 'delete']);
+     * policy/role: court-handle, admin */
+    Route::controller(CourtController::class)->group(function(){
+        Route::get('/court', 'index');
+        Route::get('/court/{court}', 'show');
+        Route::post('/court', 'create');
+        Route::put('/court/{court}', 'update');
+        Route::delete('/court/{court}', 'delete');
+    });
 
     /** Master Customer
-     * abilities/policy/role: customer-handle, admin, customer-member-handle, customer-regular-handle */
-    Route::prefix('/customer/member')->group(function(){
-        Route::get('/', [CustomerController::class, 'index_M']);
-        Route::get('/{customer}', [CustomerController::class, 'show_M']);
-        Route::post('/', [CustomerController::class, 'create_M']);
-        Route::put('/{customer}', [CustomerController::class, 'update_M']);
-        Route::delete('/{customer}', [CustomerController::class, 'delete_M']);
-    });
-    Route::prefix('/customer/regular')->group(function () {
-        Route::get('/', [CustomerController::class, 'index_R']);
-        Route::get('/{customer}', [CustomerController::class, 'show_R']);
-        Route::post('/', [CustomerController::class, 'create_R']);
-        Route::put('/{customer}', [CustomerController::class, 'update_R']);
-        Route::delete('/{customer}', [CustomerController::class, 'delete_R']);
+     * policy/role: customer-handle, admin */
+    Route::controller(CustomerController::class)->group(function(){
+        Route::prefix('/customer/member')->group(function () {
+            Route::get('/', 'index_M');
+            Route::get('/{customer}', 'show_M');
+            Route::post('/', 'create_M');
+            Route::put('/{customer}', 'update_M');
+            Route::delete('/{customer}', 'delete_M');
+        });
+        Route::prefix('/customer/regular')->group(function () {
+            Route::get('/', 'index_R');
+            Route::get('/{customer}', 'show_R');
+            Route::post('/', 'create_R');
+            Route::put('/{customer}', 'update_R');
+            Route::delete('/{customer}', 'delete_R');
+        });
     });
 
     /** Master Rental
-     * abilities/policy/role: customer-handle, schedule-handle, rental-handle, admin */
-    Route::get('/rental', [RentalController::class, 'index']);
-    Route::get('/rental/{rental}', [RentalController::class, 'show']);
-    Route::post('/rental', [RentalController::class, 'create'])->name('create-rental');
-    Route::post('/create-multiple-rental', [RentalController::class, 'create_multiple'])->name('create-multiple-rental');
-    Route::put('/rental/{rental}', [RentalController::class, 'update'])->name('update-rental');
-    Route::delete('/rental/{rental}', [RentalController::class, 'delete']);
+     * policy/role: customer-handle, schedule-handle, rental-handle, admin */
+    Route::controller(RentalController::class)->group(function(){
+        Route::get('/rental', 'index');
+        Route::get('/rental/{rental}', 'show');
+        Route::post('/rental', 'create')->name('create-rental');
+        Route::post('/create-multiple-rental', 'create_multiple')->name('create-multiple-rental');
+        Route::put('/rental/{rental}', 'update')->name('update-rental');
+        Route::delete('/rental/{rental}', 'delete');
+    });
 
     /** Transaction
-     * abilities/policy/role: transaction-handle, rental-handle, admin */
+     * policy/role: transaction-handle, rental-handle, schedule-handle, admin */
+    Route::controller(TransactionController::class)->group(function(){
 
-    /** End of master data */
+    });
 
-    /** AUTH ROUTES
-     * abilities/policy/role: auth-handle */
-    Route::post('/login', [AuthController::class, 'login'])->name('login')->withoutMiddleware('auth:sanctum');
-    Route::post('/register', [AuthController::class, 'register'])->name('register')->withoutMiddleware('auth:sanctum');
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/me', [AuthController::class, 'me']);
+    /** Admin AUTH ROUTES
+     * policy/role: auth-handle, admin */
+    Route::controller(AuthAdminController::class)->group(function(){
+        Route::post('/login-admin', 'login')->name('login-admin')->withoutMiddleware('auth:sanctum');
+        Route::post('/login-admin/{admin}', 'login_for_other');
+        Route::post('/register-admin', 'register')->name('register-admin')->withoutMiddleware('auth:sanctum');
+        Route::post('/logout-admin', 'logout');
+        Route::get('/me-admin', 'me');
+    });
+
+    /** Customer AUTH ROUTES
+     * policy/role: auth-handle, admin */
+    Route::controller(AuthCustomerController::class)->group(function(){
+        Route::post('/login', 'login')->name('login-customer')->withoutMiddleware('auth:sanctum');
+        Route::post('/register-member', 'register')->name('register-customer')->withoutMiddleware('auth:sanctum');
+        Route::post('/logout', 'logout');
+        Route::post('/me', 'me');
+    });
 });
