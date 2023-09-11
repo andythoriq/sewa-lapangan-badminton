@@ -62,24 +62,21 @@ return [
         'encrypt_cookies' => App\Http\Middleware\EncryptCookies::class,
     ],
 
-    'abilities' => [
-        'customer' => 'landing page, about page.',
-        'admin' => '* except handling auth.',
-        'role-handle' => 'role master.',
-        'user-handle' => 'user master and role master.',
-        'configuration-handle' => 'config master.',
-        'schedule-handle' => 'holiday master, open time master, peak time master, rental master.',
-        'holiday-handle' => 'holiday master.',
-        'open-time-handle' => 'open time master.',
-        'peak-time-handle' => 'peak time master.',
-        'court-handle' => 'court master.',
-        'customer-handle' => 'regular master, member master, rental master.',
-        'customer-member-handle' => 'member master.',
-        'customer-regular-handle' => 'regular master.',
-        'rental-handle' => 'rental master, transaction master.',
-        'transaction-handle' => 'transaction master.',
-        'auth-handle' => 'customer auth-controller, admin (user) auth-controller.',
-    ],
+    'expiration_time' => 60 * 24 * 7, // one week
+    'rememberable' => true,
+
+    // 'abilities' => [
+    //     'customer' => 'landing page, about page.',
+    //     'admin' => '* except handling auth.',
+    //     'user-handle' => 'user master (admin) and role master.',
+    //     'configuration-handle' => 'configuration master.',
+    //     'schedule-handle' => 'things related to rental and scheduling.',
+    //     'court-handle' => 'court master.',
+    //     'customer-handle' => 'regular master, member master, rental master.',
+    //     'rental-handle' => 'rental master, transaction master.',
+    //     'transaction-handle' => 'transaction master.',
+    //     'auth-handle' => 'customer auth-controller, admin (user) auth-controller.',
+    // ],
 
 ];
 
