@@ -2,13 +2,19 @@
 
 namespace App\Http\Requests\Master;
 
-use App\Traits\CollideCheck;
+use App\Models\CourtModel;
 use App\Models\RentalModel;
+use App\Traits\CollideCheck;
+use Illuminate\Support\Carbon;
+use App\Models\TransactionModel;
+use App\Traits\BookingCodePattern;
+use App\Traits\RegularRentalsCheck;
+use App\Traits\RentalPriceCalculation;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RentalRequest extends FormRequest
 {
-    use CollideCheck;
+    use CollideCheck, RentalPriceCalculation, RegularRentalsCheck, BookingCodePattern;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -28,11 +34,11 @@ class RentalRequest extends FormRequest
     {
         $validation = [
             'finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:start'],
-            'status' => ['required', 'string', 'in:F,U'],
+            // 'status' => ['required', 'string', 'in:B,O,F'],
             'court_id' => ['required', 'integer', 'exists:tb_court,id'],
-            'transaction_id' => ['nullable', 'integer', 'exists:tb_transaction,id'],
+            // 'transaction_id' => ['required', 'integer', 'exists:tb_transaction,id'],
             'customer_id' => ['required', 'string', 'exists:tb_customer,customer_code'],
-            'user_id' => ['required', 'string', 'exists:users,id']
+            'user_id' => ['required', 'integer', 'exists:users,id']
         ];
 
         switch ($this->route()->getName()) {
@@ -46,14 +52,14 @@ class RentalRequest extends FormRequest
 
             case 'create-multiple-rental':
                 $validation = [
-                    'rentals' => ['required', 'array', 'min:1', 'in:start,finish,status,court_id,transaction_id,customer_id,user_id'],
+                    'rentals' => ['required', 'array', 'min:1', 'in:start,finish,status,court_id,customer_id,user_id'],
                     'rentals.*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d H:i:s')],
                     'rentals.*.finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:rentals.*.start'],
-                    'rentals.*.status' => ['required', 'string', 'in:F,U'],
+                    // 'rentals.*.status' => ['required', 'string', 'in:B,O,F'],
                     'rentals.*.court_id' => ['required', 'integer', 'exists:tb_court,id'],
-                    'rentals.*.transaction_id' => ['nullable', 'integer', 'exists:tb_transaction,id'],
+                    // 'rentals.*.transaction_id' => ['required', 'integer', 'exists:tb_transaction,id'],
                     'rentals.*.customer_id' => ['required', 'string', 'exists:tb_customer,customer_code'],
-                    'rentals.*.user_id' => ['required', 'string', 'exists:users,id'],
+                    'rentals.*.user_id' => ['required', 'integer', 'exists:users,id'],
                 ];
                 break;
         }
@@ -63,24 +69,69 @@ class RentalRequest extends FormRequest
 
     public function createRental()
     {
+        $this->regularRentalsCheck($this->customer_id);
+
         $this->collideCheck($this->start, $this->finish, $this->getCourtSchedules($this->court_id));
-        RentalModel::create($this->validated());
+
+        $court_initial_price = CourtModel::select('initial_price')->where('id', $this->court_id)->firstOrFail()->initial_price;
+
+        $data = $this->validated();
+        $data['price'] = $this->getCost($this->start, $this->finish, $court_initial_price);
+
+        $data['status'] = 'B';
+
+        $transaction = TransactionModel::create([
+            'total_price' => $data['price'],
+            'total_hour' => Carbon::parse($this->start)->diffInHours($this->finish),
+            'booking_code' => $this->getBookingCode()
+        ]);
+        $data['transaction_id'] = $transaction->id;
+
+        RentalModel::create($data);
     }
 
     public function updateRental(RentalModel $rental)
     {
+        $this->regularRentalsCheck($this->customer_id);
+
         $this->collideCheck($this->start, $this->finish, $this->getCourtSchedules($this->court_id));
-        $rental->updateOrFail($this->validated());
+
+        $rental->load(['court:id,initial_price', 'customer:customer_code']);
+
+        $data = $this->validated();
+        $data['price'] = $this->getCost($this->start, $this->finish, $rental->court->initial_price);
+
+        $rental->updateOrFail($data);
     }
 
     public function createMultipleRental()
     {
         $data = $this->validated();
+
+        $transaction = TransactionModel::create([
+            'total_price' => 0,
+            'total_hour' => 0,
+            'booking_code' => $this->getBookingCode()
+        ]);
+
         for ($i = 0; $i < count($data); $i++) {
+            $this->regularRentalsCheck($data[$i]['customer_id']);
+
             $this->collideCheck($data[$i]['start'], $data[$i]['finish'], $this->getCourtSchedules($data[$i]['court_id']));
+
+            $court_initial_price = CourtModel::select('initial_price')->where('id', $data[$i]['court_id'])->firstOrFail()->initial_price;
+            $data[$i]['price'] = $this->getCost($data[$i]['start'], $data[$i]['finish'], $court_initial_price);
+
+            $data[$i]['price'] /= 1.5; // member kurangin harga
+
+            $transaction->total_price += $data[$i]['price'];
+            $transaction->total_hour += Carbon::parse($data[$i]['start'])->diffInHours($data[$i]['finish']);
+
+            $data[$i]['transaction_id'] = $transaction->id;
             $data[$i]['created_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
             $data[$i]['updated_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
         }
+        $transaction->saveOrFail();
         RentalModel::insert($data);
     }
 
