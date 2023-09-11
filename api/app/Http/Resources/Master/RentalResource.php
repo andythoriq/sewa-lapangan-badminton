@@ -2,10 +2,12 @@
 
 namespace App\Http\Resources\Master;
 
+use App\Traits\ChangeRentalStatus;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class RentalResource extends JsonResource
 {
+    use ChangeRentalStatus;
     /**
      * Transform the resource into an array.
      *
@@ -20,7 +22,7 @@ class RentalResource extends JsonResource
         return [
             'start' => $this->start,
             'finish' => $this->finish,
-            'status' => $this->status,
+            'status' => $this->getAndChangeRentalStatus($this->start, $this->finish, $this->resource),
             'court' => [
                 'label' => $this->court->label,
                 'image_path' => $this->court->image_path,
@@ -28,8 +30,9 @@ class RentalResource extends JsonResource
                 'initial_price' => $this->court->initial_price
             ],
             'transaction' => [
-                'total_price' => $this->transaction->total_price ?? '',
-                'total_hour' => $this->transaction->total_hour ?? '',
+                'total_price' => $this->transaction->total_price,
+                'total_hour' => $this->transaction->total_hour,
+                'booking_code' => $this->transaction->booking_code
             ],
             'customer' => [
                 'name' => $this->customer->name,
@@ -38,7 +41,6 @@ class RentalResource extends JsonResource
                 'debt' => $this->customer->debt,
                 'status' => $this->customer->status,
                 'member_active_period' => $this->customer->member_active_period ?? '',
-                'member_booking_code' => $this->customer->member_booking_code ?? ''
             ],
             'admin' => [
                 'name' => $this->user->name,
