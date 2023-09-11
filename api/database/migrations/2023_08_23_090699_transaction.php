@@ -17,7 +17,7 @@ class Transaction extends Migration
             $table->id();
             $table->float('total_price');
             $table->float('total_hour');
-            $table->string('booking_code', 191)->nullable()->default(null);
+            $table->string('booking_code', 191)->unique();
             $table->timestamps();
         });
     }
