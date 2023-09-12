@@ -16,6 +16,17 @@ class TransactionResource extends JsonResource
 
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'total_price' => $this->total_price,
+            'total_hour' => $this->total_hour,
+            'booking_code' => $this->booking_code,
+            'rentals' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
+                'id' => $rental->id,
+                'start' => $rental->start,
+                'finish' => $rental->finish,
+                'status' => $rental->status,
+                'price' => $rental->price
+            ]))
+        ];
     }
 }

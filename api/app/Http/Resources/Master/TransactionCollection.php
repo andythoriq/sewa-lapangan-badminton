@@ -16,6 +16,13 @@ class TransactionCollection extends ResourceCollection
 
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return $this->collection->map(function($transaction){
+            return [
+                'id' => $transaction->id,
+                'total_price' => $transaction->total_price,
+                'total_hour' => $transaction->total_hour,
+                'booking_code' => $transaction->booking_code
+            ];
+        });
     }
 }

@@ -122,8 +122,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(TransactionController::class)->group(function(){
         Route::get('/transaction', 'index');
         Route::get('/transaction/{transaction}', 'show');
-        Route::put('/transaction/{transaction}', 'update');
-        Route::delete('/transaction/{transaction}', 'delete');
     });
 
     /** Admin AUTH ROUTES
