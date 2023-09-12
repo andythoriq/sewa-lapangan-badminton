@@ -36,8 +36,7 @@ class CourtRequest extends FormRequest
 
     public function createCourt()
     {
-        $court = new CourtModel();
-        $court->fill($this->validated());
+        $court = new CourtModel($this->validated());
         $this->saveCourt($court);
     }
 

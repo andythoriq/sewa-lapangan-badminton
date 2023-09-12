@@ -108,7 +108,7 @@ class RentalRequest extends FormRequest
     {
         $data = $this->validated();
 
-        $transaction = TransactionModel::create([
+        $transaction = new TransactionModel([
             'total_price' => 0,
             'total_hour' => 0,
             'booking_code' => $this->getBookingCode()
