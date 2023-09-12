@@ -23,7 +23,7 @@ class Rental extends Migration
             $table->foreignId('transaction_id')->constrained('tb_transaction', 'id')->cascadeOnDelete();
             $table->string('customer_id', 20);
             $table->foreign('customer_id')->references('customer_code')->on('tb_customer')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->default(null)->constrained('users', 'id')->cascadeOnDelete();
             $table->timestamps();
         });
     }

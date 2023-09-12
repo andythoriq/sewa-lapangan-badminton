@@ -44,14 +44,14 @@ class RentalResource extends JsonResource
                 'member_active_period' => $this->customer->member_active_period ?? '',
             ],
             'admin' => [
-                'name' => $this->user->name,
-                'email' => $this->user->email,
-                'phone_number' => $this->user->phone_number,
-                'status' => $this->user->status,
+                'name' => $this->user->name ?? '',
+                'email' => $this->user->email ?? '',
+                'phone_number' => $this->user->phone_number ?? '',
+                'status' => $this->user->status ?? '',
                 'role' => [
-                    'label' => $this->user->role->label,
-                    'menu' => $this->user->role->menu,
-                    'status' => $this->user->role->status
+                    'label' => $this->user->role->label ?? '',
+                    'menu' => $this->user->role->menu ?? '',
+                    'status' => $this->user->role->status ?? ''
                 ]
             ],
         ];

@@ -38,7 +38,7 @@ class RentalRequest extends FormRequest
             'court_id' => ['required', 'integer', 'exists:tb_court,id'],
             // 'transaction_id' => ['required', 'integer', 'exists:tb_transaction,id'],
             'customer_id' => ['required', 'string', 'exists:tb_customer,customer_code'],
-            'user_id' => ['required', 'integer', 'exists:users,id']
+            'user_id' => ['nullable', 'integer', 'exists:users,id']
         ];
 
         switch ($this->route()->getName()) {
@@ -59,7 +59,7 @@ class RentalRequest extends FormRequest
                     'rentals.*.court_id' => ['required', 'integer', 'exists:tb_court,id'],
                     // 'rentals.*.transaction_id' => ['required', 'integer', 'exists:tb_transaction,id'],
                     'rentals.*.customer_id' => ['required', 'string', 'exists:tb_customer,customer_code'],
-                    'rentals.*.user_id' => ['required', 'integer', 'exists:users,id'],
+                    'rentals.*.user_id' => ['nullable', 'integer', 'exists:users,id'],
                 ];
                 break;
         }
@@ -108,7 +108,7 @@ class RentalRequest extends FormRequest
     {
         $data = $this->validated();
 
-        $transaction = new TransactionModel([
+        $transaction = TransactionModel::create([
             'total_price' => 0,
             'total_hour' => 0,
             'booking_code' => $this->getBookingCode()
