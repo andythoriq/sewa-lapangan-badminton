@@ -29,6 +29,8 @@ class CustomerModel extends User
 
     protected $keyType = "string";
 
+    public $incrementing = false;
+
     protected $hidden = [
         'password',
         'remember_token',
