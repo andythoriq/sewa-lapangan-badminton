@@ -51,4 +51,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(RoleModel::class, 'role_id', 'id');
     }
+
+    public function rentals(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(RentalModel::class, 'user_id', 'id');
+    }
 }

@@ -26,7 +26,14 @@ class UserResource extends JsonResource
                 'label' => $this->role->label,
                 'menu' => $this->role->menu,
                 'status' => $this->role->status,
-            ]
+            ],
+            'rentals' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
+                'id' => $rental->id,
+                'start' => $rental->start,
+                'finish' => $rental->finish,
+                'status' => $rental->status,
+                'price' => $rental->price
+            ]))
         ];
     }
 

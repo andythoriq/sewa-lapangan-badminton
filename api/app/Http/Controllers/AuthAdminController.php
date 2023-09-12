@@ -30,7 +30,7 @@ class AuthAdminController extends Controller
 
     public function me(Request $request)
     {
-        return new UserResource($request->user()->loadMissing('role:id,label,menu,status'));
+        return new UserResource($request->user()->loadMissing(['role:id,label,menu,status', 'rentals']));
     }
 
     public function login_for_other(AuthAdminRequest $request, User $admin)
