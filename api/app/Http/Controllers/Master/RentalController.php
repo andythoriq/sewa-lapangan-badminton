@@ -12,13 +12,13 @@ class RentalController extends Controller
 {
     public function index()
     {
-        $rental = RentalModel::select(['id', 'start', 'finish', 'price', 'status'])->get();
-        return new RentalCollection($rental);
+        $rentals = RentalModel::select(['id', 'start', 'finish', 'price', 'status'])->get();
+        return new RentalCollection($rentals);
     }
 
     public function show(RentalModel $rental)
     {
-        return new RentalResource($rental->loadMissing(['court', 'transaction', 'customer', 'admin:id,name,email,phone_number,status,role']));
+        return new RentalResource($rental->loadMissing(['court', 'transaction', 'customer', 'user:id,name,email,phone_number,status,role']));
     }
 
     public function create(RentalRequest $request)

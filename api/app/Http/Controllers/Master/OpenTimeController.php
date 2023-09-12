@@ -10,8 +10,8 @@ class OpenTimeController extends Controller
 {
     public function index()
     {
-        $open_time = OpenTimeModel::select(['id', 'start', 'finish'])->get();
-        return response()->json($open_time);
+        $open_times = OpenTimeModel::select(['id', 'start', 'finish'])->get();
+        return response()->json($open_times);
     }
 
     public function create(OpenTimeRequest $request)

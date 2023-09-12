@@ -12,8 +12,8 @@ class CourtController extends Controller
 {
     public function index()
     {
-        $court = CourtModel::select(['id', 'label', 'image_path', 'initial_price'])->get();
-        return new CourtCollection($court);
+        $courts = CourtModel::select(['id', 'label', 'image_path', 'initial_price'])->get();
+        return new CourtCollection($courts);
     }
 
     public function show(CourtModel $court)

@@ -10,8 +10,8 @@ class ConfigController extends Controller
 {
     public function index()
     {
-        $config = ConfigModel::select(['id', 'slug', 'description'])->get();
-        return response()->json($config);
+        $configs = ConfigModel::select(['id', 'slug', 'description'])->get();
+        return response()->json($configs);
     }
 
     public function show(ConfigModel $config)

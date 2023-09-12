@@ -15,20 +15,20 @@ class CustomerController extends Controller
 {
     public function index_M()
     {
-        $member = CustomerModel::select(['customer_code', 'name', 'deposit', 'debt', 'member_active_code'])
+        $members = CustomerModel::select(['customer_code', 'name', 'deposit', 'debt', 'member_active_code'])
             ->where('status', 'M')
             ->orWhere('status', 'm')
             ->get();
-        return new MemberCollection($member);
+        return new MemberCollection($members);
     }
 
     public function index_R()
     {
-        $regular = CustomerModel::select(['customer_code', 'name', 'deposit', 'debt'])
+        $regulars = CustomerModel::select(['customer_code', 'name', 'deposit', 'debt'])
             ->where('status', 'R')
             ->orWhere('status', 'r')
             ->get();
-        return new RegularCollection($regular);
+        return new RegularCollection($regulars);
     }
 
     public function show_M(CustomerModel $customer)

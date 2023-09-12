@@ -10,8 +10,8 @@ class HolidayController extends Controller
 {
     public function index()
     {
-        $holiday = HolidayModel::select(['id', 'label', 'start', 'finish'])->get();
-        return response()->json($holiday);
+        $holidays = HolidayModel::select(['id', 'label', 'start', 'finish'])->get();
+        return response()->json($holidays);
     }
 
     public function create(HolidayRequest $request)

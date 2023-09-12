@@ -11,8 +11,8 @@ class PeakTimeController extends Controller
 {
     public function index()
     {
-        $peak_time = PeakTimeModel::select(['id', 'start', 'finish'])->get();
-        return response()->json($peak_time);
+        $peak_times = PeakTimeModel::select(['id', 'start', 'finish'])->get();
+        return response()->json($peak_times);
     }
 
     public function show(PeakTimeModel $peak_time)
