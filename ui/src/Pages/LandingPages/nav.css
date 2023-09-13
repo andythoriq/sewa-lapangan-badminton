@@ -1,0 +1,26 @@
+@media (max-width: 768px) {
+    .navbar-brand.lpages {
+        margin-left: 0px;
+    }
+}
+.banner {
+    background: url(/public/assets/img/bg-lan.jpg)no-repeat center center;
+    background-size: cover;
+    padding-top: 20%;
+    padding-bottom: 20%;
+    color: #fff;
+}
+#about {
+    margin-top: 50px;
+}
+#schedule.lpages {
+    margin-top: 125px;
+}
+#schedule hr{
+    width: 20%;
+    height: 3px;
+    margin: auto;
+}
+.footer.lpages {
+    background-color: rgba(248, 80, 50, 1);
+}
