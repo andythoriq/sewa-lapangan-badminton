@@ -40,7 +40,7 @@ class AuthCustomerRequest extends FormRequest
                 $rules = [
                     'name' => ['required', 'string', 'max:90'],
                     'phone_number' => ['required', 'string', 'max:20', Rule::unique('tb_customer', 'phone_number')],
-                    'status' => ['required', 'string', 'in:Y,N'],
+                    // 'status' => ['required', 'string', 'in:Y,N'],
                     'password' => ['required', Password::defaults()]
                 ];
                 break;
@@ -63,6 +63,7 @@ class AuthCustomerRequest extends FormRequest
     {
         $validated = $this->validated();
         $validated['membership_status'] = 'R';
+        $validated['status'] = 'Y';
         $validated['password'] = Hash::make($validated['password']);
         CustomerModel::create($validated);
     }

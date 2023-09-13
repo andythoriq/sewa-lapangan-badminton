@@ -20,7 +20,7 @@ class Customer extends Migration
             $table->float('deposit')->nullable()->default(null);
             $table->float('debt')->nullable()->default(null);
             $table->enum('membership_status', ['M', 'R'])->comment('M: member, R: regular')->default('R');
-            $table->enum('status', ['Y', 'N'])->comment('Y: Active, N: Inactive');
+            $table->enum('status', ['Y', 'N'])->comment('Y: Active, N: Inactive')->default('Y');
             $table->dateTime('member_active_period')->nullable()->default(null);
             $table->string('password')->nullable()->default(null);
             $table->rememberToken();
