@@ -18,10 +18,10 @@ class RentalModelFactory extends Factory
             'finish' => $this->faker->dateTimeBetween('2023-11-01 00:00:00', '2023-12-01 00:00:00'),
             'status' => $this->faker->randomElement(['B', 'O', 'F']),
             'price' => $this->faker->randomFloat(2, 10_000.00, 40_000.00),
-            'court_id' => $this->faker->randomElement([1, 2, 3, 4, 5]),
-            'transaction_id' => $this->faker->randomElement([1, 2, 3, 4, 5]),
+            'court_id' => $this->faker->randomElement([1, 2, 3, 4]),
+            'transaction_id' => $this->faker->randomElement([1, 2, 3, 4]),
             // 'customer_id' => $this->faker->randomElement(['m20230100125', 'm20230100837', 'm20230100960', 'm20230100119', 'r20230100114']),
-            'user_id' => $this->faker->randomElement([1, 2, 3, 4, 5])
+            'user_id' => $this->faker->randomElement([1, 2, 3, 4])
         ];
     }
 }

@@ -72,7 +72,8 @@ class DatabaseSeeder extends Seeder
 
         CourtModel::factory(4)->has(PeakTimeModel::factory(2), 'peak_times')->create();
         TransactionModel::factory(8)->create();
-        CustomerModel::factory(4)->has(RentalModel::factory(2), 'rentals')->create();
         RoleModel::factory(2)->has(User::factory(4), 'users')->create();
+        CustomerModel::factory(4)
+        ->has(RentalModel::factory(2), 'rentals')->create();
     }
 }
