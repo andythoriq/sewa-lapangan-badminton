@@ -23,6 +23,8 @@ import LandingPage from './Pages/LandingPages/landingPage';
 import FormStep from './Pages/LandingPages/Step/Step';
 import Step2 from './Pages/LandingPages/Step/Step2';
 import Landing2 from './Pages/LandingPages/Landing2';
+import RushHour from './Pages/Users/Rush Hour/rushhour';
+import Setting from './Pages/Users/DataMaster/setting';
 
 export default class App extends Component {
   render () {
@@ -51,12 +53,14 @@ export default class App extends Component {
                 <Route path="/data-master/customer-regular" element={<CustomerRegular/>}/>
                 <Route path="/data-master/customer-member" element={<CustomerMember/>}/>
                 <Route path="/data-master/holidays" element={<Holidays/>}/>
+                <Route path="/data-master/rushhour" element={<RushHour/>}/>
                 <Route path="/user-management/user-list" element={<UserList/>}/>
                 <Route path="/user-management/user-list/add" element={<UserListForm/>}/>
                 <Route path="/user-management/user-list/edit/:id" element={<UserListForm/>}/>
                 <Route path="/user-management/user-role" element={<UserRole/>}/>
                 <Route path="/user-management/user-role/add" element={<UserRoleForm/>}/>
                 <Route path="/user-management/user-role/edit/:id" element={<UserRoleForm/>}/>
+                <Route path='/setting' element={<Setting/>}/>
               </Route>
               <Route path="*" element={<NotFound/>}/>
             </Route>
