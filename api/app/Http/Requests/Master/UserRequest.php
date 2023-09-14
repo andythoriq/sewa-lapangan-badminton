@@ -43,6 +43,7 @@ class UserRequest extends FormRequest
     public function createUser()
     {
         $validated = $this->validated();
+        $validated['status'] = strtoupper($validated['status']);
         $validated['password'] = Hash::make($validated['password']);
         User::create($validated);
     }

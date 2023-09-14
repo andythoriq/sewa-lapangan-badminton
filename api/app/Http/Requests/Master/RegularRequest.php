@@ -41,6 +41,7 @@ class RegularRequest extends FormRequest
     {
         $customer = $this->validated();
         $customer['membership_status'] = 'R';
+        $customer['status'] = strtoupper($customer['status']);
         $customer['customer_code'] = $this->getFormattedCode('r');
         CustomerModel::create($customer);
     }

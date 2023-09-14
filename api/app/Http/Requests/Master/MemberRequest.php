@@ -42,6 +42,7 @@ class MemberRequest extends FormRequest
     {
         $customer = $this->validated();
         $customer['membership_status'] = 'M';
+        $customer['status'] = strtoupper($customer['status']);
         $customer['customer_code'] = $this->getFormattedCode('m');
         CustomerModel::create($customer);
     }

@@ -35,6 +35,8 @@ class RoleRequest extends FormRequest
 
     public function createRole()
     {
+        $role = $this->validated();
+        $role['status'] = strtoupper($role['status']);
         RoleModel::create($this->validated());
     }
 
