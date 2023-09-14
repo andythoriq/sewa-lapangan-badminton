@@ -87,7 +87,7 @@ const Holidays = () => {
             <Card className="p-3 mt-5">
                 <Row>
                     <Col className="col-12 col-md-6" style={{marginTop:-20}}>
-                        <Form.Group className="inputSearch" hidden>
+                        <Form.Group className="inputSearch" >
                             <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Search"/>
                         </Form.Group>
                     </Col>

@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import { Row, Col, Modal, Button } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
+import ScheduleModal from "../Users/Schedule/modal";
 
 import "./nav.css";
 
@@ -21,36 +20,36 @@ const Landing = () => {
     {
       time: "09.00-10.00",
       court1: [
-        { court: "1", color: "green", name: "B" },
-        { court: "1", color: "", name: "" },
+        { court: "1", color: "orange", name: "B" },
+        { court: "1", color: "orange", name: "B" },
       ],
     },
     {
-      time: "10.00-11.00",
+      time: "",
       court1: [
-        { court: "1", color: "", name: "" },
-        { court: "1", color: "orange", name: "C" },
+        { court: "", color: "", name: "" },
+        { court: "", color: "", name: "" },
       ],
     },
     {
-      time: "11.00-12.00",
+      time: "",
       court1: [
-        { court: "1", color: "cyan", name: "D" },
-        { court: "1", color: "", name: "" },
+        { court: "", color: "", name: "" },
+        { court: "", color: "", name: "" },
       ],
     },
     {
-      time: "12.00-13.00",
+      time: "",
       court1: [
-        { court: "1", color: "", name: "" },
-        { court: "1", color: "green", name: "E" },
+        { court: "", color: "", name: "" },
+        { court: "", color: "", name: "" },
       ],
     },
     {
-      time: "13.00-14.00",
+      time: "",
       court1: [
-        { court: "1", color: "red", name: "F" },
-        { court: "1", color: "", name: "" },
+        { court: "", color: "", name: "" },
+        { court: "", color: "", name: "" },
       ],
     },
   ];
@@ -69,6 +68,7 @@ const Landing = () => {
     setCourt(data.court);
     handleShow();
   };
+
   return (
     <>
       <Navbar className="navbar navbar-expand-lg bg-danger fixed-top">
@@ -89,10 +89,7 @@ const Landing = () => {
                 Schedule
               </Nav.Link>
             </Nav>
-            <DropdownButton id="dropdown-button" align="end" variant="dark" title="Login" data-bs-theme="white">
-              <Dropdown.Item href="login">As Admin</Dropdown.Item>
-              <Dropdown.Item href="userstep">As User</Dropdown.Item>
-            </DropdownButton>
+            <Button type="submit" variant="dark" href="userstep">Login</Button> 
           </Navbar.Collapse>
         </Container>
       </Navbar>
@@ -125,135 +122,59 @@ const Landing = () => {
         <div className="table-responsive lpages" id="schedule">
           <h3 className="text-center">Schedule</h3>
           <hr style={{ width: 200 }} align="center"></hr>
-          <table className="table mt-5" width={"100%"} border={1}>
+        </div>
+        <div className="table-responsive mt-5">
+          <table id="schedule" className="table" width={"100%"} border={1}>
             <thead>
               <tr>
-                <th>Time</th>
-                <th colSpan={3}>Court 1</th>
+                <th className="text-center">Time</th>
+                <th className="text-center" colSpan={2}>
+                  Court 1
+                </th>
                 <th></th>
-                <th colSpan={3}>Court 2</th>
+                <th className="text-center" colSpan={2}>
+                  Court 2
+                </th>
                 <th></th>
-                <th colSpan={3}>Court 3</th>
+                <th className="text-center" colSpan={2}>
+                  Court 3
+                </th>
                 <th></th>
-                <th colSpan={3}>Court 4</th>
+                <th className="text-center" colSpan={2}>
+                  Court 4
+                </th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               {dataCourt.map((val, key) => (
                 <tr key={key}>
-                  <th width={"10%"} style={{ minWidth: 146 }}>
+                  <th width={"10%"} className="text-center" style={{ minWidth: 146 }}>
                     {val.time}
                   </th>
-                  <td width={"5%"} style={{ minWidth: 70 }} className={`bg-col-${val.court1 ? val.court1[0].color : ""}`} onClick={() => handleDetail(val.court1 ? val.court1 : [], 0)}></td>
-                  <td width={"1%"}></td>
-                  <td width={"5%"} style={{ minWidth: 70 }} className={`bg-col-${val.court1 ? val.court1[1].color : ""}`} onClick={() => handleDetail(val.court1 ? val.court1 : [], 1)}></td>
-                  <td width={"5%"} style={{ minWidth: 70 }}></td>
-                  <td width={"5%"} style={{ minWidth: 70 }} className={`bg-col-${val.court2 ? val.court2[0].color : ""}`} onClick={() => handleDetail(val.court2 ? val.court2 : [], 0)}></td>
-                  <td width={"1%"}></td>
-                  <td width={"5%"} style={{ minWidth: 70 }} className={`bg-col-${val.court2 ? val.court2[1].color : ""}`} onClick={() => handleDetail(val.court2 ? val.court2 : [], 1)}></td>
-                  <td width={"5%"} style={{ minWidth: 70 }}></td>
-                  <td width={"5%"} style={{ minWidth: 70 }} className={`bg-col-${val.court3 ? val.court3[0].color : ""}`} onClick={() => handleDetail(val.court3 ? val.court3 : [], 0)}></td>
-                  <td width={"1%"}></td>
-                  <td width={"5%"} style={{ minWidth: 70 }} className={`bg-col-${val.court3 ? val.court3[1].color : ""}`} onClick={() => handleDetail(val.court3 ? val.court3 : [], 1)}></td>
-                  <td width={"5%"} style={{ minWidth: 70 }}></td>
-                  <td width={"5%"} style={{ minWidth: 70 }} className={`bg-col-${val.court4 ? val.court4[0].color : ""}`} onClick={() => handleDetail(val.court4 ? val.court4 : [], 0)}></td>
-                  <td width={"1%"}></td>
-                  <td width={"5%"} style={{ minWidth: 70 }} className={`bg-col-${val.court4 ? val.court4[1].color : ""}`} onClick={() => handleDetail(val.court4 ? val.court4 : [], 1)}></td>
-                  <td width={"1%"}></td>
+                  <td width={"6%"} className={`bg-col-court bg-col-${val.court1 ? val.court1[0].color : ""}`} onClick={() => handleDetail(val.court1 ? val.court1 : [], 0)}></td>
+                  <td width={"6%"} className={`bg-col-court bg-col-${val.court1 ? val.court1[1].color : ""}`} onClick={() => handleDetail(val.court1 ? val.court1 : [], 1)}></td>
+                  <td width={"4%"} className="bg-col-batas"></td>
+                  <td width={"6%"} className={`bg-col-court bg-col-${val.court2 ? val.court2[0].color : ""}`} onClick={() => handleDetail(val.court2 ? val.court2 : [], 0)}></td>
+                  <td width={"6%"} className={`bg-col-court bg-col-${val.court2 ? val.court2[1].color : ""}`} onClick={() => handleDetail(val.court1 ? val.court1 : [], 1)}></td>
+                  <td width={"4%"} className="bg-col-batas"></td>
+                  <td width={"6%"} className={`bg-col-court bg-col-${val.court3 ? val.court3[0].color : ""}`} onClick={() => handleDetail(val.court3 ? val.court3 : [], 0)}></td>
+                  <td width={"6%"} className={`bg-col-court bg-col-${val.court3 ? val.court3[1].color : ""}`} onClick={() => handleDetail(val.court1 ? val.court1 : [], 1)}></td>
+                  <td width={"4%"} className="bg-col-batas"></td>
+                  <td width={"6%"} className={`bg-col-court bg-col-${val.court4 ? val.court4[0].color : ""}`} onClick={() => handleDetail(val.court3 ? val.court3 : [], 0)}></td>
+                  <td width={"6%"} className={`bg-col-court bg-col-${val.court4 ? val.court4[1].color : ""}`} onClick={() => handleDetail(val.court1 ? val.court1 : [], 1)}></td>
+                  <td width={"2%"} className="bg-col-batas"></td>
                 </tr>
               ))}
             </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan={13}></td>
+              </tr>
+            </tfoot>
           </table>
         </div>
-        <Modal show={show} onHide={handleClose} size="xl">
-          <Modal.Header closeButton>
-            <Modal.Title>Court {court}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Row>
-              <Col className="col-12 col-lg-4">
-                <table id="modalTable" width={"100%"}>
-                  <tbody>
-                    <tr>
-                      <td width={"10%"}>Name&nbsp;customer</td>
-                      <td width={"1%"}>&nbsp;:&nbsp;</td>
-                      <td width={"89%"}>{name}</td>
-                    </tr>
-                    <tr>
-                      <td>Booking&nbsp;date</td>
-                      <td>&nbsp;:&nbsp;</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Range&nbsp;date</td>
-                      <td>&nbsp;:&nbsp;</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Totally&nbsp;duration</td>
-                      <td>&nbsp;:&nbsp;</td>
-                      <td></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </Col>
-              <Col className="col-12 col-lg-4">
-                <table id="modalTable" width={"100%"}>
-                  <tbody>
-                    <tr>
-                      <td width={"10%"}>Court</td>
-                      <td width={"1%"}>&nbsp;:&nbsp;</td>
-                      <td width={"89%"}>{court}</td>
-                    </tr>
-                    <tr>
-                      <td>Input&nbsp;by</td>
-                      <td>&nbsp;:&nbsp;</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Condition</td>
-                      <td>&nbsp;:&nbsp;</td>
-                      <td></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </Col>
-              <Col className="col-12 col-lg-4">
-                <table id="modalTable" width={"100%"}>
-                  <tbody>
-                    <tr>
-                      <td width={"10%"}>Booking&nbsp;Payment</td>
-                      <td width={"1%"}>&nbsp;:&nbsp;</td>
-                      <td width={"89%"}></td>
-                    </tr>
-                    <tr>
-                      <td>Status</td>
-                      <td>&nbsp;:&nbsp;</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Member&nbsp;status</td>
-                      <td>&nbsp;:&nbsp;</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>Deposit</td>
-                      <td>&nbsp;:&nbsp;</td>
-                      <td></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </Col>
-            </Row>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              {" "}
-              Close{" "}
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <ScheduleModal show={show} handleClose={handleClose} size="xl" data={{ name: name, court: court }} />
       </div>
 
       <div className="footer lpages text-center text-light p-3 mt-5">

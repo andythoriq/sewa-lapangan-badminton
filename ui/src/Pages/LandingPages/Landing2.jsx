@@ -5,7 +5,6 @@ import Navbar from "react-bootstrap/Navbar";
 import Dropdown from "react-bootstrap/Dropdown";
 import ScheduleModal from "../Users/Schedule/modal";
 
-
 import "./landing2.css";
 const Landing2 = () => {
   let dataCourt = [

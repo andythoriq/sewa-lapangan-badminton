@@ -5,13 +5,13 @@ import FormInput from "../../../Components/Form/input";
 import Swal from "sweetalert2";
 
 const Step2 = () => {
-  const [values, setValues] = useState({ verifikasi: "" });
+  const [values, setValues] = useState({ Verification: "" });
   const [errors, setErrors] = useState({});
 
   const inputs = [
     {
       id: 1,
-      label: "Verifikasi",
+      label: "Verification",
       name: "verifikasi",
       type: "text",
       errorMessage: errors.verifikasi,
@@ -21,7 +21,7 @@ const Step2 = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = {};
-    if (!values.verifikasi.trim()) validationErrors.verifikasir = "Verfikasi required";
+    if (!values.verifikasi.trim()) validationErrors.verifikasir = "Verification required";
 
     // console.log(validationErrors);
     setErrors(validationErrors);
@@ -66,7 +66,7 @@ const Step2 = () => {
               <b className="text-heading" style={{ fontSize: 29 }}>
                 Get started
               </b>
-              <p>Verfikasi your account now</p>
+              <p>Verification your account now</p>
               <br />
               <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
                 {inputs.map((input) => (
@@ -75,7 +75,7 @@ const Step2 = () => {
                   </Form.Group>
                 ))}
                 <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded">
-                  Login
+                  Created
                 </Button>
               </Form>
             </div>
