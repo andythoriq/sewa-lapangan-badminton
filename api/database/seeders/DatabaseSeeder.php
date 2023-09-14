@@ -33,42 +33,42 @@ class DatabaseSeeder extends Seeder
 
         OpenTimeModel::factory()->count(14)->create();
         HolidayModel::factory()->count(16)->create();
-        OpenTimeModel::insert([
-            'start' => '08:00:00',
-            'finish' => '09:00:00',
-            'created_at' => now(),
-            'updated_at' => now()
-        ], [
-            'start' => '09:00:00',
-            'finish' => '10:00:00',
-            'created_at' => now(),
-            'updated_at' => now()
-        ], [
-            'start' => '10:00:00',
-            'finish' => '11:00:00',
-            'created_at' => now(),
-            'updated_at' => now()
-        ], [
-            'start' => '11:00:00',
-            'finish' => '12:00:00',
-            'created_at' => now(),
-            'updated_at' => now()
-        ], [
-            'start' => '12:00:00',
-            'finish' => '13:00:00',
-            'created_at' => now(),
-            'updated_at' => now()
-        ], [
-            'start' => '13:00:00',
-            'finish' => '14:00:00',
-            'created_at' => now(),
-            'updated_at' => now()
-        ], [
-            'start' => '14:00:00',
-            'finish' => '15:00:00',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
+        // OpenTimeModel::insert([
+        //     'start' => '08:00:00',
+        //     'finish' => '09:00:00',
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ], [
+        //     'start' => '09:00:00',
+        //     'finish' => '10:00:00',
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ], [
+        //     'start' => '10:00:00',
+        //     'finish' => '11:00:00',
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ], [
+        //     'start' => '11:00:00',
+        //     'finish' => '12:00:00',
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ], [
+        //     'start' => '12:00:00',
+        //     'finish' => '13:00:00',
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ], [
+        //     'start' => '13:00:00',
+        //     'finish' => '14:00:00',
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ], [
+        //     'start' => '14:00:00',
+        //     'finish' => '15:00:00',
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ]);
 
         CourtModel::factory(4)->has(PeakTimeModel::factory(2), 'peak_times')->create();
         TransactionModel::factory(8)->create();
