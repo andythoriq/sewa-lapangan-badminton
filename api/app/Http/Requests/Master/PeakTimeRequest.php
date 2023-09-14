@@ -28,17 +28,17 @@ class PeakTimeRequest extends FormRequest
     public function rules()
     {
         $validation = [
-            'start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d H:i:s')],
+            'start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'],
             'finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:start'],
             'court_id' => ['required', 'integer', 'exists:tb_court,id']
         ];
 
         if($this->route()->getName() == 'create-multiple-peak-time'){
             $validation = [
-                'peak_times' => ['required', 'array', 'min:1', 'in:start,finish,court_id'],
-                'peak_times.*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d H:i:s')],
-                'peak_times.*.finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:peak_times.*.start'],
-                'peak_times.*.court_id' => ['required', 'integer', 'exists:tb_court,id']
+                '*' => ['required', 'array', 'min:1'],
+                '*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'],
+                '*.finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:*.start'],
+                '*.court_id' => ['required', 'integer', 'exists:tb_court,id']
             ];
         }
 

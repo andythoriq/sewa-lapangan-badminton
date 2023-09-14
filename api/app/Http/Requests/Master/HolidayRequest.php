@@ -27,16 +27,16 @@ class HolidayRequest extends FormRequest
     public function rules()
     {
         $validation = [
-            'start' => ['required', 'date', 'date_format:Y-m-d', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d')],
+            'start' => ['required', 'date', 'date_format:Y-m-d', 'after_or_equal:now'],
             'finish' => ['required', 'date', 'date_format:Y-m-d', 'after:start'],
             'label' => ['required', 'string', 'max:90'],
         ];
         if($this->route()->getName() == 'create-multiple-holiday'){
             $validation = [
-                'holidays' => ['required', 'array', 'min:1', 'in:label,start,finish'],
-                'holidays.*.label' => ['required', 'string', 'max:90'],
-                'holidays.*.start' => ['required', 'date', 'date_format:Y-m-d', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d')],
-                'holidays.*.finish' => ['required', 'date', 'date_format:Y-m-d', 'after:holidays.*.start']
+                '*' => ['required', 'array', 'min:1'],
+                '*.label' => ['required', 'string', 'max:90'],
+                '*.start' => ['required', 'date', 'date_format:Y-m-d', 'after_or_equal:now'],
+                '*.finish' => ['required', 'date', 'date_format:Y-m-d', 'after:*.start']
             ];
         }
         return $validation;
