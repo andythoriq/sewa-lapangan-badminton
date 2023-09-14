@@ -53,7 +53,7 @@ class RentalRequest extends FormRequest
             case 'create-multiple-rental':
                 $validation = [
                     '*' => ['required', 'array', 'min:1'],
-                    '*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d H:i:s')],
+                    '*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'],
                     '*.finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:*.start'],
                     // 'rentals.*.status' => ['required', 'string', 'in:B,O,F'],
                     '*.court_id' => ['required', 'integer', 'exists:tb_court,id'],
@@ -124,7 +124,7 @@ class RentalRequest extends FormRequest
 
             $court_initial_price = CourtModel::select('initial_price')->where('id', $data[$i]['court_id'])->firstOrFail()->initial_price;
 
-            if (strtolower($data[$i]['customer_id'] == 'm')) {
+            if (strtolower($data[$i]['customer_id'][0] == 'm')) {
                 $court_initial_price = ceil($court_initial_price / 1.25);
             }
 
