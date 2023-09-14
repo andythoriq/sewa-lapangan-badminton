@@ -113,6 +113,12 @@ class RentalRequest extends FormRequest
     {
         $data = $this->validated();
 
+        if (strtolower($data['customer_id'][0]) == 'r') {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'customer_id' => ['Regular can\'t make multiple rentals.']
+            ]);
+        }
+
         $transaction = TransactionModel::create([
             'total_price' => 0,
             'total_hour' => 0,
