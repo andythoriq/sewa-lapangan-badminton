@@ -55,14 +55,14 @@ class AuthAdminRequest extends FormRequest
     public function getToken()
     {
         // $user = User::select(['password', 'name'])->where('email', $this->email)->firstOrFail();
-        $user = User::select(['password', 'name'])->where('phone_number', $this->phone_number)->firstOrFail();
+        $user = User::select(['password', 'name', 'id'])->where('phone_number', $this->phone_number)->firstOrFail();
 
         if (! $user || ! Hash::check($this->password, $user->password)) {
             throw ValidationException::withMessages([
                 'phone_number' => ['The provided credentials are incorrect.'],
             ]);
         }
-        return $user->createToken($user->name . '-token')->plainTextToken;
+        return $user->createToken(str_replace(' ', '', $user->name) . '-token')->plainTextToken;
     }
 
     public function register()
@@ -75,6 +75,6 @@ class AuthAdminRequest extends FormRequest
 
     public function createTokenFor(User $admin)
     {
-        $admin->createToken($admin->name . '-token');
+        $admin->createToken(str_replace(' ', '', $admin->name) . '-token');
     }
 }

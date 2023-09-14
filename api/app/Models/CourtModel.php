@@ -26,6 +26,6 @@ class CourtModel extends Model
 
     public function peak_times(): HasMany
     {
-        return $this->hasMany(RentalModel::class, 'court_id', 'id');
+        return $this->hasMany(PeakTimeModel::class, 'court_id', 'id');
     }
 }

@@ -15,9 +15,9 @@ class CustomerController extends Controller
 {
     public function index_M()
     {
-        $members = CustomerModel::select(['customer_code', 'name', 'deposit', 'debt', 'member_active_code'])
-            ->where('status', 'M')
-            ->orWhere('status', 'm')
+        $members = CustomerModel::select(['customer_code', 'name', 'deposit', 'debt', 'member_active_period'])
+            ->where('membership_status', 'M')
+            ->orWhere('membership_status', 'm')
             ->get();
         return new MemberCollection($members);
     }
@@ -25,8 +25,8 @@ class CustomerController extends Controller
     public function index_R()
     {
         $regulars = CustomerModel::select(['customer_code', 'name', 'deposit', 'debt'])
-            ->where('status', 'R')
-            ->orWhere('status', 'r')
+            ->where('membership_status', 'R')
+            ->orWhere('membership_status', 'r')
             ->get();
         return new RegularCollection($regulars);
     }

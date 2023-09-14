@@ -3,12 +3,11 @@
 namespace App\Traits;
 
 use Illuminate\Support\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Validation\ValidationException;
 
 trait CollideCheck
 {
-    public function collideCheck(string $start, string $finish, Collection|array $schedules)
+    public function collideCheck(string $start, string $finish, iterable $schedules)
     {
         $newStart = Carbon::parse($start, 'Asia/Jakarta');
         $newFinish = Carbon::parse($finish, 'Asia/Jakarta');
