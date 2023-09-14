@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Container } from "react-bootstrap";
 import { Form, Card, Row, Col } from "react-bootstrap";
-import FormInput from "../../../Components/Form/input";
-import FormTextarea from "../../../Components/Form/textarea";
+import FormInput from "../../Components/Form/input";
+import FormTextarea from "../../Components/Form/textarea";
 
 const Setting = () => {
   const [values, setValues] = useState({ label: "", price: "" });

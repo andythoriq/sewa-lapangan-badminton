@@ -1,9 +1,9 @@
 import React from "react";
 import { Form, Row, Col, Container, Card } from "react-bootstrap";
-import FormSelect from "../../../Components/Form/select";
-import FormSelectTime from "../../../Components/Form/selectTime";
+import FormSelect from "../../../../Components/Form/select";
+import FormSelectTime from "../../../../Components/Form/selectTime";
 
-const RushHour = () => {
+const Rush = () => {
   let dataCourt = [
     { value: "", label: "" },
     { value: "1", label: "Court A" },
@@ -24,10 +24,10 @@ const RushHour = () => {
                 <FormSelect name="court" label="Court" className="form-select form-select-sm" options={dataCourt} />
               </Col>
               <Col className="col-12 col-md-6">
-                <FormSelectTime label="Start Time" nameHour="start_hour" nameMinute="start_minute" nameTime="start_time" />
+                <FormSelectTime label="Start" nameHour="start_hour" nameMinute="start_minute" nameTime="start_time" />
               </Col>
               <Col className="col-12 col-md-6">
-                <FormSelectTime label="End Time" nameHour="end_hour" nameMinute="end_minute" nameTime="end_time" />
+                <FormSelectTime label="End" nameHour="end_hour" nameMinute="end_minute" nameTime="end_time" />
               </Col>
               <Col className="col-12 text-right mt-4">
                 <button type="button" className="btn btn-danger btn-sm me-md-6">
@@ -42,4 +42,4 @@ const RushHour = () => {
   );
 };
 
-export default RushHour;
+export default Rush;

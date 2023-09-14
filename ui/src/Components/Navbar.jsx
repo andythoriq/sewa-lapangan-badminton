@@ -20,17 +20,17 @@ const Navbar = () => {
   }
 
   let dataCourt = [
-    {value:"", label:"Open Court"},
-    {value:"1", label:"One"},
-    {value:"2", label:"Two"},
-    {value:"3", label:"Three"},
+    {value:"1", label:"Court A"},
+    {value:"2", label:"Court B"},
+    {value:"3", label:"Court C"},
+    {value:"4", label:"Court D"},
   ];
 
   let dataCondition = [
-    {value:"", label:"Open"},
-    {value:"1", label:"One"},
-    {value:"2", label:"Two"},
-    {value:"3", label:"Three"},
+    {value:"1", label:"Booked"},
+    {value:"2", label:"Availabe"},
+    {value:"3", label:"On Progress"},
+    {value:"4", label:"Finished"},
   ];
 
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (

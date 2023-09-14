@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import { Row, Col, Dropdown } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import ScheduleModal from "../Users/Schedule/modal";
 
 import "./nav.css";
@@ -89,15 +89,7 @@ const Landing = () => {
                 Schedule
               </Nav.Link>
             </Nav>
-            <Dropdown>
-              <Dropdown.Toggle variant="dark" id="dropdown-basic">
-                Login
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item href="login">As admin</Dropdown.Item>
-                <Dropdown.Item href="userstep">As user</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+            <Button type="submit" variant="dark" href="userstep">Login</Button> 
           </Navbar.Collapse>
         </Container>
       </Navbar>

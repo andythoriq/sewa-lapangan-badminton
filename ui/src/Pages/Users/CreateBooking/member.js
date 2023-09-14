@@ -56,7 +56,7 @@ const CreateBookingFormMember = () => {
               <Row>
                 <Col className="col-12">
                     <FormSelectTime
-                      label="Start Time"
+                      label="Start"
                       nameHour="start_hour"
                       nameMinute="start_minute"
                       nameTime="start_time"
@@ -68,7 +68,7 @@ const CreateBookingFormMember = () => {
                 </Col>
                 <Col className="col-12">
                     <FormSelectTime
-                      label="End Time"
+                      label="End"
                       nameHour="end_hour"
                       nameMinute="end_minute"
                       nameTime="end_time"

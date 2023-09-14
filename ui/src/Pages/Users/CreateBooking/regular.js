@@ -10,9 +10,6 @@ const CreateBookingFormRegular = () => {
     {value:"1", label:"siti"},
     {value:"2", label:"reza"},
     {value:"3", label:"trian"},
-    {value:"4", label:"mike"},
-    {value:"5", label:"tono"},
-    {value:"6", label:"yosline"},
   ];
 
   let dataCourt = [
@@ -45,7 +42,7 @@ const CreateBookingFormRegular = () => {
         </Col>
         <Col className="col-12 col-md-6">
             <FormSelectTime
-              label="Start Time"
+              label="Start"
               nameHour="start_hour"
               nameMinute="start_minute"
               nameTime="start_time"
@@ -53,7 +50,7 @@ const CreateBookingFormRegular = () => {
         </Col>
         <Col className="col-12 col-md-6">
             <FormSelectTime
-              label="End Time"
+              label="End"
               nameHour="end_hour"
               nameMinute="end_minute"
               nameTime="end_time"

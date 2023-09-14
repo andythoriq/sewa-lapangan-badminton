@@ -5,25 +5,25 @@ const Info = () => {
     const dirImg = '/assets/img/court/';
     let dataInfo = [
         {img:'1.png', title:'Court A', price:'Rp, 25,000/jm', description:`Badminton A BFB field is a field that has used the international
-        standard size for Badminton (13.4 x 61 meters). BFB Arena is
+        standard size for Badminton 13.4 x 61 meters. BFB Arena is
         located in a very strategic place. This field is equipped with
         supporting facilities, such as prayer rooms, air conditioning,
         and toilets, canteens. with a carpeted field.`},
         {img:'2.jpg', title:'Court B', price:'Rp, 25,000/jm', description:`Badminton A BFB field is a field that has used the international
-        standard size for Badminton (13.4 x 61 meters). BFB Arena is
+        standard size for Badminton 13.4 x 61 meters. BFB Arena is
         located in a very strategic place. This field is equipped with
         supporting facilities, such as prayer rooms, air conditioning,
         and toilets, canteens. with a carpeted field.`},
         {img:'3.png', title:'Court C', price:'Rp, 25,000/jm', description:`Badminton A BFB field is a field that has used the international
-        standard size for Badminton (13.4 x 61 meters). BFB Arena is
+        standard size for Badminton 13.4 x 61 meters. BFB Arena is
         located in a very strategic place. This field is equipped with
         supporting facilities, such as prayer rooms, air conditioning,
         and toilets, canteens. with a carpeted field.`},
         {img:'4.png', title:'Court D', price:'Rp, 25,000/jm', description:`Badminton A BFB field is a field that has used the international
-        standard size for Badminton (13.4 x 61 meters). BFB Arena is
+        standard size for Badminton 13.4 x 61 meters. BFB Arena is
         located in a very strategic place. This field is equipped with
         supporting facilities, such as prayer rooms, air conditioning,
-        and toilets, canteens. with a carpeted field.`},
+        and toilets, canteens. with a floored field.`},
     ];
 
     return (
