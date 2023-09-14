@@ -52,9 +52,4 @@ class UserRequest extends FormRequest
         $user->updateOrFail($this->validated());
     }
 
-    public function deleteUser(User $user)
-    {
-        $user->tokens()->delete();
-        $user->deleteOrFail();
-    }
 }
