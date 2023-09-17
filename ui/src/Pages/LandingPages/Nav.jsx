@@ -89,7 +89,8 @@ const Landing = () => {
                 Schedule
               </Nav.Link>
             </Nav>
-            <Button type="submit" variant="dark" href="userstep">Login</Button> 
+            {/* <Button type="submit" variant="dark" href="userstep">Login</Button>  */}
+            <Button type="submit" variant="dark" href="userstep">Register</Button> 
           </Navbar.Collapse>
         </Container>
       </Navbar>

@@ -7,6 +7,7 @@ import { FunnelIcon, XMarkIcon, Bars3BottomLeftIcon } from '@heroicons/react/24/
 import { useDispatch, useSelector } from "react-redux";
 import { setToggle } from '../Reducers/menuSlice';
 import FormSelect from "./Form/select";
+import axios from "../api/axios";
 
 const Navbar = () => {
   const { menuSidebar } = useSelector(state => state.menu);
@@ -17,6 +18,18 @@ const Navbar = () => {
   const handleToggle = () => {
     dispatch(setToggle({menuSidebar:!menuSidebar}));
     document.body.classList.toggle('sb-sidenav-toggled');
+  }
+
+  const handleLogout = async () => {
+    await axios.get('/sanctum/csrf-cookie')
+    await axios.post('/api/logout-admin', null, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    localStorage.removeItem('token');
+    localStorage.removeItem('role')
+    setTimeout(function () { window.location.href = "/"; }, 500);
   }
 
   let dataCourt = [
@@ -94,7 +107,8 @@ const Navbar = () => {
               <img src={`${dirIcon}user-circle.png`} alt=""/>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item eventKey="1" href="/logout">Logout</Dropdown.Item>
+              {/* <Dropdown.Item eventKey="1" href="/logout">Logout</Dropdown.Item> */}
+              <Dropdown.Item eventKey="1" onClick={handleLogout}>Logout</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
           </li>

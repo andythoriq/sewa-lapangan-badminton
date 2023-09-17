@@ -3,19 +3,21 @@ import { Card, Col, Container, Row, Form, Button } from "react-bootstrap";
 import { logoApp, namaApp } from "../../Components/Services/config";
 import FormInput from "../../Components/Form/input";
 import Swal from "sweetalert2";
+import axios from "../../api/axios";
 
 const Login = () => {
-    const [values, setValues] = useState({ username: "", password: "" });
-    const [errors, setErrors] = useState({});
+    const [values, setValues] = useState({ phone_number: "", password: "" });
+    // const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState([]);
 
     const inputs = [
         {
           id: 1,
-          label: "Username",
-          name: "username",
+          label: "Phone number",
+          name: "phone_number",
           type: "text",
-          placeholder: "input username",
-          errorMessage: errors.username,
+          placeholder: "input phone number",
+        //   errorMessage: errors?.phone_number[0],
         },
         {
           id: 2,
@@ -23,31 +25,52 @@ const Login = () => {
           name: "password",
           type: "password",
           placeholder: "input password",
-          errorMessage: errors.password,
+        //   errorMessage: errors?.password[0],
         }
     ];
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const validationErrors = {}
-        if (!values.username.trim()) validationErrors.username = "Username required";
-        if (!values.password.trim()) validationErrors.password = "Password wajib diisi";
+        // const validationErrors = {}
+        // if (!values.username.trim()) validationErrors.username = "Username required";
+        // if (!values.password.trim()) validationErrors.password = "Password wajib diisi";
   
-        // console.log(validationErrors);
-        setErrors(validationErrors);
-        if(Object.keys(validationErrors).length === 0) {
-          localStorage.setItem("role", "admin");
-          localStorage.setItem('token', 'abcd12345');
-          localStorage.setItem('username', values.username);
-          Swal.fire({icon:"success", title:"Success!", html:'Login successfully', 
-            showConfirmButton: false, allowOutsideClick: false,
-            allowEscapeKey:false, timer: 2000});
-          setTimeout(function() { window.location.href="/"; }, 2000);
+        // // console.log(validationErrors);
+        // setErrors(validationErrors);
+        // if(Object.keys(validationErrors).length === 0) {
+        //   localStorage.setItem("role", "admin");
+        //   localStorage.setItem('token', 'abcd12345');
+        //   localStorage.setItem('username', values.username);
+        //   Swal.fire({icon:"success", title:"Success!", html:'Login successfully', 
+        //     showConfirmButton: false, allowOutsideClick: false,
+        //     allowEscapeKey:false, timer: 2000});
+        //   setTimeout(function() { window.location.href="/"; }, 2000);
+        // }
+        try {
+            await axios.get('/sanctum/csrf-cookie')
+            const response = await axios.post('/api/login-admin', {
+                phone_number: values.phone_number,
+                password: values.password
+            })
+            localStorage.setItem('token', response.data)
+            localStorage.setItem('role', 'admin')
+            setValues({phone_number: "", password: ""})
+            Swal.fire({
+                icon: "success", title: "Success!", html: 'Login successfully',
+                showConfirmButton: false, allowOutsideClick: false,
+                allowEscapeKey: false, timer: 2000
+            });
+            setTimeout(function () { window.location.href = "/"; }, 2000);
+        } catch (e) {
+            if (e.response.status === 422) {
+                setErrors(e.response.data.errors)
+                console.log(e.response.data.errors)
+            }
         }
       };
     
       const onChange = (e) => { 
-        setErrors({});
+        // setErrors({});
         setValues({ ...values, [e.target.name]: e.target.value });
       }
 

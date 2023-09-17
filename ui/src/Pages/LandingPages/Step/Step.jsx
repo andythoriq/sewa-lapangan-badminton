@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Card, Col, Container, Row, Form, Button } from "react-bootstrap";
 import { logoApp, namaApp } from "../../../Components/Services/config";
 import FormInput from "../../../Components/Form/input";
+import axios from "../../../api/axios";
 
 const FormStep = () => {
-  const [values, setValues] = useState({ fullname: "", username: "", password: "" });
-  const [errors, setErrors] = useState({});
+  const [values, setValues] = useState({ fullname: "", phone_number: "", password: "" });
+  // const [errors, setErrors] = useState({});
+  const [ errors, setErrors ] = useState([]);
 
   const inputs = [
     {
@@ -14,13 +16,15 @@ const FormStep = () => {
       name: "fullname",
       type: "text",
       placeholder: "input full name",
+      // errorMessage: errors.name[ 0 ],
     },
     {
       id: 2,
       label: "Phone number",
-      name: "phonenumber",
+      name: "phone_number",
       type: "text",
       placeholder: "input phone number",
+      // errorMessage: errors.phone_number[ 0 ],
     },
     {
       id: 3,
@@ -28,30 +32,49 @@ const FormStep = () => {
       name: "password",
       type: "password",
       placeholder: "input password",
-      errorMessage: errors.password,
+      // errorMessage: errors.password[0],
     },
   ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationErrors = {};
-    if (!values.fullname.trim()) validationErrors.fullname = "Full name required";
-    if (!values.phonenumber.trim()) validationErrors.phonenumber = "Phone number required";
-    if (!values.password.trim()) validationErrors.password = "Password required";
+    // const validationErrors = {};
+    // if (!values.fullname.trim()) validationErrors.fullname = "Full name required";
+    // if (!values.phonenumber.trim()) validationErrors.phonenumber = "Phone number required";
+    // if (!values.password.trim()) validationErrors.password = "Password required";
 
-    // console.log(validationErrors);
-    setErrors(validationErrors);
-    if (Object.keys(validationErrors).length === 0) {
-      localStorage.setItem("token", "abcd12345");
-      localStorage.setItem("phonenumber", values.phonenumber);
+    // // console.log(validationErrors);
+    // setErrors(validationErrors);
+    // if (Object.keys(validationErrors).length === 0) {
+    //   localStorage.setItem("token", "abcd12345");
+    //   localStorage.setItem("phonenumber", values.phonenumber);
+    //   setTimeout(function () {
+    //     window.location.href = "/";
+    //   }, 2000);
+    // }
+    try {
+      await axios.get('/sanctum/csrf-cookie')
+      await axios.post('/api/register-admin', {
+        name: values.fullname,
+        phone_number: values.phone_number,
+        role_id: 1, // masih hardcoded
+        password: values.password
+      })
+      setValues({ phone_number: "", password: "", fullname: "" })
       setTimeout(function () {
-        window.location.href = "/";
+        // window.location.href = "/";
+        window.location.href = "/login";
       }, 2000);
+    } catch (e) {
+      if (e.response.status === 422) {
+        setErrors(e.response.data.errors)
+        console.log(e.response.data.errors)
+      }
     }
   };
 
   const onChange = (e) => {
-    setErrors({});
+    // setErrors({});
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
@@ -88,8 +111,11 @@ const FormStep = () => {
                     <FormInput key={input.id} {...input} value={values[input.name]} onChange={onChange} icon={input.icon} />
                   </Form.Group>
                 ))}
-                <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded" href="/step2">
+                {/* <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded" href="/step2">
                   Next
+                </Button> */}
+                <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded">
+                  Register
                 </Button>
               </Form>
             </div>
