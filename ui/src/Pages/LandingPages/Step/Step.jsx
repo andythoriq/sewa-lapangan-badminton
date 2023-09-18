@@ -54,16 +54,16 @@ const FormStep = () => {
     // }
     try {
       await axios.get('/sanctum/csrf-cookie')
-      await axios.post('/api/register-admin', {
+      await axios.post('/api/register', {
         name: values.fullname,
         phone_number: values.phone_number,
-        role_id: 1, // masih hardcoded
         password: values.password
       })
       setValues({ phone_number: "", password: "", fullname: "" })
       setTimeout(function () {
         // window.location.href = "/";
-        window.location.href = "/login";
+        window.location.href = "/step2";
+        // window.location.href = "/login";
       }, 2000);
     } catch (e) {
       if (e.response.status === 422) {

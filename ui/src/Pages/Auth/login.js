@@ -6,18 +6,18 @@ import Swal from "sweetalert2";
 import axios from "../../api/axios";
 
 const Login = () => {
-    const [values, setValues] = useState({ phone_number: "", password: "" });
+    const [values, setValues] = useState({ username: "", password: "" });
     // const [errors, setErrors] = useState({});
     const [errors, setErrors] = useState([]);
 
     const inputs = [
         {
           id: 1,
-          label: "Phone number",
-          name: "phone_number",
+          label: "Username",
+          name: "username",
           type: "text",
-          placeholder: "input phone number",
-        //   errorMessage: errors?.phone_number[0],
+          placeholder: "input username",
+        //   errorMessage: errors?.username[0],
         },
         {
           id: 2,
@@ -49,12 +49,12 @@ const Login = () => {
         try {
             await axios.get('/sanctum/csrf-cookie')
             const response = await axios.post('/api/login-admin', {
-                phone_number: values.phone_number,
+                username: values.username,
                 password: values.password
             })
             localStorage.setItem('token', response.data)
             localStorage.setItem('role', 'admin')
-            setValues({phone_number: "", password: ""})
+            setValues({username: "", password: ""})
             Swal.fire({
                 icon: "success", title: "Success!", html: 'Login successfully',
                 showConfirmButton: false, allowOutsideClick: false,
