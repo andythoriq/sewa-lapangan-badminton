@@ -70,10 +70,10 @@ class DatabaseSeeder extends Seeder
         //     'updated_at' => now()
         // ]);
 
-        CourtModel::factory(4)->has(PeakTimeModel::factory(2), 'peak_times')->create();
-        TransactionModel::factory(8)->create();
-        RoleModel::factory(2)->has(User::factory(4), 'users')->create();
-        CustomerModel::factory(4)
-        ->has(RentalModel::factory(2), 'rentals')->create();
+        CourtModel::factory(3)->has(PeakTimeModel::factory(2), 'peak_times')->create();
+        TransactionModel::factory(4)->create();
+        RoleModel::factory(3)->has(User::factory(4), 'users')->create();
+        CustomerModel::factory(3)
+        ->has(RentalModel::factory(3), 'rentals')->create();
     }
 }

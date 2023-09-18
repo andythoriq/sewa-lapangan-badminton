@@ -129,7 +129,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(AuthAdminController::class)->middleware('admin')->group(function(){
         Route::post('/login-admin', 'login')->name('login-admin')->withoutMiddleware(['auth:sanctum', 'admin']);
         Route::post('/login-admin/{admin}', 'login_for_other');
-        Route::post('/register-admin', 'register')->name('register-admin')->withoutMiddleware(['auth:sanctum', 'admin']);
+        // Route::post('/register-admin', 'register')->name('register-admin')->withoutMiddleware(['auth:sanctum', 'admin']);
         Route::post('/logout-admin', 'logout');
         Route::get('/me-admin', 'me');
     });
