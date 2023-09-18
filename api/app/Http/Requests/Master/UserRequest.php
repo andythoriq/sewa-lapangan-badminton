@@ -31,6 +31,7 @@ class UserRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:90'],
             // 'email' => ['required', 'string', 'email', 'max:90', Rule::unique('users', 'email')->ignore($id)],
+            'username' => ['required', 'string', 'max:90', Rule::unique('users', 'username')->ignore($id)],
             'phone_number' => ['required', 'string', 'max:20', Rule::unique('users', 'phone_number')->ignore($id)],
             'status' => ['required', 'string', 'in:Y,N'],
             'role_id' => ['required', 'integer', 'exists:tb_role,id'],

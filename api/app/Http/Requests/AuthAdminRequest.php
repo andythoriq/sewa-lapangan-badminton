@@ -34,6 +34,7 @@ class AuthAdminRequest extends FormRequest
                 $validation = [
                     'name' => ['required', 'string', 'max:90'],
                     // 'email' => ['required', 'string', 'email', 'max:90', Rule::unique('users', 'email')],
+                    'username' => ['required', 'string', 'max:90', Rule::unique('users', 'username')],
                     'phone_number' => ['required', 'string', 'max:20', Rule::unique('users', 'phone_number')],
                     // 'status' => ['required', 'string', 'in:Y,N'],
                     'role_id' => ['required', 'integer', 'exists:tb_role,id'],
@@ -44,7 +45,8 @@ class AuthAdminRequest extends FormRequest
             case 'login-admin':
                 $validation = [
                     // 'email' => ['required', 'email'],
-                    'phone_number' => ['required', 'string', 'max:20'],
+                    // 'phone_number' => ['required', 'string', 'max:20'],
+                    'username' => ['required', 'string', 'max:90'],
                     'password' => ['required'],
                 ];
                 break;
