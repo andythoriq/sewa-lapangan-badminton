@@ -20,6 +20,9 @@ class TransactionResource extends JsonResource
             'total_price' => $this->total_price,
             'total_hour' => $this->total_hour,
             'booking_code' => $this->booking_code,
+            'qr_code_image' => $this->qr_code_image ?? '',
+            'isPaid' => $this->isPaid,
+            'customer_paid' => $this->customer_paid ?? '',
             'rentals' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
                 'id' => $rental->id,
                 'start' => $rental->start,
