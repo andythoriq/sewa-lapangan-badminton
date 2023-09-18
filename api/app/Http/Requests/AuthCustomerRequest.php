@@ -53,7 +53,7 @@ class AuthCustomerRequest extends FormRequest
     public function getToken()
     {
         $customer = CustomerModel::select(['password', 'name', 'customer_code'])->where('phone_number', $this->phone_number)->firstOrFail();
-        if (! $customer || Hash::check($this->password, $customer->password)) {
+        if (! $customer || ! Hash::check($this->password, $customer->password)) {
             throw ValidationException::withMessages([
                 'phone_number' => ['The provided credentials are incorrect.'],
             ]);

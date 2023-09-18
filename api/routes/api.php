@@ -140,6 +140,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/login', 'login')->name('login-customer')->withoutMiddleware(['auth:sanctum', 'customer']);
         Route::post('/register', 'register')->name('register-customer')->withoutMiddleware(['auth:sanctum', 'customer']);
         Route::post('/logout', 'logout');
-        Route::post('/me', 'me');
+        Route::get('/me', 'me');
     });
 });
