@@ -4,7 +4,7 @@ import { logoApp, namaApp } from "../../../Components/Services/config";
 import FormInput from "../../../Components/Form/input";
 
 const FormStep = () => {
-  const [values, setValues] = useState({ fullname: "", username: "", password: "" });
+  const [values, setValues] = useState({ fullname: "", phonenumber: "", });
   const [errors, setErrors] = useState({});
 
   const inputs = [
@@ -21,14 +21,6 @@ const FormStep = () => {
       name: "phonenumber",
       type: "text",
       placeholder: "input phone number",
-    },
-    {
-      id: 3,
-      label: "Password",
-      name: "password",
-      type: "password",
-      placeholder: "input password",
-      errorMessage: errors.password,
     },
   ];
 
@@ -64,7 +56,7 @@ const FormStep = () => {
               <img src={`/${logoApp}`} alt="" width={30} style={{ marginTop: -10 }} />
               <b style={{ paddingLeft: 5, fontSize: 20 }}>{namaApp}</b>
               <div className="text-danger mt-4 text-heading">Management Booking</div>
-              <div className="mb-3 text-heading">Field Badminton</div>
+              <div className="mb-3 text-heading">Court Badminton</div>
               <div style={{ fontSize: 12 }}>
                 BFB provides various features that support the operational
                 <br />
@@ -84,7 +76,7 @@ const FormStep = () => {
               <br />
               <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
                 {inputs.map((input) => (
-                  <Form.Group key={input.id} className="mb-0">
+                  <Form.Group key={input.id} className="mb-2">
                     <FormInput key={input.id} {...input} value={values[input.name]} onChange={onChange} icon={input.icon} />
                   </Form.Group>
                 ))}

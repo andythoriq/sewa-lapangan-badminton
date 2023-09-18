@@ -10,8 +10,8 @@ const Sidebar = () => {
     const dirIcon = "/assets/icon/";
     let subMaster = [
         {name:"Court", link:"/data-master/court"},
-        {name:"Regular Customer", link:"/data-master/customer-regular"},
-        {name:"Customer Member", link:"/data-master/customer-member"},
+        {name:"Regular Customer", link:"/data-master/regular"},
+        {name:"Customer Member", link:"/data-master/member"},
         {name:"Holidays", link:"/data-master/holidays"},
         {name:"Rush hour", link:"/data-master/rush"},
     ];

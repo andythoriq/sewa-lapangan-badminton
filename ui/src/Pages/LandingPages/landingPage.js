@@ -7,7 +7,7 @@ const LandingPage = () => {
       <>
         <div>
           <div>
-            <Landing />
+            <Landing/>
           </div>
         </div>
       </>
