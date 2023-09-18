@@ -58,7 +58,7 @@ class AuthCustomerRequest extends FormRequest
                 'phone_number' => ['The provided credentials are incorrect.'],
             ]);
         }
-        return $customer->createToken($customer->name . '-token')->plainTextToken;
+        return $customer->createToken(str_replace(' ', '', $customer->name) . '-token')->plainTextToken;
     }
 
     public function register()

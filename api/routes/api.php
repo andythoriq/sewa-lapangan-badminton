@@ -138,7 +138,7 @@ Route::middleware('auth:sanctum')->group(function () {
      * policy/role: auth-handle, admin */
     Route::controller(AuthCustomerController::class)->middleware('customer')->group(function(){
         Route::post('/login', 'login')->name('login-customer')->withoutMiddleware(['auth:sanctum', 'customer']);
-        Route::post('/register-member', 'register')->name('register-customer')->withoutMiddleware(['auth:sanctum', 'customer']);
+        Route::post('/register', 'register')->name('register-customer')->withoutMiddleware(['auth:sanctum', 'customer']);
         Route::post('/logout', 'logout');
         Route::post('/me', 'me');
     });
