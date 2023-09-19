@@ -46,7 +46,7 @@ class AuthAdminRequest extends FormRequest
                 $validation = [
                     // 'email' => ['required', 'email'],
                     // 'phone_number' => ['required', 'string', 'max:20'],
-                    'username' => ['required', 'string', 'max:90'],
+                    'username' => ['required', 'string', 'max:90', 'exists:users,username'],
                     'password' => ['required'],
                 ];
                 break;

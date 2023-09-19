@@ -22,7 +22,7 @@ class CustomerModelFactory extends Factory
             'debt' => $this->faker->randomFloat(2, 60_000, 100_000),
             'membership_status' => 'R',
             'status' => 'Y',
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+            // 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             // password
             'remember_token' => Str::random(10),
             'member_active_period' => null,
@@ -36,7 +36,7 @@ class CustomerModelFactory extends Factory
             'debt' => $this->faker->randomFloat(2, 60_000, 100_000),
             'membership_status' => 'M',
             'status' => 'Y',
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            // 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
             'member_active_period' => $this->faker->dateTimeBetween('2023-01-01 00:00:00', '2023-12-30 00:00:00'),
         ];
