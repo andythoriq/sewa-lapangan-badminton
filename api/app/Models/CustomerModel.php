@@ -23,6 +23,7 @@ class CustomerModel extends User
         'membership_status',
         'status',
         'member_active_period',
+        'otp_code'
     ];
 
     protected $primaryKey = 'customer_code';
@@ -32,7 +33,7 @@ class CustomerModel extends User
     public $incrementing = false;
 
     protected $hidden = [
-        'password',
+        // 'password',
         'remember_token',
     ];
 

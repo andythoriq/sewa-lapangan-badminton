@@ -22,7 +22,8 @@ class Customer extends Migration
             $table->enum('membership_status', ['M', 'R'])->comment('M: member, R: regular')->default('R');
             $table->enum('status', ['Y', 'N'])->comment('Y: Active, N: Inactive')->default('Y');
             $table->dateTime('member_active_period')->nullable()->default(null);
-            $table->string('password')->nullable()->default(null);
+            $table->string('otp_code')->nullable()->default(null)->unique();
+            // $table->string('password')->nullable()->default(null);
             $table->rememberToken();
             $table->timestamps();
         });

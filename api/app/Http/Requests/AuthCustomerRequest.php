@@ -32,42 +32,62 @@ class AuthCustomerRequest extends FormRequest
     {
         $rules = [];
         switch ($this->route()->getName()) {
-            case 'login-customer':
+            case 'verify-otp':
                 $rules = [
-                    'phone_number' => ['required', 'string', 'max:20'],
-                    'password' => ['required']
+                    // 'phone_number' => ['required', 'string', 'max:20'],
+                    'otp_code' => ['required', 'exists:tb_customer,otp_code']
                 ];
                 break;
-            case 'register-customer':
+            case 'send-otp':
                 $rules = [
                     'name' => ['required', 'string', 'max:90'],
                     'phone_number' => ['required', 'string', 'max:20', Rule::unique('tb_customer', 'phone_number')],
                     // 'status' => ['required', 'string', 'in:Y,N'],
-                    'password' => ['required', Password::defaults()]
+                    // 'password' => ['required', Password::defaults()]
                 ];
                 break;
         }
         return $rules;
     }
 
-    public function getToken()
+    // private function getToken()
+    // {
+    //     $customer = CustomerModel::select(['password', 'name', 'customer_code'])->where('phone_number', $this->phone_number)->firstOrFail();
+    //     if (! $customer || ! Hash::check($this->password, $customer->password)) {
+    //         throw ValidationException::withMessages([
+    //             'phone_number' => ['The provided credentials are incorrect.'],
+    //         ]);
+    //     }
+    //     return $customer->createToken(str_replace(' ', '', $customer->name) . '-token')->plainTextToken;
+    // }
+
+    public function send_otp()
     {
-        $customer = CustomerModel::select(['password', 'name', 'customer_code'])->where('phone_number', $this->phone_number)->firstOrFail();
-        if (! $customer || ! Hash::check($this->password, $customer->password)) {
-            throw ValidationException::withMessages([
-                'phone_number' => ['The provided credentials are incorrect.'],
+        $otp = random_int(100000, 999999);
+        do {
+            $otp = random_int(100000, 999999);
+        } while (CustomerModel::where('otp_code', $otp)->exists());
+
+        $validated = $this->validated();
+        $customer = CustomerModel::select('customer_code')->where('phone_number', $validated['phone_number'])->firstOrFail();
+        if ($customer) {
+            $customer->update([
+                'otp_code' => $otp
             ]);
+        } else {
+            $validated['membership_status'] = 'R';
+            $validated['status'] = 'Y';
+            $validated['otp_code'] = $otp;
+            $validated['customer_code'] = $this->getFormattedCode('r');
+            CustomerModel::create($validated);
         }
-        return $customer->createToken(str_replace(' ', '', $customer->name) . '-token')->plainTextToken;
+
+        // send . . .
     }
 
-    public function register()
+    public function verify_otp()
     {
-        $validated = $this->validated();
-        $validated['membership_status'] = 'R';
-        $validated['status'] = 'Y';
-        $validated['password'] = Hash::make($validated['password']);
-        $validated['customer_code'] = $this->getFormattedCode('r');
-        CustomerModel::create($validated);
+        $customer = CustomerModel::select(['otp_code', 'phone_number', 'customer_code'])->where('otp_code', $this->otp_code)->firstOrFail();
+        return $customer->createToken(str_replace(' ', '', $customer->phone_number) . '-token')->plainTextToken;
     }
 }

@@ -137,9 +137,12 @@ Route::middleware('auth:sanctum')->group(function () {
     /** Customer AUTH ROUTES
      * policy/role: auth-handle, admin */
     Route::controller(AuthCustomerController::class)->middleware('customer')->group(function(){
-        Route::post('/login', 'login')->name('login-customer')->withoutMiddleware(['auth:sanctum', 'customer']);
-        Route::post('/register', 'register')->name('register-customer')->withoutMiddleware(['auth:sanctum', 'customer']);
+        Route::post('/send-opt', 'send')->name('send-otp')->withoutMiddleware(['auth:sanctum', 'customer']);
+        Route::post('/verify-otp', 'verify')->name('verify-otp')->withoutMiddleware(['auth:sanctum', 'customer']);
         Route::post('/logout', 'logout');
         Route::get('/me', 'me');
     });
+
+    /** END OF MASTER DATA */
+
 });
