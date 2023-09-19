@@ -17,7 +17,7 @@ class Role extends Migration
             $table->id();
             $table->string('label', 90)->unique();
             $table->text('menu');
-            $table->enum('status', ['Y', 'N'])->comment('Y: Active, N: Inactive');
+            $table->enum('status', ['Y', 'N'])->comment('Y: Active, N: Inactive')->default('Y');
             $table->timestamps();
         });
     }

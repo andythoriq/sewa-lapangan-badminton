@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class OpenTime extends Migration
+class ModifyPersonalAccessTokensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class OpenTime extends Migration
      */
     public function up()
     {
-        Schema::create('tb_open_time', function (Blueprint $table) {
-            $table->id();
-            $table->time('start')->unique();
-            $table->time('finish')->unique();
-            $table->timestamps();
+        Schema::table('personal_access_tokens', function (Blueprint $table) {
+            $table->string('tokenable_id')->change();
         });
     }
 
@@ -28,6 +25,8 @@ class OpenTime extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_open_time');
+        Schema::table('personal_access_tokens', function (Blueprint $table) {
+            $table->integer('tokenable_id')->change();
+        });
     }
 }

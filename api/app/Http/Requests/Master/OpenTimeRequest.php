@@ -3,12 +3,11 @@
 namespace App\Http\Requests\Master;
 
 use App\Models\OpenTimeModel;
-use App\Traits\CollideCheck;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class OpenTimeRequest extends FormRequest
 {
-    use CollideCheck;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,26 +25,20 @@ class OpenTimeRequest extends FormRequest
      */
     public function rules()
     {
+        $id = isset($this->open_time) ? ($this->open_time->id ?? null) : null;
         return [
-            'start' => ['required', 'date_format:H:i:s'],
-            'finish' => ['required', 'date_format:H:i:s', 'after:start'],
+            'start' => ['required', 'date_format:H:i:s', Rule::unique('tb_open_time', 'start')->ignore($id)],
+            'finish' => ['required', 'date_format:H:i:s', 'after:start', Rule::unique('tb_open_time', 'finish')->ignore($id)],
         ];
     }
 
     public function createOpenTime()
     {
-        $this->collideCheck($this->start, $this->finish, $this->getSchedules());
         OpenTimeModel::create($this->validated());
     }
 
     public function updateOpenTime(OpenTimeModel $open_time)
     {
-        $this->collideCheck($this->start, $this->finish, $this->getSchedules());
         $open_time->updateOrFail($this->validated());
-    }
-
-    private function getSchedules()
-    {
-        return OpenTimeModel::select(['start', 'finish'])->get();
     }
 }

@@ -17,7 +17,7 @@ class RegularCollection extends ResourceCollection
     {
         return $this->collection->map(function ($customer) {
             return [
-                'code_customer' => $customer->code_customer,
+                'customer_code' => $customer->customer_code,
                 'name' => $customer->name,
                 'deposit' => $customer->deposit,
                 'debt' => $customer->debt

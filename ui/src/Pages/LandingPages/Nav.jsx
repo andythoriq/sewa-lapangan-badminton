@@ -89,14 +89,10 @@ const Landing = () => {
                 Schedule
               </Nav.Link>
             </Nav>
-              <Nav.Link href="userstep" className="text-white">
-                Registration
-              </Nav.Link>
-            <Button type="submit" variant="dark" href="loginc" className="ms-2">Login</Button> 
-          </Navbar.Collapse>
+            <Button type="submit" variant="dark" href="userstep" className="ms-2">Registion</Button> 
+            </Navbar.Collapse>
         </Container>
       </Navbar>
-
       <div className="container-build banner">
         <div className="container text-center">
           <h4 className="display-6">Top Quality Badminton Venue</h4>
@@ -186,7 +182,8 @@ const Landing = () => {
         </div>
       </div>
     </>
-  );
-};
-
+     );
+    };
+    
 export default Landing;
+

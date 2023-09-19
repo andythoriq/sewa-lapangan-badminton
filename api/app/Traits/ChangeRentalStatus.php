@@ -1,27 +1,26 @@
 <?php
 
 namespace App\Traits;
-use App\Models\RentalModel;
 use Illuminate\Support\Carbon;
 
 trait ChangeRentalStatus
 {
-    public function getAndChangeRentalStatus(string $rentalStart, string $rentalFinish, RentalModel $rental):string
+    public function getAndChangeRentalStatus(string $rentalStart, string $rentalFinish, object $rental):string
     {
-        $current = Carbon::now('Asia/Jakarta')->format('Y-m-d H:i:s');
+        $current = Carbon::parse(now('Asia/Jakarta')->format('Y-m-d H:i:s'));
 
         $start = Carbon::parse($rentalStart);
         $finish = Carbon::parse($rentalFinish);
 
         $status = 'B';
 
-        if ($start->lt($current)) {
+        if ($current->lt($start)) {
             $status = 'B'; // booked
         }
-        else if ($start->gte($current) && $finish->lt($current)){
+        else if ($current->between($start, $finish)){
             $status = 'O'; // onprogress, turn on the lamp
         }
-        else if ($finish->gte($current)) {
+        else if ($current->gt($finish)) {
             $status = 'F'; // finished, turn off the lamp
         }
         $rental->update(['status' => $status]);

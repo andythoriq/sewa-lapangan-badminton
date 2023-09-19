@@ -34,7 +34,7 @@ class MemberRequest extends FormRequest
             'deposit' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
             'debt' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
             'status' => ['required', 'string', 'in:Y,N'],
-            'member_active_period' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d H:i:s')],
+            'member_active_period' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'],
         ];
     }
 
@@ -42,6 +42,7 @@ class MemberRequest extends FormRequest
     {
         $customer = $this->validated();
         $customer['membership_status'] = 'M';
+        $customer['status'] = strtoupper($customer['status']);
         $customer['customer_code'] = $this->getFormattedCode('m');
         CustomerModel::create($customer);
     }

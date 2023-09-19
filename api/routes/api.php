@@ -13,14 +13,13 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 | test
-
 */
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    /** Master User Role
+    /** Master User/Admin Role
      * policy/role: user-handle, admin */
-    Route::controller(RoleController::class)->group(function(){
+    Route::controller(RoleController::class)->middleware('admin')->group(function(){
         Route::get('/role', 'index');
         Route::get('/role/{role}', 'show');
         Route::post('/role', 'create');
@@ -28,19 +27,19 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/role/{role}', 'delete');
     });
 
-    /** Master User Management
+    /** Master Admin/User Management
      * policy/role: user-handle, admin */
-    Route::controller(UserController::class)->group(function(){
-        Route::get('/user', 'index');
-        Route::get('/user/{user}', 'show');
-        Route::post('/user', 'create');
-        Route::put('/user/{user}', 'update');
-        Route::delete('/user/{user}', 'delete');
+    Route::controller(UserController::class)->middleware('admin')->group(function(){
+        Route::get('/admin', 'index');
+        Route::get('/admin/{user}', 'show');
+        Route::post('/admin', 'create');
+        Route::put('/admin/{user}', 'update');
+        Route::delete('/admin/{user}', 'delete');
     });
 
     /** Master Configuration
      * policy/role: configuration-handle, admin */
-    Route::controller(ConfigController::class)->group(function(){
+    Route::controller(ConfigController::class)->middleware('admin')->group(function(){
         Route::get('/config', 'index');
         Route::get('/config/{config}', 'show');
         Route::post('/config', 'create');
@@ -50,7 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     /** Master Holiday
      * policy/role: schedule-handle, admin */
-    Route::controller(HolidayController::class)->group(function(){
+    Route::controller(HolidayController::class)->middleware('admin')->group(function(){
         Route::get('/holiday', 'index');
         Route::post('/holiday', 'create');
         Route::post('/create-multiple-holiday', 'create_multiple')->name('create-multiple-holiday');
@@ -60,7 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     /** Master Open time
      * policy/role: schedule-handle, admin */
-    Route::controller(OpenTimeController::class)->group(function(){
+    Route::controller(OpenTimeController::class)->middleware('admin')->group(function(){
         Route::get('/open-time', 'index');
         Route::post('/open-time', 'create');
         Route::put('/open-time/{open_time}', 'update');
@@ -69,7 +68,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     /** Master Peak time / peak time court
      * policy/role: schedule-handle, admin */
-    Route::controller(PeakTimeController::class)->group(function(){
+    Route::controller(PeakTimeController::class)->middleware('admin')->group(function(){
         Route::get('/peak-time', 'index');
         Route::get('/peak-time/{peak_time}', 'show');
         Route::post('/peak-time', 'create');
@@ -80,7 +79,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     /** Master Court
      * policy/role: court-handle, admin */
-    Route::controller(CourtController::class)->group(function(){
+    Route::controller(CourtController::class)->middleware('admin')->group(function(){
         Route::get('/court', 'index');
         Route::get('/court/{court}', 'show');
         Route::post('/court', 'create');
@@ -127,20 +126,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
     /** Admin AUTH ROUTES
      * policy/role: auth-handle, admin */
-    Route::controller(AuthAdminController::class)->group(function(){
-        Route::post('/login-admin', 'login')->name('login-admin')->withoutMiddleware('auth:sanctum');
+    Route::controller(AuthAdminController::class)->middleware('admin')->group(function(){
+        Route::post('/login-admin', 'login')->name('login-admin')->withoutMiddleware(['auth:sanctum', 'admin']);
         Route::post('/login-admin/{admin}', 'login_for_other');
-        Route::post('/register-admin', 'register')->name('register-admin')->withoutMiddleware('auth:sanctum');
+        // Route::post('/register-admin', 'register')->name('register-admin')->withoutMiddleware(['auth:sanctum', 'admin']);
         Route::post('/logout-admin', 'logout');
         Route::get('/me-admin', 'me');
     });
 
     /** Customer AUTH ROUTES
      * policy/role: auth-handle, admin */
-    Route::controller(AuthCustomerController::class)->group(function(){
-        Route::post('/login', 'login')->name('login-customer')->withoutMiddleware('auth:sanctum');
-        Route::post('/register-member', 'register')->name('register-customer')->withoutMiddleware('auth:sanctum');
+    Route::controller(AuthCustomerController::class)->middleware('customer')->group(function(){
+        Route::post('/login', 'login')->name('login-customer')->withoutMiddleware(['auth:sanctum', 'customer']);
+        Route::post('/register', 'register')->name('register-customer')->withoutMiddleware(['auth:sanctum', 'customer']);
         Route::post('/logout', 'logout');
-        Route::post('/me', 'me');
+        Route::get('/me', 'me');
     });
 });

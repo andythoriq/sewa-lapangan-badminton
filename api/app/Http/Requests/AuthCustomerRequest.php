@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\CustomerModel;
+use App\Traits\CustomerCodeFormat;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
@@ -11,6 +12,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthCustomerRequest extends FormRequest
 {
+    use CustomerCodeFormat;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -40,7 +42,7 @@ class AuthCustomerRequest extends FormRequest
                 $rules = [
                     'name' => ['required', 'string', 'max:90'],
                     'phone_number' => ['required', 'string', 'max:20', Rule::unique('tb_customer', 'phone_number')],
-                    'status' => ['required', 'string', 'in:Y,N'],
+                    // 'status' => ['required', 'string', 'in:Y,N'],
                     'password' => ['required', Password::defaults()]
                 ];
                 break;
@@ -50,20 +52,22 @@ class AuthCustomerRequest extends FormRequest
 
     public function getToken()
     {
-        $customer = CustomerModel::select(['password', 'name'])->where('phone_number', $this->phone_number)->firstOrFail();
-        if (! $customer || Hash::check($this->password, $customer->password)) {
+        $customer = CustomerModel::select(['password', 'name', 'customer_code'])->where('phone_number', $this->phone_number)->firstOrFail();
+        if (! $customer || ! Hash::check($this->password, $customer->password)) {
             throw ValidationException::withMessages([
                 'phone_number' => ['The provided credentials are incorrect.'],
             ]);
         }
-        return $customer->createToken($customer->name . '-token')->plainTextToken;
+        return $customer->createToken(str_replace(' ', '', $customer->name) . '-token')->plainTextToken;
     }
 
     public function register()
     {
         $validated = $this->validated();
         $validated['membership_status'] = 'R';
+        $validated['status'] = 'Y';
         $validated['password'] = Hash::make($validated['password']);
+        $validated['customer_code'] = $this->getFormattedCode('r');
         CustomerModel::create($validated);
     }
 }

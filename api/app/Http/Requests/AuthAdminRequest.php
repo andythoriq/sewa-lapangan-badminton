@@ -34,6 +34,7 @@ class AuthAdminRequest extends FormRequest
                 $validation = [
                     'name' => ['required', 'string', 'max:90'],
                     // 'email' => ['required', 'string', 'email', 'max:90', Rule::unique('users', 'email')],
+                    'username' => ['required', 'string', 'max:90', Rule::unique('users', 'username')],
                     'phone_number' => ['required', 'string', 'max:20', Rule::unique('users', 'phone_number')],
                     // 'status' => ['required', 'string', 'in:Y,N'],
                     'role_id' => ['required', 'integer', 'exists:tb_role,id'],
@@ -44,7 +45,8 @@ class AuthAdminRequest extends FormRequest
             case 'login-admin':
                 $validation = [
                     // 'email' => ['required', 'email'],
-                    'phone_number' => ['required', 'string', 'max:20'],
+                    // 'phone_number' => ['required', 'string', 'max:20'],
+                    'username' => ['required', 'string', 'max:90'],
                     'password' => ['required'],
                 ];
                 break;
@@ -55,14 +57,14 @@ class AuthAdminRequest extends FormRequest
     public function getToken()
     {
         // $user = User::select(['password', 'name'])->where('email', $this->email)->firstOrFail();
-        $user = User::select(['password', 'name'])->where('phone_number', $this->phone_number)->firstOrFail();
+        $user = User::select(['password', 'name', 'id'])->where('username', $this->username)->firstOrFail();
 
         if (! $user || ! Hash::check($this->password, $user->password)) {
             throw ValidationException::withMessages([
-                'phone_number' => ['The provided credentials are incorrect.'],
+                'username' => ['The provided credentials are incorrect.'],
             ]);
         }
-        return $user->createToken($user->name . '-token')->plainTextToken;
+        return $user->createToken(str_replace(' ', '', $user->name) . '-token')->plainTextToken;
     }
 
     public function register()
@@ -75,6 +77,6 @@ class AuthAdminRequest extends FormRequest
 
     public function createTokenFor(User $admin)
     {
-        $admin->createToken($admin->name . '-token');
+        $admin->createToken(str_replace(' ', '', $admin->name) . '-token');
     }
 }

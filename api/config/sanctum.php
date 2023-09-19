@@ -64,6 +64,7 @@ return [
 
     'expiration_time' => 60 * 24 * 7, // one week
     'rememberable' => true,
+    // 'identification' => 'phone_number',
 
     // 'abilities' => [
     //     'customer' => 'landing page, about page.',

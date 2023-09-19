@@ -54,8 +54,10 @@ const Login = () => {
     <>
       <div className="wrapper bg-dark  d-flex align-items-center justify-content-center w-100" style={{ height: "100vh" }}>
         <div className="login w-400 bg-white rounded-3" style={{ padding: 50 }}>
-          <img src="./assets/icon/Male User.png" alt="login" style={{ marginLeft: "100px", marginBottom: "20px" }}/>
-          <h3 className="mb-1" style={{ fontSize:23}}>Login Admin</h3>
+          <img src="./assets/icon/Male User.png" alt="login" style={{ marginLeft: "100px", marginBottom: "20px" }} />
+          <h3 className="mb-1" style={{ fontSize: 23 }}>
+            Login Admin
+          </h3>
           <Form onSubmit={handleSubmit} style={{ width: "300px" }} className="mx-auto">
             {inputs.map((input) => (
               <Form.Group key={input.id} className="mb-2 ">
@@ -71,5 +73,4 @@ const Login = () => {
     </>
   );
 };
-
 export default Login;

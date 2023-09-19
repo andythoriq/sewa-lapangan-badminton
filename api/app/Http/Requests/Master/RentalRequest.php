@@ -43,7 +43,7 @@ class RentalRequest extends FormRequest
 
         switch ($this->route()->getName()) {
             case 'create-rental':
-                $validation['start'] = ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d H:i:s')];
+                $validation['start'] = ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'];
                 break;
 
             case 'update-rental':
@@ -52,14 +52,14 @@ class RentalRequest extends FormRequest
 
             case 'create-multiple-rental':
                 $validation = [
-                    'rentals' => ['required', 'array', 'min:1', 'in:start,finish,status,court_id,customer_id,user_id'],
-                    'rentals.*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . now('Asia/Jakarta')->format('Y-m-d H:i:s')],
-                    'rentals.*.finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:rentals.*.start'],
+                    '*' => ['required', 'array', 'min:1'],
+                    '*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'],
+                    '*.finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:*.start'],
                     // 'rentals.*.status' => ['required', 'string', 'in:B,O,F'],
-                    'rentals.*.court_id' => ['required', 'integer', 'exists:tb_court,id'],
+                    '*.court_id' => ['required', 'integer', 'exists:tb_court,id'],
                     // 'rentals.*.transaction_id' => ['required', 'integer', 'exists:tb_transaction,id'],
-                    'rentals.*.customer_id' => ['required', 'string', 'exists:tb_customer,customer_code'],
-                    'rentals.*.user_id' => ['nullable', 'integer', 'exists:users,id'],
+                    '*.customer_id' => ['required', 'string', 'exists:tb_customer,customer_code'],
+                    '*.user_id' => ['nullable', 'integer', 'exists:users,id'],
                 ];
                 break;
         }
@@ -73,9 +73,14 @@ class RentalRequest extends FormRequest
 
         $this->collideCheck($this->start, $this->finish, $this->getCourtSchedules($this->court_id));
 
+        $data = $this->validated();
+
         $court_initial_price = CourtModel::select('initial_price')->where('id', $this->court_id)->firstOrFail()->initial_price;
 
-        $data = $this->validated();
+        if (strtolower($data['customer_id'][0]) == 'm') {
+            $court_initial_price = ceil($court_initial_price / 1.25);
+        }
+
         $data['price'] = $this->getCost($this->start, $this->finish, $court_initial_price);
 
         $data['status'] = 'B';
@@ -108,6 +113,12 @@ class RentalRequest extends FormRequest
     {
         $data = $this->validated();
 
+        if (strtolower($data['customer_id'][0]) == 'r') {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'customer_id' => ['Regular can\'t make multiple rentals.']
+            ]);
+        }
+
         $transaction = TransactionModel::create([
             'total_price' => 0,
             'total_hour' => 0,
@@ -115,14 +126,15 @@ class RentalRequest extends FormRequest
         ]);
 
         for ($i = 0; $i < count($data); $i++) {
-            $this->regularRentalsCheck($data[$i]['customer_id']);
-
             $this->collideCheck($data[$i]['start'], $data[$i]['finish'], $this->getCourtSchedules($data[$i]['court_id']));
 
             $court_initial_price = CourtModel::select('initial_price')->where('id', $data[$i]['court_id'])->firstOrFail()->initial_price;
-            $data[$i]['price'] = $this->getCost($data[$i]['start'], $data[$i]['finish'], $court_initial_price);
 
-            $data[$i]['price'] /= 1.5; // member kurangin harga
+            if (strtolower($data[$i]['customer_id'][0] == 'm')) {
+                $court_initial_price = ceil($court_initial_price / 1.25);
+            }
+
+            $data[$i]['price'] = $this->getCost($data[$i]['start'], $data[$i]['finish'], $court_initial_price);
 
             $transaction->total_price += $data[$i]['price'];
             $transaction->total_hour += Carbon::parse($data[$i]['start'])->diffInHours($data[$i]['finish']);

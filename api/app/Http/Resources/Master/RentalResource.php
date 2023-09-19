@@ -45,7 +45,6 @@ class RentalResource extends JsonResource
             ],
             'admin' => [
                 'name' => $this->user->name ?? '',
-                'email' => $this->user->email ?? '',
                 'phone_number' => $this->user->phone_number ?? '',
                 'status' => $this->user->status ?? '',
                 'role' => [

@@ -18,7 +18,7 @@ class RentalController extends Controller
 
     public function show(RentalModel $rental)
     {
-        return new RentalResource($rental->loadMissing(['court', 'transaction', 'customer', 'user:id,name,email,phone_number,status,role']));
+        return new RentalResource($rental->loadMissing(['court', 'transaction', 'customer', 'user:id,name,phone_number,status,role_id', 'user.role:id,label,menu,status']));
     }
 
     public function create(RentalRequest $request)

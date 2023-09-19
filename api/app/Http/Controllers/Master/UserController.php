@@ -22,9 +22,10 @@ class UserController extends Controller
         return response(null, 204, ['success' => 'User updated.']);
     }
 
-    public function delete(UserRequest $request, User $user)
+    public function delete(User $user)
     {
-        $request->deleteUser($user);
+        $user->tokens()->delete();
+        $user->deleteOrFail();
         return response(null, 204, ['success' => 'User deleted.']);
     }
 
