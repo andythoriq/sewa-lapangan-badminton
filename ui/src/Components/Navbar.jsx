@@ -29,6 +29,7 @@ const Navbar = () => {
     })
     localStorage.removeItem('token');
     localStorage.removeItem('role')
+    localStorage.removeItem('username')
     setTimeout(function () { window.location.href = "/"; }, 500);
   }
 
