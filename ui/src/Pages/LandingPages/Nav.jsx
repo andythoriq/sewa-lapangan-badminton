@@ -173,7 +173,7 @@ const Landing = () => {
       <Container>
         <section className="setup" style={{ padding: "150px 0" }}>
           <div className="text-header text-center">
-            <h3 style={{ fontSize:"40px", fontWeight: 700, lineHeight: "48px", padding: "30px 0" }}>How It Work</h3>
+            <h3 style={{ fontSize: "40px", fontWeight: 700, lineHeight: "48px", padding: "30px 0" }}>How It Work</h3>
           </div>
           <div className="items text-center">
             <div className="row">
@@ -183,7 +183,9 @@ const Landing = () => {
                 </div>
                 <div className="desc">
                   <h5 style={{ fontWeight: 700, fontSize: "18px", lineHeight: "24px", paddingBottom: "12px" }}>Registrasion Account</h5>
-                  <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black"}}>Customer will be asked to register for an account first. then customer will receive an OTP code as verification.</p>
+                  <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black" }}>
+                    Customer will be asked to register for an account first. then customer will receive an OTP code as verification.
+                  </p>
                 </div>
               </div>
               <div className="col-md-4">
@@ -192,7 +194,9 @@ const Landing = () => {
                 </div>
                 <div className="desc">
                   <h5 style={{ fontWeight: 700, fontSize: "18px", lineHeight: "24px", paddingBottom: "12px" }}>QR Code</h5>
-                  <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black"}}>Customers will receive a QR Code after account registration. and brought to the GOR The QR Code is used as proof of booking.</p>
+                  <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black" }}>
+                    Customers will receive a QR Code after account registration. and brought to the GOR QR Code is used as proof of booking.
+                  </p>
                 </div>
               </div>
               <div className="col-md-4">
@@ -201,7 +205,9 @@ const Landing = () => {
                 </div>
                 <div className="desc">
                   <h5 style={{ fontWeight: 700, fontSize: "18px", lineHeight: "24px", paddingBottom: "12px" }}>Payment</h5>
-                  <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black"}}>Payment is made after the customer has finished playing. payments can use deposits, and other systems in payment.</p>
+                  <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black" }}>
+                    Payment is made after the customer has finished playing. payments can use deposits, and other systems in payment.
+                  </p>
                 </div>
               </div>
             </div>
