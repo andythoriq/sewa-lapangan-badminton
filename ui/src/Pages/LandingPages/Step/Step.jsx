@@ -6,7 +6,7 @@ import axios from "../../../api/axios";
 
 const FormStep = () => {
   const [values, setValues] = useState({ fullname: "", phonenumber: "", });
-  const [errors, setErrors] = useState({});
+  const [setErrors] = useState({});
 
   const inputs = [
     {
@@ -24,14 +24,6 @@ const FormStep = () => {
       type: "text",
       placeholder: "input phone number",
       // errorMessage: errors.phone_number[ 0 ],
-    },
-    {
-      id: 3,
-      label: "Password",
-      name: "password",
-      type: "password",
-      placeholder: "input password",
-      // errorMessage: errors.password[0],
     },
   ];
 
@@ -79,7 +71,7 @@ const FormStep = () => {
 
   return (
     <Container className="login pt-5 pb-5">
-      <Card className="bgLogin shadow ">
+      <Card className="bgLogin  ">
         <Row>
           <Col className="col-sm-6 px-0 d-none d-md-block divLeft position-relative">
             <div className="position-relative top-50 start-50 translate-middle p-4">
@@ -100,20 +92,19 @@ const FormStep = () => {
                 <img src={`/${logoApp}`} alt="" width={100} />
               </div>
               <b className="text-heading" style={{ fontSize: 29 }}>
-                Get started
+                New Sports Experience.
               </b>
-              <p>Create your account now</p>
               <br />
               <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
                 {inputs.map((input) => (
-                  <Form.Group key={input.id} className="mb-2">
+                  <Form.Group key={input.id} className="mb-2 mt-3">
                     <FormInput key={input.id} {...input} value={values[input.name]} onChange={onChange} icon={input.icon} />
                   </Form.Group>
                 ))}
-                {/* <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded" href="/step2">
+                {/* <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded" href="step2">
                   Next
                 </Button> */}
-                <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded">
+                <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded" href="step2">
                   Register
                 </Button>
               </Form>

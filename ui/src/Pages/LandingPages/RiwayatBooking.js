@@ -9,6 +9,10 @@ const RiwayatBooking = () => {
     const onChange = (e) => { 
         setValues({ ...values, [e.target.name]: e.target.value });
     }
+    let listData = [
+        {name:"Hodijah", court:"Court A", schedule:"10.00-11.00", totally_hour:"1 hour", totally_price:"Rp 50,000", status:"Finished", status_color:"green"},
+        {name:"Siti", court:"Court C", schedule:"10.00-11.00", totally_hour:"1 hour", totally_price:"Rp 50,000", status:"on progress", status_color:"orange"},
+    ];
 
     return (
     <>
@@ -34,8 +38,7 @@ const RiwayatBooking = () => {
                             <th width={'15%'}>Schedule</th>
                             <th width={'15%'}>Totally hour</th>
                             <th width={'15%'}>Totally Price</th>
-                            <th width={'10%'} className="text-center">Status</th>
-                            
+                            <th width={'20%'} className="text-center">Status</th>
                         </tr>
                     </thead>
                 </table>

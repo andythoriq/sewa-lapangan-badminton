@@ -23,7 +23,7 @@ const CustomerMember = () => {
         </b>
       </h4>
       <Row>
-        <Col className="col-12 col-sm-8 col-md-6 m-auto">
+        <Col className="col-12 col-md-12 m-auto">
           <Card className="p-3 mt-5 mb-2">
             <Form>
               <Row>
@@ -53,7 +53,7 @@ const CustomerMember = () => {
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-sm-8 col-md-8 m-auto text-right pt-3">
-                  <button type="button" className="btn btn-danger">
+                  <button type="button" className="btn btn-danger mt-5">
                     Save
                   </button>
                 </Col>
