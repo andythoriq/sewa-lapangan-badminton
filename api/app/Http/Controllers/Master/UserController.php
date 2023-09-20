@@ -13,20 +13,25 @@ class UserController extends Controller
     public function create(UserRequest $request)
     {
         $request->createUser();
-        return response(null, 201, ['success' => 'New User created.']);
+        return response()->json(['message' => 'New User created.'], 201, ['success' => 'New User created.']);
+    }
+
+    public function edit(User $user)
+    {
+        return response()->json($user->only(['name', 'username', 'phone_number', 'role_id']));
     }
 
     public function update(UserRequest $request, User $user)
     {
         $request->updateUser($user);
-        return response(null, 204, ['success' => 'User updated.']);
+        return response()->json(['message' => 'User updated.'], 202, ['success' => 'User updated.']);
     }
 
     public function delete(User $user)
     {
         $user->tokens()->delete();
         $user->deleteOrFail();
-        return response(null, 204, ['success' => 'User deleted.']);
+        return response()->json(['message' => 'User deleted'], 202, ['success' => 'User deleted.']);
     }
 
     public function index()

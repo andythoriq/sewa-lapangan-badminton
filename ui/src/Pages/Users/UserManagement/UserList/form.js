@@ -29,26 +29,51 @@ const UserListForm = () => {
         .catch((e) => {
             console.log(e)
         });
+        if (id > 0) {
+            axios.get('/api/admin-edit/' + id, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then(({data}) => {
+                setValues({
+                    ...values,
+                    full_name: data.name,
+                    phone_number: data.phone_number,
+                    username: data.username,
+                })
+            })
+            .catch((e) => {
+                console.log(e) 
+            });
+        }
     }, [])
 
     const handleSubmitClick = async (e) => {
         e.preventDefault()
+        const data = {
+            name: values.full_name,
+            username: values.username,
+            phone_number: values.phone_number,
+            status: values.status,
+            role_id: values.role_id,
+            password: values.password,
+        }
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        }
         try {
             await axios.get('/sanctum/csrf-cookie')
-            await axios.post('/api/admin', {
-                name: values.full_name,
-                username: values.username,
-                phone_number: values.phone_number,
-                status: values.status,
-                role_id: values.role_id,
-                password: values.password,
-            },{
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
+            let response
+            if (id > 0) {
+                response = await axios.put('/api/admin/' + id, data, config)
+            } else {
+                response = await axios.post('/api/admin', data, config);
+            }
             setErrors('');
-            Swal.fire({ icon: "success", title: "Success!", html: "New User Created", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
+            Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
             setTimeout(function () {
                 window.location.href = "/user-management/user-list";
             }, 2000);
@@ -108,7 +133,7 @@ const UserListForm = () => {
                         /> */}
                         <Form.Label>User role</Form.Label>
                         <Form.Select name="role_id" className="form-select form-select-sm" onChange={onChange}>
-                            <option value="">select role</option>
+                            <option value="">-- roles --</option> 
                             {roles.map((role) => <option key={role.id} value={role.id}>{role.label}</option> )}
                         </Form.Select>
                         {errors.role_id &&
@@ -118,12 +143,12 @@ const UserListForm = () => {
                         <br/>
                         <div className="d-flex">
                             <div className="form-check">
-                                <input type="radio" className="form-check-input" name="status" value="Y" onChange={onChange} checked={selectedStatus === "Y"} />
+                                <input type="radio" className="form-check-input" name="status" value="Y" onChange={onChange} />
                                 <label>Active</label>
                             </div>
                             &nbsp;&nbsp;&nbsp;
                             <div className="form-check form-check-inline">
-                                <input type="radio" className="form-check-input" name="status" value="N" onChange={onChange} checked={selectedStatus === "N"} />
+                                <input type="radio" className="form-check-input" name="status" value="N" onChange={onChange} />
                                 <label>In active</label>
                             </div>
                         </div>
