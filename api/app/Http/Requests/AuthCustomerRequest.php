@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\CustomerModel;
 use App\Traits\CustomerCodeFormat;
+use App\Traits\SendWA;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
@@ -12,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthCustomerRequest extends FormRequest
 {
-    use CustomerCodeFormat;
+    use CustomerCodeFormat, SendWA;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -41,7 +42,7 @@ class AuthCustomerRequest extends FormRequest
             case 'send-otp':
                 $rules = [
                     'name' => ['required', 'string', 'max:90'],
-                    'phone_number' => ['required', 'string', 'max:20', Rule::unique('tb_customer', 'phone_number')],
+                    'phone_number' => ['required', 'string', 'max:20'],
                     // 'status' => ['required', 'string', 'in:Y,N'],
                     // 'password' => ['required', Password::defaults()]
                 ];
@@ -69,8 +70,8 @@ class AuthCustomerRequest extends FormRequest
         } while (CustomerModel::where('otp_code', $otp)->exists());
 
         $validated = $this->validated();
-        $customer = CustomerModel::select('customer_code')->where('phone_number', $validated['phone_number'])->firstOrFail();
-        if ($customer) {
+        $customer = CustomerModel::where('phone_number', $validated['phone_number']);
+        if ($customer->exists()) {
             $customer->update([
                 'otp_code' => $otp
             ]);
@@ -82,7 +83,8 @@ class AuthCustomerRequest extends FormRequest
             CustomerModel::create($validated);
         }
 
-        // send . . .
+        $message = 'Your OTP code is ' . $otp;
+        return $this->sendWA(env('ZENZIVA_USER_KEY'), env('ZENZIVA_API_KEY'), $validated['phone_number'], $message);
     }
 
     public function verify_otp()
