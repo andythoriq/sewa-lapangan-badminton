@@ -17,8 +17,8 @@ class AuthCustomerController extends Controller
 
     public function send(AuthCustomerRequest $request)
     {
-        $request->send_otp();
-        return response(null, 201, ['success' => 'OTP sended successfully.']);
+        $result = $request->send_otp();
+        return response($result, 201, ['success' => 'OTP sended successfully.']);
     }
 
     public function verify(AuthCustomerRequest $request)
