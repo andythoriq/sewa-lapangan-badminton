@@ -26,7 +26,7 @@ class ModifyPersonalAccessTokensTable extends Migration
     public function down()
     {
         Schema::table('personal_access_tokens', function (Blueprint $table) {
-            $table->integer('tokenable_id')->change();
+            $table->string('tokenable_id')->change();
         });
     }
 }

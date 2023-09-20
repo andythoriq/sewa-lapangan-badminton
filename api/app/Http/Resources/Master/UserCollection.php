@@ -21,7 +21,9 @@ class UserCollection extends ResourceCollection
             return [
                 'id' => $user->id,
                 'name' => $user->name,
-                'status' => $user->status
+                'username' => $user->username,
+                'role' => $user->role->label,
+                'status' => $user->status,
             ];
         });
     }

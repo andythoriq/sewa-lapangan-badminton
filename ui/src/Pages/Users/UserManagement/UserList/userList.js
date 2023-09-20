@@ -1,22 +1,39 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { Form, Card, Row, Col } from "react-bootstrap";
 import { Pencil, Trash3, Search, ChevronLeft, ChevronRight } from "react-bootstrap-icons";
 import FormInput from "../../../../Components/Form/input";
 import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
+import axios from "../../../../api/axios";
 
 const UserList = () => {
     const [show, setShow] = useState(false);
-    const [deleteId, setDeleteId] = useState("");
+    // const [deleteId, setDeleteId] = useState("");
     const handleClose = () => setShow(false);
     const handleShow = (index) => {
-        setDeleteId(index);
+        // setDeleteId(index);
         setShow(true)
     };
 
+    const [users, setUsers] = useState([]);
+    
+    useEffect(() => {
+        axios.get('/api/admin', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(({data}) => {
+            setUsers(data);
+        })
+        .catch((e) => {
+            console.log(e)
+        });
+    }, []);
+
     const handleYes = () => {
-        tableRowRemove(deleteId);
+        // tableRowRemove(deleteId);
         Swal.fire({icon:"success", title:"Success!", html:'Delete successfully', 
             showConfirmButton: false, allowOutsideClick: false,
             allowEscapeKey:false, timer: 2000});
@@ -28,10 +45,10 @@ const UserList = () => {
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
-    let listData = [
-        {id:1, name:"Thoriq", email:"andythoriq@gmail.com", role:"Master Data - lapangan", status:"Active", status_color:"cyan"},
-        {id:2, name:"uus", email:"uus_26@gmail.com", role:"Master Data - lapangan", status:"In active", status_color:"red"},
-    ];
+    // let listData = [
+    //     {id:1, name:"Thoriq", email:"andythoriq@gmail.com", role:"Master Data - lapangan", status:"Active", status_color:"cyan"},
+    //     {id:2, name:"uus", email:"uus_26@gmail.com", role:"Master Data - lapangan", status:"In active", status_color:"red"},
+    // ];
 
     const TableRows = ({ rows }) => {
         return rows.map((val, index) => {
@@ -44,7 +61,7 @@ const UserList = () => {
                     </span>
                 </td>
                 <td>{val.name}</td>
-                <td>{val.email}</td>
+                <td>{val.username}</td>
                 <td>{val.role}</td>
                 <td className="text-center"><label className={`badge text-bg-${val.status_color} text-dark`}>{val.status}</label></td>
                 <td className="text-center">
@@ -60,12 +77,12 @@ const UserList = () => {
           )
         });
     }
-    const [rows, initRow] = useState(listData);
-    const tableRowRemove = (index) => {
-        const dataRow = [...rows];
-        dataRow.splice(index, 1);
-        initRow(dataRow);
-    };
+    // const [rows, initRow] = useState(listData);
+    // const tableRowRemove = (index) => {
+    //     const dataRow = [...rows];
+    //     dataRow.splice(index, 1);
+    //     initRow(dataRow);
+    // };
 
     return (
     <>
@@ -93,7 +110,7 @@ const UserList = () => {
                         <tr>
                             <th width={'1%'}></th>
                             <th width={'30%'}>Name</th>
-                            <th width={'25%'}>Email</th>
+                            <th width={'25%'}>Username</th>
                             <th width={'25%'}>Role</th>
                             <th width={'10%'} className="text-center">Status</th>
                             <th width={'9%'} className="text-center">Action</th>
@@ -101,8 +118,8 @@ const UserList = () => {
                     </thead>
                     <tbody>
                         <TableRows
-                            rows={rows}
-                            tableRowRemove={tableRowRemove}
+                            rows={users}
+                            // tableRowRemove={tableRowRemove}
                         />
                     </tbody>
                 </table>

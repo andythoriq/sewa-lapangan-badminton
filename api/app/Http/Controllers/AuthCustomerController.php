@@ -9,16 +9,22 @@ use App\Http\Requests\AuthCustomerRequest;
 
 class AuthCustomerController extends Controller
 {
-    public function login(AuthCustomerRequest $request)
+    // public function login(AuthCustomerRequest $request)
+    // {
+    //     $token = $request->getToken();
+    //     return response()->json($token, 201, ['success' => 'Login successfully.']);
+    // }
+
+    public function send(AuthCustomerRequest $request)
     {
-        $token = $request->getToken();
-        return response()->json($token, 201, ['success' => 'Login successfully.']);
+        $request->send_otp();
+        return response(null, 201, ['success' => 'OTP sended successfully.']);
     }
 
-    public function register(AuthCustomerRequest $request)
+    public function verify(AuthCustomerRequest $request)
     {
-        $request->register();
-        return response(null, 201, ['success' => 'Registration successfully.']);
+        $request->verify_otp();
+        return response(null, 201, ['success' => 'OTP verified successfully.']);
     }
 
     public function logout(Request $request)

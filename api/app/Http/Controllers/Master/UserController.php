@@ -31,7 +31,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::select(['id', 'name', 'status'])->get();
+        $users = User::select(['id', 'name', 'username', 'status', 'role_id'])->with('role:id,label')->get();
         return new UserCollection($users);
     }
 
