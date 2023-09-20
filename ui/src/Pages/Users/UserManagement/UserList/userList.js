@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
-import { Form, Card, Row, Col, Button } from "react-bootstrap";
-import { Pencil, Trash3, Search, ChevronLeft, ChevronRight, Cursor } from "react-bootstrap-icons";
+import { Form, Card, Row, Col } from "react-bootstrap";
+import { Pencil, Trash3, Search, ChevronLeft, ChevronRight } from "react-bootstrap-icons";
 import FormInput from "../../../../Components/Form/input";
 import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
@@ -36,12 +36,12 @@ const UserList = () => {
 
     const handleYes = async () => {
         try {
-            await axios.get('/sanctum/csrf-cookie')
+            await axios.get('/sanctum/csrf-cookie');
             const { data } = await axios.delete('/api/admin/' + deleteId, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
-            })
+            });
             handleRemove()
             Swal.fire({
                 icon: "success", title: "Success!", html: data.message,

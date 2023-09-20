@@ -8,14 +8,15 @@ import Swal from "sweetalert2";
 
 const UserListForm = () => {
     const {id} = useParams();
-    const [values, setValues] = useState({ full_name:"", phone_number:"", username:"", password:"", role_id: "", status:"" });
+    const [ selectedStatus, setSelectedStatus ] = useState("")
+    const [values, setValues] = useState({ full_name:"", phone_number:"", username:"", password:"", role_id: "", status: selectedStatus });
     const onChange = (e) => { 
         setValues({ ...values, [e.target.name]: e.target.value });
         setSelectedStatus(e.target.value)
     }
     const [errors, setErrors] = useState([])
     const [roles, setRoles] = useState([])
-    const [selectedStatus, setSelectedStatus] = useState("")
+    
 
     useEffect(() => {
         axios.get('/api/role', {
@@ -103,7 +104,6 @@ const UserListForm = () => {
                     </Col>
                     <Col className="col-12 col-md-6">
                         <Form.Group>
-                            <FormInput type="text" name="phone_number" label="Price" value={values.phone_number} onChange={onChange}/>
                             <FormInput type="text" name="phone_number" label="Phone number" value={values.phone_number} onChange={onChange}/>
                             {errors.phone_number &&
                             <span className="text-danger">{errors.phone_number[ 0 ]}</span>}
@@ -144,7 +144,7 @@ const UserListForm = () => {
                         <br/>
                         <div className="d-flex mt-2">
                             <div className="form-check">
-                                <input type="radio" className="form-check-input" name="status" value="Y" onChange={onChange} />
+                                <input type="radio" className="form-check-input" name="status" value="Y" onChange={onChange}  />
                                 <label>Active</label>
                             </div>
                             &nbsp;&nbsp;&nbsp;
@@ -157,7 +157,6 @@ const UserListForm = () => {
                             <span className="text-danger">{errors.status[ 0 ]}</span>}
                     </Col>
                     <Col className="col-12 text-right pt-3">
-                        <button type="button" className="btn btn-danger mt-4"></button>
                         <Button type="submit" onClick={handleSubmitClick} className="btn btn-danger">
                             Save
                         </Button>
