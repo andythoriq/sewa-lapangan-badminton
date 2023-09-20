@@ -43,6 +43,7 @@ const Login = () => {
         username: values.username,
         password: values.password
       });
+      setErrors('');
       localStorage.setItem("role", "admin");
       localStorage.setItem("token", data);
       localStorage.setItem("username", values.username);
