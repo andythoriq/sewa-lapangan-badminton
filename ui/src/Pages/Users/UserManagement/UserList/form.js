@@ -26,7 +26,7 @@ const UserListForm = () => {
             </b>
         </h4>
         <Row>
-            <Col className="col-12 col-md-6 m-auto">
+            <Col>
             <Card className="p-3 mt-5">
                 <Form>
                 <Row>
@@ -38,11 +38,6 @@ const UserListForm = () => {
                     <Col className="col-12 col-md-6">
                         <Form.Group>
                             <FormInput type="text" name="phone_number" label="Price" value={values.phone_number} onChange={onChange}/>
-                        </Form.Group>
-                    </Col>
-                    <Col className="col-12 col-md-6">
-                        <Form.Group>
-                            <FormInput type="text" name="email" label="Email" value={values.email} onChange={onChange}/>
                         </Form.Group>
                     </Col>
                     <Col className="col-12 col-md-6">
@@ -65,7 +60,7 @@ const UserListForm = () => {
                     </Col>
                     <Col className="col-12 col-md-6">
                         <br/>
-                        <div className="d-flex">
+                        <div className="d-flex mt-2">
                             <div className="form-check">
                                 <input type="radio" className="form-check-input" name="radionExam" />
                                 <label>Active</label>
@@ -78,7 +73,7 @@ const UserListForm = () => {
                         </div>
                     </Col>
                     <Col className="col-12 text-right pt-3">
-                        <button type="button" className="btn btn-danger">
+                        <button type="button" className="btn btn-danger mt-4">
                             Save
                         </button>
                     </Col>

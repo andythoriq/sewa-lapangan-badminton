@@ -17,7 +17,7 @@ const Rush = () => {
         <b>Rush Hour</b>
       </h4>
       <Row>
-        <Col className="col-sm-6 m-auto">
+        <Col className="col-12 col-sm-6 m-auto">
           <Card className="p-4 mt-5">
             <Form>
               <Row>

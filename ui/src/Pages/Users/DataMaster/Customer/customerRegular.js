@@ -22,7 +22,7 @@ const CustomerRegular = () => {
         </b>
       </h4>
       <Row>
-        <Col className="col-12 col-sm-8 col-md-6 m-auto">
+        <Col>
           <Card className="p-3 mt-5">
             <Form>
               <Row>

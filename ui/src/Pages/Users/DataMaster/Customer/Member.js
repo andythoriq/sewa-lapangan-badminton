@@ -48,7 +48,6 @@ const Member = () => {
                 <td>{val.activeperiod}</td>
                 <td>{val.deposit}</td>
                 <td>{val.debt}</td>
-                <td className="text-center"><label className={`badge text-bg-${val.status_color} text-dark`}>{val.status}</label></td>
                 <td className="text-center">
                     <Link to={'/data-master/customer-member/edit:id'+val.id} className="edit">
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>
@@ -90,12 +89,12 @@ const Member = () => {
                     <thead>
                         <tr>
                             <th width={'1%'}></th>
-                            <th width={'15%'}>Name</th>
-                            <th width={'10%'}>No</th>
-                            <th width={'15%'}>Active Peroid</th>
-                            <th width={'25%'}>Deposit</th>
-                            <th width={'30%'}>Debt</th>
-                            <th width={'4%'} className="text-center">Action</th>
+                            <th width={'20%'}>Name</th>
+                            <th width={'8%'}>No</th>
+                            <th width={'20%'}>Active Peroid</th>
+                            <th width={'24%'}>Deposit</th>
+                            <th width={'24%'}>Debt</th>
+                            <th width={'25%'} className="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>

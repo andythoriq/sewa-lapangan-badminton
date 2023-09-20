@@ -86,7 +86,7 @@ const UserRoleForm = () => {
             </b>
         </h4>
         <Row>
-            <Col className="col-12 col-md-8 m-auto">
+            <Col>
             <Card className="p-3 mt-5">
                 <Form>
                 <Row>
