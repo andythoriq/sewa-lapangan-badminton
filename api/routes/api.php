@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(RoleController::class)->middleware('admin')->group(function(){
         Route::get('/role', 'index');
         Route::get('/role/{role}', 'show');
+        Route::get('/role-edit/{role}', 'edit');
         Route::post('/role', 'create');
         Route::put('/role/{role}', 'update');
         Route::delete('/role/{role}', 'delete');
@@ -32,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(UserController::class)->middleware('admin')->group(function(){
         Route::get('/admin', 'index');
         Route::get('/admin/{user}', 'show');
+        Route::get('/admin-edit/{user}', 'edit');
         Route::post('/admin', 'create');
         Route::put('/admin/{user}', 'update');
         Route::delete('/admin/{user}', 'delete');

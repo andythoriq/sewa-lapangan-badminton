@@ -9,12 +9,14 @@ import axios from "../../../../api/axios";
 
 const UserList = () => {
     const [show, setShow] = useState(false);
-    // const [deleteId, setDeleteId] = useState("");
-    const handleClose = () => setShow(false);
-    const handleShow = (index) => {
-        // setDeleteId(index);
-        setShow(true)
-    };
+    const [deleteId, setDeleteId] = useState(0)
+    const [ indexToSplice, setIndexToSplice] = useState("");
+    
+    const handleDelete = (id, index) => {
+        setDeleteId(id)
+        setIndexToSplice(index)
+        setShow(!show)
+    }
 
     const [users, setUsers] = useState([]);
     
@@ -32,12 +34,30 @@ const UserList = () => {
         });
     }, []);
 
-    const handleYes = () => {
-        // tableRowRemove(deleteId);
-        Swal.fire({icon:"success", title:"Success!", html:'Delete successfully', 
-            showConfirmButton: false, allowOutsideClick: false,
-            allowEscapeKey:false, timer: 2000});
-        setShow(false);
+    const handleYes = async () => {
+        try {
+            await axios.get('/sanctum/csrf-cookie');
+            const { data } = await axios.delete('/api/admin/' + deleteId, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            handleRemove()
+            Swal.fire({
+                icon: "success", title: "Success!", html: data.message,
+                showConfirmButton: false, allowOutsideClick: false,
+                allowEscapeKey: false, timer: 2000
+            });
+            setShow(false);
+        } catch (e) {
+            console.log(e)
+        }
+    };
+
+    const handleRemove = () => {
+        const row = [ ...users ];
+        row.splice(indexToSplice, 1);
+        setUsers(row);
     };
 
     const [values, setValues] = useState({ search: "" });
@@ -53,7 +73,7 @@ const UserList = () => {
     const TableRows = ({ rows }) => {
         return rows.map((val, index) => {
           return (
-            <tr key={index}>
+            <tr key={val.id}>
                 <td className="text-center">
                     <span className="custom-checkbox">
                         <input type="checkbox" id="checkbox1" name="options[]" value="1" />
@@ -69,8 +89,11 @@ const UserList = () => {
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>
                     </Link>
                     &nbsp;&nbsp;
-                    <a href="#delete" onClick={()=>handleShow(index)}>
+                    {/* <a href="#delete" onClick={()=>handleShow(index)}>
                         <Trash3 className="material-icons" color="dark" title="Delete" />
+                    </a> */}
+                    <a href="#delete" onClick={() => handleDelete(val.id, index)}>
+                          <Trash3 className="material-icons" color="dark" title="Delete" />
                     </a>
                 </td>
             </tr>
@@ -141,7 +164,7 @@ const UserList = () => {
                 </div>
             </div>
         </Card>
-        <ModalConfirmDelete show={show} handleClose={handleClose} handleYes={handleYes}/>
+        <ModalConfirmDelete show={show} handleClose={ () => setShow(!show)} handleYes={handleYes}/>
     </>
     )
 }
