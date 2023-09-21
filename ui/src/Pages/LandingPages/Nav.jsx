@@ -1,6 +1,5 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
-import { Button } from "react-bootstrap";
 import { Nav, Navbar } from "react-bootstrap";
 import "./nav.css";
 
@@ -30,9 +29,9 @@ const Landing = () => {
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
-          <Button className="btn btn-dark ms-2" style={{ borderRadius: 13 }}>
+          <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} href="userstep">
             Register
-          </Button>
+          </a>
         </Container>
       </Navbar>
       {/* akhir navbar */}
@@ -205,9 +204,14 @@ const Landing = () => {
       {/* Servicer */}
       <Container>
         <section className="setup" id="#service" style={{ padding: "30px 0", marginBottom: "10px" }}>
-          <div className="text-header text-center">
-            <h3 style={{ fontSize: "40px", fontWeight: 700, lineHeight: "48px", padding: "30px 0" }}>Our Services</h3>
+        <div class="container py-5">
+          <div class="row cnt2 text-center">
+            <div class="col">
+              <h2 className="fw-bold">Our Services</h2>
+              <p>Services we provide at bfb that can make it easier for you to book the court</p>
+            </div>
           </div>
+        </div>
           <div className="items text-center">
             <div className="row">
               <div className="col-md-4">
@@ -250,7 +254,7 @@ const Landing = () => {
       {/* end about work */}
       <div className="footer lpages text-center text-light p-3 mt-5">
         <div className="last-footer">
-          <img src="./assets/icon/c.png" alt="" style={{ width: 25 }} /> 2023. PKL Cibione.
+          <p className="copyright"> &copy; Copyright 2023 PKL Cibione.  All Bought Reserved</p>
         </div>
       </div>
     </>

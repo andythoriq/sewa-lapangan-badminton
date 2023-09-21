@@ -3,15 +3,17 @@ import { Card, Col, Container, Row, Form, Button } from "react-bootstrap";
 import { logoApp, namaApp } from "../../../Components/Services/config";
 import FormInput from "../../../Components/Form/input";
 import Swal from "sweetalert2";
+import NavbarPublic from "../../../Components/NavbarPublic";
+import FooterPublic from "../../../Components/FooterPublic";
 
 const Step2 = () => {
-  const [values, setValues] = useState({ Verification: "" });
+  const [values, setValues] = useState({ verifikasi: "" });
   const [errors, setErrors] = useState({});
 
   const inputs = [
     {
       id: 1,
-      label: "Verification",
+      label: "Code OTP",
       name: "verifikasi",
       type: "text",
       errorMessage: errors.verifikasi,
@@ -21,7 +23,7 @@ const Step2 = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = {};
-    if (!values.verifikasi.trim()) validationErrors.verifikasir = "Verification required";
+    if (!values.verifikasi.trim()) validationErrors.verifikasi = "Code OTP required";
 
     // console.log(validationErrors);
     setErrors(validationErrors);
@@ -42,8 +44,10 @@ const Step2 = () => {
   };
 
   return (
-    <Container className="login pt-5 pb-5">
-      <Card className="bgLogin shadow">
+    <>
+    <NavbarPublic/>
+    <Container className="regis pt-5 pb-5">
+      <Card className="bgRegis">
         <Row>
           <Col className="col-sm-6 px-0 d-none d-md-block divLeft position-relative">
             <div className="position-relative top-50 start-50 translate-middle p-4">
@@ -58,16 +62,15 @@ const Step2 = () => {
               </div>
             </div>
           </Col>
-          <Col className="col-12 col-md-6 text-white divRight position-relative p-5">
-            <div className="position-relative top-50 start-50 translate-middle p-4">
+          <Col className="col-12 col-md-6 text-black divRight position-relative p-5">
+            <div className="position-relative top-50 start-50 translate-middle p-3">
               <div className="d-md-none d-md-block text-center mb-2">
                 <img src={`/${logoApp}`} alt="" width={100} />
               </div>
-              <b className="text-heading" style={{ fontSize: 29 }}>
-                Get started
+              <b className="text-heading" style={{ fontSize: 25 }}>
+                Check your inbox!
               </b>
-              <p>Verification your account now</p>
-              <br />
+              <p style={{fontSize:13}}>We are sending an phone<br/>numbererification code to WhatsApp<br/>please enter the code. - <b class="text-danger">BFB</b></p>
               <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
                 {inputs.map((input) => (
                   <Form.Group key={input.id} className="mb-2">
@@ -75,7 +78,7 @@ const Step2 = () => {
                   </Form.Group>
                 ))}
                 <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded" >
-                  Created
+                  Submit
                 </Button>
               </Form>
             </div>
@@ -83,6 +86,8 @@ const Step2 = () => {
         </Row>
       </Card>
     </Container>
+    <FooterPublic/>
+    </>
   );
 };
 

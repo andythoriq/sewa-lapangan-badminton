@@ -3,8 +3,15 @@
         margin-left: 0px;
     }
 }
+*{
+    scroll-behavior: smooth;
+}
 .nav {
-    background-color: #D93221;
+    background-color: #000000;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
 }
 .jumbotron {
     background-image: url(/public/assets/img/bg.jpg);
@@ -17,7 +24,7 @@
     border: 2px solid white;
     position: absolute;
     left: 50%;
-    bottom: 120px;
+    bottom: 180px;
     border-radius: 50px;
     cursor: pointer;
 }
@@ -83,5 +90,8 @@
     margin-top: 15px;
 }
 .footer.lpages {
-    background-color: #D93221;
+    background-color: #000000;
+}
+.copyright{
+    margin: auto;
 }

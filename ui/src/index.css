@@ -29,7 +29,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.container.login {
+.container.login, .container.regis {
   max-width: 800px !important;
 }
 
@@ -43,6 +43,18 @@ body {
   background-color: var(--color-abu) !important;
   border-radius: 10px !important;
   padding: 0px !important;
+}
+
+.bgRegis{
+  background-color: white !important;
+  color: black;
+  border:0px !important;
+  border-radius: 0px !important;
+  padding: 0px !important;
+}
+
+.bgRegis img, .bgRegis .divLeft {
+  border-radius: 0px !important;
 }
 
 .divLeft{
@@ -506,9 +518,13 @@ footer .footer .text {
 }
 
 @media (max-width: 480px) {
-  .container.login { padding: 30px !important; }
-  .divRight {
+  .container.login, .container.regis { padding: 30px !important; }
+  .bgLogin .divRight {
     padding: 1rem!important;
+  }
+  .bgRegis .divRight {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
   }
 }
 
@@ -761,3 +777,11 @@ footer .footer .text {
   padding:3px;
   border:1px solid #ddd !important;
 }
+
+.custom-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.custom-toggler.navbar-toggler {
+  border-color: white;
+} 
