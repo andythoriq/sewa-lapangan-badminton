@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(RoleController::class)->middleware('admin')->group(function(){
         Route::get('/role', 'index');
         Route::get('/role/{role}', 'show');
+        Route::get('/role-edit/{role}', 'edit');
         Route::post('/role', 'create');
         Route::put('/role/{role}', 'update');
         Route::delete('/role/{role}', 'delete');

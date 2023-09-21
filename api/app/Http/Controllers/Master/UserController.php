@@ -13,7 +13,7 @@ class UserController extends Controller
     public function create(UserRequest $request)
     {
         $request->createUser();
-        return response()->json(['message' => 'New User created.'], 201, ['success' => 'New User created.']);
+        return response()->json(['message' => 'New User created'], 201, ['success' => 'New User created.']);
     }
 
     public function edit(User $user)
@@ -24,7 +24,7 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         $request->updateUser($user);
-        return response()->json(['message' => 'User updated.'], 202, ['success' => 'User updated.']);
+        return response()->json(['message' => 'User updated'], 202, ['success' => 'User updated.']);
     }
 
     public function delete(User $user)

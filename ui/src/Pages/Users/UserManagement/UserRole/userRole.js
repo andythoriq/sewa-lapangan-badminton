@@ -1,26 +1,63 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { Form, Card, Row, Col } from "react-bootstrap";
 import { Pencil, Trash3, Search, ChevronLeft, ChevronRight } from "react-bootstrap-icons";
 import FormInput from "../../../../Components/Form/input";
 import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
+import axios from "../../../../api/axios";
 
 const UserRole = () => {
     const [show, setShow] = useState(false);
-    const [deleteId, setDeleteId] = useState("");
-    const handleClose = () => setShow(false);
-    const handleShow = (index) => {
-        setDeleteId(index);
+    const [spliceIndex, setSpliceIndex] = useState("");
+    const [deleteId, setDeleteId] = useState("")
+
+    const handleShow = (id, index) => {
+        setDeleteId(id)
+        setSpliceIndex(index);
         setShow(true)
     };
 
-    const handleYes = () => {
-        tableRowRemove(deleteId);
-        Swal.fire({icon:"success", title:"Success!", html:'Delete successfully', 
-            showConfirmButton: false, allowOutsideClick: false,
-            allowEscapeKey:false, timer: 2000});
-        setShow(false);
+     const [roles, setRoles] = useState([]);
+    
+    useEffect(() => {
+        axios.get('/api/role', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(({data}) => {
+            setRoles(data);
+        })
+        .catch((e) => {
+            console.log(e)
+        });
+    }, []);
+
+    const handleSplice = () => {
+        const row = [ ...roles ];
+        row.splice(spliceIndex, 1);
+        setRoles(row)
+    };
+
+    const handleYes = async () => {
+        try {
+            await axios.get('/sanctum/csrf-cookie');
+            const { data } = await axios.delete('/api/role/' + deleteId, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            handleSplice()
+            Swal.fire({
+                icon: "success", title: "Success!", html: data.message,
+                showConfirmButton: false, allowOutsideClick: false,
+                allowEscapeKey: false, timer: 2000
+            });
+            setShow(false);
+        } catch (e) {
+            console.log(e)
+        }
     };
 
     const [values, setValues] = useState({ search: "" });
@@ -28,29 +65,24 @@ const UserRole = () => {
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
-    let listData = [
-        {id:1, role_name:"Thoriq", status:"Active", status_color:"cyan"},
-        {id:2, role_name:"uus", status:"In active", status_color:"red"},
-    ];
-
     const TableRows = ({ rows }) => {
         return rows.map((val, index) => {
           return (
-            <tr key={index}>
+            <tr key={val.id}>
                 <td className="text-center">
                     <span className="custom-checkbox">
                         <input type="checkbox" id="checkbox1" name="options[]" value="1" />
                         <label htmlFor="checkbox1"></label>
                     </span>
                 </td>
-                <td>{val.role_name}</td>
-                <td className="text-center"><label className={`badge text-bg-${val.status_color} text-dark`}>{val.status}</label></td>
+                <td>{val.label}</td>
+                <td className="text-center"><label className={`badge text-bg-${val.status === 'Y' ? 'green' : 'danger'} text-dark`}>{val.status}</label></td>
                 <td className="text-center">
                     <Link to={'/user-management/user-role/edit/'+val.id} className="edit">
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>
                     </Link>
                     &nbsp;&nbsp;
-                    <a href="#delete" onClick={()=>handleShow(index)}>
+                    <a href="#delete" onClick={()=>handleShow(val.id, index)}>
                         <Trash3 className="material-icons" color="dark" title="Delete" />
                     </a>
                 </td>
@@ -58,12 +90,6 @@ const UserRole = () => {
           )
         });
     }
-    const [rows, initRow] = useState(listData);
-    const tableRowRemove = (index) => {
-        const dataRow = [...rows];
-        dataRow.splice(index, 1);
-        initRow(dataRow);
-    };
 
     return (
     <>
@@ -79,7 +105,7 @@ const UserRole = () => {
                     </Col>
                     <Col className="col-12 col-md-8 pt-1">
                         <Link to={'/user-management/user-role/add'} className="btn btn-danger btn-sm add">
-                            + Add User
+                            + Add Role
                         </Link>
                     </Col>
                     <Col className="col-12 col-md-12 mt-2">
@@ -99,8 +125,7 @@ const UserRole = () => {
                         </thead>
                         <tbody>
                             <TableRows
-                                rows={rows}
-                                tableRowRemove={tableRowRemove}
+                                rows={roles}
                             />
                         </tbody>
                     </table>
@@ -124,7 +149,7 @@ const UserRole = () => {
             </Card>
             </Col>
         </Row>
-        <ModalConfirmDelete show={show} handleClose={handleClose} handleYes={handleYes}/>
+        <ModalConfirmDelete show={show} handleClose={() => setShow(!show)} handleYes={handleYes}/>
     </>
     )
 }

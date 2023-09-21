@@ -16,22 +16,27 @@ class RoleController extends Controller
         return new RoleCollection($roles);
     }
 
+    public function edit(RoleModel $role)
+    {
+        return response()->json($role->only(['label', 'menu']));
+    }
+
     public function create(RoleRequest $request)
     {
         $request->createRole();
-        return response(null, 201, ['success' => 'New role created.']);
+        return response()->json(['message' => 'Role Created'], 201, ['success' => 'New role created.']);
     }
 
     public function update(RoleRequest $request, RoleModel $role)
     {
         $request->updateRole($role);
-        return response(null, 204, ['success' => 'Role updated.']);
+        return response()->json(['message' => 'Role updated'], 202, ['success' => 'Role updated.']);
     }
 
     public function delete(RoleModel $role)
     {
         $role->deleteOrFail();
-        return response(null, 204, ['success' => 'Role deleted.']);
+        return response()->json(['message' => 'Role deleted'], 202, ['success' => 'Role deleted.']);
     }
 
     public function show(RoleModel $role)
