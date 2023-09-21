@@ -10,8 +10,7 @@ import Swal from "sweetalert2";
 const UserRoleForm = () => {
     const {id} = useParams();
     const [ selectedStatus, setSelectedStatus ] = useState("")
-    // const [ menus, setMenus ] = useState([])
-    // const [ currentMenu, setCurrentMenu ] = useState("")
+    const [ menus, setMenus ] = useState([])
     const [ values, setValues ] = useState({ rolename: "", menu: "", status: selectedStatus });
     const [errors, setErrors] = useState([])
 
@@ -24,7 +23,7 @@ const UserRoleForm = () => {
         e.preventDefault()
         const data = {
             label: values.rolename,
-            menu: "",
+            menu: JSON.stringify(menus),
             status: values.status
         }
         const config = {
@@ -122,6 +121,9 @@ const UserRoleForm = () => {
         const data = [...rows];
         data[i][name] = value;
         // console.log(data);
+        let newMenus = [...menus]
+        newMenus.push(value)
+        setMenus(newMenus)
         initRow(data);
     };
     const onCheckUpdate = (i, event) => {
