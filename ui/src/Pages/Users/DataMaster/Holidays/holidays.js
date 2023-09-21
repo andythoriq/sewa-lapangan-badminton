@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Form, Card, Row, Col } from "react-bootstrap";
 import { Pencil, Trash3, Search, ChevronLeft, ChevronRight } from "react-bootstrap-icons";
 import FormInput from "../../../../Components/Form/input";
@@ -6,6 +6,7 @@ import HolidaysModal from "./modal";
 import FormatDate from "../../../../Components/Services/formatDate";
 import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
+import axios from "../../../../api/axios";
 
 const Holidays = () => {
     const [values, setValues] = useState({ search: "" });
@@ -13,10 +14,26 @@ const Holidays = () => {
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
-    let listData = [
-        {id:1, label:"Friday", start:"2023-12-25", end:"2023-12-25"},
-        {id:2, label:"", start:"", end:""},
-    ];
+    const [holidays, setHolidays] = useState([]);
+    
+    useEffect(() => {
+        axios.get('/api/holiday', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(({data}) => {
+            setHolidays(data);
+        })
+        .catch((e) => {
+            console.log(e)
+        });
+    }, []);
+
+    // let listData = [
+    //     {id:1, label:"Friday", start:"2023-12-25", finish:"2023-12-25"},
+    //     {id:2, label:"", start:"", finish:""},
+    // ];
 
     const [show, setShow] = useState(false);
     const [detailData, setDetailData] = useState([]);
@@ -31,24 +48,38 @@ const Holidays = () => {
 
     const [showDelete, setShowDelete] = useState(false);
     const [deleteId, setDeleteId] = useState("");
+    const [item_id, set_item_id] = useState("");
     const handleCloseDelete = () => setShowDelete(false);
-    const handleShowDelete = (index) => {
+    const handleShowDelete = (index, id) => {
         setDeleteId(index);
+        set_item_id(id)
         setShowDelete(true)
     };
 
-    const handleYes = () => {
-        tableRowRemove(deleteId);
-        Swal.fire({icon:"success", title:"Success!", html:'Delete successfully', 
-            showConfirmButton: false, allowOutsideClick: false,
-            allowEscapeKey:false, timer: 2000});
-        setShowDelete(false);
+    const handleYes = async () => {
+        try {
+            await axios.get('/sanctum/csrf-cookie');
+            const { data } = await axios.delete('/api/holiday/' + item_id, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            tableRowRemove(deleteId);
+            Swal.fire({
+                icon: "success", title: "Success!", html: data.message,
+                showConfirmButton: false, allowOutsideClick: false,
+                allowEscapeKey: false, timer: 2000
+            });
+            setShowDelete(false);
+        } catch (e) {
+            console.log(e)
+        }
     };
 
     const TableRows = ({ rows }) => {
         return rows.map((val, index) => {
           return (
-            <tr key={index}>
+            <tr key={val.id}>
                 <td className="text-center">
                     <span className="custom-checkbox">
                         <input type="checkbox" id="checkbox1" name="options[]" value="1" />
@@ -57,13 +88,13 @@ const Holidays = () => {
                 </td>
                 <td>{val.label}</td>
                 <td>{FormatDate(val.start)}</td>
-                <td>{FormatDate(val.end)}</td>
+                <td>{FormatDate(val.finish)}</td>
                 <td className="text-center">
                     <a href="#edit" className="edit" onClick={()=>handleDetail(val)}>
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>
                     </a>
                     &nbsp;&nbsp;
-                    <a href="#delete" onClick={()=>handleShowDelete(index)}>
+                    <a href="#delete" onClick={()=>handleShowDelete(index, val.id)}>
                         <Trash3 className="material-icons" color="dark" title="Delete" />
                     </a>
                 </td>
@@ -71,11 +102,11 @@ const Holidays = () => {
           )
         });
     }
-    const [rows, initRow] = useState(listData);
+
     const tableRowRemove = (index) => {
-        const dataRow = [...rows];
+        const dataRow = [...holidays];
         dataRow.splice(index, 1);
-        initRow(dataRow);
+        setHolidays(dataRow);
     };
     
 
@@ -104,14 +135,14 @@ const Holidays = () => {
                                 <th width={'1%'}></th>
                                 <th width={'30%'}>Label</th>
                                 <th width={'30%'} className="text-center">Start</th>
-                                <th width={'30%'} className="text-center">End</th>
+                                <th width={'30%'} className="text-center">Finish</th>
                                 <th width={'9%'} className="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <TableRows
-                                rows={rows}
-                                tableRowRemove={tableRowRemove}
+                                rows={holidays}
+                                // tableRowRemove={tableRowRemove}
                             />
                         </tbody>
                     </table>

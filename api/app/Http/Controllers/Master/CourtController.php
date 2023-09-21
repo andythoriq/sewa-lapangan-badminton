@@ -24,18 +24,18 @@ class CourtController extends Controller
     public function create(CourtRequest $request)
     {
         $request->createCourt();
-        return response(null, 201, ['success' => 'New court data created.']);
+        return response()->json(['message' => 'Success create new court'], 201, ['success' => 'New court data created.']);
     }
 
     public function update(CourtRequest $request, CourtModel $court)
     {
         $request->updateCourt($court);
-        return response(null, 204, ['success' => 'Court data updated.']);
+        return response()->json(['message' => 'Success update court'], 202, ['success' => 'Court data updated.']);
     }
 
     public function delete(CourtModel $court)
     {
         $court->deleteOrFail();
-        return response(null, 204, ['success' => 'Court data deleted.']);
+        return response()->json(['message' => 'Success delete court'], 202, ['success' => 'Court data deleted.']);
     }
 }

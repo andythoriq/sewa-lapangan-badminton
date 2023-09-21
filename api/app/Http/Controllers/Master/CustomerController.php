@@ -44,36 +44,36 @@ class CustomerController extends Controller
     public function create_M(MemberRequest $request)
     {
         $request->createMember();
-        return response(null, 201, ['success' => 'New customer member created.']);
+        return response()->json(['message' => 'Success create member customer'], 201, ['success' => 'New customer member created.']);
     }
 
     public function create_R(RegularRequest $request)
     {
         $request->createRegular();
-        return response(null, 201, ['success' => 'New customer regular created.']);
+        return response()->json(['message' => 'Success create regular customer'], 201, ['success' => 'New customer regular created.']);
     }
 
     public function update_M(MemberRequest $request, CustomerModel $customer)
     {
         $request->updateMember($customer);
-        return response(null, 204, ['success' => 'Customer member updated.']);
+        return response()->json(['message' => 'Success update member customer'], 202, ['success' => 'Customer member updated.']);
     }
 
     public function update_R(RegularRequest $request, CustomerModel $customer)
     {
         $request->updateRegular($customer);
-        return response(null, 204, ['success' => 'Customer regular updated.']);
+        return response()->json(['message' => 'Success update regular customer'], 202, ['success' => 'Customer regular updated.']);
     }
 
     public function delete_M(CustomerModel $customer)
     {
         $customer->deleteOrFail();
-        return response(null, 204, ['success' => 'Customer member deleted.']);
+        return response()->json(['message' => 'Success delete member customer'], 202, ['success' => 'Customer member deleted.']);
     }
 
     public function delete_R(CustomerModel $customer)
     {
         $customer->deleteOrFail();
-        return response(null, 204, ['success' => 'Customer regular deleted.']);
+        return response()->json(['message' => 'Success delete regular customer'], 202, ['success' => 'Customer regular deleted.']);
     }
 }
