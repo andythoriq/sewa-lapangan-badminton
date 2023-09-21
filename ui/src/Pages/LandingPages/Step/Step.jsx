@@ -119,7 +119,7 @@ const FormStep = () => {
           </Row>
         </Card>
       </Container>
-      <FooterPublic />
+      <FooterPublic style={{marginTop: "100px"}}/>
     </>
   );
 };

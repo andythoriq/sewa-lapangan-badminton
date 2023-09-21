@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import Container from "react-bootstrap/Container";
 import { Nav, Navbar } from "react-bootstrap";
 import "./nav.css";
 
 const Landing = () => {
+
+  const [color, setColor] = useState(false);
+  const changeColor = () => {
+    if (window.scrollY >= 90) {
+      setColor(true)
+    }else {
+      setColor(false)
+    }
+  }
+
+  window.addEventListener('scroll', changeColor)
+
   return (
     <>
       {/* navbar */}
-      <Navbar expand="lg" className="nav">
+      <Navbar expand="lg" className={color ? "nav nav-bg" : "nav" }>
         <Container>
           <Navbar.Brand href="#">
             <img src="./logo.png" alt="bfb" />
@@ -15,7 +27,7 @@ const Landing = () => {
               BFB
             </b>
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Navbar.Toggle aria-controls="navbartoggler" type="button" data-bs-toggle="offcanvas" data-bs-target="offcanvasNavbar" ria-controls="offcanvasNavbar" className="navbar-toogler shadow-none border-0 bg-white" />
           <Navbar.Collapse id="navbarScroll">
             <Nav className="ms-auto" style={{ maxHeight: "100px" }} navbarScroll>
               <Nav.Link href="#about" style={{ marginRight: "30px", color: "white" }}>
@@ -28,10 +40,10 @@ const Landing = () => {
                 Services
               </Nav.Link>
             </Nav>
+            <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} href="userstep">
+              Register
+            </a>
           </Navbar.Collapse>
-          <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} href="userstep">
-            Register
-          </a>
         </Container>
       </Navbar>
       {/* akhir navbar */}
@@ -51,16 +63,16 @@ const Landing = () => {
       {/* end header */}
 
       {/* about */}
-      <section id="about" style={{ padding: "30px 0", marginBottom: "60px" }}>
+      <section id="about" style={{ padding: "60px 0", marginBottom: "70px" }}>
         <div className="about-area section-padding" id="about">
           <div className="container">
             <div className="row">
-              <div className="col-lg-6 col-sm-12 col-12">
+              <div className="col-lg-6 col-mb-12">
                 <div className="img-area ">
-                  <img src="./assets/img/bfb about.png" alt="..." />
+                  <img src="./assets/img/bfb about2.png" alt="..." />
                 </div>
               </div>
-              <div className="col-lg-6 col-12  col-md-12 col-6 ps-lg-5 text-container">
+              <div className="col-12 col-lg-6  text-container">
                 <div className="about-text">
                   <h2>
                     Know About <span style={{ color: "#D93221" }}>BFB</span>
@@ -69,9 +81,7 @@ const Landing = () => {
                     bfb is an application that allows you to book a court or facility online or offline. You can choose the date, time, and type of court you want. The application has an availability calendar that allows you to see when the
                     court or facility is available for booking. bfb may provide discounts to club members or their regular customers as an incentive to faithfully use the facility or pitch.
                   </p>
-                  <a href="#" className="btn">
-                    About Us
-                  </a>
+                  <button className="btn btn-danger">AboutUs</button>
                 </div>
               </div>
             </div>
@@ -96,7 +106,7 @@ const Landing = () => {
               <div className="card">
                 <img src="./assets/img/court/1.jpg" className="card-img-top" alt="..." />
                 <div className="card-body">
-                  <h5 className="card-title">Court A</h5>
+                  <h5 className="card-title fw-bold">Court A</h5>
                   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16" style={{ color: "red" }}>
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
                   </svg>{" "}
@@ -119,9 +129,9 @@ const Landing = () => {
                   <br />
                   <b style={{ color: "#D93221" }}>Rp 25,000</b>
                   <div class="d-grid gap-2">
-                    <button className="btn btn-dark mt-4" type="button">
+                    <a className="btn btn-dark mt-4" type="button" href="userstep">
                       Booking
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -131,7 +141,7 @@ const Landing = () => {
               <div className="card">
                 <img src="./assets/img/court/6.jpg" className="card-img-top" alt="..." />
                 <div className="card-body">
-                  <h5 className="card-title">Court B</h5>
+                  <h5 className="card-title fw-bold">Court B</h5>
                   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16" style={{ color: "red" }}>
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
                   </svg>{" "}
@@ -154,9 +164,9 @@ const Landing = () => {
                   <br />
                   <b style={{ color: "#D93221" }}>Rp 25,000</b>
                   <div class="d-grid gap-2">
-                    <button className="btn btn-dark mt-4" type="button">
+                    <a className="btn btn-dark mt-4" type="button" href="userstep">
                       Booking
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -166,7 +176,7 @@ const Landing = () => {
               <div className="card">
                 <img src="./assets/img/court/4.jpg" className="card-img-top" alt="..." />
                 <div className="card-body">
-                  <h5 className="card-title">Court C</h5>
+                  <h5 className="card-title fw-bold">Court C</h5>
                   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16" style={{ color: "red" }}>
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
                   </svg>{" "}
@@ -189,9 +199,9 @@ const Landing = () => {
                   <br />
                   <b style={{ color: "#D93221" }}>Rp 35,000</b>
                   <div class="d-grid gap-2">
-                    <button className="btn btn-dark mt-4" type="button">
+                    <a className="btn btn-dark mt-4" type="button" href="userstep">
                       Booking
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -204,14 +214,14 @@ const Landing = () => {
       {/* Servicer */}
       <Container>
         <section className="setup" id="#service" style={{ padding: "30px 0", marginBottom: "10px" }}>
-        <div class="container py-5">
-          <div class="row cnt2 text-center">
-            <div class="col">
-              <h2 className="fw-bold">Our Services</h2>
-              <p>Services we provide at bfb that can make it easier for you to book the court</p>
+          <div class="container py-5">
+            <div class="row cnt2 text-center">
+              <div class="col">
+                <h2 className="fw-bold">Our Services</h2>
+                <p>Services we provide at bfb that can make it easier for you to book the court</p>
+              </div>
             </div>
           </div>
-        </div>
           <div className="items text-center">
             <div className="row">
               <div className="col-md-4">
@@ -254,7 +264,7 @@ const Landing = () => {
       {/* end about work */}
       <div className="footer lpages text-center text-light p-3 mt-5">
         <div className="last-footer">
-          <p className="copyright"> &copy; Copyright 2023 PKL Cibione.  All Bought Reserved</p>
+          <p className="copyright"> &copy; Copyright 2023 PKL Cibione. All Rights Reserved</p>
         </div>
       </div>
     </>
