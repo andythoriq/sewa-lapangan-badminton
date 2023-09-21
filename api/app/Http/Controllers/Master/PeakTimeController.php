@@ -23,24 +23,24 @@ class PeakTimeController extends Controller
     public function create(PeakTimeRequest $request)
     {
         $request->createPeakTime();
-        return response(null, 201, ['success' => 'New peak time created.']);
+        return response()->json(['message' => 'Success create new peak time'], 201, ['success' => 'New peak time created.']);
     }
 
     public function update(PeakTimeRequest $request, PeakTimeModel $peak_time)
     {
         $request->updatePeakTime($peak_time);
-        return response(null, 204, ['success' => 'Peak time updated.']);
+        return response()->json(['message' => 'Success update peak time'], 202, ['success' => 'Peak time updated.']);
     }
 
     public function delete(PeakTimeModel $peak_time)
     {
         $peak_time->deleteOrFail();
-        return response(null, 204, ['success' => 'Peak time updated.']);
+        return response()->json(['message' => 'Success delete peak time'], 202, ['success' => 'Peak time updated.']);
     }
 
     public function create_multiple(PeakTimeRequest $request)
     {
         $request->createMultiplePeakTime();
-        return response(null, 201, ['success' => 'Multiple peak time Created.']);
+        return response()->json(['message' => 'Success create new court'], 201, ['success' => 'Multiple peak time Created.']);
     }
 }
