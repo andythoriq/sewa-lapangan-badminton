@@ -1,6 +1,5 @@
 import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
-import "../Pages/LandingPages/nav.css";
 
 const NavbarPublic = () => {
   return (

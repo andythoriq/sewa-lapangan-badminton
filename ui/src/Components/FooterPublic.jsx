@@ -1,5 +1,4 @@
 import React from "react";
-import "../Pages/LandingPages/nav.css";
 export default function FooterPublic() {
   return (
     <div className="footer lpages text-center text-light p-3 mt-5">

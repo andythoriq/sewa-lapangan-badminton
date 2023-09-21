@@ -4,22 +4,21 @@ import { Nav, Navbar } from "react-bootstrap";
 import "./nav.css";
 
 const Landing = () => {
-
   const [color, setColor] = useState(false);
   const changeColor = () => {
     if (window.scrollY >= 90) {
-      setColor(true)
-    }else {
-      setColor(false)
+      setColor(true);
+    } else {
+      setColor(false);
     }
-  }
+  };
 
-  window.addEventListener('scroll', changeColor)
+  window.addEventListener("scroll", changeColor);
 
   return (
     <>
       {/* navbar */}
-      <Navbar expand="lg" className={color ? "nav nav-bg" : "nav" }>
+      <Navbar expand="lg" className={color ? "nav nav-bg" : "nav"}>
         <Container>
           <Navbar.Brand href="#">
             <img src="./logo.png" alt="bfb" />
@@ -69,7 +68,7 @@ const Landing = () => {
             <div className="row">
               <div className="col-lg-6 col-mb-12">
                 <div className="img-area ">
-                  <img src="./assets/img/bfb about2.png" alt="..." />
+                  <img src="./assets/img/bg-lan.jpg" alt="..." />
                 </div>
               </div>
               <div className="col-12 col-lg-6  text-container">
@@ -103,10 +102,18 @@ const Landing = () => {
           {/* card */}
           <div className="row row-cols-1 row-cols-md-3 g-4 py-5">
             <div className="col">
-              <div className="card">
+              <div className="card card-court">
                 <img src="./assets/img/court/1.jpg" className="card-img-top" alt="..." />
                 <div className="card-body">
-                  <h5 className="card-title fw-bold">Court A</h5>
+                  <div className="rental-prince">
+                    <h5 className="card-title fw-bold">Court A</h5>
+                    <p className="text">
+                      Rental price
+                      <h5 class="fw-bold" style={{ color: "#d93221" }}>
+                        Rp 25,000/hour
+                      </h5>
+                    </p>
+                  </div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16" style={{ color: "red" }}>
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
                   </svg>{" "}
@@ -127,21 +134,26 @@ const Landing = () => {
                   </svg>{" "}
                   <span className="mb-3"> Carpeted court</span>
                   <br />
-                  <b style={{ color: "#D93221" }}>Rp 25,000</b>
-                  <div class="d-grid gap-2">
-                    <a className="btn btn-dark mt-4" type="button" href="userstep">
-                      Booking
-                    </a>
-                  </div>
                 </div>
+                <a className="btn btn-booking text-center border border-dark" type="button" href="userstep" style={{ fontSize: "24px", width: "100%", padding: "15px" }}>
+                  Booking
+                </a>
               </div>
             </div>
 
             <div className="col">
-              <div className="card">
+              <div className="card card-court">
                 <img src="./assets/img/court/6.jpg" className="card-img-top" alt="..." />
                 <div className="card-body">
-                  <h5 className="card-title fw-bold">Court B</h5>
+                <div className="rental-prince">
+                    <h5 className="card-title fw-bold">Court B</h5>
+                    <p className="text">
+                      Rental price
+                      <h5 class="fw-bold" style={{ color: "#d93221" }}>
+                        Rp 25,000/hour
+                      </h5>
+                    </p>
+                  </div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16" style={{ color: "red" }}>
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
                   </svg>{" "}
@@ -162,21 +174,26 @@ const Landing = () => {
                   </svg>{" "}
                   <span className="mb-3"> Carpeted court</span>
                   <br />
-                  <b style={{ color: "#D93221" }}>Rp 25,000</b>
-                  <div class="d-grid gap-2">
-                    <a className="btn btn-dark mt-4" type="button" href="userstep">
-                      Booking
-                    </a>
-                  </div>
                 </div>
+                <a className="btn btn-booking text-center border border-dark" type="button" href="userstep" style={{ fontSize: "24px", width: "100%", padding: "15px" }}>
+                  Booking
+                </a>
               </div>
             </div>
 
             <div className="col">
-              <div className="card">
+              <div className="card card-court">
                 <img src="./assets/img/court/4.jpg" className="card-img-top" alt="..." />
                 <div className="card-body">
-                  <h5 className="card-title fw-bold">Court C</h5>
+                <div className="rental-prince">
+                    <h5 className="card-title fw-bold">Court C</h5>
+                    <p className="text">
+                      Rental price
+                      <h5 class="fw-bold" style={{ color: "#d93221" }}>
+                        Rp 35,000/hour
+                      </h5>
+                    </p>
+                  </div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16" style={{ color: "red" }}>
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
                   </svg>{" "}
@@ -197,13 +214,10 @@ const Landing = () => {
                   </svg>{" "}
                   <span className="mb-3"> Floor court</span>
                   <br />
-                  <b style={{ color: "#D93221" }}>Rp 35,000</b>
-                  <div class="d-grid gap-2">
-                    <a className="btn btn-dark mt-4" type="button" href="userstep">
-                      Booking
-                    </a>
-                  </div>
                 </div>
+                <a className=" btn btn-booking text-center border border-dark" type="button" href="userstep" style={{ fontSize: "24px", width: "100%", padding: "15px" }}>
+                  Booking
+                </a>
               </div>
             </div>
           </div>

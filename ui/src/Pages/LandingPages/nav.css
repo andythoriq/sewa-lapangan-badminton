@@ -1,4 +1,4 @@
-@media (max-width: 1800px) {
+@media (max-width: 1994px) {
   .nav {
     position: fixed;
     top: 0;
@@ -60,7 +60,9 @@
 
   /* about */
   .img-area img {
-    width: 70%;
+    width: 100%;
+    padding: 20px;
+    border-radius: 30px;
   }
   .about-text h2 {
     font-size: 45px;
@@ -81,10 +83,28 @@
     background-color: #d93221;
     padding: 10px 0;
   }
+  .card-court{
+    transition: .5s ease;
+  }
   .card-body {
     padding: 25px;
     margin-top: 15px;
   }
+  .rental-prince{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px;
+  }
+  .btn-booking:hover{
+    background-color: #000000;
+    color: white;
+  }
+  .card-court:hover{
+    transform: scale(1.1);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, .6);
+  }
+  /* footer */
   .footer.lpages {
     background-color: #000000;
     padding: 0 20px;
@@ -94,3 +114,5 @@
     margin: auto;
   }
 }
+
+

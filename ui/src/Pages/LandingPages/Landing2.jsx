@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import Dropdown from "react-bootstrap/Dropdown";
 import ScheduleModal from "../Users/Schedule/modal";
+import { Link } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
 import "./landing2.css";
+import RiwayatBooking from "./RiwayatBooking";
+import FooterPublic from "../../Components/FooterPublic";
+import NavbarUser from "../../Components/NavbarUser";
+
 const Landing2 = () => {
   let dataCourt = [
     // {time:'08.00-09.00', court1_1:'', court1_2:'cyan', court2_1:'', court2_2:'', court3_1:'', court3_2:'', court4_1:'', court4_2:'',
@@ -67,115 +69,36 @@ const Landing2 = () => {
     handleShow();
   };
 
-  const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-    <a
-      href="/#"
-      ref={ref}
-      onClick={(e) => {
-        e.preventDefault();
-        onClick(e);
-      }}
-    >
-      {children}
-    </a>
-  ));
-
   return (
     <>
-      <Navbar className="navbar navbar-expand-lg bg-danger fixed-top">
-        <Container>
-          <Navbar.Brand href="#home">
-            <img src="./logo.png" alt="bfb" />
-            <b className="text-white" style={{ paddingLeft: 5, fontSize: 25 }}>
-              BFB
-            </b>
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="ms-auto">
-              <Nav.Link href="#court" className="text-white">
-                Court
-              </Nav.Link>
-              <Nav.Link href="#schedule" className="text-white">
-                Schedule
-              </Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-          <div className="h-screen bg-gray-200 flex justify-center">
-            <div className="relative">
-              <Dropdown>
-                <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                  <img src="./assets/icon/user-circle.png" alt="user" className="object-cover rounded-full cursor-pointer" style={{ width: 35 }} />
-                </Dropdown.Toggle>
-                <Dropdown.Menu align="end">
-                  <Dropdown.Item eventKey="1" href="/logout">
-                    Logout
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
-          </div>
-        </Container>
-      </Navbar>
-
-      <div className="container-build banner">
-        <div className="container text-center">
-          <h4 className="display-6">Top Quality Badminton Vanue</h4>
-        </div>
-      </div>
-
-      <Container>
-        <h3 className="text-left mt-4" id="court">
-          Court
-        </h3>
-        <p style={{ color: "#B5B5B5" }}>Booked this court</p>
-        <hr style={{ width: 200 }}></hr>
-        <div className="row row-cols-1 row-cols-md-4 g-4 mt-3">
-          <div className="col">
-            <div className="card">
-              <img src="./assets/img/court/6.jpg" className="card-img-top" alt="..." />
-              <div className="card-body">
-                <h5 className="card-title">Court A</h5>
-                <p className="card-text">BFB Arena is located in a very strategic place. This field is equipped with facilities, such as prayer rooms, air conditioning, and toilets, canteens. with a carpeted field.</p>
-              </div>
-            </div>
-          </div>
-          <div className="col">
-            <div className="card">
-              <img src="./assets/img/court/3.jpg" className="card-img-top" alt="..." />
-              <div className="card-body">
-                <h5 className="card-title">Court B</h5>
-                <p className="card-text">BFB Arena is located in a very strategic place. This field is equipped with facilities, such as prayer rooms, air conditioning, and toilets, canteens. with a carpeted field.</p>
-              </div>
-            </div>
-          </div>
-          <div className="col">
-            <div className="card">
-              <img src="./assets/img/court/1.jpg" className="card-img-top" alt="..." />
-              <div className="card-body">
-                <h5 className="card-title">Court C</h5>
-                <p className="card-text">BFB Arena is located in a very strategic place. This field is equipped with facilities, such as prayer rooms, air conditioning, and toilets, canteens. with a carpeted field.</p>
-              </div>
-            </div>
-          </div>
-          <div className="col">
-            <div className="card">
-              <img src="./assets/img/court/4.jpg" className="card-img-top" alt="..." />
-              <div className="card-body">
-                <h5 className="card-title">Court D</h5>
-                <p className="card-text">BFB Arena is located in a very strategic place. This field is equipped with facilities, such as prayer rooms, air conditioning, and toilets, canteens. with a floored field.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Container>
-
+      <NavbarUser/>
       <div className="container mt-5">
         <div className="table-responsive" id="schedule">
-          <h3 className="text-center mt-5">Schedule</h3>
-          <hr style={{ width: 200 }} align="center"></hr>
+          <h3 className="text-left mt-5">Schedule</h3>
+          <hr style={{ width: 130, float:'left' }} />
         </div>
-        <div className="table-responsive mt-5">
+        <Row>
+          <Col className="col-12 col-md-6 d-flex mt-3">
+            <div>
+              <div className="bullet bullet-cyan"></div> <div className="bullet-text">Booked</div>
+            </div>
+            <div>
+              <div className="bullet bullet-green"></div> <div className="bullet-text">Finished</div>
+            </div>
+            <div>
+              <div className="bullet bullet-red"></div> <div className="bullet-text">Avaible</div>
+            </div>
+            <div>
+              <div className="bullet bullet-orange"></div> <div className="bullet-text">On progress</div>
+            </div>
+          </Col>
+          <Col className="col-12 col-md-6 mt-1 mb-1" style={{ textAlign: "right" }}>
+            <Link to="landing-booking" className="btn btn-danger btn-sm">
+              + Add Booking
+            </Link>
+          </Col>
+        </Row>
+        <div className="table-responsive mt-2">
           <table id="schedule" className="table" width={"100%"} border={1}>
             <thead>
               <tr>
@@ -229,11 +152,17 @@ const Landing2 = () => {
         <ScheduleModal show={show} handleClose={handleClose} size="xl" data={{ name: name, court: court }} />
       </div>
 
-      <div className="footer text-center text-light p-3 mt-5">
-        <div className="last-footer">
-          <img src="./assets/icon/c.png" alt="" style={{ width: 25 }} /> 2023. PKL Cibione.
+      {/* riwayat booking */}
+        <div className="container">
+          <div className="table-responsive" id="bookinghistory">
+            <h3 className="text-left mt-5">History Booking</h3>
+            <hr style={{ width: 220, float: "left", marginTop:-5 }}/>
+            <RiwayatBooking/>
+          </div>
         </div>
-      </div>
+        
+        {/* <ModalConfirmDelete show={show} handleClose={handleClose} handleYes={handleYes}/> */}
+      <FooterPublic/>
     </>
   );
 };
