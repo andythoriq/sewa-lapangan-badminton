@@ -10,9 +10,10 @@ import Swal from "sweetalert2";
 const UserRoleForm = () => {
     const {id} = useParams();
     const [ selectedStatus, setSelectedStatus ] = useState("")
-    const [ values, setValues ] = useState({ rolename: "", menu: concatMenus, status: selectedStatus });
+    // const [ menus, setMenus ] = useState([])
+    // const [ currentMenu, setCurrentMenu ] = useState("")
+    const [ values, setValues ] = useState({ rolename: "", menu: "", status: selectedStatus });
     const [errors, setErrors] = useState([])
-    const [ concatMenus, setConcatMenus ] = useState("")
 
     const onChange = (e) => { 
         setValues({ ...values, [e.target.name]: e.target.value });
@@ -24,7 +25,7 @@ const UserRoleForm = () => {
         console.log(values)
         const data = {
             label: values.rolename,
-            menu: values.menu,
+            menu: "",
             status: values.status
         }
         const config = {
@@ -78,7 +79,7 @@ const UserRoleForm = () => {
 
     const TableRows = ({ rows, tableRowRemove, onValUpdate, onCheckUpdate }) => {
         return rows.map((rowsData, index) => {
-          const { list_menu, menu, label, check } = rowsData;
+          const { list_menu, menu, check } = rowsData;
           return (
             <tr key={index}>
                 <td className="text-center">
