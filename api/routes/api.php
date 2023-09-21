@@ -84,6 +84,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(CourtController::class)->middleware('admin')->group(function(){
         Route::get('/court', 'index');
         Route::get('/court/{court}', 'show');
+        Route::get('/court-edit/{court}', 'edit');
         Route::post('/court', 'create');
         Route::put('/court/{court}', 'update');
         Route::delete('/court/{court}', 'delete');

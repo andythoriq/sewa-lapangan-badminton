@@ -1,15 +1,18 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Form, Card, Row, Col, Image } from "react-bootstrap";
+import { Form, Card, Row, Col, Image, Input } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import FormTextarea from "../../../../Components/Form/textarea";
 import { imgDefault } from "../../../../Components/Services/config";
 import { msgAlertWarning } from "../../../../Components/Alert";
 import { ArrowLeft } from "react-bootstrap-icons";
+import axios from "../../../../api/axios";
+import Swal from "sweetalert2";
 
 const CourtForm = () => {
     const {id} = useParams();
-    const [values, setValues] = useState({ label:"", price:"" });
+    const [values, setValues] = useState({ label:"", price:"", description: "" });
+    const [errors, setErrors] = useState([])
     const onChange = (e) => { 
         setValues({ ...values, [e.target.name]: e.target.value });
     }
@@ -46,6 +49,58 @@ const CourtForm = () => {
         setImage(fileImg);
     }
 
+    const handleSubmitClick = async (e) => {
+        e.preventDefault()
+        const data = {
+            label: values.label,
+            initial_price: values.price,
+            description: values.description,
+            // image_path: image
+        }
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        }
+        try {
+            await axios.get('/sanctum/csrf-cookie')
+            let response
+            if (id > 0) {
+                response = await axios.put('/api/court/' + id, data, config)
+            } else {
+                response = await axios.post('/api/court', data, config);
+            }
+            setErrors('');
+            Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
+            setTimeout(function () {
+                window.location.href = "/data-master/court";
+            }, 2000);
+        } catch (e) {
+            setErrors(e.response.data.errors)
+        }
+    };
+
+    useEffect(() => {
+        if (id > 0) {
+            axios.get('/api/court-edit/' + id, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then(({data}) => {
+                setValues({
+                    ...values,
+                    label: data.label,
+                    price: data.initial_price,
+                    description: data.description
+                })
+            })
+            .catch((e) => {
+                console.log(e) 
+            });
+        }
+    }, [])
+
   return (
     <>
         <h4><b>
@@ -54,21 +109,27 @@ const CourtForm = () => {
             </b>
         </h4>
         <Card className="p-3 mt-5">
-            <Form>
+            <Form encType="multipart/form-data">
             <Row>
                 <Col className="col-12 col-md-6">
                     <Form.Group>
                         <FormInput type="text" name="label" label="Label" value={values.label} onChange={onChange}/>
+                        {errors.label && 
+                            <span className="text-danger">{errors.label[0]}</span>}
                     </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6">
                     <Form.Group>
                         <FormInput type="text" name="price" label="Price" value={values.price} onChange={onChange}/>
+                        {errors.initial_price && 
+                            <span className="text-danger">{errors.initial_price[0]}</span>}
                     </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6">
                     <Form.Group>
                         <FormTextarea name="description" label="Description" value={values.description} onChange={onChange} style={{ height: "150px" }}/>
+                        {errors.description && 
+                            <span className="text-danger">{errors.description[0]}</span>}
                     </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6">
@@ -93,23 +154,11 @@ const CourtForm = () => {
                         }
                     </center>
                     </div>
-                </Col>
-                <Col className="col-12 col-md-6">
-                    <label>Status</label>
-                    <div className="d-flex">
-                        <div className="form-check">
-                            <input type="radio" className="form-check-input" name="radionExam" />
-                            <label>Active</label>
-                        </div>
-                        &nbsp;&nbsp;&nbsp;
-                        <div className="form-check form-check-inline">
-                            <input type="radio" className="form-check-input" name="radionExam" />
-                            <label>In active</label>
-                        </div>
-                    </div>
+                    {errors.image_path && 
+                            <span className="text-danger">{errors.image_path[0]}</span>}
                 </Col>
                 <Col className="col-12 col-md-6 text-right pt-3">
-                    <button type="button" className="btn btn-danger me-md-4">
+                    <button onClick={handleSubmitClick} type="button" className="btn btn-danger me-md-4">
                         Save
                     </button>
                 </Col>

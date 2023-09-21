@@ -52,7 +52,7 @@ class CourtRequest extends FormRequest
             $this->file('image_path')->move('court-image/', $this->file('image_path')->getClientOriginalName());
             $court->image_path = $this->file('image_path')->getClientOriginalName();
         } else {
-            $court->image_path = 'court-image2/no_image.png';
+            $court->image_path = null;
         }
         $court->saveOrFail();
     }
