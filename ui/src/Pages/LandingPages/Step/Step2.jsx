@@ -5,6 +5,7 @@ import FormInput from "../../../Components/Form/input";
 import Swal from "sweetalert2";
 import NavbarPublic from "../../../Components/NavbarPublic";
 import FooterPublic from "../../../Components/FooterPublic";
+import "../nav.css";
 
 const Step2 = () => {
   const [values, setValues] = useState({ verifikasi: "" });

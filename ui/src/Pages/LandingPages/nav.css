@@ -1,36 +1,32 @@
-@media (max-width: 768px) {
-    .navbar-brand.lpages {
-        margin-left: 0px;
-    }
-}
-*{
-    scroll-behavior: smooth;
-}
-.nav {
-    background-color: #000000;
+@media (max-width: 1800px) {
+  .nav {
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 9999;
-}
-.jumbotron {
+    background: transparent;
+  }
+  .nav-bg {
+    background-color: #000000;
+  }
+  .jumbotron {
     background-image: url(/public/assets/img/bg.jpg);
     background-size: cover;
-    height: 545px;
-}
-.scroll-down {
+    height: 580px;
+  }
+  .scroll-down {
     height: 50px;
     width: 30px;
     border: 2px solid white;
     position: absolute;
     left: 50%;
-    bottom: 180px;
+    bottom: 250px;
     border-radius: 50px;
     cursor: pointer;
-}
-.scroll-down::before,
-.scroll-down::after{
-    content: '';
+  }
+  .scroll-down::before,
+  .scroll-down::after {
+    content: "";
     position: absolute;
     top: 20%;
     left: 50%;
@@ -41,57 +37,60 @@
     border-top: transparent;
     border-left: transparent;
     animation: scroll-down 1s ease-in-out infinite;
-}
-.scroll-down::after{
+  }
+  .scroll-down::after {
     top: 30%;
-    animation-delay: .3s;
-}
-@keyframes scroll-down {
-    0%{
-        opacity: 0;
+    animation-delay: 0.3s;
+  }
+  @keyframes scroll-down {
+    0% {
+      opacity: 0;
     }
-    30%{
-        opacity: 1;
+    30% {
+      opacity: 1;
     }
-    60%{
-        opacity: 1;
+    60% {
+      opacity: 1;
     }
-    100%{
-        opacity: 0;
-        top: 50%;
+    100% {
+      opacity: 0;
+      top: 70%;
     }
-}
+  }
 
-/* about */
-.img-area img{
-    width: 100% I !important;
-}
-.about-text h2{
+  /* about */
+  .img-area img {
+    width: 70%;
+  }
+  .about-text h2 {
     font-size: 45px;
     font-weight: 700;
     color: black;
-}
-.about-text .btn{
-    background: #D93221;
+  }
+  .about-text .btn {
+    background: #d93221;
     color: white;
     border-radius: 30px;
-}
-.text-container{
-    margin-top: 125px;
-}
+  }
+  .text-container {
+    margin-top: 67px;
+  }
 
-/* court */
-#court{
-    background-color: #D93221;
+  /* court */
+  #court {
+    background-color: #d93221;
     padding: 10px 0;
-}
-.card-body {
+  }
+  .card-body {
     padding: 25px;
     margin-top: 15px;
-}
-.footer.lpages {
+  }
+  .footer.lpages {
     background-color: #000000;
-}
-.copyright{
+    padding: 0 20px;
+    margin: 0 auto;
+  }
+  .copyright {
     margin: auto;
+  }
 }

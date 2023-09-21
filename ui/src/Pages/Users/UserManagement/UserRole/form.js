@@ -69,12 +69,12 @@ const UserRoleForm = () => {
 
     let dataMenu = [
         {value:"", label:""},
-        {value:"1", label:"Master data - lapangan"},
-        {value:"2", label:"User management - user list"},
-        {value:"3", label:"User management - user level"},
-        {value:"4", label:"Master data - regular customer"},
-        {value:"5", label:"Master data - customer member"},
-        {value:"6", label:"Master data - schedule"},
+        {value:"/data-master/court", label:"Master data - lapangan"},
+        {value:"/user-management/user-list", label:"User management - user list"},
+        {value:"/user-management/user-list", label:"User management - user level"},
+        {value:"/data-master/regular", label:"Master data - regular customer"},
+        {value:"/data-master/member", label:"Master data - customer member"},
+        {value:"/schedule", label:"Master data - schedule"},
     ];
 
     const TableRows = ({ rows, tableRowRemove, onValUpdate, onCheckUpdate }) => {
