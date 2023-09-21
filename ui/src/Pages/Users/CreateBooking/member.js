@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Form, Row, Col } from "react-bootstrap";
 import FormSelect from '../../../Components/Form/select';
-import FormSelectTime from '../../../Components/Form/selectTime';
+import FormInput from '../../../Components/Form/input';
 import { Trash3 } from "react-bootstrap-icons";
 import "./form.css";
 
@@ -23,7 +23,11 @@ const CreateBookingFormMember = () => {
   const pluginSelect = "react-select";
   const BoxRows = ({ rows, boxRowRemove, onValUpdate }) => {
       return rows.map((rowsData, index) => {
-        const { court, customer, start_hour, start_minute, start_time, end_hour, end_minute, end_time } = rowsData;
+        const { court, customer, start_time, end_time } = rowsData;
+        const onChange = (e) => {
+          // console.log(e.target.value);
+          onValUpdate(index, e);
+        }
         return (
           <Row className="m-1 p-2 box-border" key={index}>
             <Col className="col-12 col-md-8 column">
@@ -54,29 +58,11 @@ const CreateBookingFormMember = () => {
             </Col>
             <Col className="col-12 col-md-4 column">
               <Row>
-                <Col className="col-12">
-                    <FormSelectTime
-                      label="Start"
-                      nameHour="start_hour"
-                      nameMinute="start_minute"
-                      nameTime="start_time"
-                      selectHour={start_hour}
-                      selectMinute={start_minute}
-                      selectTime={start_time}
-                      onChange={(event) => onValUpdate(index, event)}
-                    />
+                <Col className="col-6 col-md-12">
+                  <FormInput type="time" name="start_time" label="Start" value={start_time} onChange={onChange} />
                 </Col>
-                <Col className="col-12">
-                    <FormSelectTime
-                      label="End"
-                      nameHour="end_hour"
-                      nameMinute="end_minute"
-                      nameTime="end_time"
-                      selectHour={end_hour}
-                      selectMinute={end_minute}
-                      selectTime={end_time}
-                      onChange={(event) => onValUpdate(index, event)}
-                    />
+                <Col className="col-6 col-md-12">
+                  <FormInput type="time" name="end_time" label="End" value={end_time} onChange={onChange} />
                 </Col>
                 <Col className="col-12 mt-3 text-right">
                   <button type="button" className="btn btn-danger btn-sm me-md-2 text-white" onClick={() => boxRowRemove(index)}>
@@ -93,7 +79,7 @@ const CreateBookingFormMember = () => {
       });
   }
 
-  const dataDefault = { court:"", customer:"", start_hour:"", start_minute:"", start_time:"", end_hour:"", end_minute:"", end_time:"" };
+  const dataDefault = { court:"", customer:"", start_time:"", end_time:"" };
   const [rows, initRow] = useState([dataDefault]);
   const addRowBox = () => {
       initRow([...rows, dataDefault]);
@@ -114,9 +100,13 @@ const CreateBookingFormMember = () => {
         const { name, value } = event.target;
         const data = [...rows];
         data[i][name] = value;
-        initRow(data);
+        // initRow(data);
       }
   };
+  
+  const onSubmit = () => {
+    console.log(rows);
+  }
 
   return (
     <>
@@ -143,7 +133,7 @@ const CreateBookingFormMember = () => {
             ...
         </Col>
         <Col className="col-12 text-right mt-4">
-            <button type="button" className="btn btn-danger btn-sm me-md-4">
+            <button type="button" className="btn btn-danger btn-sm me-md-4" onClick={onSubmit}>
                 Booking
             </button>
         </Col>
