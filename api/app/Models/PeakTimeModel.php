@@ -14,7 +14,8 @@ class PeakTimeModel extends Model
     protected $fillable = [
         'start',
         'finish',
-        'court_id'
+        'court_id',
+        'price_increase'
     ];
 
     public function court(): \Illuminate\Database\Eloquent\Relations\BelongsTo

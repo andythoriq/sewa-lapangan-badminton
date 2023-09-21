@@ -23,7 +23,8 @@ class CustomerModel extends User
         'membership_status',
         'status',
         'member_active_period',
-        'otp_code'
+        'otp_code',
+        'expiration'
     ];
 
     protected $primaryKey = 'customer_code';

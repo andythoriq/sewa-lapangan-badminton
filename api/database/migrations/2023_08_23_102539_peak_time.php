@@ -17,6 +17,7 @@ class PeakTime extends Migration
             $table->id();
             $table->dateTime('start');
             $table->dateTime('finish');
+            $table->float('price_increase')->default(1.5);
             $table->foreignId('court_id')->constrained('tb_court', 'id')->cascadeOnDelete();
             $table->timestamps();
         });
