@@ -1,42 +1,69 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { Form, Card, Row, Col } from "react-bootstrap";
 import { Pencil, Trash3, Search, ChevronLeft, ChevronRight } from "react-bootstrap-icons";
 import FormInput from "../../../../Components/Form/input";
 import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
+import axios from "../../../../api/axios";
 
 const Member = () => {
     const [show, setShow] = useState(false);
+    const [customerCode, setCustomerCode] = useState('')
     const [deleteId, setDeleteId] = useState("");
     const handleClose = () => setShow(false);
-    const handleShow = (index) => {
+    const handleShow = (index, code) => {
+        setCustomerCode(code)
         setDeleteId(index);
         setShow(true)
     };
 
-    const handleYes = () => {
-        tableRowRemove(deleteId);
-        Swal.fire({icon:"success", title:"Success!", html:'Delete successfully', 
+    const handleYes = async () => {
+        try {
+            await axios.get('/sanctum/csrf-cookie')
+            const { data } = await axios.delete('/api/customer/member/' + customerCode, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            tableRowRemove(deleteId);
+            Swal.fire({icon:"success", title:"Success!", html: data.message,
             showConfirmButton: false, allowOutsideClick: false,
             allowEscapeKey:false, timer: 2000});
-        setShow(false);
+            setShow(false);
+        } catch(e) {
+            console.log(e)
+        }
     };
+
+    const [members, setMembers] = useState([])
+
+    useEffect(() => {
+        axios.get('/api/customer/member', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        }).then(({ data }) => {
+            setMembers(data)
+        }).catch((e) => {
+            console.log(e)
+        })
+    }, [])
 
     const [values, setValues] = useState({ search: "" });
     const onChange = (e) => { 
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
-    let listData = [
-        {id:1, name:"Budi", no:"1", activeperiod:"19/09/2023", deposit:"", debt: "",},
-        {id:2, name:"Ajeng", no:"2", activeperiod:"20/09/2023", deposit:"", debt: "",},
-    ];
+    // let listData = [
+    //     {id:1, name:"Budi", no:"1", activeperiod:"19/09/2023", deposit:"", debt: "",},
+    //     {id:2, name:"Ajeng", no:"2", activeperiod:"20/09/2023", deposit:"", debt: "",},
+    // ];
 
     const TableRows = ({ rows }) => {
         return rows.map((val, index) => {
           return (
-            <tr key={index}>
+            <tr key={val.customer_code}>
                 <td className="text-center">
                     <span className="custom-checkbox">
                         <input type="checkbox" id="checkbox1" name="options[]" value="1" />
@@ -44,16 +71,17 @@ const Member = () => {
                     </span>
                 </td>
                 <td>{val.name}</td>
-                <td>{val.no}</td>
-                <td>{val.activeperiod}</td>
+                <td>{val.phone_number}</td>
+                <td>{val.member_active_period}</td>
                 <td>{val.deposit}</td>
                 <td>{val.debt}</td>
+                <td className="text-center"><label className={`badge text-bg-${val.status === 'Y' ? 'green' : 'danger'} text-dark`}>{val.status}</label></td>
                 <td className="text-center">
-                    <Link to={'/data-master/customer-member/edit:id'+val.id} className="edit">
+                    <Link to={'/data-master/customer-member/edit/'+val.customer_code} className="edit">
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>
                     </Link>
                     &nbsp;&nbsp;
-                    <a href="#delete" onClick={()=>handleShow(index)}>
+                    <a href="#delete" onClick={()=>handleShow(index, val.customer_code)}>
                         <Trash3 className="material-icons" color="dark" title="Delete" />
                     </a>
                 </td>
@@ -61,11 +89,11 @@ const Member = () => {
           )
         });
     }
-    const [rows, initRow] = useState(listData);
+
     const tableRowRemove = (index) => {
-        const dataRow = [...rows];
+        const dataRow = [...members];
         dataRow.splice(index, 1);
-        initRow(dataRow);
+        setMembers(dataRow)
     };
 
     return (
@@ -80,7 +108,7 @@ const Member = () => {
                 </Col>
                 <Col className="col-12 col-md-6 pt-1">
                     <Link to={'/data-master/customer-member/add'} className="btn btn-danger btn-sm add">
-                        + Add Customer Member
+                        + Add Member Customer
                     </Link>
                 </Col>
             </Row>
@@ -89,18 +117,18 @@ const Member = () => {
                     <thead>
                         <tr>
                             <th width={'1%'}></th>
-                            <th width={'20%'}>Name</th>
-                            <th width={'8%'}>No</th>
+                            <th width={'15%'}>Name</th>
+                            <th width={'15%'}>Phone number</th>
                             <th width={'20%'}>Active Peroid</th>
-                            <th width={'24%'}>Deposit</th>
-                            <th width={'24%'}>Debt</th>
-                            <th width={'25%'} className="text-center">Action</th>
+                            <th width={'15%'}>Deposit</th>
+                            <th width={'15%'}>Debt</th>
+                            <th width={'10%'} className="text-center">Status</th>
+                            <th width={'5%'} className="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <TableRows
-                            rows={rows}
-                            tableRowRemove={tableRowRemove}
+                            rows={members}
                         />
                     </tbody>
                 </table>

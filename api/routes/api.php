@@ -99,6 +99,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/', 'create_M');
             Route::put('/{customer}', 'update_M');
             Route::delete('/{customer}', 'delete_M');
+            Route::get('/{customer}/edit', 'edit_M');
         });
         Route::prefix('/customer/regular')->group(function () {
             Route::get('/', 'index_R');
@@ -106,6 +107,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/', 'create_R');
             Route::put('/{customer}', 'update_R');
             Route::delete('/{customer}', 'delete_R');
+            Route::get('/{customer}/edit', 'edit_R');
         });
     });
 

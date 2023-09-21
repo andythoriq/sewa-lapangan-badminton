@@ -15,7 +15,7 @@ class CustomerController extends Controller
 {
     public function index_M()
     {
-        $members = CustomerModel::select(['customer_code', 'name', 'deposit', 'debt', 'member_active_period'])
+        $members = CustomerModel::select(['customer_code', 'name', 'phone_number', 'deposit', 'debt', 'status', 'member_active_period'])
             ->where('membership_status', 'M')
             ->orWhere('membership_status', 'm')
             ->get();
@@ -24,7 +24,7 @@ class CustomerController extends Controller
 
     public function index_R()
     {
-        $regulars = CustomerModel::select(['customer_code', 'name', 'deposit', 'debt'])
+        $regulars = CustomerModel::select(['customer_code', 'name', 'phone_number', 'deposit', 'debt', 'status'])
             ->where('membership_status', 'R')
             ->orWhere('membership_status', 'r')
             ->get();
@@ -51,6 +51,16 @@ class CustomerController extends Controller
     {
         $request->createRegular();
         return response()->json(['message' => 'Success create regular customer'], 201, ['success' => 'New customer regular created.']);
+    }
+
+    public function edit_M(CustomerModel $customer)
+    {
+        return response()->json($customer->only(['name', 'phone_number', 'deposit', 'debt', 'member_active_period']));
+    }
+
+    public function edit_R(CustomerModel $customer)
+    {
+        return response()->json($customer->only(['name', 'phone_number', 'deposit', 'debt']));
     }
 
     public function update_M(MemberRequest $request, CustomerModel $customer)
