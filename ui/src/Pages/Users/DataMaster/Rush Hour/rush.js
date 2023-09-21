@@ -1,16 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Form } from "react-bootstrap";
 import FormSelect from "../../../../Components/Form/select";
 import FormSelectTime from "../../../../Components/Form/selectTime";
+import axios from "../../../../api/axios";
+import Swal from "sweetalert2";
 
 const Rush = () => {
-  let dataCourt = [
-    { value: "", label: "" },
-    { value: "1", label: "Court A" },
-    { value: "2", label: "Court B" },
-    { value: "3", label: "Court C" },
-    { value: "4", label: "Court D" },
-  ];
+  const [courts, setCourts] = useState([])
+  const [errors, setErrors] = useState([])
+  const [values, setValues] = useState({ court_id: "", start:"", finish:"" });
+  const onChange = (e) => {
+    setValues({ ...values, [ e.target.name ]: e.target.value });
+  }
+
+  useEffect(() => {
+    axios.get('/api/court', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .then(({ data }) => {
+
+        setCourts(data);
+      })
+      .catch((e) => {
+        console.log(e)
+      });
+  }, [])
+
+  const handleSubmitClick = async (e) => {
+    e.preventDefault()
+    const data = {
+      court_id: values.court_id,
+      start: values.start,
+      finish: values.finish
+    }
+    console.log(data)
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    }
+    try {
+      await axios.get('/sanctum/csrf-cookie')
+      let response
+      // if (id > 0) {
+      //   response = await axios.put('/api/peak-time/' + id, data, config)
+      // } else {
+      //   response = await axios.post('/api/peak-time', data, config);
+      // }
+      response = await axios.post('/api/peak-time', data, config);
+      setErrors('');
+      Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
+      setTimeout(function () {
+        window.location.href = "/user-management/user-list";
+      }, 2000);
+    } catch (e) {
+      setErrors(e.response.data.errors)
+    }
+  }
+
   return (
     <>
       <h4 className="mb-4">
@@ -22,16 +71,26 @@ const Rush = () => {
             <Form>
               <Row>
                 <Col className="col-6 col-md-6">
-                  <FormSelect name="court" label="Court" className="form-select form-select-sm" options={dataCourt} />
+                  <Form.Label>User role</Form.Label>
+                  <Form.Select name="court_id" className="form-select form-select-sm" onChange={onChange}>
+                    <option value="">-- courts --</option>
+                    {courts.map((role) => <option key={role.id} value={role.id}>{role.label}</option>)}
+                  </Form.Select>
+                  {errors.court_id &&
+                    <span className="text-danger">{errors.court_id[ 0 ]}</span>}
                 </Col>
                 <Col className="col-12 col-md-8">
-                  <FormSelectTime label="Start" nameHour="start_hour" nameMinute="start_minute" nameTime="start_time" />
+                  <FormSelectTime name="start" label="Start" nameHour="start_hour" nameMinute="start_minute" nameTime="start_time" onChange={onChange} />
+                  {errors.start &&
+                    <span className="text-danger">{errors.start[ 0 ]}</span>}
                 </Col>
                 <Col className="col-12 col-md-8">
-                  <FormSelectTime label="End" nameHour="end_hour" nameMinute="end_minute" nameTime="end_time" />
+                  <FormSelectTime name="finish" label="Finish" nameHour="finish_hour" nameMinute="finish_minute" nameTime="finish_time" onChange={onChange} />
+                  {errors.finish &&
+                    <span className="text-danger">{errors.finish[ 0 ]}</span>}
                 </Col>
                 <Col className="mt-5 mb-4">
-                  <button type="button" className="btn btn-danger btn-sm">
+                  <button onClick={handleSubmitClick} type="button" className="btn btn-danger btn-sm">
                     Save
                   </button>
                 </Col>

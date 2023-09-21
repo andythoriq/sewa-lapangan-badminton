@@ -21,8 +21,10 @@ class MemberCollection extends ResourceCollection
             return [
                 'customer_code' => $customer->customer_code,
                 'name' => $customer->name,
+                'phone_number' => $customer->phone_number,
                 'deposit' => $customer->deposit,
                 'debt' => $customer->debt,
+                'status' => $customer->status,
                 'member_active_period' => $customer->member_active_period,
             ];
         });

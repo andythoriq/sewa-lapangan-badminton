@@ -84,6 +84,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(CourtController::class)->middleware('admin')->group(function(){
         Route::get('/court', 'index');
         Route::get('/court/{court}', 'show');
+        Route::get('/court-edit/{court}', 'edit');
         Route::post('/court', 'create');
         Route::put('/court/{court}', 'update');
         Route::delete('/court/{court}', 'delete');
@@ -98,6 +99,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/', 'create_M');
             Route::put('/{customer}', 'update_M');
             Route::delete('/{customer}', 'delete_M');
+            Route::get('/{customer}/edit', 'edit_M');
         });
         Route::prefix('/customer/regular')->group(function () {
             Route::get('/', 'index_R');
@@ -105,6 +107,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/', 'create_R');
             Route::put('/{customer}', 'update_R');
             Route::delete('/{customer}', 'delete_R');
+            Route::get('/{customer}/edit', 'edit_R');
         });
     });
 

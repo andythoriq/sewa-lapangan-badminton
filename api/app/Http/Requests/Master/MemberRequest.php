@@ -34,7 +34,8 @@ class MemberRequest extends FormRequest
             'deposit' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
             'debt' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
             'status' => ['required', 'string', 'in:Y,N'],
-            'member_active_period' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'],
+            // 'member_active_period' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'],
+            'member_active_period' => ['required', 'date', 'date_format:Y-m-d', 'after_or_equal:now'],
         ];
     }
 

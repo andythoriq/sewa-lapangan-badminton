@@ -15,7 +15,8 @@ class PeakTimeModelFactory extends Factory
     {
         return [
             'start' => $this->faker->dateTimeBetween('2023-09-01 00:00:00', '2023-10-01 00:00:00'),
-            'finish' => $this->faker->dateTimeBetween('2023-11-01 00:00:00', '2023-12-01 00:00:00')
+            'finish' => $this->faker->dateTimeBetween('2023-11-01 00:00:00', '2023-12-01 00:00:00'),
+            'price_increase' => $this->faker->randomElement([1.5,2,2.5])
         ];
     }
 }

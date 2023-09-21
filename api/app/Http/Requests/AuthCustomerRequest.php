@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Models\CustomerModel;
-use App\Traits\CustomerCodeFormat;
 use App\Traits\SendWA;
+use App\Models\CustomerModel;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
+use App\Traits\CustomerCodeFormat;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
@@ -73,23 +74,30 @@ class AuthCustomerRequest extends FormRequest
         $customer = CustomerModel::where('phone_number', $validated['phone_number']);
         if ($customer->exists()) {
             $customer->update([
-                'otp_code' => $otp
+                'otp_code' => $otp,
+                'expiration' => Carbon::now('Asia/Jakarta')->addMinutes(15)
             ]);
         } else {
             $validated['membership_status'] = 'R';
             $validated['status'] = 'Y';
             $validated['otp_code'] = $otp;
+            $validated['expiration'] = Carbon::now('Asia/Jakarta')->addMinutes(15);
             $validated['customer_code'] = $this->getFormattedCode('r');
             CustomerModel::create($validated);
         }
 
-        $message = 'Your OTP code is ' . $otp;
+        $message = 'Your OTP code is ' . $otp . ' expires after 15 minutes.';
         return $this->sendWA(env('ZENZIVA_USER_KEY'), env('ZENZIVA_API_KEY'), $validated['phone_number'], $message);
     }
 
     public function verify_otp()
     {
-        $customer = CustomerModel::select(['otp_code', 'phone_number', 'customer_code'])->where('otp_code', $this->otp_code)->firstOrFail();
-        return $customer->createToken(str_replace(' ', '', $customer->phone_number) . '-token')->plainTextToken;
+        $customer = CustomerModel::select(['otp_code', 'phone_number', 'customer_code', 'expiration'])->where('otp_code', $this->otp_code)->firstOrFail();
+        if (Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->expiration))) {
+            return $customer->createToken(str_replace(' ', '', $customer->phone_number) . '-token')->plainTextToken;
+        }
+        throw ValidationException::withMessages([
+            'otp_code' => ['The code has expired.']
+        ]);
     }
 }

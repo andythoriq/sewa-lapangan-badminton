@@ -30,7 +30,8 @@ class PeakTimeRequest extends FormRequest
         $validation = [
             'start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'],
             'finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:start'],
-            'court_id' => ['required', 'integer', 'exists:tb_court,id']
+            'court_id' => ['required', 'integer', 'exists:tb_court,id'],
+            'price_increase' => ['nullable', 'numeric', 'min:1.5']
         ];
 
         if($this->route()->getName() == 'create-multiple-peak-time'){
@@ -38,7 +39,8 @@ class PeakTimeRequest extends FormRequest
                 '*' => ['required', 'array', 'min:1'],
                 '*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'],
                 '*.finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:*.start'],
-                '*.court_id' => ['required', 'integer', 'exists:tb_court,id']
+                '*.court_id' => ['required', 'integer', 'exists:tb_court,id'],
+                '*.price_increase' => ['nullable', 'numeric', 'min:1.5']
             ];
         }
 
@@ -48,7 +50,9 @@ class PeakTimeRequest extends FormRequest
     public function createPeakTime()
     {
         $this->collideCheck($this->start, $this->finish, $this->getSchedules());
-        PeakTimeModel::create($this->validated());
+        $data = $this->validated();
+        $data['price_increase'] = 1.5;
+        PeakTimeModel::create($data);
     }
 
     public function updatePeakTime(PeakTimeModel $peak_time)
@@ -62,6 +66,7 @@ class PeakTimeRequest extends FormRequest
         $data = $this->validated();
         for($i = 0; $i < count($data); $i++){
             $this->collideCheck($data[$i]['start'], $data[$i]['finish'], $this->getSchedules());
+            $data['price_increase'] = 1.5;
             $data[$i]['created_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
             $data[$i]['updated_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
         }

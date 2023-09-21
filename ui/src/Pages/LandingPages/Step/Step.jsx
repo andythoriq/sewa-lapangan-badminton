@@ -43,9 +43,8 @@ const FormStep = () => {
         await axios.post("/api/register", {
           name: values.fullname,
           phone_number: values.phonenumber,
-          password: values.password,
         });
-        setValues({ phone_number: "", password: "", fullname: "" });
+        setValues({ phone_number: "", fullname: "" });
         setTimeout(function () {
           // window.location.href = "/";
           window.location.href = "/step2";

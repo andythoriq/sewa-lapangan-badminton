@@ -1,26 +1,39 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { Form, Card, Row, Col } from "react-bootstrap";
 import { Pencil, Trash3, Search, ChevronLeft, ChevronRight } from "react-bootstrap-icons";
 import FormInput from "../../../../Components/Form/input";
 import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
+import axios from "../../../../api/axios";
 
 const Court = () => {
     const [show, setShow] = useState(false);
     const [deleteId, setDeleteId] = useState("");
+    const [item_id, set_item_id] = useState("")
     const handleClose = () => setShow(false);
-    const handleShow = (index) => {
+    const handleShow = (index, id) => {
         setDeleteId(index);
+        set_item_id(id)
         setShow(true)
     };
 
-    const handleYes = () => {
-        tableRowRemove(deleteId);
-        Swal.fire({icon:"success", title:"Success!", html:'Delete successfully', 
+    const handleYes = async () => {
+        try {
+            await axios.get('/sanctum/csrf-cookie')
+            const { data } = await axios.delete('/api/court/' + item_id, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            tableRowRemove(deleteId);
+            Swal.fire({icon:"success", title:"Success!", html: data.message, 
             showConfirmButton: false, allowOutsideClick: false,
             allowEscapeKey:false, timer: 2000});
         setShow(false);
+        } catch (e) {
+            console.log(e)
+        }
     };
 
     const [values, setValues] = useState({ search: "" });
@@ -28,32 +41,47 @@ const Court = () => {
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
-    let listData = [
-        {id:1, court:"Court A", price:"Rp 50,000/hour", img:"", description:"", status:"Active", status_color:"cyan"},
-        {id:2, court:"Court C", price:"Rp 50,000/hour", img:"", description:"", status:"In active", status_color:"red"},
-    ];
+    // let listData = [
+    //     {id:1, court:"Court A", price:"Rp 50,000/hour", img:"", description:"", status:"Active", status_color:"cyan"},
+    //     {id:2, court:"Court C", price:"Rp 50,000/hour", img:"", description:"", status:"In active", status_color:"red"},
+    // ];
+
+    const [courts, setCourts] = useState([]);
+
+    useEffect(() => {
+        axios.get('/api/court', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(({data}) => {
+            setCourts(data);
+        })
+        .catch((e) => {
+            console.log(e)
+        });
+    }, []);
 
     const TableRows = ({ rows }) => {
         return rows.map((val, index) => {
           return (
-            <tr key={index}>
+            <tr key={val.id}>
                 <td className="text-center">
                     <span className="custom-checkbox">
                         <input type="checkbox" id="checkbox1" name="options[]" value="1" />
                         <label htmlFor="checkbox1"></label>
                     </span>
                 </td>
-                <td>{val.court}</td>
-                <td>{val.price}</td>
-                <td>{val.img}</td>
+                <td>{val.label}</td>
+                <td>{val.initial_price}</td>
+                <td>{val.image_path}</td>
                 <td>{val.description}</td>
-                <td className="text-center"><label className={`badge text-bg-${val.status_color} text-dark`}>{val.status}</label></td>
                 <td className="text-center">
                     <Link to={'/data-master/court/edit/'+val.id} className="edit">
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>
                     </Link>
                     &nbsp;&nbsp;
-                    <a href="#delete" onClick={()=>handleShow(index)}>
+                    <a href="#delete" onClick={()=>handleShow(index, val.id)}>
                         <Trash3 className="material-icons" color="dark" title="Delete" />
                     </a>
                 </td>
@@ -61,11 +89,11 @@ const Court = () => {
           )
         });
     }
-    const [rows, initRow] = useState(listData);
+
     const tableRowRemove = (index) => {
-        const dataRow = [...rows];
+        const dataRow = [...courts];
         dataRow.splice(index, 1);
-        initRow(dataRow);
+        setCourts(dataRow)
     };
 
     return (
@@ -97,14 +125,12 @@ const Court = () => {
                             <th width={'15%'}>Price</th>
                             <th width={'15%'}>Image</th>
                             <th width={'45%'}>Description</th>
-                            <th width={'10%'} className="text-center">Status</th>
                             <th width={'4%'} className="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <TableRows
-                            rows={rows}
-                            tableRowRemove={tableRowRemove}
+                            rows={courts}
                         />
                     </tbody>
                 </table>

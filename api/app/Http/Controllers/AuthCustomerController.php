@@ -23,8 +23,8 @@ class AuthCustomerController extends Controller
 
     public function verify(AuthCustomerRequest $request)
     {
-        $request->verify_otp();
-        return response(null, 201, ['success' => 'OTP verified successfully.']);
+        $token = $request->verify_otp();
+        return response()->json($token, 201, ['success' => 'OTP verified successfully.']);
     }
 
     public function logout(Request $request)

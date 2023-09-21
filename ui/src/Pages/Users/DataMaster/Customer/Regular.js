@@ -1,42 +1,64 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import { Form, Card, Row, Col } from "react-bootstrap";
 import { Pencil, Trash3, Search, ChevronLeft, ChevronRight } from "react-bootstrap-icons";
 import FormInput from "../../../../Components/Form/input";
 import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
+import axios from "../../../../api/axios";
 
 const Regular = () => {
     const [show, setShow] = useState(false);
+    const [customerCode, setCustomerCode] = useState("");
     const [deleteId, setDeleteId] = useState("");
     const handleClose = () => setShow(false);
-    const handleShow = (index) => {
+    const handleShow = (index, code) => {
+        setCustomerCode(code)
         setDeleteId(index);
         setShow(true)
     };
 
-    const handleYes = () => {
-        tableRowRemove(deleteId);
-        Swal.fire({icon:"success", title:"Success!", html:'Delete successfully', 
+    const handleYes = async () => {
+        try {
+            await axios.get('/sanctum/csrf-cookie')
+            const { data } = await axios.delete('/api/customer/regular/' + customerCode, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            tableRowRemove(deleteId);
+            Swal.fire({icon:"success", title:"Success!", html: data.message,
             showConfirmButton: false, allowOutsideClick: false,
             allowEscapeKey:false, timer: 2000});
-        setShow(false);
+            setShow(false);
+        } catch(e) {
+            console.log(e)
+        }
     };
+
+    const [regulars, setRegulars] = useState([])
+
+    useEffect(() => {
+        axios.get('/api/customer/regular', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        }).then(({data}) => {
+            setRegulars(data)
+        }).catch((e) => {
+            console.log(e)
+        })
+    }, [])
 
     const [values, setValues] = useState({ search: "" });
     const onChange = (e) => { 
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
-    let listData = [
-        {id:1, name:"Siti", no:"1", activeperiod:"19/09/2023", deposit:"", debt: "",status:"Active", status_color:"cyan"},
-        {id:2, name:"Agus", no:"2", activeperiod:"20/09/2023", deposit:"", debt: "",status:"In active", status_color:"red"},
-    ];
-
     const TableRows = ({ rows }) => {
         return rows.map((val, index) => {
           return (
-            <tr key={index}>
+            <tr key={val.customer_code}>
                 <td className="text-center">
                     <span className="custom-checkbox">
                         <input type="checkbox" id="checkbox1" name="options[]" value="1" />
@@ -44,17 +66,16 @@ const Regular = () => {
                     </span>
                 </td>
                 <td>{val.name}</td>
-                <td>{val.no}</td>
-                <td>{val.activeperiod}</td>
+                <td>{val.phone_number}</td>
                 <td>{val.deposit}</td>
                 <td>{val.debt}</td>
-                <td className="text-center"><label className={`badge text-bg-${val.status_color} text-dark`}>{val.status}</label></td>
+                <td className="text-center"><label className={`badge text-bg-${val.status === 'Y' ? 'green' : 'danger'} text-dark`}>{val.status}</label></td>
                 <td className="text-center">
-                    <Link to={'/data-master/customer-regular/edit:id'+val.id} className="edit">
+                    <Link to={'/data-master/customer-regular/edit/'+val.customer_code} className="edit">
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>
                     </Link>
                     &nbsp;&nbsp;
-                    <a href="#delete" onClick={()=>handleShow(index)}>
+                    <a href="#delete" onClick={()=>handleShow(index, val.customer_code)}>
                         <Trash3 className="material-icons" color="dark" title="Delete" />
                     </a>
                 </td>
@@ -62,11 +83,11 @@ const Regular = () => {
           )
         });
     }
-    const [rows, initRow] = useState(listData);
+
     const tableRowRemove = (index) => {
-        const dataRow = [...rows];
+        const dataRow = [...regulars];
         dataRow.splice(index, 1);
-        initRow(dataRow);
+        setRegulars(dataRow);
     };
 
     return (
@@ -95,8 +116,7 @@ const Regular = () => {
                         <tr>
                             <th width={'1%'}></th>
                             <th width={'15%'}>Name</th>
-                            <th width={'10%'}>No</th>
-                            <th width={'15%'}>Active Peroid</th>
+                            <th width={'20%'}>Phone number</th>
                             <th width={'25%'}>Deposit</th>
                             <th width={'30%'}>Debt</th>
                             <th width={'10%'} className="text-center">Status</th>
@@ -105,8 +125,7 @@ const Regular = () => {
                     </thead>
                     <tbody>
                         <TableRows
-                            rows={rows}
-                            tableRowRemove={tableRowRemove}
+                            rows={regulars}
                         />
                     </tbody>
                 </table>

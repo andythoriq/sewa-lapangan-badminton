@@ -19,8 +19,10 @@ class RegularCollection extends ResourceCollection
             return [
                 'customer_code' => $customer->customer_code,
                 'name' => $customer->name,
+                'phone_number' => $customer->phone_number,
                 'deposit' => $customer->deposit,
-                'debt' => $customer->debt
+                'debt' => $customer->debt,
+                'status' => $customer->status
             ];
         });
     }
