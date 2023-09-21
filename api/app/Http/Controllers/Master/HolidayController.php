@@ -35,6 +35,6 @@ class HolidayController extends Controller
     public function create_multiple(HolidayRequest $request)
     {
         $request->createMultipleHoliday();
-        return response(null, 201, ['success' => 'Multiple holiday schedule created.']);
+        return response()->json(['message' => 'Success create holiday.'], 201, ['success' => 'Multiple holiday schedule created.']);
     }
 }
