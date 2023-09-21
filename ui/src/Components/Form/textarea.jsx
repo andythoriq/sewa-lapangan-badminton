@@ -24,7 +24,8 @@ const FormTextarea = (props) => {
         onBlur={handleFocus}
         focused={focused.toString()}
         className="form-control"
-      >{value}</textarea>
+        value={value}
+      ></textarea>
       {errorMessage && <span id="validError">{errorMessage}</span>}
     </>
   );
