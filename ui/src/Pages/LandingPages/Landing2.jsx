@@ -4,11 +4,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Dropdown from "react-bootstrap/Dropdown";
 import ScheduleModal from "../Users/Schedule/modal";
-import { Link } from "react-router-dom";
-import { Col } from "react-bootstrap";
 import "./landing2.css";
-import RiwayatBooking from "./RiwayatBooking";
-
 const Landing2 = () => {
   let dataCourt = [
     // {time:'08.00-09.00', court1_1:'', court1_2:'cyan', court2_1:'', court2_2:'', court3_1:'', court3_2:'', court4_1:'', court4_2:'',
@@ -97,11 +93,11 @@ const Landing2 = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="ms-auto">
+              <Nav.Link href="#court" className="text-white">
+                Court
+              </Nav.Link>
               <Nav.Link href="#schedule" className="text-white">
                 Schedule
-              </Nav.Link>
-              <Nav.Link href="#bookinghistory" className="text-white">
-                History Booking
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
@@ -122,17 +118,64 @@ const Landing2 = () => {
         </Container>
       </Navbar>
 
+      <div className="container-build banner">
+        <div className="container text-center">
+          <h4 className="display-6">Top Quality Badminton Vanue</h4>
+        </div>
+      </div>
+
+      <Container>
+        <h3 className="text-left mt-4" id="court">
+          Court
+        </h3>
+        <p style={{ color: "#B5B5B5" }}>Booked this court</p>
+        <hr style={{ width: 200 }}></hr>
+        <div className="row row-cols-1 row-cols-md-4 g-4 mt-3">
+          <div className="col">
+            <div className="card">
+              <img src="./assets/img/court/6.jpg" className="card-img-top" alt="..." />
+              <div className="card-body">
+                <h5 className="card-title">Court A</h5>
+                <p className="card-text">BFB Arena is located in a very strategic place. This field is equipped with facilities, such as prayer rooms, air conditioning, and toilets, canteens. with a carpeted field.</p>
+              </div>
+            </div>
+          </div>
+          <div className="col">
+            <div className="card">
+              <img src="./assets/img/court/3.jpg" className="card-img-top" alt="..." />
+              <div className="card-body">
+                <h5 className="card-title">Court B</h5>
+                <p className="card-text">BFB Arena is located in a very strategic place. This field is equipped with facilities, such as prayer rooms, air conditioning, and toilets, canteens. with a carpeted field.</p>
+              </div>
+            </div>
+          </div>
+          <div className="col">
+            <div className="card">
+              <img src="./assets/img/court/1.jpg" className="card-img-top" alt="..." />
+              <div className="card-body">
+                <h5 className="card-title">Court C</h5>
+                <p className="card-text">BFB Arena is located in a very strategic place. This field is equipped with facilities, such as prayer rooms, air conditioning, and toilets, canteens. with a carpeted field.</p>
+              </div>
+            </div>
+          </div>
+          <div className="col">
+            <div className="card">
+              <img src="./assets/img/court/4.jpg" className="card-img-top" alt="..." />
+              <div className="card-body">
+                <h5 className="card-title">Court D</h5>
+                <p className="card-text">BFB Arena is located in a very strategic place. This field is equipped with facilities, such as prayer rooms, air conditioning, and toilets, canteens. with a floored field.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
+
       <div className="container mt-5">
         <div className="table-responsive" id="schedule">
           <h3 className="text-center mt-5">Schedule</h3>
           <hr style={{ width: 200 }} align="center"></hr>
         </div>
-        <Col className="col-12 mt-4" style={{ textAlign: "right" }}>
-          <Link to="landing-booking" className="btn btn-danger btn-sm">
-            + Add Booking
-          </Link>
-        </Col>
-        <div className="table-responsive mt-2">
+        <div className="table-responsive mt-5">
           <table id="schedule" className="table" width={"100%"} border={1}>
             <thead>
               <tr>
@@ -185,15 +228,6 @@ const Landing2 = () => {
         </div>
         <ScheduleModal show={show} handleClose={handleClose} size="xl" data={{ name: name, court: court }} />
       </div>
-
-      {/* riwayat booking */}
-        <div className="table-responsive" id="bookinghistory">
-          <h3 className="text-center mt-5">History Booking</h3>
-          <hr style={{ width: 300, margin: "auto" }} align="center"></hr>
-          <RiwayatBooking/>
-        </div>
-        
-        {/* <ModalConfirmDelete show={show} handleClose={handleClose} handleYes={handleYes}/> */}
 
       <div className="footer text-center text-light p-3 mt-5">
         <div className="last-footer">
