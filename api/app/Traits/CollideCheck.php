@@ -9,8 +9,8 @@ trait CollideCheck
 {
     public function collideCheck(string $start, string $finish, iterable $schedules)
     {
-        $newStart = Carbon::parse($start, 'Asia/Jakarta');
-        $newFinish = Carbon::parse($finish, 'Asia/Jakarta');
+        $newStart = Carbon::parse($start);
+        $newFinish = Carbon::parse($finish);
 
         foreach($schedules as $schedule)
         {
