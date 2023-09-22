@@ -15,7 +15,8 @@ class PeakTimeModel extends Model
         'start',
         'finish',
         'court_id',
-        'price_increase'
+        'price_increase',
+        'day_name'
     ];
 
     public function court(): \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -19,6 +19,7 @@ class PeakTimeResource extends JsonResource
             'start' => $this->start,
             'finish' => $this->finish,
             'price_increase' => $this->price_increase,
+            'day_name' => $this->day_name,
             'court' => [
                 'label' => $this->court->label,
                 'image_path' => $this->court->image_path,

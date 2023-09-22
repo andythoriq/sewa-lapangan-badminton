@@ -28,10 +28,11 @@ class PeakTimeRequest extends FormRequest
     public function rules()
     {
         $validation = [
-            'start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'],
-            'finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:start'],
+            'start' => ['required', 'date_format:H:i:s', 'after_or_equal:now'],
+            'finish' => ['required', 'date_format:H:i:s', 'after:start'],
             'court_id' => ['required', 'integer', 'exists:tb_court,id'],
-            'price_increase' => ['nullable', 'numeric', 'min:1.5']
+            'price_increase' => ['required', 'numeric', 'min:1.5'],
+            'day_name' => ['required', 'in:monday,tuesday,wednesday,thursday,friday,saturday,sunday', 'max:20']
         ];
 
         if($this->route()->getName() == 'create-multiple-peak-time'){
@@ -40,7 +41,8 @@ class PeakTimeRequest extends FormRequest
                 '*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'],
                 '*.finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:*.start'],
                 '*.court_id' => ['required', 'integer', 'exists:tb_court,id'],
-                '*.price_increase' => ['nullable', 'numeric', 'min:1.5']
+                '*.price_increase' => ['required', 'numeric', 'min:0.01', 'max:1000000.00'],
+                '*.day_name' => ['required', 'in:monday,tuesday,wednesday,thursday,friday,saturday,sunday', 'max:20']
             ];
         }
 
@@ -50,9 +52,7 @@ class PeakTimeRequest extends FormRequest
     public function createPeakTime()
     {
         $this->collideCheck($this->start, $this->finish, $this->getSchedules());
-        $data = $this->validated();
-        $data['price_increase'] = 1.5;
-        PeakTimeModel::create($data);
+        PeakTimeModel::create($this->validated());
     }
 
     public function updatePeakTime(PeakTimeModel $peak_time)
@@ -66,7 +66,6 @@ class PeakTimeRequest extends FormRequest
         $data = $this->validated();
         for($i = 0; $i < count($data); $i++){
             $this->collideCheck($data[$i]['start'], $data[$i]['finish'], $this->getSchedules());
-            $data['price_increase'] = 1.5;
             $data[$i]['created_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
             $data[$i]['updated_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
         }
