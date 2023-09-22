@@ -6,6 +6,9 @@
     z-index: 9999;
     background: transparent;
   }
+  .nav img{
+    width: 50px;
+  }
   .nav-bg {
     background-color: #000000;
   }

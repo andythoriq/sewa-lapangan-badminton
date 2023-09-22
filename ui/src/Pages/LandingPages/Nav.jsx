@@ -22,7 +22,7 @@ const Landing = () => {
         <Container>
           <Navbar.Brand href="#">
             <img src="./logo.png" alt="bfb" />
-            <b className="text-white" style={{ paddingLeft: 5, fontSize: 22 }}>
+            <b className="text-white" style={{ paddingLeft: 6, fontSize: 25 }}>
               BFB
             </b>
           </Navbar.Brand>

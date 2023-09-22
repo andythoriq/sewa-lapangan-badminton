@@ -1,6 +1,6 @@
 import React from "react";
 import { Row } from "react-bootstrap";
-// import { dirIcon } from "../../../Components/Services/config";
+import { dirIcon } from "../../../Components/Services/config";
 import Schedule from "../Schedule/schedule";
 import Info from "./info";
 import FormatDate from "../../../Components/Services/formatDate";
@@ -27,38 +27,38 @@ const Dashboard = () => {
         <div className="col-lg-3 col-sm-6">
             <div className="card-box bg-blue">
                 <div className="inner">
-                    <h3> 13436 </h3>
-                    <p> Student Strength </p>
+                    <h3> ... </h3>
+                    <p> Customer </p>
                 </div>
-              
+                <img src="./assets/icon/users.png" className="img" alt="..."/>
             </div>
         </div>
 
         <div className="col-lg-3 col-sm-6">
             <div className="card-box bg-green">
                 <div className="inner">
-                    <h3> ₹185358 </h3>
-                    <p> Today’s Collection </p>
+                    <h3> ... </h3>
+                    <p> Booking Today </p>
+                    <img src="./assets/icon/today2.png" className="img" alt="..."/>
                 </div>
             </div>
         </div>
         <div className="col-lg-3 col-sm-6">
             <div className="card-box bg-orange">
                 <div className="inner">
-                    <h3> 5464 </h3>
-                    <p> New Admissions </p>
+                    <h3> ... </h3>
+                    <p> Total income all </p>
                 </div>
+                <img src="./assets/icon/incomeall.png" className="img" alt="..."/>
             </div>
         </div>
         <div className="col-lg-3 col-sm-6">
             <div className="card-box bg-red">
                 <div className="inner">
-                    <h3> 723 </h3>
+                    <h3> ... </h3>
                     <p> Faculty Strength </p>
                 </div>
-                <div className="icon">
-                    <i className="fa fa-users"></i>
-                </div>
+                <img src="./assets/icon/incometoday.png" className="img" alt="..."/>
             </div>
         </div>
     </div>

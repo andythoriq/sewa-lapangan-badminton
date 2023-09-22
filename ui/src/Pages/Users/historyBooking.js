@@ -6,6 +6,7 @@ import ModalConfirmDelete from "../../Components/ModalDialog/modalConfirmDelete"
 import Swal from "sweetalert2";
 
 const HistoryBooking = () => {
+      
     const [show, setShow] = useState(false);
     const [deleteId, setDeleteId] = useState("");
     const handleClose = () => setShow(false);
@@ -13,6 +14,15 @@ const HistoryBooking = () => {
         setDeleteId(index);
         setShow(true)
     };
+
+    const handleChange=(e)=>{ 
+        const { name, checked}= e.target;
+      if(name==="allselect")
+      {
+      const checkedvalue = ( (user)=>{ return {...user, isChecked:checked}});
+      console.log(checkedvalue);
+      } 
+    }
 
     const handleYes = () => {
         tableRowRemove(deleteId);
@@ -35,10 +45,10 @@ const HistoryBooking = () => {
     const TableRows = ({ rows }) => {
         return rows.map((val, index) => {
           return (
-            <tr key={index}>
+            <tr>
                 <td className="text-center">
                     <span className="custom-checkbox">
-                        <input type="checkbox" id="checkbox1" name="options[]" value="1" />
+                        <input type="checkbox" />
                         <label htmlFor="checkbox1"></label>
                     </span>
                 </td>
@@ -74,16 +84,12 @@ const HistoryBooking = () => {
                         <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Search"/>
                     </Form.Group>
                 </Col>
-                <Col className="col-12 col-md-8 pt-3">
-                    <div className="float-right"><div className="bullet bullet-orange"></div> <div className="bullet-text">On Progress</div></div>
-                    <div className="float-right"><div className="bullet bullet-green"></div> <div className="bullet-text">Finished</div></div>
-                </Col>
             </Row>
             <div className="table-responsive">
                 <table className="table table-hover mt-3" border={1}>
                     <thead>
-                        <tr>
-                            <th width={'1%'}></th>
+                        <tr >
+                            <th width={'1%'}><input type="checkbox" name="allselect" checked= { ( (user)=>user?.isChecked!==true)} onChange={ handleChange}/></th>
                             <th width={'30%'}>Name Customer</th>
                             <th width={'10%'}>Court</th>
                             <th width={'15%'}>Schedule</th>

@@ -99,7 +99,7 @@ const Court = () => {
     return (
     <>
         <h4><b>Court</b></h4>
-        <Card className="p-3 mt-5">
+        <Card className="p-4 mt-5">
             <Row>
                 <Col className="col-12 col-md-4" style={{marginTop:-20}} >
                     <Form.Group className="inputSearch">
@@ -112,8 +112,7 @@ const Court = () => {
                     </Link>
                 </Col>
                 <Col className="col-12 col-md-12">
-                    <div className="float-right"><div className="bullet bullet-red"></div> <div className="bullet-text">In Active</div></div>
-                    <div className="float-right"><div className="bullet bullet-cyan"></div> <div className="bullet-text">Active</div></div>
+                    <button className=" btn btn-dark  ml-2 float-right">Remove All</button>
                 </Col>
             </Row>
             <div className="table-responsive">
