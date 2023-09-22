@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { Outlet, useLocation, Navigate } from "react-router-dom"
 import Navbar from './Navbar'
-import Sidebar from './Sidebar';
 import { namaApp, dirIcon } from "./Services/config";
 import PermissionDenied from "../Pages/PermissionDenied";
+import Sidebar from './Sidebar';
 
 const Layout = () => {
 

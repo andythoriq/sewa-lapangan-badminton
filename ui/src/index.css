@@ -6,7 +6,7 @@
   --normal-font-size: .938rem;
 
   /*========== Color ==========*/
-  --color-abu: rgba(0, 0, 0, 0.69);
+  --color-abu: rgba(133, 133, 133, 0.6);
   --color-biru:rgba(0, 255, 255, 1);
   --color-hijau: rgba(36, 255, 0, 1);
   --color-orange: rgba(255, 107, 0, 1);
@@ -37,7 +37,7 @@ body {
   font-size:24px; font-weight:bold;
 }
 
-.text-orange { color:var(--color-orange); }
+.text-orange { color:#db2214; }
 
 .bgLogin{
   background-color: var(--color-abu) !important;
@@ -173,8 +173,6 @@ form .inputPassword>svg {
 .form-control::placeholder {
   color: rgb(183, 183, 185) !important;
 }
-
-nav.navbar { box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15), inset 0 -1px 0 rgba(255,255,255,0.15); }
 .bg-danger { background: var(--color-merah) !important; }
 .text-danger{
   color: var(--color-merah) !important;
@@ -244,7 +242,7 @@ input:invalid[focused="true"] ~ #validError{
 }
 
 #sidebar-wrapper .list-group-item {
-  background-color: black;
+  background-color: rgba(122, 122, 122, 0.6);
   color: white;
 }
 
@@ -260,7 +258,7 @@ input:invalid[focused="true"] ~ #validError{
 }
 
 .list-group-item.active, .list-group-item:hover {
-  background: var(--color-orange) !important;
+  background: #cc0e00 !important;
 }
 
 body.sb-sidenav-toggled #wrapper .menu_sidebar  {
@@ -268,7 +266,7 @@ body.sb-sidenav-toggled #wrapper .menu_sidebar  {
 }
 
 body.sb-sidenav-toggled #wrapper .menu_sidebar svg  {
-  margin-left: 5px !important;
+  margin-left: 10px !important;
   margin-right: -10px !important;
 }
 
@@ -291,14 +289,14 @@ body.sb-sidenav-toggled #wrapper .list_menu_sidebar a.single_menu[data-title]:ho
 
 body.sb-sidenav-toggled #wrapper .list_menu_sidebar a.single_menu[data-title]:after {
   content: attr(data-title);
-  background: #111;
+  background: rgba(214, 214, 214, 0.6);
   position: absolute;
   top: 0;
   margin-top: 8px;
   margin-left: 10px;
   left: 100%;
   padding: 4px 10px 4px 10px;
-  font-size: 14px;
+  font-size: 15px;
   color: white;
   white-space: nowrap; 
   -moz-border-radius: 10px; 
@@ -434,17 +432,17 @@ select:focus > option:checked {
   cursor: pointer;
 }
 .dropdown_menu.active:hover { 
-  background: black !important;
+  background: rgba(133, 133, 133, 0.6)!important;
 }
 .dropdown_menu a {
-  background-color: var(--color-merah) !important;
+  background-color: black !important;
   text-align: center;
   font-size: 14px;
   padding: 5px;
 }
 
 .dropdown_menu.list-group-item.active {
-  background: black !important;
+  background: rgba(214, 214, 214, 0.6) !important;
 }
 .subMenu {
   float: right;
@@ -487,7 +485,7 @@ body.sb-sidenav-toggled .dropdown_menu_item.active span {
   border-radius: 10px;
   border: 1px solid #ddd;
   position: absolute;
-  background: var(--color-orange);
+  background: #db2214;
   cursor: pointer;
 }
 .bullet-text { font-size: 12px; margin-left: 18px; margin-top: -1px; padding-right: 10px; }
@@ -558,9 +556,9 @@ footer .footer .text {
     margin-top: -5px;
   }
   .menu_bar_mobile svg {
-    width: 30px; color: white;
+    width: 30px; color: black;
   }
-  .navbar-brand { margin-left:40px; }
+ 
   
   body.sb-sidenav-toggled #wrapper .menu_sidebar  {
     margin-left: 230px !important;

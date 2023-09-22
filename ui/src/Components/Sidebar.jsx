@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import { NavLink, useLocation } from "react-router-dom";
-import { ChevronUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
+import { ChevronUpIcon, ChevronDownIcon,  ArrowLeftCircleIcon , ArrowRightCircleIcon } from '@heroicons/react/24/solid'
 import { useDispatch } from 'react-redux';
 import { setToggle } from '../Reducers/menuSlice';
+import "./style.css";
 
 const Sidebar = () => {
     const location = useLocation();
@@ -22,6 +23,7 @@ const Sidebar = () => {
     let Links =[
         {name:"Dashboard", link:"/dashboard", icon:"dashboard"},
         {name:"Schedule", link:"/schedule", icon:"schedule"},
+        {name:"Qr Code", link:"/scanner", icon:"code qr"},
         {name:"History Booking", link:"/history-booking", icon:"history"},
         {name:"Data Master", link:"/", icon:"master", sub:subMaster},
         {name:"User Management", link:"/", icon:"user", sub:subUser},
@@ -55,8 +57,8 @@ const Sidebar = () => {
     }
       
     return (
-    <div className="border-end bg-black text-white" id="sidebar-wrapper">
-        <div onClick={handleToggle} className={`sidebar-heading border-bottom bg-black text-white menu_sidebar mb-5 ${menuOpen ? "open" : ""}`}>{menuOpen?<ChevronLeftIcon/>:<ChevronRightIcon/>}</div>
+    <div className="border-end text-dark" id="sidebar-wrapper">
+        <div onClick={handleToggle} className={`sidebar-heading border-bottom text-white menu_sidebar mb-5 ${menuOpen ? "open" : ""}`}>{menuOpen?<ArrowLeftCircleIcon/>:<ArrowRightCircleIcon />}</div>
         <div className="list-group list-group-flush list_menu_sidebar">
         {
           Links.map((val, key) => (
