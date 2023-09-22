@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Card, Form } from "react-bootstrap";
-import FormSelect from "../../../../Components/Form/select";
 import FormInput from "../../../../Components/Form/input";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
 
 const Rush = () => {
+  const [ values, setValues ] = useState({ court: "", start: "", finish: "", price_increase: "", day_name: "" });
   const [ courts, setCourts ] = useState([])
   const [ errors, setErrors ] = useState([])
-  const [ values, setValues ] = useState({ court_id: "", start: "", finish: "", price_increase: "", day_name: "" });
 
   const dayNames = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
@@ -33,12 +32,12 @@ const Rush = () => {
   const handleSubmitClick = async (e) => {
     e.preventDefault()
     const data = {
-      court_id: values.court_id,
+      court_id: values.court,
       start: values.start,
       finish: values.finish,
-      day_name: values.day_name
+      day_name: values.day_name.toLowerCase(),
+      price_increase: values.price_increase
     }
-    console.log(data)
     const config = {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -75,7 +74,7 @@ const Rush = () => {
               <Row>
                 <Col className="col-12">
                   <Form.Label>User role</Form.Label>
-                  <Form.Select name="court_id" className="form-select form-select-sm" onChange={onChange}>
+                  <Form.Select name="court" className="form-select form-select-sm" onChange={onChange}>
                     <option value="">-- courts --</option>
                     {courts.map((court) => <option key={court.id} value={court.id}>{court.label}</option>)}
                   </Form.Select>
@@ -90,6 +89,11 @@ const Rush = () => {
                   </Form.Select>
                   {errors.day_name &&
                     <span className="text-danger">{errors.day_name[ 0 ]}</span>}
+                </Col>
+                <Col className="col-12">
+                  <FormInput type="text" name="price_increase" label="Peak time price" value={values.price_increase} onChange={onChange} />
+                  {errors.price_increase &&
+                    <span className="text-danger">{errors.price_increase[ 0 ]}</span>}
                 </Col>
                 <Col className="col-6 col-md-3">
                   <FormInput type="time" name="start" label="Start" value={values.start} onChange={onChange} />
