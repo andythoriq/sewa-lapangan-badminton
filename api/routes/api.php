@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{AuthCustomerController, AuthAdminController};
+use App\Http\Controllers\GetRoleMenusController;
 use App\Http\Controllers\Master\{HolidayController, ConfigController, OpenTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController, TransactionController};
 use Illuminate\Support\Facades\Route;
 
@@ -124,9 +125,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     /** Transaction
      * policy/role: transaction-handle, rental-handle, schedule-handle, admin */
-    Route::controller(TransactionController::class)->group(function(){
+    Route::controller(TransactionController::class)->middleware('admin')->group(function(){
         Route::get('/transaction', 'index');
         Route::get('/transaction/{transaction}', 'show');
+        Route::get('/booking-detail/{booking_code}', 'booking_detail');
     });
 
     /** Admin AUTH ROUTES
@@ -149,5 +151,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     /** END OF MASTER DATA */
+
+    Route::get('/admin-role-menu-list', GetRoleMenusController::class)->middleware('admin');
 
 });

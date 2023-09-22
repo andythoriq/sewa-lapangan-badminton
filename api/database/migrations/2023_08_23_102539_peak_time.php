@@ -15,9 +15,10 @@ class PeakTime extends Migration
     {
         Schema::create('tb_peak_time', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('start');
-            $table->dateTime('finish');
-            $table->float('price_increase')->default(1.5);
+            $table->time('start');
+            $table->time('finish');
+            $table->float('price_increase');
+            $table->string('day_name', 20);
             $table->foreignId('court_id')->constrained('tb_court', 'id')->cascadeOnDelete();
             $table->timestamps();
         });

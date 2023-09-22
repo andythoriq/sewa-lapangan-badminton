@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Master;
+namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TransactionResource extends JsonResource
+class BookingDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -13,14 +13,11 @@ class TransactionResource extends JsonResource
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public static $wrap = null;
-
     public function toArray($request)
     {
         return [
             'total_price' => $this->total_price,
             'total_hour' => $this->total_hour,
-            'booking_code' => $this->booking_code,
-            'qr_code_image' => $this->qr_code_image ?? '',
             'isPaid' => $this->isPaid,
             'customer_paid' => $this->customer_paid ?? '',
             'isDebt' => $this->isDebt,
@@ -30,8 +27,19 @@ class TransactionResource extends JsonResource
                 'start' => $rental->start,
                 'finish' => $rental->finish,
                 'status' => $rental->status,
-                'price' => $rental->price
-            ]))
+                'price' => $rental->price,
+                'court' => [
+                    'label' => $rental->court->label
+                ],
+                'admin' => [
+                    'name' => $rental->user->name,
+                    'username' => $rental->user->username
+                ],
+                'customer' => [
+                    'name' => $rental->customer->name,
+                    'phone_number' => $rental->customer->phone_number
+                ]
+            ])),
         ];
     }
 }
