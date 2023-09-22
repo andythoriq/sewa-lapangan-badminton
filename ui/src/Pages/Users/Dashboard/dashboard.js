@@ -1,26 +1,27 @@
 import React from "react";
-// import { Row, Col } from "react-bootstrap";
-// import { dirIcon } from "../../../Components/Services/config";
+import { Row, Col } from "react-bootstrap";
+import { dirIcon } from "../../../Components/Services/config";
 import Schedule from "../Schedule/schedule";
 import Info from "./info";
 import FormatDate from "../../../Components/Services/formatDate";
 
 const Dashboard = () => {
     const date = new Date();
-    // let imgCard =[
-    //     {name:"User",value:"0", icon:"users"},
-    //     {name:"On Progress",value:"0", icon:"wait"},
-    //     {name:"Finished",value:"0", icon:"audit"},
-    // ];
+    let imgCard =[
+        {name:"Customer",value:"0", icon:"users"},
+        {name:"Booking Today",value:"0", icon:"wait"},
+        {name:"Total income all",value:"0", icon:"audit"},
+        {name:"Today's income",value:"0", icon:"audit"},
+    ];
     
     return (
     <>
         <h4 className="mb-4"><b>Dashboard</b></h4>
         <b>{FormatDate(date)}</b>
-        {/* <Row className="mt-4 mb-4">
-            <Col className="col-1"></Col>
+        <Row className="mt-4 mb-4">
+            <Col className=""></Col>
             {imgCard.map((val, key) => (
-            <Col className="col-12 col-lg-3" key={key}>
+            <Col className="col-12 col-lg-6" key={key}>
                 <div className="card bg-danger mb-3 shadow" style={{minHeight:100,cursor:'pointer'}}>
                     <div className="row g-0" style={{padding:'5px 20px 5px 20px'}}>
                         <div className="col-4 text-center pt-2">
@@ -36,7 +37,7 @@ const Dashboard = () => {
                 </div>
             </Col>))
             }
-        </Row> */}
+        </Row>
         <div className="mt-4 mb-4"></div>
         <Schedule aksi="dashboard"/>
         <Info/>

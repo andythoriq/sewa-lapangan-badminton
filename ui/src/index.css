@@ -372,8 +372,8 @@ nav ul.filter li {
 }
 
 nav a { text-decoration: none; color:#333 }
-nav a img { width: 40px; margin-top: -5px !important;margin-right: 5px; }
-nav li a img { width: 24px; margin-top: -5px !important; }
+nav a img { width: 45px; margin-top: 8px !important; }
+nav li a img { width: 24px; margin-top: -2px !important; }
 
 nav ul li a {
   display: block;
@@ -385,7 +385,7 @@ nav ul li a {
 }
 
 nav ul li a:not(.active):hover {
-  color: white ;
+  color: white;
 }
 
 nav .menu {
