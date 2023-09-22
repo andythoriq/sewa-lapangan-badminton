@@ -107,12 +107,12 @@ const Landing = () => {
                 <div className="card-body">
                   <div className="rental-prince">
                     <h5 className="card-title fw-bold">Court A</h5>
-                    <p className="text">
+                    <div className="text">
                       Rental price
                       <h5 className="fw-bold" style={{ color: "#d93221" }}>
                         Rp 25,000/hour
                       </h5>
-                    </p>
+                    </div>
                   </div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" className="bi bi-check-circle-fill" viewBox="0 0 16 16" style={{ color: "red" }}>
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
@@ -147,12 +147,12 @@ const Landing = () => {
                 <div className="card-body">
                 <div className="rental-prince">
                     <h5 className="card-title fw-bold">Court B</h5>
-                    <p className="text">
+                    <div className="text">
                       Rental price
                       <h5 className="fw-bold" style={{ color: "#d93221" }}>
                         Rp 25,000/hour
                       </h5>
-                    </p>
+                    </div>
                   </div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" className="bi bi-check-circle-fill" viewBox="0 0 16 16" style={{ color: "red" }}>
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
@@ -187,12 +187,12 @@ const Landing = () => {
                 <div className="card-body">
                 <div className="rental-prince">
                     <h5 className="card-title fw-bold">Court C</h5>
-                    <p className="text">
+                    <div className="text">
                       Rental price
                       <h5 className="fw-bold" style={{ color: "#d93221" }}>
                         Rp 35,000/hour
                       </h5>
-                    </p>
+                    </div>
                   </div>
                   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" className="bi bi-check-circle-fill" viewBox="0 0 16 16" style={{ color: "red" }}>
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
@@ -228,9 +228,9 @@ const Landing = () => {
       {/* Servicer */}
       <Container>
         <section className="setup" id="#service" style={{ padding: "30px 0", marginBottom: "10px" }}>
-          <div class="container py-5">
-            <div class="row cnt2 text-center">
-              <div class="col">
+          <div className="container py-5">
+            <div className="row cnt2 text-center">
+              <div className="col">
                 <h2 className="fw-bold">Our Services</h2>
                 <p>Services we provide at bfb that can make it easier for you to book the court</p>
               </div>

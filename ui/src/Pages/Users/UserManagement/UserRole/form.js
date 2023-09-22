@@ -10,8 +10,8 @@ import Swal from "sweetalert2";
 const UserRoleForm = () => {
     const {id} = useParams();
     const [ selectedStatus, setSelectedStatus ] = useState("")
-    const [ menus, setMenus ] = useState([])
-    const [ values, setValues ] = useState({ rolename: "", menu: "", status: selectedStatus });
+    const [ menuList, setMenuList ] = useState([])
+    const [ values, setValues ] = useState({ rolename: "", status: selectedStatus });
     const [errors, setErrors] = useState([])
 
     const onChange = (e) => { 
@@ -21,11 +21,22 @@ const UserRoleForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const data = {
+        let data = {
             label: values.rolename,
-            menu: JSON.stringify(menus),
-            status: values.status
+            menu: [],
+            status: values.status,
+        };
+        for (let i = 0; i < rows.length; i++) {
+            if (rows[i].menu !== '') {
+                data.menu.push(rows[ i ].menu)
+            }
         }
+        if (data.menu.length < 1) {
+            data.menu = ''
+        } else {
+            data.menu = JSON.stringify(data.menu)
+        }
+
         const config = {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -50,6 +61,17 @@ const UserRoleForm = () => {
     };
 
     useEffect(() => {
+        axios.get('/api/admin-role-menu-list', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(({ data }) => {
+            setMenuList(data)
+        })
+        .catch((e) => {
+            console.log(e)
+        });
         if (id > 0) {
             axios.get('/api/role-edit/' + id, {
                 headers: {
@@ -65,19 +87,9 @@ const UserRoleForm = () => {
         }
     }, [])
 
-    let dataMenu = [
-        {value:"", label:""},
-        {value:"/data-master/court", label:"Master data - lapangan"},
-        {value:"/user-management/user-list", label:"User management - user list"},
-        {value:"/user-management/user-list", label:"User management - user level"},
-        {value:"/data-master/regular", label:"Master data - regular customer"},
-        {value:"/data-master/member", label:"Master data - customer member"},
-        {value:"/schedule", label:"Master data - schedule"},
-    ];
-
     const TableRows = ({ rows, tableRowRemove, onValUpdate, onCheckUpdate }) => {
         return rows.map((rowsData, index) => {
-          const { list_menu, menu, check } = rowsData;
+          const { menu, check } = rowsData;
           return (
             <tr key={index}>
                 <td className="text-center">
@@ -90,13 +102,13 @@ const UserRoleForm = () => {
                     <FormSelect
                         name="menu"
                         className="form-select form-select-sm"
-                        options={list_menu}
+                        options={[{value: "", label: " -- select menus --"}, ...menuList]}
                         selected={menu}
                         onChange={(event) => onValUpdate(index, event)}
                     />
                 </td>
                 <td className="text-center">
-                    <a href="#delete" onClick={() => tableRowRemove(index)}>
+                    <a href="#delete" onClick={(e) => tableRowRemove(index)}>
                         <Trash3 className="material-icons" color="dark" title="Delete" />
                     </a>
                 </td>
@@ -105,7 +117,7 @@ const UserRoleForm = () => {
         });
     }
 
-    const dataDefault = { list_menu: dataMenu, menu:"", check:false };
+    const dataDefault = { menu:"", check:false };
     const [rows, initRow] = useState([dataDefault]);
 
     const addRowTable = () => {
@@ -118,12 +130,13 @@ const UserRoleForm = () => {
     };
     const onValUpdate = (i, event) => {
         const { name, value } = event.target;
+        // let newMenus = [...menus]
+        // newMenus.push(value)
+        // setMenus(newMenus)
+
         const data = [...rows];
         data[i][name] = value;
-        // console.log(data);
-        let newMenus = [...menus]
-        newMenus.push(value)
-        setMenus(newMenus)
+        // console.log(data)
         initRow(data);
     };
     const onCheckUpdate = (i, event) => {

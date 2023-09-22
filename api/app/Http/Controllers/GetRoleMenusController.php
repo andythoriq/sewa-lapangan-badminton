@@ -16,56 +16,60 @@ class GetRoleMenusController extends Controller
     {
         $menus = [
             [
-                'page' => 'Dashboard page',
-                'menu' => '/dashboard'
+                'label' => 'Dashboard page',
+                'value' => '/dashboard'
             ],
             [
-                'page' => 'Booking page',
-                'menu' => '/create-booking'
+                'label' => 'Booking page',
+                'value' => '/create-booking'
             ],
             [
-                'page' => 'Schedule page',
-                'menu' => '/schedule'
+                'label' => 'Schedule page',
+                'value' => '/schedule'
             ],
             [
-                'page' => 'Booking history page',
-                'menu' => '/history-booking'
+                'label' => 'Booking history page',
+                'value' => '/history-booking'
             ],
             [
-                'page' => 'Master - Court',
-                'menu' => '/data-master/court'
+                'label' => 'Master - Court',
+                'value' => '/data-master/court'
             ],
             [
-                'page' => 'Master - Regular (list)',
-                'menu' => '/data-master/regular'
+                'label' => 'Master - Regular (list)',
+                'value' => '/data-master/regular'
             ],
             [
-                'page' => 'Master - Regular',
-                'menu' => '/data-master/customer-regular'
+                'label' => 'Master - Regular',
+                'value' => '/data-master/customer-regular'
             ],
             [
-                'page' => 'Master - Member (list)',
-                'menu' => '/data-master/member'
+                'label' => 'Master - Member (list)',
+                'value' => '/data-master/member'
             ],
             [
-                'page' => 'Master - Member',
-                'menu' => '/data-master/customer-member'
+                'label' => 'Master - Member',
+                'value' => '/data-master/customer-member'
             ],
             [
-                'page' => 'Master - Holiday',
-                'menu' => '/data-master/holidays'
+                'label' => 'Master - Holiday',
+                'value' => '/data-master/holidays'
             ],
             [
-                'page' => 'Master - Peak time',
-                'menu' => '/data-master/rush'
+                'label' => 'Master - Peak time',
+                'value' => '/data-master/rush'
             ],
             [
-                'page' => 'Master - User',
-                'menu' => '/user-management/user-list'
+                'label' => 'Master - User',
+                'value' => '/user-management/user-list'
             ],
             [
-                'page' => 'Master - User role',
-                'menu' => '/user-management/user-role'
+                'label' => 'Master - User role',
+                'value' => '/user-management/user-role'
+            ],
+            [
+                'label' => 'Scanner page',
+                'value' => '/scanner'
             ]
         ];
         return response()->json($menus);
