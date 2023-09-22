@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BookingDetailResource;
 use App\Http\Resources\Master\TransactionCollection;
 use App\Http\Resources\Master\TransactionResource;
 use App\Models\TransactionModel;
@@ -19,5 +20,18 @@ class TransactionController extends Controller
     public function show(TransactionModel $transaction)
     {
         return new TransactionResource($transaction->loadMissing('rentals'));
+    }
+
+    public function booking_detail(string $booking_code)
+    {
+        $transactions = TransactionModel::with([
+            'rentals',
+            'rentals.customer:customer_code,name,phone_number',
+            'rentals.user:id,name,username',
+            'rentals.court:id,label'
+        ])
+        ->where('booking_code', $booking_code)->firstOrFail();
+
+        return new BookingDetailResource($transactions);
     }
 }

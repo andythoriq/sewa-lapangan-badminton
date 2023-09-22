@@ -18,8 +18,13 @@ class Transaction extends Migration
             $table->float('total_price');
             $table->float('total_hour');
             $table->string('qr_code_image', 255)->nullable()->default(null);
+
             $table->enum('isPaid', ['Y', 'N'])->default('N');
             $table->float('customer_paid')->nullable()->default(null);
+
+            $table->enum('isDebt', ['Y', 'N'])->default('N');
+            $table->float('customer_debt')->nullable()->default(null);
+
             $table->string('booking_code', 191)->unique();
             $table->timestamps();
         });

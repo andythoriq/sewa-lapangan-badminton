@@ -14,7 +14,12 @@ class TransactionModel extends Model
     protected $fillable = [
         'total_price',
         'total_hour',
-        'booking_code'
+        'booking_code',
+        'qr_code_image',
+        'isPaid',
+        'customer_paid',
+        'isDebt',
+        'customer_debt'
     ];
 
     public function rentals(): \Illuminate\Database\Eloquent\Relations\HasMany
