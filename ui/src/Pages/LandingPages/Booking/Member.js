@@ -10,7 +10,7 @@ const CreateBookingFormMember = () => {
       return rows.map((rowsData, index) => {
         const { start_time, end_time } = rowsData;
         return (
-          <Row className="m-1 p-2 box-border" key={index}>
+          <Row className="m-1 p-2 box-border mt-2" key={index}>
             <Col className="col-12 col-md-8 column">
                 <Row>
                   <Col className="col-12 col-md-6">
@@ -97,6 +97,11 @@ const CreateBookingFormMember = () => {
             ...
         </Col>
       </Row>
+      <Col className="col-12 text-right mt-5">
+          <button type="button" className="btn btn-danger btn-sm me-md-4">
+            Booking
+          </button>
+        </Col>
     </Form>
     </>
   )

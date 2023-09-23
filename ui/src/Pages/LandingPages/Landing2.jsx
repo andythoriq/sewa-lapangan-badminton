@@ -75,7 +75,7 @@ const Landing2 = () => {
       <div className="container mt-5">
         <div className="table-responsive" id="schedule">
           <h3 className="text-left mt-5">Schedule</h3>
-          <hr style={{ width: 130, float:'left' }} />
+          <hr style={{ width: 130, float:'left', marginTop: 0 }} />
         </div>
         <Row>
           <Col className="col-12 col-md-6 d-flex mt-3">
@@ -93,7 +93,7 @@ const Landing2 = () => {
             </div>
           </Col>
           <Col className="col-12 col-md-6 mt-1 mb-1" style={{ textAlign: "right" }}>
-            <Link to="landing-booking" className="btn btn-danger btn-sm">
+            <Link to="/landingbookuser" className="btn btn-danger btn-sm">
               + Add Booking
             </Link>
           </Col>

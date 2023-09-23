@@ -11,10 +11,10 @@ const CreateBookingFormRegular = () => {
 
   return (
     <>
-      <Form className="mt-4" style={{ marginBottom: "10%" }}>
+      <Form className="mt-3" style={{ marginBottom: "10%" }}>
         <Row>
-          <Col className="col-12 col-md-1 col-lg-1"></Col>
-          <Col className="col-12 col-md-1 col-lg-1 text-center mb-4">
+          <Col className="col-12 col-md-3 col-lg-3"></Col>
+          <Col className="col-12 col-md-3 col-lg-3 text-center mb-4">
             <b>Customer</b>
             <br />
             <br />

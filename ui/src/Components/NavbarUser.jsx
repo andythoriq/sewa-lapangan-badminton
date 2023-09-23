@@ -1,53 +1,31 @@
 import React from "react";
-import { Navbar, Nav, Container, Dropdown } from "react-bootstrap";
-import { logoApp, namaApp } from "./Services/config";
+import { Navbar, Nav, Container } from "react-bootstrap";
 
 const NavbarUser = () => {
-  const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-    <a
-      href="/#"
-      ref={ref}
-      onClick={(e) => {
-        e.preventDefault();
-        onClick(e);
-      }}
-    >
-      {children}
-    </a>
-  ));
-
   return (
-    <Navbar expand="lg" className="navbar navbar-expand-lg bg-danger fixed-top">
+    <Navbar expand="lg" className="nav-bg">
       <Container>
-        <Navbar.Brand href="#home" className="lpages">
-          <img src={`/${logoApp}`} alt="bfb" />
-          <b className="text-white" style={{ paddingLeft: 5, fontSize: 25 }}>
-            {namaApp}
+        <Navbar.Brand href="/dashboard-user">
+          <img src="./logo.png" alt="bfb" />
+          <b className="text-white" style={{ paddingLeft: 5, fontSize: 22 }}>
+            BFB
           </b>
         </Navbar.Brand>
-        <Navbar.Toggle className="custom-toggler navbar-toggler" aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="ms-auto">
-            <Nav.Link href="#schedule" className="text-white">
+        <Navbar.Toggle aria-controls="navbartoggler" type="button" data-bs-toggle="offcanvas" data-bs-target="offcanvasNavbar" ria-controls="offcanvasNavbar" className="navbar-toogler bg-white"/>
+        <Navbar.Collapse id="navbarScroll">
+          <Nav className="ms-auto" style={{ maxHeight: "100px" }} navbarScroll>
+            <Nav.Link href="/landing-page" style={{ marginRight: "30px", color: "white" }}>
+              Home
+            </Nav.Link>
+            <Nav.Link href="/landingbookuser" style={{ marginRight: "30px", color: "white" }}>
+              Booking
+            </Nav.Link>
+            <Nav.Link href="#schedule" style={{ marginRight: "30px", color: "white" }}>
               Schedule
             </Nav.Link>
-            <Nav.Link href="#bookinghistory" className="text-white">
+            <Nav.Link href="#bookinghistory" style={{ marginRight: "30px", color: "white" }}>
               History Booking
             </Nav.Link>
-            <div className="h-screen bg-gray-200 flex justify-center">
-              <div className="relative">
-                <Dropdown>
-                  <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                    <img src="./assets/icon/user-circle.png" alt="user" className="object-cover rounded-full cursor-pointer mt-0" style={{ width: 35 }} />
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu align="end">
-                    <Dropdown.Item eventKey="1" href="/logout">
-                      Logout
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            </div>
           </Nav>
         </Navbar.Collapse>
       </Container>

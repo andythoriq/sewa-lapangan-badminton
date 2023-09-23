@@ -5,7 +5,7 @@ import FooterPublic from "../../../Components/FooterPublic";
 import CreateBookingFormRegular from "./Regular";
 import CreateBookingFormMember from "./Member";
 
-const LandingBooking = () => {
+const LandingBookUser = () => {
 
   const [checkedRegular, setCheckedRegular] = useState(true);
     const [checkedMember, setCheckedMember] = useState(false);
@@ -27,11 +27,11 @@ const LandingBooking = () => {
       <NavbarUser/>
       <div className="container mt-5">
         <div className="table-responsive" id="schedule">
-          <h3 className="text-left mt-5">Add Booking</h3>
-          <hr style={{ width: 200, float:'left' }} />
+          <h3 className="text-left mt-3">Add Booking</h3>
+          <hr style={{ width: 200, float:'left', marginTop: 0 }} />
         </div>
         <br/>
-        <div className="d-flex">
+        <div className="d-flex mt-2">
           <div className="form-check">
             <input type="radio" className="form-check-input" name="radionExam" value="regular" defaultChecked={checkedRegular} onClick={() => handleRadioBtn("regular")} />
             <label>Regular</label>
@@ -51,4 +51,4 @@ const LandingBooking = () => {
   );
 };
 
-export default LandingBooking;
+export default LandingBookUser;

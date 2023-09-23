@@ -28,7 +28,7 @@ import Rush from "./Pages/Users/DataMaster/Rush Hour/rush";
 import LoginCustomer from "./Pages/LandingPages/Step/LoginC";
 import Regular from "./Pages/Users/DataMaster/Customer/Regular";
 import Member from "./Pages/Users/DataMaster/Customer/Member";
-import LandingBooking from "./Pages/LandingPages/Booking/LandingBooking";
+import LandingBookUser from "./Pages/LandingPages/Booking/LandingBooking";
 // import Scanner from "./Pages/Users/ScannerQr/Scanner";
 
 export default class App extends Component {
@@ -47,7 +47,7 @@ export default class App extends Component {
           {/* Protected */}
           <Route path="/" element={<RequireAuth role="user" />}>
             <Route path="/dashboard-user" element={<Landing2 />} />
-            <Route path="/landing-booking" element={<LandingBooking />} />
+            <Route path="/landingbookuser" element={<LandingBookUser />} />
           </Route>
           <Route path="/" element={<RequireAuth role="admin" />}>
             <Route path="/dashboard" element={<Dashboard />} />
