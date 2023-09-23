@@ -72,7 +72,7 @@ const CustomerMember = () => {
           console.log(e)
         });
     }
-  }, [])
+  },)
 
   return (
     <>
@@ -117,14 +117,14 @@ const CustomerMember = () => {
                       <span className="text-danger">{errors.dept[ 0 ]}</span>}
                   </Form.Group>
                 </Col>
-                <Col className="col-12 col-md-6 col-sm-8 m-auto">
+                <Col className="col-12 col-sm-8 m-auto">
                   <Form.Group>
                     <FormInput type="date" name="member_active_period" label="Active Period" value={values.member_active_period} onChange={onChange} />
                     {errors.member_active_period &&
                       <span className="text-danger">{errors.member_active_period[ 0 ]}</span>}
                   </Form.Group>
                 </Col>
-                <Col className="col-12 col-md-6 col-sm-8 m-auto">
+                <Col className="col-12 col-sm-8 m-auto">
                   <label>Status</label>
                   <div className="d-flex">
                     <div className="form-check">

@@ -35,7 +35,7 @@ const Landing = () => {
               <Nav.Link href="#court" style={{ marginRight: "30px", color: "white" }}>
                 Court
               </Nav.Link>
-              <Nav.Link href="#service" style={{ marginRight: "30px", color: "white" }}>
+              <Nav.Link href="#servis" style={{ marginRight: "30px", color: "white" }}>
                 Services
               </Nav.Link>
               <Nav.Link href="#contact" style={{ marginRight: "30px", color: "white" }}>
@@ -229,8 +229,8 @@ const Landing = () => {
       {/* end card court */}
 
       {/* Servicer */}
-      <Container>
-        <section className="setup" id="#service" style={{ padding: "30px 0", marginBottom: "70px" }}>
+      <Container id="servis" >
+        <section className="setup" style={{ padding: "30px 0", marginBottom: "70px" }}>
           <div className="container py-5">
             <div className="row cnt2 text-center">
               <div className="col">
