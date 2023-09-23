@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Outlet, useLocation, Navigate } from "react-router-dom"
 import Navbar from './Navbar'
-import { namaApp, dirIcon } from "./Services/config";
+import { namaApp } from "./Services/config";
 import PermissionDenied from "../Pages/PermissionDenied";
 import Sidebar from './Sidebar';
 

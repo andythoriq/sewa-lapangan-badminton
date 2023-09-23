@@ -48,7 +48,7 @@ const UserListForm = () => {
                 console.log(e) 
             });
         }
-    }, [])
+    },)
 
     const handleSubmitClick = async (e) => {
         e.preventDefault()
