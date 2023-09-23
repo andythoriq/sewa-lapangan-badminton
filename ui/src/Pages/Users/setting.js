@@ -16,13 +16,10 @@ const Setting = () => {
       </h4>
       <Row>
         <Col className="col-12 col-sm-10 col-md-10 m-auto">
-          <Card className="p-3 mt-5">
+          <Card className="p-3 mt-2">
             <Container>
-              <Row className="px-4 my-5">
-                <Col sm={6}>
-                  <img src="./logo.png" alt="" className="fluid rounded" style={{ width: 250 }} />
-                </Col>
-                <Col sm={5}>
+              <Row className="px-2 my-1">
+                <Col >
                   <Col className="col-12 col-sm-8 col-md-12 m-auto">
                     <Form.Group>
                       <FormInput type="text" name="number" label="Number WhatsApp" value={values.name} onChange={onChange} />

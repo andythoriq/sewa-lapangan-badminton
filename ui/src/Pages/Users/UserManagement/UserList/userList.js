@@ -122,10 +122,10 @@ const UserList = () => {
                         + Add User
                     </Link>
                 </Col>
-                <Col className="col-12 col-md-12 pt-2">
+                {/* <Col className="col-12 col-md-12 pt-2">
                     <div className="float-right"><div className="bullet bullet-red"></div> <div className="bullet-text">In Active</div></div>
                     <div className="float-right"><div className="bullet bullet-cyan"></div> <div className="bullet-text">Active</div></div>
-                </Col>
+                </Col> */}
             </Row>
             <div className="table-responsive">
                 <table className="table table-hover mt-3" border={1}>

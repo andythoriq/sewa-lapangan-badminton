@@ -29,7 +29,7 @@ import LoginCustomer from "./Pages/LandingPages/Step/LoginC";
 import Regular from "./Pages/Users/DataMaster/Customer/Regular";
 import Member from "./Pages/Users/DataMaster/Customer/Member";
 import LandingBookUser from "./Pages/LandingPages/Booking/LandingBooking";
-// import Scanner from "./Pages/Users/ScannerQr/Scanner";
+import Scanner from "./Pages/Users/ScannerQr/Scanner";
 
 export default class App extends Component {
   render() {
@@ -53,7 +53,7 @@ export default class App extends Component {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/create-booking" element={<CreateBookingForm />} />
             <Route path="/schedule" element={<Schedule />} />
-            {/* <Route path="/scanner" element={<Scanner/>} /> */}
+            <Route path="/scanner" element={<Scanner/>} />
             <Route path="/history-booking" element={<HistoryBooking />} />
             <Route path="/data-master/court" element={<Court />} />
             <Route path="/data-master/court/add" element={<CourtForm />} />
