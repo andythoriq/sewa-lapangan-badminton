@@ -38,6 +38,9 @@ const Landing = () => {
               <Nav.Link href="#service" style={{ marginRight: "30px", color: "white" }}>
                 Services
               </Nav.Link>
+              <Nav.Link href="#contact" style={{ marginRight: "30px", color: "white" }}>
+                Contact
+              </Nav.Link>
             </Nav>
             <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} href="userstep">
               Register
@@ -145,7 +148,7 @@ const Landing = () => {
               <div className="card card-court">
                 <img src="./assets/img/court/6.jpg" className="card-img-top" alt="..." />
                 <div className="card-body">
-                <div className="rental-prince">
+                  <div className="rental-prince">
                     <h5 className="card-title fw-bold">Court B</h5>
                     <div className="text">
                       Rental price
@@ -185,7 +188,7 @@ const Landing = () => {
               <div className="card card-court">
                 <img src="./assets/img/court/4.jpg" className="card-img-top" alt="..." />
                 <div className="card-body">
-                <div className="rental-prince">
+                  <div className="rental-prince">
                     <h5 className="card-title fw-bold">Court C</h5>
                     <div className="text">
                       Rental price
@@ -227,7 +230,7 @@ const Landing = () => {
 
       {/* Servicer */}
       <Container>
-        <section className="setup" id="#service" style={{ padding: "30px 0", marginBottom: "10px" }}>
+        <section className="setup" id="#service" style={{ padding: "30px 0", marginBottom: "70px" }}>
           <div className="container py-5">
             <div className="row cnt2 text-center">
               <div className="col">
@@ -276,6 +279,51 @@ const Landing = () => {
         </section>
       </Container>
       {/* end about work */}
+
+      {/* contact us */}
+      <div className="contact section-padding" id="contact" style={{ padding: "30px 0", marginBottom: "10px" }}>
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="section-header text-center">
+                <h2 className="fw-bold">
+                  Contact <span> Us</span>
+                </h2>
+                <p>Contact us for further services</p>
+              </div>
+            </div>
+          </div>
+          <div className="row mt-5 mb-5">
+            <div className="col-lg-5 col-sm-12 text-white">
+              <div className="left-contact">
+                <h3>Location</h3>
+                <p> ... </p>
+                <h3>Email</h3>
+                <p> ... </p>
+                <h3>Open</h3>
+                <p> ... </p>
+                <h3>WhatssApp</h3>
+                <p> ... </p>
+              </div>
+            </div>
+            <div className="col-lg-6 offset-lg-1 col-sm-12">
+              <form>
+                <label for="">Your Name</label>
+                <input type="text" className="form-control" id="name" placeholder="Your name" required />
+                <label for="">Phone number</label>
+                <input type="text" className="form-control" id="name" required />
+                <label for="">Your Message</label>
+                <textarea className="form-control"></textarea>
+                <button className="btn" type="submit">
+                  Submit Form
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* footer */}
       <div className="footer lpages text-center text-light p-3 mt-5">
         <div className="last-footer">
           <p className="copyright"> &copy; Copyright 2023 PKL Cibione. All Rights Reserved</p>

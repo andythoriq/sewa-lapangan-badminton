@@ -6,7 +6,7 @@
     z-index: 9999;
     background: transparent;
   }
-  .nav img{
+  .nav img {
     width: 50px;
   }
   .nav-bg {
@@ -86,27 +86,51 @@
     background-color: #d93221;
     padding: 10px 0;
   }
-  .card-court{
-    transition: .5s ease;
+  .card-court {
+    transition: 0.5s ease;
   }
   .card-body {
     padding: 25px;
     margin-top: 15px;
   }
-  .rental-prince{
+  .rental-prince {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 10px;
   }
-  .btn-booking:hover{
+  .btn-booking:hover {
     background-color: #000000;
     color: white;
   }
-  .card-court:hover{
+  .card-court:hover {
     transform: scale(1.1);
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, .6);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6);
   }
+
+  /* contact */
+  #contact {
+    padding: 10px 0;
+  }
+  .left-contact{
+    background-color: #d93221;
+    padding: 60px;
+    border-radius: 15px;
+  }
+  .left-content h3{
+    margin-bottom: 20px;
+  }
+  label{
+    font-size: 28px;
+    margin: 10px 0;
+  }
+  .contact .btn{
+    background: #000000;
+    color: white;
+    display: inline-block;
+    margin-top: 30px;
+  }
+
   /* footer */
   .footer.lpages {
     background-color: #000000;
@@ -117,5 +141,3 @@
     margin: auto;
   }
 }
-
-
