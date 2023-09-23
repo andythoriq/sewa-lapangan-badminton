@@ -111,9 +111,6 @@ const Court = () => {
                         + Add Court
                     </Link>
                 </Col>
-                <Col className="col-12 col-md-12">
-                    <button className=" btn btn-dark  ml-2 float-right">Remove All</button>
-                </Col>
             </Row>
             <div className="table-responsive">
                 <table className="table table-hover mt-2" border={1}>

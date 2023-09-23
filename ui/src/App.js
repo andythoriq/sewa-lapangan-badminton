@@ -29,7 +29,7 @@ import LoginCustomer from "./Pages/LandingPages/Step/LoginC";
 import Regular from "./Pages/Users/DataMaster/Customer/Regular";
 import Member from "./Pages/Users/DataMaster/Customer/Member";
 import LandingBooking from "./Pages/LandingPages/Booking/LandingBooking";
-import Scanner from "./Pages/Users/ScannerQr/Scanner";
+// import Scanner from "./Pages/Users/ScannerQr/Scanner";
 
 export default class App extends Component {
   render() {

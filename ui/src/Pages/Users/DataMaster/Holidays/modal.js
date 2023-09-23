@@ -58,20 +58,20 @@ const HolidaysModal = ({show="", handleClose, size="md", data=[]}) => {
                             <span className="text-danger">{errors.label[ 0 ]}</span>}
                     </Form.Group>
                     <Row>
-                        <Col className="col-12 col-md-6">
+                        <Col className="col-12 col-md-12">
                             <Form.Group>
                             <FormInput type="date" name="start" label="Start" value={values.start} onChange={onChange}/>
                             {errors.start &&
                             <span className="text-danger">{errors.start[ 0 ]}</span>}
                             </Form.Group>
                         </Col>
-                        <Col className="col-12 col-md-6">
+                        {/* <Col className="col-12 col-md-6">
                             <Form.Group>
                                 <FormInput type="date" name="finish" label="finish" value={values.finish} onChange={onChange}/>
                                 {errors.finish &&
                                     <span className="text-danger">{errors.finish[ 0 ]}</span>}
                             </Form.Group>
-                        </Col>
+                        </Col> */}
                     </Row>
                 </Form>
             </Modal.Body>

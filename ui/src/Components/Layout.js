@@ -44,7 +44,7 @@ const Layout = () => {
                                 <Navbar/>
                                 <div className="container-fluid"><Outlet /></div>
                                 <footer>
-                                    <div className="footer"><img src={`${dirIcon}c.png`} alt="" width={25}/><div className='text'>2023. PKL Cibione.</div></div>
+                                <p className="copyright"> &copy; Copyright 2023 PKL Cibione. All Rights Reserved</p>
                                 </footer>
                             </div>
                         </div>

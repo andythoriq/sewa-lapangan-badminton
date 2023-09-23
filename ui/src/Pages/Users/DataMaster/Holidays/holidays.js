@@ -88,7 +88,7 @@ const Holidays = () => {
                 </td>
                 <td>{val.label}</td>
                 <td>{FormatDate(val.start)}</td>
-                <td>{FormatDate(val.finish)}</td>
+                {/* <td>{FormatDate(val.finish)}</td> */}
                 <td className="text-center">
                     <a href="#edit" className="edit" onClick={()=>handleDetail(val)}>
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>
@@ -135,7 +135,7 @@ const Holidays = () => {
                                 <th width={'1%'}></th>
                                 <th width={'30%'}>Label</th>
                                 <th width={'30%'} className="text-center">Start</th>
-                                <th width={'30%'} className="text-center">Finish</th>
+                                {/* <th width={'30%'} className="text-center">Finish</th> */}
                                 <th width={'9%'} className="text-center">Action</th>
                             </tr>
                         </thead>

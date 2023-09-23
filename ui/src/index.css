@@ -566,7 +566,7 @@ body.sb-sidenav-toggled .dropdown_menu_item.active span {
 
 footer {
   position: fixed;
-  background-color: var(--color-merah);
+  background-color: #d02717;
   bottom: 0;
   height: 40px;
   width: 100%;

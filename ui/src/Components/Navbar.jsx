@@ -63,7 +63,7 @@ const Navbar = () => {
   ));
 
   return (
-    <nav className="navbar navbar-expand-lg fixed-top" style={{ background: "#D93221" }}>
+    <nav className="navbar navbar-expand-lg fixed-top" style={{ background: "#d02717" }}>
       <div className="container-fluid">
       <div className="menu_bar_mobile" onClick={handleToggle}>
         {menuSidebar ? <XMarkIcon /> : <Bars3BottomLeftIcon />}
