@@ -32,7 +32,14 @@ const Member = () => {
             allowEscapeKey:false, timer: 2000});
             setShow(false);
         } catch(e) {
-            console.log(e)
+            if (e.response.status === 404 || e.response.status === 403) {
+                Swal.fire({
+                    icon: "error", title: "Error!", html: e.response.data, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500
+                });
+                setTimeout(function () { window.location.href = "/" }, 1500);
+            } else {
+                console.error(`Error : ${e}`)
+            }
         }
     };
 
@@ -46,7 +53,7 @@ const Member = () => {
         }).then(({ data }) => {
             setMembers(data)
         }).catch((e) => {
-            console.log(e)
+            console.error(`Error : ${e}`)
         })
     }, [])
 
@@ -99,7 +106,7 @@ const Member = () => {
     return (
     <>
         <h4><b>Customer Member</b></h4>
-        <Card className="p-3 mt-5" style={{ marginLeft: "-18px" }}>
+        <Card className="p-3 mt-5">
             <Row>
                 <Col className="col-12 col-md-4" style={{marginTop:-20}} >
                     <Form.Group className="inputSearch">

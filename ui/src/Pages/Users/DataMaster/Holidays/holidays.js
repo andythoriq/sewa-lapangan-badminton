@@ -26,7 +26,7 @@ const Holidays = () => {
             setHolidays(data);
         })
         .catch((e) => {
-            console.log(e)
+            console.error(`Error : ${e}`)
         });
     }, []);
 
@@ -72,7 +72,14 @@ const Holidays = () => {
             });
             setShowDelete(false);
         } catch (e) {
-            console.log(e)
+            if (e.response.status === 404 || e.response.status === 403) {
+                Swal.fire({
+                    icon: "error", title: "Error!", html: e.response.data, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500
+                });
+                setTimeout(function () { window.location.href = "/" }, 1500);
+            } else {
+                console.error(`Error : ${e}`)
+            }
         }
     };
 

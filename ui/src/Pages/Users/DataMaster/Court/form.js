@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Form, Card, Row, Col, Image, Input } from "react-bootstrap";
+import { Form, Card, Row, Col, Image } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import FormTextarea from "../../../../Components/Form/textarea";
 import { imgDefault } from "../../../../Components/Services/config";
@@ -76,7 +76,16 @@ const CourtForm = () => {
                 window.location.href = "/data-master/court";
             }, 2000);
         } catch (e) {
-            setErrors(e.response.data.errors)
+            if (e.response.status === 422) {
+                setErrors(e.response.data.errors)
+            } else if (e.response.status === 404 || e.response.status === 403) {
+                Swal.fire({
+                    icon: "error", title: "Error!", html: e.response.data, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500
+                });
+                setTimeout(function () { window.location.href = "/" }, 1500);
+            } else {
+                console.error(`Error : ${e}`)
+            }
         }
     };
 
@@ -96,7 +105,7 @@ const CourtForm = () => {
                 })
             })
             .catch((e) => {
-                console.log(e) 
+                console.error(`Error : ${e}`) 
             });
         }
     }, [])
