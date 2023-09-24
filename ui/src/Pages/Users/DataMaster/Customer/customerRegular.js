@@ -69,7 +69,7 @@ const CustomerRegular = () => {
           console.log(e)
         });
     }
-  }, [])
+  },)
 
   return (
     <>
@@ -83,7 +83,7 @@ const CustomerRegular = () => {
       </h4>
       <Row>
         <Col>
-          <Card className="p-3 mt-5">
+          <Card className="p-3 mt-4" style={{ marginLeft: "-18px" }}>
             <Form>
               <Row>
                 <Col className="col-12 col-md-6">

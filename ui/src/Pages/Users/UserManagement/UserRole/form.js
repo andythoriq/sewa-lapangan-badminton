@@ -85,7 +85,7 @@ const UserRoleForm = () => {
                 console.log(e) 
             });
         }
-    }, [])
+    },)
 
     const TableRows = ({ rows, tableRowRemove, onValUpdate, onCheckUpdate }) => {
         return rows.map((rowsData, index) => {
@@ -156,10 +156,10 @@ const UserRoleForm = () => {
         </h4>
         <Row>
             <Col>
-            <Card className="p-3 mt-5">
+            <Card className="p-3 mt-5" style={{ marginLeft: "-18px" }}>
                 <Form onSubmit={handleSubmit}>
                 <Row>
-                    <Col className="col-12 col-md-6" style={{marginTop:-20}}>
+                    <Col className="col-12 col-md-6" style={{marginTop:2}}>
                         <Form.Group>
                             <FormInput type="text" label="Rolename" name="rolename" value={values.rolename} onChange={onChange} placeholder="Enter rolename"/>
                             {errors.label &&

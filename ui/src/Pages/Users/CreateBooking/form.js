@@ -34,12 +34,12 @@ const CreateBookingForm = () => {
                     <div className="d-flex">
                         <div className="form-check">
                             <input type="radio" className="form-check-input" name="radionExam" value="regular" defaultChecked={checkedRegular} onClick={()=>handleRadioBtn('regular')} />
-                            <label>Regular</label>
+                            <label style={{ fontSize: "16px" }}>Regular</label>
                         </div>
                         &nbsp;&nbsp;&nbsp;
                         <div className="form-check form-check-inline">
                             <input type="radio" className="form-check-input" name="radionExam" value="member" defaultChecked={checkedMember} onClick={()=>handleRadioBtn('member')} />
-                            <label>Member</label>
+                            <label style={{ fontSize: "16px" }}>Member</label>
                         </div>
                     </div>
                     {

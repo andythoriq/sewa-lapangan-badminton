@@ -7,7 +7,7 @@ const Scanner = () => {
   useEffect(() => {
     const scanner = new Html5QrcodeScanner("reader", {
       qrbox: {
-        width: 250,
+        width:250,
         height: 250,
       },
       fps: 5,
@@ -27,7 +27,7 @@ const Scanner = () => {
   return (
     <>
       <div>
-        <h1>QR Code Scanner</h1>
+        <h1 style={{ fontSize: "30px"}} className="fw-bold mt-3">QR Code Scanner</h1>
         { scanResult
         ?   <div>success: <a href={scanResult}>{scanResult}</a></div>
         : <div id="reader"></div>

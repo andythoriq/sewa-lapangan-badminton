@@ -76,7 +76,7 @@ const Schedule = ({ aksi = "" }) => {
         </h4>
       )}
       <Row>
-        <Col className="col-12 col-md-6 d-flex mb-2">
+        <Col className="col-12 col-md-6 d-flex mb-4">
           <div>
             <div className="bullet bullet-cyan"></div> <div className="bullet-text">Booked</div>
           </div>
@@ -91,7 +91,7 @@ const Schedule = ({ aksi = "" }) => {
           </div>
         </Col>
         {ifDashboard ? (
-          <Col className="col-12 col-md-6 mt-1 mb-1" style={{ textAlign: "right" }}>
+          <Col className="col-12 mt-1 mb-2 " style={{ textAlign:"right",marginLeft: "-16px" }}>
             <Link to="/create-booking" className="btn btn-danger btn-sm">
               + New Booking
             </Link>
@@ -101,7 +101,7 @@ const Schedule = ({ aksi = "" }) => {
         )}
       </Row>
       <div className="table-responsive">
-        <table id="schedule" className="table" width={"100%"} border={1}>
+        <table id="schedule" className="table" width={"100%"} border={1} style={{ marginLeft: "-16px" }}>
           <thead>
             <tr>
               <th className="text-center">Time</th>

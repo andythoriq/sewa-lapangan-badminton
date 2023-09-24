@@ -64,12 +64,12 @@ const Rush = () => {
 
   return (
     <>
-      <h4 className="mb-4">
+      <h4 className="mt-3">
         <b>Rush Hour</b>
       </h4>
       <Row>
         <Col className="col-sm-6 m-auto">
-          <Card className="p-4 mt-5">
+          <Card className="p-4 mt-3">
             <Form>
               <Row>
                 <Col className="col-12">
@@ -105,7 +105,7 @@ const Rush = () => {
                   {errors.finish &&
                     <span className="text-danger">{errors.finish[ 0 ]}</span>}
                 </Col>
-                <Col className="col-12 mt-5 mb-4 text-center">
+                <Col className="col-12 col-sm-12 col-md-12 m-auto text-right pt-3">
                   <button onClick={handleSubmitClick} type="button" className="btn btn-danger btn-sm">
                     Save
                   </button>
