@@ -123,7 +123,7 @@ const CustomerMember = () => {
                 </Col>
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
-                    <FormInput type="text" name="hutang" label="Hutang" value={values.hutang} onChange={onChange} />
+                    <FormInput type="text" name="hutang" label="Debt" value={values.hutang} onChange={onChange} />
                     {errors.dept &&
                       <span className="text-danger">{errors.dept[ 0 ]}</span>}
                   </Form.Group>
