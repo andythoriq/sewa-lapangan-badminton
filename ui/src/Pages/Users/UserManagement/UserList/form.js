@@ -41,6 +41,7 @@ const UserListForm = () => {
                     full_name: data.name,
                     phone_number: data.phone_number,
                     username: data.username,
+                    password: data.password
                 })
             })
             .catch((e) => {
@@ -115,13 +116,13 @@ const UserListForm = () => {
                     {errors.username && <span className="text-danger">{errors.username[0]}</span>}
                   </Form.Group>
                 </Col>
-                <Col className="col-12 col-md-6">
+                {/* <Col className="col-12 col-md-6">
                   <Form.Group>
-                    {/* <FormInput  type="text" name="password" label="Password" value={values.password} onChange={onChange} icon={input.icon} /> */}
+                    <FormInput  type="text" name="password" label="Password" value={values.password} onChange={onChange} icon={input.icon} />
                     <FormInput type="password" name="password" label="Password" value={values.password} onChange={onChange} />
                    
                   </Form.Group>
-                </Col>
+                </Col> */}
                 <Col className="col-12 col-md-6">
                   {/* <FormSelect
                             name="role_id"
