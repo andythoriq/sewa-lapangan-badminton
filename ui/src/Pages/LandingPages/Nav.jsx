@@ -308,12 +308,12 @@ const Landing = () => {
             </div>
             <div className="col-lg-6 offset-lg-1 col-sm-12">
               <form>
-                <label for="">Your Name</label>
+                <label  htmlFor="name">Your Name</label>
                 <input type="text" className="form-control" id="name" placeholder="Your name" required />
-                <label for="">Phone number</label>
-                <input type="text" className="form-control" id="name" required />
-                <label for="">Your Message</label>
-                <textarea className="form-control"></textarea>
+                <label htmlFor="phone_number">Phone number</label>
+                <input type="text" className="form-control" id="phone_number" required />
+                <label htmlFor="message">Your Message</label>
+                <textarea className="form-control" id="message"></textarea>
                 <button className="btn" type="submit">
                   Submit Form
                 </button>

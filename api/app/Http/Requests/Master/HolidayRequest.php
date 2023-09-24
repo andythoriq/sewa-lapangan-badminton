@@ -3,12 +3,13 @@
 namespace App\Http\Requests\Master;
 
 use App\Models\HolidayModel;
-use App\Traits\CollideCheck;
+// use App\Traits\CollideCheck;
+// use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class HolidayRequest extends FormRequest
 {
-    use CollideCheck;
+    // use CollideCheck;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,17 +27,18 @@ class HolidayRequest extends FormRequest
      */
     public function rules()
     {
+        $id = isset($this->holiday) ? ($this->holiday->id ?? null) : null;
         $validation = [
-            'start' => ['required', 'date', 'date_format:Y-m-d', 'after_or_equal:now'],
-            'finish' => ['required', 'date', 'date_format:Y-m-d', 'after:start'],
             'label' => ['required', 'string', 'max:90'],
+            'date' => ['required', 'date', 'date_format:Y-m-d'],
+            // 'finish' => ['required', 'date', 'date_format:Y-m-d', 'after:start'],
         ];
         if($this->route()->getName() == 'create-multiple-holiday'){
             $validation = [
                 '*' => ['required', 'array', 'min:1'],
                 '*.label' => ['required', 'string', 'max:90'],
-                '*.start' => ['required', 'date', 'date_format:Y-m-d', 'after_or_equal:now'],
-                '*.finish' => ['required', 'date', 'date_format:Y-m-d', 'after:*.start']
+                '*.date' => ['required', 'date', 'date_format:Y-m-d'],
+                // '*.finish' => ['required', 'date', 'date_format:Y-m-d', 'after:*.start']
             ];
         }
         return $validation;
@@ -44,13 +46,13 @@ class HolidayRequest extends FormRequest
 
     public function createHoliday()
     {
-        $this->collideCheck($this->start, $this->finish, $this->getSchedules());
+        // $this->collideCheck($this->start, $this->finish, $this->getSchedules());
         HolidayModel::create($this->validated());
     }
 
     public function updateHoliday(HolidayModel $holiday)
     {
-        $this->collideCheck($this->start, $this->finish, $this->getSchedules());
+        // $this->collideCheck($this->start, $this->finish, $this->getSchedules());
         $holiday->updateOrFail($this->validated());
     }
 
@@ -58,7 +60,7 @@ class HolidayRequest extends FormRequest
     {
         $data = $this->validated();
         for ($i = 0; $i < count($data); $i++) {
-            $this->collideCheck($data[$i]['start'], $data[$i]['finish'], $this->getSchedules());
+            // $this->collideCheck($data[$i]['start'], $data[$i]['finish'], $this->getSchedules());
             $data[$i]['created_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
             $data[$i]['updated_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
         }

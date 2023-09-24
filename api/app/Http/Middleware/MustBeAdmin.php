@@ -20,6 +20,6 @@ class MustBeAdmin
             return $next($request);
         }
 
-        abort(404, 'only admin can access this url.');
+        abort(403, 'only admin can access this url.');
     }
 }

@@ -16,8 +16,8 @@ class Holiday extends Migration
         Schema::create('tb_holiday', function (Blueprint $table) {
             $table->id();
             $table->string('label', 90);
-            $table->date('start');
-            $table->date('finish');
+            $table->date('date');
+            // $table->date('finish');
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\HolidayModel;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,13 @@ class OnHoliday
      */
     public function handle(Request $request, Closure $next)
     {
-        dd('19 - test');
+        $currentDate = now('Asia/Jakarta')->toString();
+
+        $isHoliday = HolidayModel::where('date', $currentDate)->exists();
+
+        if ($isHoliday) {
+            abort(403, 'Access Restricted on Holiday.');
+        }
         return $next($request);
     }
 }

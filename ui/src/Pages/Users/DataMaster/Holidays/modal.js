@@ -6,22 +6,21 @@ import Swal from "sweetalert2";
 
 const HolidaysModal = ({show="", handleClose, size="md", data=[]}) => {
 
-    const [values, setValues] = useState({ label:"", start:"", finish:"" });
+    const [values, setValues] = useState({ label:"", date:"" });
     const [errors, setErrors] = useState([])
     const onChange = (e) => { 
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
     useEffect(()=>{
-        setValues({ label:data.label?data.label:"", start:data.start?data.start:"", finish:data.finish?data.finish:"" });
+        setValues({ label:data.label?data.label:"", date:data.date?data.date:"" });
     }, [setValues, data]);
 
     const handleClickSubmit = async (e) => {
         e.preventDefault()
         const dataToReq = {
             label: values.label,
-            start: values.start,
-            finish: values.finish
+            date: values.date
         }
         const config = {
             headers: {
@@ -60,9 +59,9 @@ const HolidaysModal = ({show="", handleClose, size="md", data=[]}) => {
                     <Row>
                         <Col className="col-12 col-md-12">
                             <Form.Group>
-                            <FormInput type="date" name="start" label="Start" value={values.start} onChange={onChange}/>
-                            {errors.start &&
-                            <span className="text-danger">{errors.start[ 0 ]}</span>}
+                            <FormInput type="date" name="date" label="Date" value={values.date} onChange={onChange}/>
+                            {errors.date &&
+                            <span className="text-danger">{errors.date[ 0 ]}</span>}
                             </Form.Group>
                         </Col>
                         {/* <Col className="col-12 col-md-6">

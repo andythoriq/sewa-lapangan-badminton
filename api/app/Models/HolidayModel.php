@@ -13,8 +13,7 @@ class HolidayModel extends Model
 
     protected $fillable = [
         'label',
-        'start',
-        'finish'
+        'date',
     ];
 
 
