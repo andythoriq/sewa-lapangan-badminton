@@ -9,6 +9,7 @@ const Setting = () => {
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
+  const dayNames = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
   return (
     <>
       <h4 className="mb-2">
@@ -19,26 +20,39 @@ const Setting = () => {
           <Card className="p-3 mt-2">
             <Container>
               <Row className="px-2 my-1">
-                <Col >
+                <Col>
                   <Col className="col-12 col-sm-8 col-md-12 m-auto">
                     <Form.Group>
-                      <FormInput type="text" name="number" label="Number WhatsApp" value={values.name} onChange={onChange} />
+                      <label style={{ fontSize: "18px" }}>Number WhatsApp</label>
+                      <FormInput type="text" name="number" value={values.name} onChange={onChange} />
                     </Form.Group>
                   </Col>
-                  <Col className="col-12 col-sm-8 col-md-12 m-auto mt-4">
+                  <Col className="col-12 col-sm-8 col-md-12 m-auto mt-2">
                     <Form.Group>
-                      <FormInput type="text" name="email" label="Email" value={values.name} onChange={onChange} />
+                      <label style={{ fontSize: "18px" }}>Email</label>
+                      <FormInput type="text" name="email" value={values.name} onChange={onChange} />
                     </Form.Group>
                   </Col>
-                  <Col className="col-12 col-sm-8 col-md-12 m-auto mt-4">
+                  <Col className="col-12 col-sm-8 col-md-12 m-auto mt-2">
                     <Form.Group>
-                      <FormTextarea name="address" label="Address" value={values.description} onChange={onChange} style={{ height: "65px" }} />
+                      <label style={{ fontSize: "18px" }}>Address</label>
+                      <FormTextarea name="address" value={values.description} onChange={onChange} style={{ height: "65px" }} />
                     </Form.Group>
                   </Col>
-                  <Col className="col-12 col-sm-8 col-md-12 m-auto mt-4">
-                    <Form.Group>
-                      <FormInput type="date" name="opendays" label="Open Days" value={values.start} onChange={onChange} />
-                    </Form.Group>
+                  <Col className="col-12 mt-2">
+                    <label style={{ fontSize: "18px" }}>Open Days</label>
+                    <Form.Select name="day_name" className="form-select form-select-sm" onChange={onChange}>
+                      {dayNames.map((name) => (
+                        <option key={name} value={name}>
+                          {name.charAt(0).toUpperCase() + name.slice(1)}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Col>
+                  <Col className="col-12 mt-2">
+                    <label style={{ fontSize: "18px" }}>Opening hours</label>
+                    <FormInput type="time" name="start" value={values.start} onChange={onChange} />
+                    <span className="text-danger"></span>
                   </Col>
                   <Col className="col-12 text-right mt-4">
                     <button type="button" className="btn btn-danger btn-sm me-md-6">

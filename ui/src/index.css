@@ -482,7 +482,7 @@ select:focus > option:checked {
 }
 
 .dropdown_menu.list-group-item.active {
-  background: rgba(214, 214, 214, 0.6) !important;
+  background: rgba(121, 121, 121, 0.6) !important;
 }
 .subMenu {
   float: right;

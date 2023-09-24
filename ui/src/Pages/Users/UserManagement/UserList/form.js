@@ -96,7 +96,7 @@ const UserListForm = () => {
       </h4>
       <Row>
         <Col>
-          <Card className="p-3 mt-5">
+          <Card className="p-3 mt-5" style={{ marginLeft: "-18px" }}>
             <Form>
               <Row>
                 <Col className="col-12 col-md-6">
@@ -118,10 +118,8 @@ const UserListForm = () => {
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6">
-                  <Form.Group>
-                    {/* <FormInput  type="text" name="password" label="Password" value={values.password} onChange={onChange} icon={input.icon} /> */}
+                  <Form.Group >
                     <FormInput type="password" name="password" label="Password" value={values.password} onChange={onChange} />
-                   
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6">

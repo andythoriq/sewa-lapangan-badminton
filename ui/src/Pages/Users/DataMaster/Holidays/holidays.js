@@ -115,7 +115,7 @@ const Holidays = () => {
         <h4><b>Holidays</b></h4>
         <Row>
             <Col>
-            <Card className="p-3 mt-5">
+            <Card className="p-3 mt-5" style={{ marginLeft: "-18px" }}>
                 <Row>
                     <Col className="col-12 col-md-6" style={{marginTop:-20}}>
                         <Form.Group className="inputSearch" >
