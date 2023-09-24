@@ -98,7 +98,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/', 'index_M');
             Route::get('/{customer}', 'show_M');
             Route::post('/', 'create_M');
-            Route::put('/{customer}', 'update_M');
+            Route::put('/{customer}', 'update_M')->name('update-member');
             Route::delete('/{customer}', 'delete_M');
             Route::get('/{customer}/edit', 'edit_M');
         });
@@ -106,7 +106,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/', 'index_R');
             Route::get('/{customer}', 'show_R');
             Route::post('/', 'create_R');
-            Route::put('/{customer}', 'update_R');
+            Route::put('/{customer}', 'update_R')->name('update-regular');
             Route::delete('/{customer}', 'delete_R');
             Route::get('/{customer}/edit', 'edit_R');
         });

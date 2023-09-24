@@ -28,18 +28,32 @@ class RegularRequest extends FormRequest
     public function rules()
     {
         $customer_code = isset($this->customer) ? ($this->customer->customer_code ?? null) : null;
-        return [
+
+        $rule = [
             'name' => ['required', 'string', 'max:90'],
             'phone_number' => ['required', 'string', 'max:20', Rule::unique('tb_customer', 'phone_number')->ignore($customer_code, 'customer_code')],
             'deposit' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
             'debt' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
             'status' => ['required', 'string', 'in:Y,N'],
         ];
+
+        if ($this->route()->getName() == 'update-regular') {
+            $rule = [
+                'name' => ['required', 'string', 'max:90'],
+                'phone_number' => ['required', 'string', 'max:20', Rule::unique('tb_customer', 'phone_number')->ignore($customer_code, 'customer_code')],
+                'deposit' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
+                'debt' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
+                'status' => ['required', 'string', 'in:Y,N'],
+                'isChangeToMember' => ['nullable', 'boolean'],
+                'member_active_period' => [($this->isChangeToMember == true ? 'required' : 'nullable'), 'date', 'date_format:Y-m-d', 'after_or_equal:now']
+            ];
+        }
+        return $rule;
     }
 
     public function createRegular()
     {
-        $customer = $this->validated();
+        $customer = $this->except(['isChangeToMember', 'member_active_period']);
         $customer['membership_status'] = 'R';
         $customer['status'] = strtoupper($customer['status']);
         $customer['customer_code'] = $this->getFormattedCode('r');
@@ -48,6 +62,13 @@ class RegularRequest extends FormRequest
 
     public function updateRegular(CustomerModel $customer)
     {
-        $customer->updateOrFail($this->validated());
+        if ($this->isChangeToMember) {
+            $data = $this->except('isChangeToMember');
+            $data['membership_status'] = 'M';
+            $data['customer_code'] = $this->getFormattedCode('m');
+            $customer->updateOrFail($data);
+        } else {
+            $customer->updateOrFail($this->except('isChangeToMember'));
+        }
     }
 }

@@ -10,7 +10,7 @@ class HolidayController extends Controller
 {
     public function index()
     {
-        $holidays = HolidayModel::select(['id', 'label', 'date'])->orderBy('date', 'desc')->get();
+        $holidays = HolidayModel::select(['id', 'label', 'date'])->orderBy('date', 'asc')->get();
         return response()->json($holidays);
     }
 

@@ -32,7 +32,7 @@ const Court = () => {
             allowEscapeKey:false, timer: 2000});
         setShow(false);
         } catch (e) {
-            if (e.response.status === 404 || e.response.status === 403) {
+            if (e.response?.status === 404 || e.response?.status === 403) {
                 Swal.fire({
                     icon: "error", title: "Error!", html: e.response.data, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500
                 });

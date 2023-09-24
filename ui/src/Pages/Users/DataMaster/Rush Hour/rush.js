@@ -60,7 +60,7 @@ const Rush = () => {
     } catch (e) {
       if (e.response.status === 422) {
         setErrors(e.response.data.errors)
-      } else if (e.response.status === 404 || e.response.status === 403) {
+      } else if (e.response?.status === 404 || e.response?.status === 403) {
         Swal.fire({
           icon: "error", title: "Error!", html: e.response.data, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500
         });

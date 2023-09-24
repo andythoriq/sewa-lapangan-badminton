@@ -9,7 +9,8 @@ import Swal from "sweetalert2";
 const CustomerRegular = () => {
   const { id } = useParams();
   const [ selectedStatus, setSelectedStatus ] = useState("")
-  const [values, setValues] = useState({ name: "", phone_number: "", deposit: "", hutang: "", status: selectedStatus })
+  const [ isChange, setIsChange ] = useState(false)
+  const [ values, setValues ] = useState({ name: "", phone_number: "", deposit: "", hutang: "", status: selectedStatus, member_active_period: "" })
   // const [values, setValues] = useState({ name: "", phone_number: "", deposit: "", hutang: "", status: selectedStatus });
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -25,6 +26,8 @@ const CustomerRegular = () => {
       deposit: values.deposit,
       debt: values.hutang,
       status: values.status,
+      isChangeToMember: isChange,
+      member_active_period: values.member_active_period
     }
     const config = {
       headers: {
@@ -47,7 +50,7 @@ const CustomerRegular = () => {
     } catch (e) {
       if (e.response.status === 422) {
         setErrors(e.response.data.errors)
-      } else if (e.response.status === 404 || e.response.status === 403) {
+      } else if (e.response?.status === 404 || e.response?.status === 403) {
         Swal.fire({
           icon: "error", title: "Error!", html: e.response.data, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500
         });
@@ -78,7 +81,7 @@ const CustomerRegular = () => {
           console.error(`Error : ${e}`)
         });
     }
-  },)
+  },[])
 
   return (
     <>
@@ -139,6 +142,27 @@ const CustomerRegular = () => {
                   {errors.status &&
                     <span className="text-danger">{errors.status[ 0 ]}</span>}
                 </Col>
+                { id &&
+                  <Col className="col-12 col-md-6">
+                    <label>change membership status</label>
+                    <div className="d-flex">
+                      <div className="form-check">
+                        <input type="radio" className="form-check-input" onClick={() => setIsChange(!isChange)} />
+                        <label>Change</label>
+                      </div>
+                    </div>
+                  </Col>}
+                  { isChange === true &&
+                  <Col className="col-12 col-md-6">
+                    <Form.Group>
+                      <FormInput type="date" name="member_active_period" label="Active Period" value={values.member_active_period} onChange={onChange} />
+                      {errors.member_active_period &&
+                        <span className="text-danger">{errors.member_active_period[ 0 ]}</span>}
+                    </Form.Group>
+                    <div className="form-check">
+                      <label onClick={() => setIsChange(!isChange)}>Cancel</label>
+                    </div>
+                  </Col>}
                 <Col className="col-12 text-right pt-3">
                   <button onClick={handleSubmitClick} type="button" className="btn btn-danger me-md-4">
                     Save

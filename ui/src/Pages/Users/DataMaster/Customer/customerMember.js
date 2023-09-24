@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 const CustomerMember = () => {
   const { id } = useParams();
   const [ selectedStatus, setSelectedStatus ] = useState("")
+  const [ isChange, setIsChange ] = useState(false)
   const [values, setValues] = useState({ name: "", phone_number: "", deposit: "", hutang: "", status: selectedStatus, member_active_period: "" });
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -26,6 +27,7 @@ const CustomerMember = () => {
       deposit: values.deposit,
       debt: values.hutang,
       status: values.status,
+      isChangeToRegular: isChange,
       member_active_period: values.member_active_period
     }
     const config = {
@@ -49,7 +51,7 @@ const CustomerMember = () => {
     } catch (e) {
       if (e.response.status === 422) {
         setErrors(e.response.data.errors)
-      } else if (e.response.status === 404 || e.response.status === 403) {
+      } else if (e.response?.status === 404 || e.response?.status === 403) {
         Swal.fire({
           icon: "error", title: "Error!", html: e.response.data, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500
         });
@@ -81,7 +83,7 @@ const CustomerMember = () => {
           console.error(`Error : ${e}`)
         });
     }
-  },)
+  },[])
 
   return (
     <>
@@ -126,6 +128,16 @@ const CustomerMember = () => {
                       <span className="text-danger">{errors.dept[ 0 ]}</span>}
                   </Form.Group>
                 </Col>
+                {id &&
+                  <Col className="col-12 col-md-6 m-auto">
+                    <label>change membership status</label>
+                    <div className="d-flex">
+                      <div className="form-check">
+                        <input type="radio" className="form-check-input" onClick={() => setIsChange(!isChange)} />
+                        <label>Click this to change membership status</label>
+                      </div>
+                    </div>
+                  </Col>}
                 <Col className="col-12 col-sm-8 m-auto">
                   <Form.Group>
                     <FormInput type="date" name="member_active_period" label="Active Period" value={values.member_active_period} onChange={onChange} />
