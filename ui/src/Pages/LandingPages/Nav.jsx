@@ -280,49 +280,6 @@ const Landing = () => {
       </Container>
       {/* end about work */}
 
-      {/* contact us */}
-      <div className="contact section-padding" id="contact" style={{ padding: "30px 0", marginBottom: "10px" }}>
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="section-header text-center">
-                <h2 className="fw-bold">
-                  Contact <span> Us</span>
-                </h2>
-                <p>Contact us for further services</p>
-              </div>
-            </div>
-          </div>
-          <div className="row mt-5 mb-5">
-            <div className="col-lg-5 col-sm-12 text-white">
-              <div className="left-contact">
-                <h3>Location</h3>
-                <p> ... </p>
-                <h3>Email</h3>
-                <p> ... </p>
-                <h3>Open</h3>
-                <p> ... </p>
-                <h3>WhatssApp</h3>
-                <p> ... </p>
-              </div>
-            </div>
-            <div className="col-lg-6 offset-lg-1 col-sm-12">
-              <form>
-                <label  htmlFor="name">Your Name</label>
-                <input type="text" className="form-control" id="name" placeholder="Your name" required />
-                <label htmlFor="phone_number">Phone number</label>
-                <input type="text" className="form-control" id="phone_number" required />
-                <label htmlFor="message">Your Message</label>
-                <textarea className="form-control" id="message"></textarea>
-                <button className="btn" type="submit">
-                  Submit Form
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* footer */}
       <div className="footer lpages text-center text-light p-3 mt-5">
         <div className="last-footer">

@@ -111,7 +111,7 @@ const Navbar = () => {
         <li>
           <Dropdown>
             <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-              <div><img src={`${dirIcon}user-circle.png`} alt="" /> <span>{localStorage.getItem('username')}</span></div>
+              <div><img src={`${dirIcon}user-circle.png`} alt="" /> <span className="text-white localstorge">Hi,</span> <span className="localstorge">{localStorage.getItem('username')}</span></div>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {/* <Dropdown.Item eventKey="1" href="/logout">Logout</Dropdown.Item> */}

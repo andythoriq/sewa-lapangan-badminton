@@ -245,6 +245,10 @@ input:invalid[focused="true"] ~ #validError {
   margin-left: 40px !important;
   margin-right: 40px !important;
 }
+.localstorge {
+  color: white;
+  
+}
 
 #sidebar-wrapper {
   z-index: 1;

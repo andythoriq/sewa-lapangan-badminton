@@ -108,29 +108,6 @@
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6);
   }
 
-  /* contact */
-  #contact {
-    padding: 10px 0;
-  }
-  .left-contact{
-    background-color: #d93221;
-    padding: 60px;
-    border-radius: 15px;
-  }
-  .left-content h3{
-    margin-bottom: 20px;
-  }
-  label{
-    font-size: 28px;
-    margin: 10px 0;
-  }
-  .contact .btn{
-    background: #000000;
-    color: white;
-    display: inline-block;
-    margin-top: 30px;
-  }
-
   /* footer */
   .footer.lpages {
     background-color: #000000;
