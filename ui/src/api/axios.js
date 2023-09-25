@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 export default axios.create({
-   // baseURL: 'http://localhost:8000',
-   baseURL: 'http://localhost/sewa-lapangan-badminton/api/public',
+
+   baseURL: process.env.REACT_APP_BACKEND_URL,
    withCredentials: true,
 
    headers: {

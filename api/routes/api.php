@@ -87,7 +87,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/court/{court}', 'show');
         Route::get('/court-edit/{court}', 'edit');
         Route::post('/court', 'create');
-        Route::put('/court/{court}', 'update');
+        Route::post('/court/{court}', 'update');
         Route::delete('/court/{court}', 'delete');
     });
 

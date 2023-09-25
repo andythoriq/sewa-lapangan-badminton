@@ -23,7 +23,7 @@ class CourtController extends Controller
 
     public function edit(CourtModel $court)
     {
-        return response()->json($court->only(['label', 'initial_price', 'description']));
+        return response()->json($court->only(['label', 'initial_price', 'description', 'image_path']));
     }
 
     public function create(CourtRequest $request)

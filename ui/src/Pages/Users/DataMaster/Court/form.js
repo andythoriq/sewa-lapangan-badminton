@@ -6,8 +6,10 @@ import FormTextarea from "../../../../Components/Form/textarea";
 import { imgDefault } from "../../../../Components/Services/config";
 import { msgAlertWarning } from "../../../../Components/Alert";
 import { ArrowLeft } from "react-bootstrap-icons";
-import axios from "../../../../api/axios";
+
 import Swal from "sweetalert2";
+import axios from "../../../../api/axios";
+import axiosFormData from "../../../../api/axiosFormData";
 
 const CourtForm = () => {
     const {id} = useParams();
@@ -55,20 +57,26 @@ const CourtForm = () => {
             label: values.label,
             initial_price: values.price,
             description: values.description,
-            // image_path: image
+            image_path: image[0]?.file ?? ''
         }
+        const formData = new FormData();
+        formData.append('label', data.label)
+        formData.append('initial_price', data.initial_price)
+        formData.append('description', data.description)
+        formData.append('image_path', data.image_path)
+        
         const config = {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
             }
         }
         try {
             await axios.get('/sanctum/csrf-cookie')
             let response
             if (id > 0) {
-                response = await axios.put('/api/court/' + id, data, config)
+                response = await axiosFormData.post('/api/court/' + id, formData, config)
             } else {
-                response = await axios.post('/api/court', data, config);
+                response = await axiosFormData.post('/api/court', formData, config);
             }
             setErrors('');
             Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });

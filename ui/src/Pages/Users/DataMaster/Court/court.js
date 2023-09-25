@@ -81,7 +81,11 @@ const Court = () => {
                 </td>
                 <td>{val.label}</td>
                 <td>{val.initial_price}</td>
-                <td>{val.image_path}</td>
+                <td>{val.image_path ? (
+                      <img src={process.env.REACT_APP_BACKEND_URL + '/storage/' + val.image_path} alt={val.label} height={150} width={150} />
+                  ) : (
+                      <span>No Image</span>
+                  )}</td>
                 <td>{val.description}</td>
                 <td className="text-center">
                     <Link to={'/data-master/court/edit/'+val.id} className="edit">
