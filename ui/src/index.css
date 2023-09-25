@@ -202,7 +202,6 @@ form .inputPassword > svg {
   background-color: #db2214 !important;
 }
 input:focus {
-  border-color: #db2214 !important;
   outline: none;
 }
 
@@ -247,7 +246,6 @@ input:invalid[focused="true"] ~ #validError {
 }
 .localstorge {
   color: white;
-  
 }
 
 #sidebar-wrapper {
