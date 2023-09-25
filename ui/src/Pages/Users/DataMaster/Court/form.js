@@ -1,15 +1,35 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Form, Card, Row, Col, Image} from "react-bootstrap";
+import { Form, Card, Row, Col, Image } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import FormTextarea from "../../../../Components/Form/textarea";
 import { imgDefault } from "../../../../Components/Services/config";
 import { msgAlertWarning } from "../../../../Components/Alert";
 import { ArrowLeft } from "react-bootstrap-icons";
-
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import axiosFormData from "../../../../api/axiosFormData";
+// import NumberInput from "react-text-mask";
+import MaskedInput from "react-text-mask";
+import createNumberMask from "text-mask-addons/dist/createNumberMask";
+import "./form.css";
+
+const defaultMaskOptions = {
+  prefix: "Rp",
+  suffix: "",
+  includeThousandsSeparator: true,
+  thousandsSeparatorSymbol: ",",
+  allowDecimal: true,
+  decimalSymbol: ".",
+  decimalLimit: 2, // how many digits allowed after the decimal
+  integerLimit: 7, // limit length of integer numbers
+  allowNegative: false,
+  allowLeadingZeroes: false,
+};
+
+const currencyMask = createNumberMask({
+  ...defaultMaskOptions,
+});
 
 const CourtForm = () => {
     const {id} = useParams();

@@ -23,7 +23,7 @@ const CreateBookingFormMember = () => {
 
   const BoxRows = ({ rows, boxRowRemove, onValUpdate }) => {
     return rows.map((rowsData, index) => {
-      const { court, customer, start_time, end_time } = rowsData;
+      const { court, start_time, end_time } = rowsData;
       const onChange = (e) => {
         // console.log(e.target.value);
         onValUpdate(index, e);
