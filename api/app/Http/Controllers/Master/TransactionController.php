@@ -22,15 +22,19 @@ class TransactionController extends Controller
         return new TransactionResource($transaction->loadMissing('rentals'));
     }
 
-    public function booking_detail(string $booking_code)
+    public function booking_verification(Request $request)
     {
+        $data = $request->validate([
+            'booking_code' => ['required', 'string', 'exists:tb_transaction,booking_code']
+        ]);
+
         $transactions = TransactionModel::with([
             'rentals',
             'rentals.customer:customer_code,name,phone_number',
             'rentals.user:id,name,username',
             'rentals.court:id,label'
         ])
-        ->where('booking_code', $booking_code)->firstOrFail();
+        ->where('booking_code', $data['booking_code'])->firstOrFail();
 
         return new BookingDetailResource($transactions);
     }
