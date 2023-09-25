@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Master;
 
 use App\Models\CourtModel;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CourtRequest extends FormRequest
@@ -30,19 +31,20 @@ class CourtRequest extends FormRequest
             // 'image_path' => ['required', 'image', 'max:5000', 'mimes:png,jpg,jpeg'],
             'image_path' => ['nullable', 'image', 'max:5000', 'mimes:png,jpg,jpeg'],
             'description' => ['required', 'max:120'],
-            'initial_price' => ['required', 'numeric', 'min:0.01', 'max:1000000.00']
+            'initial_price' => ['required', 'numeric', 'min:0.01', 'max:1000000.00'],
+            'old_image' => ['nullable'],
         ];
     }
 
     public function createCourt()
     {
-        $court = new CourtModel($this->validated());
+        $court = new CourtModel($this->except('old_image'));
         $this->saveCourt($court);
     }
 
     public function updateCourt(CourtModel $court)
     {
-        $court->fill($this->validated());
+        $court->fill($this->except('old_image'));
         $this->saveCourt($court);
     }
 
@@ -51,9 +53,13 @@ class CourtRequest extends FormRequest
         if ($this->hasFile('image_path')) {
             // $this->file('image_path')->move('court-image/', $this->file('image_path')->getClientOriginalName());
             // $court->image_path = $this->file('image_path')->getClientOriginalName();
+
+            if (isset($this->old_image)) {
+                Storage::delete($this->old_image);
+            }
             $court->image_path = $this->file('image_path')->store('court-images');
-        } else {
-            $court->image_path = null;
+        } else if (!$this->hasFile('image_path') && isset($this->old_image)) {
+            $court->image_path = $this->old_image;
         }
         $court->saveOrFail();
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Master;
 
 use App\Models\CourtModel;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Master\CourtRequest;
 use App\Http\Resources\Master\CourtResource;
 use App\Http\Resources\Master\CourtCollection;
@@ -40,6 +41,9 @@ class CourtController extends Controller
 
     public function delete(CourtModel $court)
     {
+        if (isset($court->image_path)) {
+            Storage::delete($court->image_path);
+        }
         $court->deleteOrFail();
         return response()->json(['message' => 'Success delete court'], 202, ['success' => 'Court data deleted.']);
     }

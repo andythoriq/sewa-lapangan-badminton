@@ -13,6 +13,7 @@ import axiosFormData from "../../../../api/axiosFormData";
 
 const CourtForm = () => {
     const {id} = useParams();
+    const [ imagePreview, setImagePreview ] = useState('')
     const [values, setValues] = useState({ label:"", price:"", description: "" });
     const [errors, setErrors] = useState([])
     const onChange = (e) => { 
@@ -74,6 +75,7 @@ const CourtForm = () => {
             await axios.get('/sanctum/csrf-cookie')
             let response
             if (id > 0) {
+                formData.append('old_image', imagePreview)
                 response = await axiosFormData.post('/api/court/' + id, formData, config)
             } else {
                 response = await axiosFormData.post('/api/court', formData, config);
@@ -111,6 +113,7 @@ const CourtForm = () => {
                     price: data.initial_price,
                     description: data.description
                 })
+                setImagePreview(data.image_path)
             })
             .catch((e) => {
                 console.error(`Error : ${e}`) 
@@ -182,6 +185,14 @@ const CourtForm = () => {
             </Row>
             </Form>
         </Card>
+        { imagePreview &&
+            <Row className="justify-content-center">
+                  <Card className="col-4 col-md-4 p-3 mt-5">
+                      <span className="text-small">Previous image: </span>
+                      <Image src={process.env.REACT_APP_BACKEND_URL + '/storage/' + imagePreview} className="imgView" title={values.label} height={250} />
+                  </Card>
+            </Row>
+        }
     </>
   );
 };
