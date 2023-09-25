@@ -14,7 +14,7 @@ const Sidebar = () => {
         {name:"Customer Regular", link:"/data-master/regular"},
         {name:"Customer Member", link:"/data-master/member"},
         {name:"Holidays", link:"/data-master/holidays"},
-        {name:"Peak Time", link:"/data-master/rush"},
+        {name:"Peak Time", link:"/data-master/peaktime"},
     ];
     let subUser = [
         {name:"User List", link:"/user-management/user-list"},
