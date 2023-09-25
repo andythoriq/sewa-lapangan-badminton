@@ -59,10 +59,10 @@ const CreateBookingFormMember = () => {
             <Col className="col-12 col-md-4 column">
               <Row>
                 <Col className="col-6 col-md-12">
-                  <FormInput type="time" name="start_time" label="Start" value={start_time} onChange={onChange} />
+                  <FormInput type="datetime-local" name="start_time" label="Start" value={start_time} onChange={onChange} />
                 </Col>
                 <Col className="col-6 col-md-12">
-                  <FormInput type="time" name="end_time" label="End" value={end_time} onChange={onChange} />
+                  <FormInput type="datetime-local" name="end_time" label="End" value={end_time} onChange={onChange} />
                 </Col>
                 <Col className="col-12 mt-3 text-right">
                   <button type="button" className="btn btn-danger btn-sm me-md-2 text-white" onClick={() => boxRowRemove(index)}>

@@ -55,10 +55,10 @@ const CreateBookingFormRegular = () => {
             />
         </Col>
         <Col className="col-6 col-md-3">
-          <FormInput type="time" name="start_time" label="Start" value={values.start_time} onChange={onChange} />
+          <FormInput type="datetime-local" name="start_time" label="Start" value={values.start_time} onChange={onChange} />
         </Col>
         <Col className="col-6 col-md-3">
-          <FormInput type="time" name="end_time" label="End" value={values.end_time} onChange={onChange} />
+          <FormInput type="datetime-local" name="end_time" label="End" value={values.end_time} onChange={onChange} />
         </Col>
         <Col className="col-12"></Col>
         <Col className="col-12 col-md-6 mt-3 text-center">
