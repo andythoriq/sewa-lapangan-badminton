@@ -74,7 +74,7 @@ const Rush = () => {
   return (
     <>
       <h4 className="mt-3">
-        <b>Rush Hour</b>
+        <b>Peak Time</b>
       </h4>
       <Row>
         <Col className="col-sm-6 m-auto">
