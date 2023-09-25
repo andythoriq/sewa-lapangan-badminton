@@ -129,12 +129,12 @@ const CustomerMember = () => {
                   </Form.Group>
                 </Col>
                 {id &&
-                  <Col className="col-12 col-md-6 m-auto">
-                    <label>change membership status</label>
+                  <Col className="col-12 col-sm-8 m-auto">
+                    <label className="mt-2">change membership status</label>
                     <div className="d-flex">
                       <div className="form-check">
-                        <input type="radio" className="form-check-input" onClick={() => setIsChange(!isChange)} />
-                        <label>Click this to change membership status</label>
+                        <input type="radio" className="form-check-input border-success border-3" onClick={() => setIsChange(!isChange)} />
+                        <label className="text-success">Click this, to change membership status</label>
                       </div>
                     </div>
                   </Col>}

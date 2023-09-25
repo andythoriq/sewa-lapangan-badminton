@@ -89,7 +89,7 @@ const HistoryBooking = () => {
                 <table className="table table-hover mt-3" border={1}>
                     <thead>
                         <tr >
-                            <th width={'1%'}><input type="checkbox" name="allselect" checked= { ( (user)=>user?.isChecked!==true)} onChange={ handleChange}/></th>
+                            <th width={'1%'}></th>
                             <th width={'30%'}>Name Customer</th>
                             <th width={'10%'}>Court</th>
                             <th width={'15%'}>Schedule</th>

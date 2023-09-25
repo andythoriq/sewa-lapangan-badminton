@@ -140,7 +140,7 @@ const CourtForm = () => {
                 </Col>
                 <Col className="col-12 col-md-6">
                     <Form.Group>
-                        <FormInput type="text" name="price" label="Price" value={values.price} onChange={onChange}/>
+                        <FormInput type="text" name="price" label="Price" value={values.price} onChange={onChange} placeholder="Rp "/>
                         {errors.initial_price && 
                             <span className="text-danger">{errors.initial_price[0]}</span>}
                     </Form.Group>
@@ -177,7 +177,7 @@ const CourtForm = () => {
                     {errors.image_path && 
                             <span className="text-danger">{errors.image_path[0]}</span>}
                 </Col>
-                <Col className="col-12 col-md-6 text-right pt-3">
+                <Col className="col-12 text-right pt-3">
                     <button onClick={handleSubmitClick} type="button" className="btn btn-danger me-md-4">
                         Save
                     </button>

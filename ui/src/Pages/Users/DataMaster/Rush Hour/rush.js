@@ -3,8 +3,11 @@ import { Row, Col, Card, Form } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
+import { Link, useParams} from "react-router-dom";
+import { ArrowLeft } from "react-bootstrap-icons";
 
 const Rush = () => {
+  const { id } = useParams();
   const [ values, setValues ] = useState({ court: "", start: "", finish: "", price_increase: "", day_name: "" });
   const [ courts, setCourts ] = useState([])
   const [ errors, setErrors ] = useState([])
@@ -73,8 +76,13 @@ const Rush = () => {
 
   return (
     <>
-      <h4 className="mt-3">
-        <b>Rush Hour</b>
+      <h4>
+        <b>
+          <Link to="/data-master/peaktime" className="btnBack">
+            <ArrowLeft />
+          </Link>
+          {id ? "Edit" : "Create"} Peak Time
+        </b>
       </h4>
       <Row>
         <Col className="col-sm-6 m-auto">

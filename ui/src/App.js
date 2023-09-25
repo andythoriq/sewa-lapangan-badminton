@@ -30,6 +30,7 @@ import Regular from "./Pages/Users/DataMaster/Customer/Regular";
 import Member from "./Pages/Users/DataMaster/Customer/Member";
 import LandingBookUser from "./Pages/LandingPages/Booking/LandingBooking";
 import Scanner from "./Pages/Users/ScannerQr/Scanner";
+import PeakTime from "./Pages/Users/DataMaster/Rush Hour/PeakTime";
 
 export default class App extends Component {
   render() {
@@ -65,7 +66,9 @@ export default class App extends Component {
             <Route path="/data-master/customer-member/add" element={<CustomerMember />} />
             <Route path="/data-master/customer-member/edit/:id" element={<CustomerMember />} />
             <Route path="/data-master/holidays" element={<Holidays />} />
-            <Route path="/data-master/rush" element={<Rush />} />
+            <Route path="/data-master/peaktime" element={<PeakTime />} />
+            <Route path="/data-master/rush/add" element={<Rush />} />
+            <Route path="/data-master/rush/edit/:id" element={<Rush />} />
             <Route path="/user-management/user-list" element={<UserList />} />
             <Route path="/user-management/user-list/add" element={<UserListForm />} />
             <Route path="/user-management/user-list/edit/:id" element={<UserListForm />} />
