@@ -29,8 +29,8 @@ const CreateBookingFormMember = () => {
         onValUpdate(index, e);
       };
       return (
-        <>
-          <Row className="m-1 p-2 box-border" key={index}>
+        <div key={index}>
+          <Row className="m-1 p-2 box-border">
             <Col className="col-12 column">
               <Row>
                 <Col className="col-12 col-md-4">
@@ -53,7 +53,7 @@ const CreateBookingFormMember = () => {
               </Row>
             </Col>
           </Row>
-        </>
+        </div>
       );
     });
   };
