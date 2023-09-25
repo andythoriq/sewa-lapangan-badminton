@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AuthCustomerController, AuthAdminController};
-use App\Http\Controllers\GetRoleMenusController;
+use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController};
 use App\Http\Controllers\Master\{HolidayController, ConfigController, OpenTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController, TransactionController};
 use Illuminate\Support\Facades\Route;
 
@@ -153,5 +152,5 @@ Route::middleware('auth:sanctum')->group(function () {
     /** END OF MASTER DATA */
 
     Route::get('/admin-role-menu-list', GetRoleMenusController::class)->middleware('admin');
-
+    Route::post('/send-booking-code', SendBookingCodeController::class);
 });

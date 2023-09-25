@@ -11,6 +11,12 @@ trait CustomerCodeFormat
         $max_customer_code = CustomerModel::count();
         $incremented = $max_customer_code + 1;
 
-        return $prefix . date('Ym') . str_pad((string) $incremented, 3, '0', STR_PAD_LEFT);
+        $attempt = 1;
+        do {
+            $customer_code = $prefix . date('Ym') . str_pad((string) $incremented + $attempt, 3, '0', STR_PAD_LEFT);
+            $attempt++;
+        } while (CustomerModel::where('customer_code', $customer_code)->exists());
+
+        return $customer_code;
     }
 }

@@ -93,6 +93,12 @@ class RentalRequest extends FormRequest
         $data['transaction_id'] = $transaction->id;
 
         RentalModel::create($data);
+
+        return [
+            'bc' => $transaction->booking_code,
+            'tp' => $transaction->total_price,
+            'th' => $transaction->total_hour
+        ];
     }
 
     public function updateRental(RentalModel $rental)
@@ -145,6 +151,12 @@ class RentalRequest extends FormRequest
         }
         $transaction->saveOrFail();
         RentalModel::insert($data);
+
+        return [
+            'bc' => $transaction->booking_code,
+            'tp' => $transaction->total_price,
+            'th' => $transaction->total_hour
+        ];
     }
 
     private function getCourtSchedules(int $court_id)

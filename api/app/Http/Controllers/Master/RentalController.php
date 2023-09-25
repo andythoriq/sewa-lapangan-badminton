@@ -23,8 +23,15 @@ class RentalController extends Controller
 
     public function create(RentalRequest $request)
     {
-        $request->createRental();
-        return response(null, 201, ['success' => 'Created New Rental data.']);
+        $response = $request->createRental();
+        return response()->json([
+            'message' => 'Booked successfully',
+            'transaction' => [
+                'booking_code' => $response['bc'],
+                'total_hour' => $response['th'],
+                'total_price' => $response['tp']
+            ]
+        ], 201, ['success' => 'Created New Rental data.']);
     }
 
     public function update(RentalRequest $request, RentalModel $rental)
@@ -41,7 +48,14 @@ class RentalController extends Controller
 
     public function create_multiple(RentalRequest $request)
     {
-        $request->createMultipleRental();
-        return response(null, 201, ['success' => 'Multiple rental Created.']);
+        $response = $request->createMultipleRental();
+        return response()->json([
+            'message' => 'Multiple booked successfully',
+            'transaction' => [
+                'booking_code' => $response['bc'],
+                'total_hour' => $response['th'],
+                'total_price' => $response['tp']
+            ]
+        ], 201, ['success' => 'Multiple rental Created.']);
     }
 }

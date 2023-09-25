@@ -20,10 +20,9 @@ const CreateBookingFormMember = () => {
     {value:"4", label:"Court D"},
   ];
 
-  const pluginSelect = "react-select";
   const BoxRows = ({ rows, boxRowRemove, onValUpdate }) => {
       return rows.map((rowsData, index) => {
-        const { court, customer, start_time, end_time } = rowsData;
+        const { court, customer, start_time, finish_time } = rowsData;
         const onChange = (e) => {
           // console.log(e.target.value);
           onValUpdate(index, e);
@@ -34,10 +33,10 @@ const CreateBookingFormMember = () => {
                 <Row>
                   <Col className="col-12 col-md-6">
                       <FormSelect
-                          plugin={pluginSelect}
                           name="court"
                           label="Court"
-                          menuPlacement="top"
+                          className="form-select form-select-sm"
+                          menuplacement="top"
                           options={dataCourt}
                           selected={court}
                           onChange={(value, event) => onValUpdate(index, event, value)}
@@ -45,10 +44,10 @@ const CreateBookingFormMember = () => {
                   </Col>
                   <Col className="col-12 col-md-6">
                       <FormSelect
-                          plugin={pluginSelect}
                           name="customer"
                           label="Customer"
-                          menuPlacement="top"
+                          className="form-select form-select-sm"
+                          menuplacement="top"
                           options={dataCustomer}
                           selected={customer}
                           onChange={(value, event) => onValUpdate(index, event, value)}
@@ -62,7 +61,7 @@ const CreateBookingFormMember = () => {
                   <FormInput type="time" name="start_time" label="Start" value={start_time} onChange={onChange} />
                 </Col>
                 <Col className="col-6 col-md-12">
-                  <FormInput type="time" name="end_time" label="End" value={end_time} onChange={onChange} />
+                  <FormInput type="time" name="finish_time" label="Finish" value={finish_time} onChange={onChange} />
                 </Col>
                 <Col className="col-12 mt-3 text-right">
                   <button type="button" className="btn btn-danger btn-sm me-md-2 text-white" onClick={() => boxRowRemove(index)}>
@@ -79,7 +78,7 @@ const CreateBookingFormMember = () => {
       });
   }
 
-  const dataDefault = { court:"", customer:"", start_time:"", end_time:"" };
+  const dataDefault = { court:"", customer:"", start_time:"", finish_time:"" };
   const [rows, initRow] = useState([dataDefault]);
   const addRowBox = () => {
       initRow([...rows, dataDefault]);

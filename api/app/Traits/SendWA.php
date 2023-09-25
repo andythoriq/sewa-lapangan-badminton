@@ -4,13 +4,13 @@ namespace App\Traits;
 
 trait SendWA
 {
-    public function sendWA(string $userkey, string $passkey, string $telepon, string $message)
+    public function sendWA(string $telepon, string $message)
     {
         $url = 'https://console.zenziva.net/wareguler/api/sendWA/';
 
         $data = array(
-            'userkey' => $userkey,
-            'passkey' => $passkey,
+            'userkey' => env('ZENZIVA_USER_KEY'),
+            'passkey' => env('ZENZIVA_API_KEY'),
             'to' => $telepon,
             'message' => $message
         );
@@ -35,5 +35,38 @@ trait SendWA
         curl_close($curlHandle);
 
         return $response;
+    }
+
+    public function sendImage(string $telepon, string $image_link, string $caption)
+    {
+        $url = 'https://console.zenziva.net/wareguler/api/sendWAFile/';
+
+        $data = array(
+            'userkey' => env('ZENZIVA_USER_KEY'),
+            'passkey' => env('ZENZIVA_API_KEY'),
+            'to' => $telepon,
+            'link' => $image_link,
+            'caption' => $caption
+        );
+
+        $curlHandle = curl_init();
+        curl_setopt($curlHandle, CURLOPT_URL, $url);
+        curl_setopt($curlHandle, CURLOPT_HEADER, 0);
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($curlHandle, CURLOPT_TIMEOUT, 30);
+        curl_setopt($curlHandle, CURLOPT_POST, 1);
+        curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $data);
+
+        $responseData = curl_exec($curlHandle);
+
+        if (curl_errno($curlHandle)) {
+            return curl_error($curlHandle);
+        }
+
+        curl_close($curlHandle);
+
+        return $responseData;
     }
 }
