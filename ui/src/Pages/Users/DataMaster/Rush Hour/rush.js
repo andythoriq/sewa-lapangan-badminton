@@ -58,7 +58,7 @@ const Rush = () => {
       setErrors('');
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
-        window.location.href = "/data-master/rush";
+        window.location.href = "/data-master/peaktime";
       }, 2000);
     } catch (e) {
       if (e.response.status === 422) {

@@ -21,7 +21,7 @@ const PeakTime = () => {
     const handleYes = async () => {
         try {
             await axios.get('/sanctum/csrf-cookie')
-            const { data } = await axios.delete('/api/data-master/peaktime/' + peaktimeCode, {
+            const { data } = await axios.delete('/api/peak-time/' + peaktimeCode, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
@@ -46,7 +46,7 @@ const PeakTime = () => {
     const [members, setMembers] = useState([])
 
     useEffect(() => {
-        axios.get('/api/data-master/peaktime', {
+        axios.get('/api/peak-time', {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
@@ -70,24 +70,23 @@ const PeakTime = () => {
     const TableRows = ({ rows }) => {
         return rows.map((val, index) => {
           return (
-            <tr key={val.peaktime_code}>
+            <tr key={val.id}>
                 <td className="text-center">
                     <span className="custom-checkbox">
                         <input type="checkbox" id="checkbox1" name="options[]" value="1" />
                         <label htmlFor="checkbox1"></label>
                     </span>
                 </td>
-                <td>{val.user}</td>
-                <td>{val.days}</td>
-                <td>{val.pricetime}</td>
+                <td>{val.day_name}</td>
+                <td>{val.price_increase}</td>
                 <td>{val.start}</td>
-                <td>{val.end}</td>
+                <td>{val.finish}</td>
                 <td className="text-center">
-                    <Link to={'/data-master/rush/edit/'+val.peaktime_code} className="edit">
+                    <Link to={'/data-master/rush/edit/'+val.id} className="edit">
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>
                     </Link>
                     &nbsp;&nbsp;
-                    <a href="#delete" onClick={()=>handleShow(index, val.peaktime_code)}>
+                    <a href="#delete" onClick={()=>handleShow(index, val.id)}>
                         <Trash3 className="material-icons" color="dark" title="Delete" />
                     </a>
                 </td>
@@ -123,11 +122,10 @@ const PeakTime = () => {
                     <thead>
                         <tr>
                             <th width={'1%'}></th>
-                            <th width={'15%'}>User Role</th>
-                            <th width={'15%'}>Select Day</th>
+                            <th width={'15%'}>Day name</th>
                             <th width={'20%'}>Peak Time Price</th>
                             <th width={'15%'}>Start</th>
-                            <th width={'15%'}>End</th>
+                            <th width={'15%'}>Finish</th>
                             <th width={'5%'} className="text-center">Action</th>
                         </tr>
                     </thead>
