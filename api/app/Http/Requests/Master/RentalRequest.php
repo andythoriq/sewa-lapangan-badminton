@@ -5,6 +5,7 @@ namespace App\Http\Requests\Master;
 use App\Models\CourtModel;
 use App\Models\RentalModel;
 use App\Traits\CollideCheck;
+use App\Traits\RentalDurationRule;
 use Illuminate\Support\Carbon;
 use App\Models\TransactionModel;
 use App\Traits\BookingCodePattern;
@@ -14,7 +15,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RentalRequest extends FormRequest
 {
-    use CollideCheck, RentalPriceCalculation, RegularRentalsCheck, BookingCodePattern;
+    use CollideCheck, RentalPriceCalculation, RegularRentalsCheck, BookingCodePattern, RentalDurationRule;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -71,6 +72,8 @@ class RentalRequest extends FormRequest
     {
         $this->regularRentalsCheck($this->customer_id);
 
+        $this->validateDuration($this->start, $this->finish);
+
         $this->collideCheck($this->start, $this->finish, $this->getCourtSchedules($this->court_id));
 
         $data = $this->validated();
@@ -105,6 +108,8 @@ class RentalRequest extends FormRequest
     {
         $this->regularRentalsCheck($this->customer_id);
 
+        $this->validateDuration($this->start, $this->finish);
+
         $this->collideCheck($this->start, $this->finish, $this->getCourtSchedules($this->court_id));
 
         $rental->load(['court:id,initial_price', 'customer:customer_code']);
@@ -133,6 +138,8 @@ class RentalRequest extends FormRequest
 
         for ($i = 0; $i < count($data); $i++) {
             $this->collideCheck($data[$i]['start'], $data[$i]['finish'], $this->getCourtSchedules($data[$i]['court_id']));
+
+            $this->validateDuration($data[$i]['start'], $data[$i]['finish']);
 
             $court_initial_price = CourtModel::select('initial_price')->where('id', $data[$i]['court_id'])->firstOrFail()->initial_price;
 
