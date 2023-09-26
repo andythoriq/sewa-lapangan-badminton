@@ -86,8 +86,40 @@ const CreateBookingFormRegular = () => {
     }
   }
 
-  const sendBookingCode = () => {
-
+  const sendBookingCode = async (e) => {
+    e.preventDefault()
+    try {
+      const { data } = await axios.post('/api/send-booking-code', {
+        phone_number: phoneNumber,
+        booking_code: transactionResponse.booking_code
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      })
+      if (data.text === "Success") {
+        Swal.fire({ icon: "success", title: "Success!", html: `Booking code has been sent to ${data.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+          .then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = "/history-booking";
+            }
+          })
+      } else {
+        Swal.fire({ icon: "error", title: "Error!", html: "Booking code failed to send", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+          .then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = "/history-booking";
+            }
+          })
+      }
+    } catch (e) {
+      Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+      .then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "/";
+        }
+      })
+    }
   }
 
   return (

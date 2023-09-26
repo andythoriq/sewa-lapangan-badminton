@@ -136,26 +136,24 @@ class RentalRequest extends FormRequest
             'booking_code' => $this->getBookingCode()
         ]);
 
-        for ($i = 0; $i < count($data); $i++) {
-            $this->collideCheck($data[$i]['start'], $data[$i]['finish'], $this->getCourtSchedules($data[$i]['court_id']));
+        foreach ($data['rentals'] as &$rental) {
+            $this->collideCheck($rental['start'], $rental['finish'], $this->getCourtSchedules($rental['court_id']));
 
-            $this->validateDuration($data[$i]['start'], $data[$i]['finish']);
+            $this->validateDuration($rental['start'], $rental['finish']);
 
-            $court_initial_price = CourtModel::select('initial_price')->where('id', $data[$i]['court_id'])->firstOrFail()->initial_price;
+            $court_initial_price = CourtModel::select('initial_price')->where('id', $rental['court_id'])->firstOrFail()->initial_price;
 
-            if (strtolower($data[$i]['customer_id'][0] == 'm')) {
-                $court_initial_price = ceil($court_initial_price / 1.25);
-            }
+            $court_initial_price = ceil($court_initial_price / 1.25);
 
-            $data[$i]['price'] = $this->getCost($data[$i]['start'], $data[$i]['finish'], $court_initial_price);
+            $rental['price'] = $this->getCost($rental['start'], $rental['finish'], $court_initial_price);
 
-            $transaction->total_price += $data[$i]['price'];
-            $transaction->total_hour += Carbon::parse($data[$i]['start'])->diffInHours($data[$i]['finish']);
+            $transaction->total_price += $rental['price'];
+            $transaction->total_hour += Carbon::parse($rental['start'])->diffInHours($rental['finish']);
 
-            $data[$i]['transaction_id'] = $transaction->id;
-            $data[$i]['customer_id'] = $this->customer_id;
-            $data[$i]['created_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
-            $data[$i]['updated_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
+            $rental['transaction_id'] = $transaction->id;
+            $rental['customer_id'] = $this->customer_id;
+            $rental['created_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
+            $rental['updated_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
         }
         $transaction->saveOrFail();
         RentalModel::insert($data);
