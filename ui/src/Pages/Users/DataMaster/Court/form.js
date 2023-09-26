@@ -76,7 +76,7 @@ const CourtForm = () => {
         e.preventDefault()
         const data = {
             label: values.label,
-            initial_price: values.price,
+            initial_price: values.price.replace(/[^0-9]+/g, ''),
             description: values.description,
             image_path: image[0]?.file ?? ''
         }
@@ -160,7 +160,9 @@ const CourtForm = () => {
                 </Col>
                 <Col className="col-12 col-md-6">
                     <Form.Group>
-                        <FormInput type="text" name="price" label="Price" value={values.price} onChange={onChange} placeholder="Rp "/>
+                        {/* <FormInput type="text" name="price" label="Price" value={values.price} onChange={onChange} placeholder="Rp "/> */}
+                        <label>Price</label>
+                      <MaskedInput mask={currencyMask} className="form-control" name="price" value={values.price} onChange={onChange} />
                         {errors.initial_price && 
                             <span className="text-danger">{errors.initial_price[0]}</span>}
                     </Form.Group>
