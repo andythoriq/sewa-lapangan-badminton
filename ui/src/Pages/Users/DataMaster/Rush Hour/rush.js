@@ -5,6 +5,7 @@ import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
 import { Link, useParams} from "react-router-dom";
 import { ArrowLeft } from "react-bootstrap-icons";
+import CurrencyInput from "react-currency-input-field";
 
 const Rush = () => {
   const { id } = useParams();
@@ -108,7 +109,8 @@ const Rush = () => {
                     <span className="text-danger">{errors.day_name[ 0 ]}</span>}
                 </Col>
                 <Col className="col-12">
-                  <FormInput type="text" name="price_increase" label="Peak time price" value={values.price_increase} onChange={onChange} />
+                  <label>Price Time</label>
+                <CurrencyInput className="form-control" prefix="Rp" id="input-example" name="input-name" decimalsLimit={2} onValueChange={(value, price_increase) => console.log(value, price_increase)} />
                   {errors.price_increase &&
                     <span className="text-danger">{errors.price_increase[ 0 ]}</span>}
                 </Col>

@@ -66,12 +66,7 @@ const Regular = () => {
         return rows.map((val, index) => {
           return (
             <tr key={val.customer_code}>
-                <td className="text-center">
-                    <span className="custom-checkbox">
-                        <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                        <label htmlFor="checkbox1"></label>
-                    </span>
-                </td>
+                <td>{index + 1}</td>
                 <td>{val.name}</td>
                 <td>{val.phone_number}</td>
                 <td>Rp {val.deposit}</td>
@@ -121,7 +116,7 @@ const Regular = () => {
                 <table className="table table-hover mt-2" border={1}>
                     <thead>
                         <tr>
-                            <th width={'1%'}></th>
+                            <th width={'1%'}>No</th>
                             <th width={'15%'}>Name</th>
                             <th width={'20%'}>Phone number</th>
                             <th width={'25%'}>Deposit</th>

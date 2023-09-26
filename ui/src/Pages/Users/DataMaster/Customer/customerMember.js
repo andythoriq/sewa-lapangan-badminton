@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import MaskedInput from "react-text-mask";
 import createNumberMask from "text-mask-addons/dist/createNumberMask";
 import CurrencyInput from "react-currency-input-field";
+import PhoneInput from "react-phone-input-2";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
 
@@ -136,7 +137,8 @@ const CustomerMember = () => {
                 </Col>
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
-                    <FormInput type="text" name="phone_number" label="Phone number" value={values.phone_number} onChange={onChange} />
+                    <label>Phone Number</label>
+                    <PhoneInput specialLabel={""} country={"id"} />
                     {errors.phone_number && <span className="text-danger">{errors.phone_number[0]}</span>}
                   </Form.Group>
                 </Col>
@@ -150,7 +152,7 @@ const CustomerMember = () => {
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
                     <label>Debt</label>
-                    <CurrencyInput className="form-control" prefix="Rp" id="input-example" name="input-name" defaultValue={1000} decimalsLimit={2} onValueChange={(value, hutang) => console.log(value, hutang)} />
+                    <CurrencyInput className="form-control" prefix="Rp" id="input-example" name="input-name" decimalsLimit={2} onValueChange={(value, hutang) => console.log(value, hutang)} />
                     {errors.dept && <span className="text-danger">{errors.dept[0]}</span>}
                   </Form.Group>
                 </Col>

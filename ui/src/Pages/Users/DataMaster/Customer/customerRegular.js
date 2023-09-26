@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import MaskedInput from "react-text-mask";
 import createNumberMask from "text-mask-addons/dist/createNumberMask";
 import CurrencyInput from "react-currency-input-field";
+import PhoneInput from "react-phone-input-2";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
 
@@ -26,7 +27,7 @@ const currencyMask = createNumberMask({
   ...defaultMaskOptions,
 });
 
-const CustomerRegular = () => {
+const CustomerRegular = (props) => {
   const { id } = useParams();
   const [selectedStatus, setSelectedStatus] = useState("");
   const [isChange, setIsChange] = useState(false);
@@ -135,7 +136,8 @@ const CustomerRegular = () => {
                 </Col>
                 <Col className="col-12 col-md-6">
                   <Form.Group>
-                    <FormInput type="tel" name="phone_number" label="Phone number" value={values.phone_number} onChange={onChange} />
+                    <label>Phone Number</label>
+                    <PhoneInput specialLabel={""} country={"id"} />
                     {errors.phone_number && <span className="text-danger">{errors.phone_number[0]}</span>}
                   </Form.Group>
                 </Col>
@@ -149,7 +151,7 @@ const CustomerRegular = () => {
                 <Col className="col-12 col-md-6">
                   <Form.Group>
                     <label>Debt</label>
-                    <CurrencyInput className="form-control" prefix="Rp" id="input-example" name="input-name" defaultValue={1000} decimalsLimit={2} onValueChange={(value, hutang) => console.log(value, hutang)} />
+                    <CurrencyInput className="form-control" prefix="Rp" id="input-example" name="input-name" decimalsLimit={2} onValueChange={(value, hutang) => console.log(value, hutang)} />
                     {errors.debt && <span className="text-danger">{errors.debt[0]}</span>}
                   </Form.Group>
                 </Col>

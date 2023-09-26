@@ -46,12 +46,7 @@ const HistoryBooking = () => {
         return rows.map((val, index) => {
           return (
             <tr>
-                <td className="text-center">
-                    <span className="custom-checkbox">
-                        <input type="checkbox" />
-                        <label htmlFor="checkbox1"></label>
-                    </span>
-                </td>
+                <td>{index + 1}</td>
                 <td>{val.name}</td>
                 <td>{val.court}</td>
                 <td>{val.schedule}</td>
@@ -89,7 +84,7 @@ const HistoryBooking = () => {
                 <table className="table table-hover mt-3" border={1}>
                     <thead>
                         <tr >
-                            <th width={'1%'}></th>
+                            <th width={'1%'}>No</th>
                             <th width={'30%'}>Name Customer</th>
                             <th width={'10%'}>Court</th>
                             <th width={'15%'}>Schedule</th>

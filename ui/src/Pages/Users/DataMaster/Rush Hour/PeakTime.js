@@ -71,14 +71,9 @@ const PeakTime = () => {
         return rows.map((val, index) => {
           return (
             <tr key={val.id}>
-                <td className="text-center">
-                    <span className="custom-checkbox">
-                        <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                        <label htmlFor="checkbox1"></label>
-                    </span>
-                </td>
+                <td>{index + 1}</td>
                 <td>{val.day_name}</td>
-                <td>{val.price_increase}</td>
+                <td>Rp {val.price_increase}</td>
                 <td>{val.start}</td>
                 <td>{val.finish}</td>
                 <td className="text-center">
@@ -121,7 +116,7 @@ const PeakTime = () => {
                 <table className="table table-hover mt-2" border={1}>
                     <thead>
                         <tr>
-                            <th width={'1%'}></th>
+                            <th width={'1%'}>No</th>
                             <th width={'15%'}>Day name</th>
                             <th width={'20%'}>Peak Time Price</th>
                             <th width={'15%'}>Start</th>
