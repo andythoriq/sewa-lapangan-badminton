@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./Components/Layout";
 import Public from "./Components/Public";
@@ -33,7 +33,7 @@ import Scanner from "./Pages/Users/ScannerQr/Scanner";
 import PeakTime from "./Pages/Users/DataMaster/Rush Hour/PeakTime";
 
 export default class App extends Component {
-  render() {
+  render() { 
     return (
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -77,7 +77,7 @@ export default class App extends Component {
             <Route path="/user-management/user-role/edit/:id" element={<UserRoleForm />} />
             <Route path="/setting" element={<Setting />} />
           </Route>
-          
+         
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
