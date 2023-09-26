@@ -9,12 +9,13 @@ import CurrencyInput from "react-currency-input-field";
 
 const Rush = () => {
   const { id } = useParams();
-  const [ values, setValues ] = useState({ start: "", finish: "", price_increase: "", day_name: "" });
+  const [ values, setValues ] = useState({ start: "", finish: "", day_name: "" });
   const [ courts, setCourts ] = useState([])
   const [ errors, setErrors ] = useState([])
 
   const [ courtId, setCourtId ] = useState('')
   const [ initialPrice, setInitialPrice ] = useState('')
+  const [priceIncrease, setPriceIncrease] = useState('');
 
   const dayNames = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
@@ -48,11 +49,11 @@ const Rush = () => {
   const handleSubmitClick = async (e) => {
     e.preventDefault()
     const data = {
-      court_id: values.court,
+      court_id: courtId,
       start: values.start,
       finish: values.finish,
       day_name: values.day_name.toLowerCase(),
-      price_increase: values.price_increase
+      price_increase: priceIncrease
     }
     const config = {
       headers: {
@@ -121,7 +122,7 @@ const Rush = () => {
                 </Col>
                 <Col className="col-12">
                   <label>Price Time</label>
-                <CurrencyInput className="form-control" prefix="Rp" name="price_increase" decimalsLimit={2} onValueChange={(value, price_increase) => console.log(value, price_increase)} />
+                <CurrencyInput className="form-control" prefix="Rp" name="price_increase" decimalsLimit={2} onValueChange={(value) => setPriceIncrease(value)} />
                   {initialPrice && <span className="d-block">Real price {initialPrice}</span>}
                   {errors.price_increase &&
                     <span className="text-danger">{errors.price_increase[ 0 ]}</span>}
