@@ -75,8 +75,9 @@ export default class App extends Component {
             <Route path="/user-management/user-role" element={<UserRole />} />
             <Route path="/user-management/user-role/add" element={<UserRoleForm />} />
             <Route path="/user-management/user-role/edit/:id" element={<UserRoleForm />} />
+            <Route path="/setting" element={<Setting />} />
           </Route>
-          <Route path="/setting" element={<Setting />} />
+          
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

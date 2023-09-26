@@ -3,8 +3,28 @@ import { Form, Card, Row, Col } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { Link, useParams } from "react-router-dom";
+import MaskedInput from "react-text-mask";
+import createNumberMask from "text-mask-addons/dist/createNumberMask";
+import CurrencyInput from "react-currency-input-field";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
+
+const defaultMaskOptions = {
+  prefix: "Rp",
+  suffix: "",
+  includeThousandsSeparator: true,
+  thousandsSeparatorSymbol: ",",
+  allowDecimal: true,
+  decimalSymbol: ".",
+  decimalLimit: 2, // how many digits allowed after the decimal
+  integerLimit: 7, // limit length of integer numbers
+  allowNegative: false,
+  allowLeadingZeroes: false,
+};
+
+const currencyMask = createNumberMask({
+  ...defaultMaskOptions,
+});
 
 const CustomerRegular = () => {
   const { id } = useParams();
@@ -115,19 +135,21 @@ const CustomerRegular = () => {
                 </Col>
                 <Col className="col-12 col-md-6">
                   <Form.Group>
-                    <FormInput type="text" name="phone_number" label="Phone number" value={values.phone_number} onChange={onChange} />
+                    <FormInput type="tel" name="phone_number" label="Phone number" value={values.phone_number} onChange={onChange} />
                     {errors.phone_number && <span className="text-danger">{errors.phone_number[0]}</span>}
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6">
                   <Form.Group>
-                    <FormInput type="text" name="deposit" label="Deposit" value={values.deposit} onChange={onChange} />
+                    <label>Deposit</label>
+                    <MaskedInput mask={currencyMask} className="form-control" name="deposit" value={values.deposit} onChange={onChange} />
                     {errors.deposit && <span className="text-danger">{errors.deposit[0]}</span>}
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6">
                   <Form.Group>
-                    <FormInput type="text" name="hutang" label="Debt" value={values.hutang} onChange={onChange} />
+                    <label>Debt</label>
+                    <CurrencyInput className="form-control" prefix="Rp" id="input-example" name="input-name" defaultValue={1000} decimalsLimit={2} onValueChange={(value, hutang) => console.log(value, hutang)} />
                     {errors.debt && <span className="text-danger">{errors.debt[0]}</span>}
                   </Form.Group>
                 </Col>
@@ -163,7 +185,9 @@ const CustomerRegular = () => {
                     <Form.Group>
                       <FormInput type="date" name="member_active_period" label="Active Period" value={values.member_active_period} onChange={onChange} />
                       {errors.member_active_period && <span className="text-danger">{errors.member_active_period[0]}</span>}
-                      <button type="button" className="btn btn-dark btn-sm mt-2" aria-label="Close" onClick={() => setIsChange(!isChange)}>cancel</button>
+                      <button type="button" className="btn btn-dark btn-sm mt-2" aria-label="Close" onClick={() => setIsChange(!isChange)}>
+                        cancel
+                      </button>
                     </Form.Group>
                   </Col>
                 )}

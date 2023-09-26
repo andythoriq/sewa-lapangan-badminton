@@ -80,7 +80,7 @@ const Court = () => {
                     </span>
                 </td>
                 <td>{val.label}</td>
-                <td>{val.initial_price}</td>
+                <td>Rp {val.initial_price}</td>
                 <td>{val.image_path ? (
                       <img src={process.env.REACT_APP_BACKEND_URL + '/storage/' + val.image_path} alt={val.label} height={150} width={150} />
                   ) : (

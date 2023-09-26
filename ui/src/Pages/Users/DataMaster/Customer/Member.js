@@ -80,8 +80,8 @@ const Member = () => {
                 <td>{val.name}</td>
                 <td>{val.phone_number}</td>
                 <td>{val.member_active_period}</td>
-                <td>{val.deposit}</td>
-                <td>{val.debt}</td>
+                <td>Rp {val.deposit}</td>
+                <td>Rp {val.debt}</td>
                 <td className="text-center"><label className={`badge text-bg-${val.status === 'Y' ? 'green' : 'danger'} text-dark`}>{val.status}</label></td>
                 <td className="text-center">
                     <Link to={'/data-master/customer-member/edit/'+val.customer_code} className="edit">
