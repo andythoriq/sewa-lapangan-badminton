@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Master;
 
 use App\Models\CourtModel;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Master\CourtRequest;
@@ -11,9 +12,18 @@ use App\Http\Resources\Master\CourtCollection;
 
 class CourtController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $courts = CourtModel::select(['id', 'label', 'initial_price', 'image_path', 'description'])->get();
+        $keyword = $request->input('keyword');
+
+        $courts = CourtModel::when($keyword, function ($query) use ($keyword) {
+            return $query->where('label', 'like', '%' . $keyword . '%')
+                ->orWhere('description', 'like', '%' . $keyword . '%')
+                ->orWhere('initial_price', 'like', '%' . $keyword . '%');
+        })
+            ->select(['id', 'label', 'initial_price', 'image_path', 'description'])
+            ->get();
+
         return new CourtCollection($courts);
     }
 

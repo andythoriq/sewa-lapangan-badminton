@@ -44,6 +44,7 @@ const Member = () => {
     };
 
     const [members, setMembers] = useState([])
+    const [originalMembers, setOriginalMembers] = useState([])
 
     useEffect(() => {
         axios.get('/api/customer/member', {
@@ -52,6 +53,7 @@ const Member = () => {
             }
         }).then(({ data }) => {
             setMembers(data)
+            setOriginalMembers(data)
         }).catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
         })
@@ -60,6 +62,28 @@ const Member = () => {
     const [values, setValues] = useState({ search: "" });
     const onChange = (e) => { 
         setValues({ ...values, [e.target.name]: e.target.value });
+    }
+
+    const handleSearch = async (e) => {
+        e.preventDefault()
+        try {
+            const { data } = await axios.get('/api/customer/member?keyword=' + values.search,{
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setMembers(data)
+            if (data.length < 1) {
+                Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in member not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        setMembers(originalMembers)
+                    }
+                })
+            }
+        } catch (e) {
+            Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+        }
     }
 
     // let listData = [
@@ -105,7 +129,9 @@ const Member = () => {
             <Row>
                 <Col className="col-12 col-md-4" style={{marginTop:-20}} >
                     <Form.Group className="inputSearch">
-                        <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Search"/>
+                        <Form onSubmit={handleSearch}>
+                            <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Enter to search"/>
+                        </Form>
                     </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6 pt-1">

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Master;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Master\UserRequest;
 use App\Http\Resources\Master\UserResource;
 use App\Http\Resources\Master\UserCollection;
-use App\Http\Requests\Master\UserRequest;
 
 class UserController extends Controller
 {
@@ -34,9 +35,18 @@ class UserController extends Controller
         return response()->json(['message' => 'User deleted'], 202, ['success' => 'User deleted.']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::select(['id', 'name', 'username', 'status', 'role_id'])->with('role:id,label')->get();
+        $keyword = $request->input('keyword');
+
+        $users = User::when($keyword, function ($query) use ($keyword) {
+            $query->where('name', 'like', '%' . $keyword . '%')
+                ->orWhere('username', 'like', '%' . $keyword . '%');
+        })
+            ->select(['id', 'name', 'username', 'status', 'role_id'])
+            ->with('role:id,label')
+            ->get();
+
         return new UserCollection($users);
     }
 

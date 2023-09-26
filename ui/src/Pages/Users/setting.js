@@ -27,8 +27,23 @@ const Setting = () => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Data : ", values);
-    console.log("Open Days : ", rows);
+    // console.log("Data : ", values);
+    // console.log("Open Days : ", rows);
+    const data = {
+      slug: '',
+      description: '',
+      value: '',
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }
+    }
+    try {
+        
+    } catch (error) {
+      
+    }
   }
 
   const TableRows = ({ rows, tableRowRemove, onValUpdate, onValUpdateTime }) => {

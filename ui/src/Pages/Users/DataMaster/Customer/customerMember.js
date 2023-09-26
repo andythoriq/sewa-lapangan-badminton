@@ -3,7 +3,6 @@ import { Form, Card, Row, Col } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { Link, useParams } from "react-router-dom";
-import MaskedInput from "react-text-mask";
 import CurrencyInput from "react-currency-input-field";
 import PhoneInput from "react-phone-input-2";
 import axios from "../../../../api/axios";

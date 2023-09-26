@@ -5,12 +5,22 @@ namespace App\Http\Controllers\Master;
 use App\Models\HolidayModel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Master\HolidayRequest;
+use Illuminate\Http\Request;
 
 class HolidayController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $holidays = HolidayModel::select(['id', 'label', 'date'])->orderBy('date', 'asc')->get();
+        $keyword = $request->input('keyword');
+
+        $holidays = HolidayModel::when($keyword, function ($query) use ($keyword) {
+            return $query->where('label', 'like', '%' . $keyword . '%')
+                ->orWhere('date', 'like', '%' . $keyword . '%');
+        })
+            ->select(['id', 'label', 'date'])
+            ->orderBy('date', 'asc')
+            ->get();
+
         return response()->json($holidays);
     }
 

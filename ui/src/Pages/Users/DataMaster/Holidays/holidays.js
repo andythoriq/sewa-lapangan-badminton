@@ -15,6 +15,7 @@ const Holidays = () => {
     }
 
     const [holidays, setHolidays] = useState([]);
+    const [originalHolidays, setOriginalHolidays] = useState([])
     
     useEffect(() => {
         axios.get('/api/holiday', {
@@ -24,6 +25,7 @@ const Holidays = () => {
         })
         .then(({data}) => {
             setHolidays(data);
+            setOriginalHolidays(data);
         })
         .catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -83,6 +85,28 @@ const Holidays = () => {
         }
     };
 
+    const handleSearch = async (e) => {
+        e.preventDefault()
+        try {
+            const { data } = await axios.get('/api/holiday?keyword=' + values.search,{
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setHolidays(data)
+            if (data.length < 1) {
+                Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in holiday not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        setHolidays(originalHolidays)
+                    }
+                })
+            }
+        } catch (e) {
+            Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+        }
+    }
+
     const TableRows = ({ rows }) => {
         return rows.map((val, index) => {
           return (
@@ -121,7 +145,9 @@ const Holidays = () => {
                 <Row>
                     <Col className="col-12 col-md-6" style={{marginTop:-20}}>
                         <Form.Group className="inputSearch" >
-                            <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Search"/>
+                            <Form onSubmit={handleSearch}>
+                                <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Enter to search"/>
+                            </Form>
                         </Form.Group>
                     </Col>
                     <Col className="col-12 col-md-6 pt-1 text-right">

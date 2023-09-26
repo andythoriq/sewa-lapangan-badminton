@@ -19,7 +19,30 @@ const UserRole = () => {
     };
 
      const [roles, setRoles] = useState([]);
+     const [originalRoles, setOriginalRoles] = useState([])
     
+    const handleSearch = async (e) => {
+        e.preventDefault()
+        try {
+         const { data } = await axios.get('/api/role?keyword=' + values.search,{
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setRoles(data)
+            if (data.length < 1) {
+                Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in role not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        setRoles(originalRoles)
+                    }
+                })
+            }
+        } catch (e) {
+            Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+        }
+    }
+
     useEffect(() => {
         axios.get('/api/role', {
             headers: {
@@ -28,6 +51,7 @@ const UserRole = () => {
         })
         .then(({data}) => {
             setRoles(data);
+            setOriginalRoles(data)
         })
         .catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -82,9 +106,9 @@ const UserRole = () => {
                         <label htmlFor="checkbox1"></label>
                     </span>
                 </td> */}
+                <td>{index + 1}</td>
                 <td>{val.label}</td>
                 <td className="text-center"><label className={`badge text-bg-${val.status === 'Y' ? 'green' : 'danger'} text-dark`}>{(val.status === 'Y' ? 'active' : 'in active')}</label></td>
-                <td>{index + 1}</td>
                 <td className="text-center">
                     <Link to={'/user-management/user-role/edit/'+val.id} className="edit">
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>
@@ -108,7 +132,9 @@ const UserRole = () => {
                 <Row>
                     <Col className="col-12 col-md-4" style={{marginTop:-20}} >
                         <Form.Group className="inputSearch">
-                            <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Search"/>
+                            <Form onSubmit={handleSearch}>
+                                <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Enter to search"/>
+                            </Form>
                         </Form.Group>
                     </Col>
                     <Col className="col-12 col-md-8 pt-1">

@@ -6,12 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Master\PeakTimeRequest;
 use App\Http\Resources\Master\PeakTimeResource;
 use App\Models\PeakTimeModel;
+use Illuminate\Http\Request;
 
 class PeakTimeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $peak_times = PeakTimeModel::select(['id', 'start', 'finish', 'day_name', 'price_increase'])->get();
+        $keyword = $request->input('keyword');
+
+        $peak_times = PeakTimeModel::when($keyword, function ($query) use ($keyword) {
+            return $query->where('start', 'like', '%' . $keyword . '%')
+                ->orWhere('finish', 'like', '%' . $keyword . '%')
+                ->orWhere('day_name', 'like', '%' . $keyword . '%')
+                ->orWhere('price_increase', 'like', '%' . $keyword . '%');
+        })
+            ->select(['id', 'start', 'finish', 'day_name', 'price_increase'])
+            ->get();
+
         return response()->json($peak_times);
     }
 
