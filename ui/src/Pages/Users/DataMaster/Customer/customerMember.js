@@ -133,8 +133,8 @@ const CustomerMember = () => {
                     <label className="mt-2">change membership status</label>
                     <div className="d-flex">
                       <div className="form-check">
-                        <input type="radio" className="form-check-input border-success border-3" onClick={() => setIsChange(!isChange)} />
-                        <label className="text-success">Click this, to change membership status</label>
+                        <input id="chToRegId" type="radio" className="form-check-input border-success border-3" onClick={() => setIsChange(!isChange)} />
+                        <label htmlFor="chToRegId" className="text-success">Change to regular</label>
                       </div>
                     </div>
                   </Col>}
@@ -149,13 +149,13 @@ const CustomerMember = () => {
                   <label>Status</label>
                   <div className="d-flex">
                     <div className="form-check">
-                      <input type="radio" className="form-check-input" name="status" value="Y" onChange={onChange} />
-                      <label>Active</label>
+                      <input id="activeId" type="radio" className="form-check-input" name="status" value="Y" onChange={onChange} />
+                      <label htmlFor="activeId">Active</label>
                     </div>
                     &nbsp;&nbsp;&nbsp;
                     <div className="form-check form-check-inline">
-                      <input type="radio" className="form-check-input" name="status" value="N" onChange={onChange} />
-                      <label>In active</label>
+                      <input id="inActiveId" type="radio" className="form-check-input" name="status" value="N" onChange={onChange} />
+                      <label htmlFor="inActiveId">In active</label>
                     </div>
                   </div>
                   {errors.status &&

@@ -204,13 +204,13 @@ const UserRoleForm = () => {
                 </center>
                 <div className="d-flex mt-2">
                     <div className="form-check">
-                        <input type="radio" className="form-check-input" name="status" value="Y" onChange={onChange} />
-                        <label>Active</label>
+                        <input id="activeId" type="radio" className="form-check-input" name="status" value="Y" onChange={onChange} />
+                        <label htmlFor="activeId">Active</label>
                     </div>
                     &nbsp;&nbsp;&nbsp;
                     <div className="form-check form-check-inline">
-                        <input type="radio" className="form-check-input" name="status" value="N" onChange={onChange} />
-                        <label>In active</label>
+                        <input id="inActiveId" type="radio" className="form-check-input" name="status" value="N" onChange={onChange} />
+                        <label htmlFor="inActiveId">In active</label>
                     </div>
                 </div>
                 {errors.status &&

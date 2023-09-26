@@ -12,11 +12,11 @@ const CreateBookingForm = () => {
   const handleRadioBtn = (aksi = "") => {
     // console.log(aksi);
     if (aksi === "member") {
-      setCheckedRegular(false);
-      setCheckedMember(true);
+      setCheckedRegular(!checkedRegular);
+      setCheckedMember(!checkedMember);
     } else {
-      setCheckedRegular(true);
-      setCheckedMember(false);
+      setCheckedRegular(!checkedRegular);
+      setCheckedMember(!checkedMember);
     }
   };
 
@@ -35,13 +35,13 @@ const CreateBookingForm = () => {
           <Card className="p-3 mt-5">
             <div className="d-flex">
               <div className="form-check">
-                <input type="radio" className="form-check-input" name="radionExam" value="regular" defaultChecked={checkedRegular} onClick={() => handleRadioBtn("regular")} />
-                <label style={{ fontSize: "16px" }}>Regular</label>
+                <input id="regId" type="radio" className="form-check-input" value="regular" checked={checkedRegular} onChange={() => handleRadioBtn("regular")} />
+                <label htmlFor="regId" style={{ fontSize: "16px" }}>Regular</label>
               </div>
               &nbsp;&nbsp;&nbsp;
               <div className="form-check form-check-inline">
-                <input type="radio" className="form-check-input" name="radionExam" value="member" defaultChecked={checkedMember} onClick={() => handleRadioBtn("member")} />
-                <label style={{ fontSize: "16px" }}>Member</label>
+                <input id="memId" type="radio" className="form-check-input" value="member" checked={checkedMember} onChange={() => handleRadioBtn("member")} />
+                <label htmlFor="memId" style={{ fontSize: "16px" }}>Member</label>
               </div>
             </div>
             {checkedRegular ? <CreateBookingFormRegular /> : <CreateBookingFormMember />}
