@@ -121,19 +121,13 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
-                'label' => 'Hari Suci Nyepi (Tahun Baru Saka) - Day 1',
+                'label' => 'Hari Suci Nyepi (Tahun Baru Saka) Day 1',
                 'date' => '2023-03-22',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
-                'label' => 'Cuti Bersama Hari Suci Nyepi (Tahun Baru Saka) - Day 2',
-                'date' => '2023-03-23',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'label' => 'Ramadan Start',
+                'label' => 'Cuti Bersama Hari Suci Nyepi Day 2, Ramadan Start',
                 'date' => '2023-03-23',
                 'created_at' => now(),
                 'updated_at' => now()
@@ -157,37 +151,25 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
-                'label' => 'Cuti Bersama Idul Fitri - Day 1',
+                'label' => 'Cuti Bersama Idul Fitri Day 1',
                 'date' => '2023-04-19',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
-                'label' => 'Cuti Bersama Idul Fitri - Day 2',
+                'label' => 'Cuti Bersama Idul Fitri Day 2',
                 'date' => '2023-04-20',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
-                'label' => 'Hari Kartini',
+                'label' => 'Hari Kartini, Cuti Bersama Idul Fitri Day 3',
                 'date' => '2023-04-21',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
-                'label' => 'Cuti Bersama Idul Fitri - Day - 3',
-                'date' => '2023-04-21',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'label' => 'Cuti Bersama Idul Fitri - Day 4',
-                'date' => '2023-04-22',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'label' => 'Cuti Bersama Lebaran',
+                'label' => 'Cuti Bersama Idul Fitri Day 4, Cuti Bersama Lebaran',
                 'date' => '2023-04-22',
                 'created_at' => now(),
                 'updated_at' => now()
@@ -199,25 +181,25 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
-                'label' => 'Cuti Bersama Idul Fitri - Day 5',
+                'label' => 'Cuti Bersama Idul Fitri Day 5',
                 'date' => '2023-04-23',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
-                'label' => 'Cuti Bersama Idul Fitri - Day 6',
+                'label' => 'Cuti Bersama Idul Fitri Day 6',
                 'date' => '2023-04-24',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
-                'label' => 'Cuti Bersama Idul Fitri - Day 7',
+                'label' => 'Cuti Bersama Idul Fitri Day 7',
                 'date' => '2023-04-25',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
-                'label' => 'Hari Buruh Internasional / Pekerja',
+                'label' => 'Hari Buruh Internasional',
                 'date' => '2023-05-01',
                 'created_at' => now(),
                 'updated_at' => now()
@@ -427,13 +409,13 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
-                'label' => 'Hari Idul Fitri - Day 1',
+                'label' => 'Hari Idul Fitri Day 1',
                 'date' => '2024-04-10',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
-                'label' => 'Hari Idul Fitri - Day 2',
+                'label' => 'Hari Idul Fitri Day 2',
                 'date' => '2024-04-11',
                 'created_at' => now(),
                 'updated_at' => now()
