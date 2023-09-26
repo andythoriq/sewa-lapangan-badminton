@@ -169,13 +169,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
-                'label' => 'Cuti Bersama Idul Fitri Day 4, Cuti Bersama Lebaran',
-                'date' => '2023-04-22',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'label' => 'Hari Bumi',
+                'label' => 'Cuti Bersama Idul Fitri Day 4, Cuti Bersama Lebaran, Hari Bumi',
                 'date' => '2023-04-22',
                 'created_at' => now(),
                 'updated_at' => now()
