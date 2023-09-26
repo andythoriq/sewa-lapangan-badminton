@@ -161,7 +161,7 @@ const CourtForm = () => {
                 <Col className="col-12 col-md-6">
                     <Form.Group>
                         {/* <FormInput type="text" name="price" label="Price" value={values.price} onChange={onChange} placeholder="Rp "/> */}
-                        <label>Price</label>
+                        <label>Initial Price</label>
                       <MaskedInput mask={currencyMask} className="form-control" name="price" value={values.price} onChange={onChange} />
                         {errors.initial_price && 
                             <span className="text-danger">{errors.initial_price[0]}</span>}

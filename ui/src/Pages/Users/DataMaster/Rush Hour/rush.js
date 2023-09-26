@@ -8,11 +8,23 @@ import { ArrowLeft } from "react-bootstrap-icons";
 
 const Rush = () => {
   const { id } = useParams();
-  const [ values, setValues ] = useState({ court: "", start: "", finish: "", price_increase: "", day_name: "" });
+  const [ values, setValues ] = useState({ start: "", finish: "", price_increase: "", day_name: "" });
   const [ courts, setCourts ] = useState([])
   const [ errors, setErrors ] = useState([])
 
+  const [ courtId, setCourtId ] = useState('')
+  const [ initialPrice, setInitialPrice ] = useState('')
+
   const dayNames = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+  const onChangeSelectCourt = (e) => {
+    const selected = e.target.value;
+    if (selected) {
+      const [ cid, ip ] = selected.split(':');
+      setCourtId(cid)
+      setInitialPrice(ip)
+    }
+  }
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -49,12 +61,11 @@ const Rush = () => {
     try {
       await axios.get('/sanctum/csrf-cookie')
       let response
-      // if (id > 0) {
-      //   response = await axios.put('/api/peak-time/' + id, data, config)
-      // } else {
-      //   response = await axios.post('/api/peak-time', data, config);
-      // }
-      response = await axios.post('/api/peak-time', data, config);
+      if (id > 0) {
+        response = await axios.put('/api/peak-time/' + id, data, config)
+      } else {
+        response = await axios.post('/api/peak-time', data, config);
+      }
       setErrors('');
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
@@ -90,10 +101,10 @@ const Rush = () => {
             <Form>
               <Row>
                 <Col className="col-12">
-                  <Form.Label>User role</Form.Label>
-                  <Form.Select name="court" className="form-select form-select-sm" onChange={onChange}>
+                  <Form.Label>Court</Form.Label>
+                  <Form.Select name="court" className="form-select form-select-sm" onChange={onChangeSelectCourt}>
                     <option value="">-- courts --</option>
-                    {courts.map((court) => <option key={court.id} value={court.id}>{court.label}</option>)}
+                    {courts.map((court) => <option key={court.id} value={`${court.id}:${court.initial_price}`}>{court.label}</option>)}
                   </Form.Select>
                   {errors.court_id &&
                     <span className="text-danger">{errors.court_id[ 0 ]}</span>}
@@ -109,6 +120,7 @@ const Rush = () => {
                 </Col>
                 <Col className="col-12">
                   <FormInput type="text" name="price_increase" label="Peak time price" value={values.price_increase} onChange={onChange} />
+                  {initialPrice && <span>Real price {initialPrice}</span>}
                   {errors.price_increase &&
                     <span className="text-danger">{errors.price_increase[ 0 ]}</span>}
                 </Col>
