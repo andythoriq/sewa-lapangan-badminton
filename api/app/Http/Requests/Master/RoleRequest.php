@@ -28,7 +28,11 @@ class RoleRequest extends FormRequest
         $id = isset($this->role) ? ($this->role->id ?? null) : null;
         return [
             'label' => ['required', 'alpha', 'min:3', 'max:20', Rule::unique('tb_role', 'label')->ignore($id)],
-            'menu' => ['required', 'string', 'max:191'],
+            'menu' => ['required', 'string', 'max:191', function($attr, $value, $fail) {
+                if ($value === '86afe930-5c36-11ee-8c99-0242ac120002') {
+                    $fail($attr . ' can\'t be the same as others');
+                }
+            }],
             'status' => ['required', 'string', 'in:Y,N'],
         ];
     }

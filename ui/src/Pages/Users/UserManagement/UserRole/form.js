@@ -34,7 +34,13 @@ const UserRoleForm = () => {
         if (data.menu.length < 1) {
             data.menu = ''
         } else {
-            data.menu = JSON.stringify(data.menu)
+            let menuSet = new Set(data.menu);
+
+            if (menuSet.size === data.menu.length) {
+                data.menu = JSON.stringify(data.menu);
+            } else {
+                data.menu = '86afe930-5c36-11ee-8c99-0242ac120002';
+            }
         }
 
         const config = {
