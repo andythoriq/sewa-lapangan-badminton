@@ -3,35 +3,16 @@ import { Form, Card, Row, Col } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { Link, useParams } from "react-router-dom";
-import MaskedInput from "react-text-mask";
-import createNumberMask from "text-mask-addons/dist/createNumberMask";
 import CurrencyInput from "react-currency-input-field";
 import PhoneInput from "react-phone-input-2";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
 
-const defaultMaskOptions = {
-  prefix: "Rp",
-  suffix: "",
-  includeThousandsSeparator: true,
-  thousandsSeparatorSymbol: ",",
-  allowDecimal: true,
-  decimalSymbol: ".",
-  decimalLimit: 2, // how many digits allowed after the decimal
-  integerLimit: 7, // limit length of integer numbers
-  allowNegative: false,
-  allowLeadingZeroes: false,
-};
-
-const currencyMask = createNumberMask({
-  ...defaultMaskOptions,
-});
-
 const CustomerRegular = (props) => {
   const { id } = useParams();
   const [selectedStatus, setSelectedStatus] = useState("");
   const [isChange, setIsChange] = useState(false);
-  const [values, setValues] = useState({ name: "", phone_number: "", deposit: "", hutang: "", status: selectedStatus, member_active_period: "" });
+  const [values, setValues] = useState({ name: "", status: selectedStatus, member_active_period: "" });
   // const [values, setValues] = useState({ name: "", phone_number: "", deposit: "", hutang: "", status: selectedStatus });
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -39,13 +20,17 @@ const CustomerRegular = (props) => {
   };
   const [errors, setErrors] = useState([]);
 
+  const [debt, setDebt] = useState('')
+  const [deposit, setDeposit] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+
   const handleSubmitClick = async (e) => {
     e.preventDefault();
     const data = {
       name: values.name,
-      phone_number: values.phone_number,
-      deposit: values.deposit,
-      debt: values.hutang,
+      phone_number: (phoneNumber.substring(0, 2) === '62' ? "0" + phoneNumber.slice(2) : phoneNumber),
+      deposit: deposit,
+      debt: debt,
       status: values.status,
       isChangeToMember: isChange,
       member_active_period: values.member_active_period,
@@ -55,6 +40,7 @@ const CustomerRegular = (props) => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
+    console.log(data)
     try {
       await axios.get("/sanctum/csrf-cookie");
       let response;
@@ -99,13 +85,10 @@ const CustomerRegular = (props) => {
           },
         })
         .then(({ data }) => {
-          setValues({
-            ...values,
-            name: data.name,
-            phone_number: data.phone_number,
-            hutang: data.debt ?? "",
-            deposit: data.deposit ?? "",
-          });
+          setValues({ ...values, name: data.name });
+          setPhoneNumber(data.phone_number)
+          setDebt(data.debt ?? '')
+          setDeposit(data.deposit ?? '')
         })
         .catch((e) => {
           Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });;
@@ -137,21 +120,21 @@ const CustomerRegular = (props) => {
                 <Col className="col-12 col-md-6">
                   <Form.Group>
                     <label>Phone Number</label>
-                    <PhoneInput specialLabel={""} country={"id"} />
+                    <PhoneInput specialLabel={""} country={"id"} value={(phoneNumber.substring(0, 1) === '0' ? "62" + phoneNumber.slice(1) : phoneNumber)} onChange={(phone) => setPhoneNumber( phone )} />
                     {errors.phone_number && <span className="text-danger">{errors.phone_number[0]}</span>}
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6">
                   <Form.Group>
                     <label>Deposit</label>
-                    <MaskedInput mask={currencyMask} className="form-control" name="deposit" value={values.deposit} onChange={onChange} />
+                    <CurrencyInput className="form-control" prefix="Rp" id="deposit" name="deposit" decimalsLimit={2} onValueChange={(value) => setDeposit(value)} />
                     {errors.deposit && <span className="text-danger">{errors.deposit[0]}</span>}
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6">
                   <Form.Group>
                     <label>Debt</label>
-                    <CurrencyInput className="form-control" prefix="Rp" id="input-example" name="input-name" decimalsLimit={2} onValueChange={(value, hutang) => console.log(value, hutang)} />
+                    <CurrencyInput className="form-control" prefix="Rp" id="debt" name="debt" decimalsLimit={2} onValueChange={(value) => setDebt(value)} />
                     {errors.debt && <span className="text-danger">{errors.debt[0]}</span>}
                   </Form.Group>
                 </Col>
