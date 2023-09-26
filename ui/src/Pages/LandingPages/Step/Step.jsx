@@ -51,7 +51,7 @@ const FormStep = () => {
           // window.location.href = "/login";
         }, 2000);
       } catch (e) {
-        if (e.response.status === 422) {
+        if (e?.response?.status === 422) {
           // setErrors(e.response.data.errors)
           console.log(e.response.data.errors);
         }

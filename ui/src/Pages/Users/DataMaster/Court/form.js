@@ -106,15 +106,15 @@ const CourtForm = () => {
                 window.location.href = "/data-master/court";
             }, 2000);
         } catch (e) {
-            if (e.response.status === 422) {
+            if (e?.response?.status === 422) {
                 setErrors(e.response.data.errors)
-            } else if (e.response?.status === 404 || e.response?.status === 403) {
+            } else if (e?.response?.status === 404 || e?.response?.status === 403) {
                 Swal.fire({
                     icon: "error", title: "Error!", html: e.response.data, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500
                 });
                 setTimeout(function () { window.location.href = "/" }, 1500);
             } else {
-                console.error(`Error : ${e}`)
+                Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
             }
         }
     };
@@ -136,7 +136,7 @@ const CourtForm = () => {
                 setImagePreview(data.image_path)
             })
             .catch((e) => {
-                console.error(`Error : ${e}`) 
+                Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }); 
             });
         }
     }, [])
