@@ -32,10 +32,10 @@ class AuthAdminRequest extends FormRequest
         switch ($this->route()->getName()) {
             case 'register-admin':
                 $validation = [
-                    'name' => ['required', 'string', 'max:90'],
+                    'name' => ['required', 'alpha', 'min:3', 'max:60'],
                     // 'email' => ['required', 'string', 'email', 'max:90', Rule::unique('users', 'email')],
-                    'username' => ['required', 'string', 'max:90', Rule::unique('users', 'username')],
-                    'phone_number' => ['required', 'string', 'max:20', Rule::unique('users', 'phone_number')],
+                    'username' => ['required', 'alpha_dash', 'min:3', 'max:20', Rule::unique('users', 'username')],
+                    'phone_number' => ['required', 'numeric', 'min:10', 'max:20', Rule::unique('users', 'phone_number')],
                     // 'status' => ['required', 'string', 'in:Y,N'],
                     'role_id' => ['required', 'integer', 'exists:tb_role,id'],
                     'password' => ['required', Password::defaults()],
@@ -46,7 +46,7 @@ class AuthAdminRequest extends FormRequest
                 $validation = [
                     // 'email' => ['required', 'email'],
                     // 'phone_number' => ['required', 'string', 'max:20'],
-                    'username' => ['required', 'string', 'max:90', 'exists:users,username'],
+                    'username' => ['required', 'alpha_dash', 'min:3', 'max:20', 'exists:users,username'],
                     'password' => ['required'],
                 ];
                 break;

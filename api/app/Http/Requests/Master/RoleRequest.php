@@ -27,8 +27,8 @@ class RoleRequest extends FormRequest
     {
         $id = isset($this->role) ? ($this->role->id ?? null) : null;
         return [
-            'label' => ['required', 'string', 'max:90', Rule::unique('tb_role', 'label')->ignore($id)],
-            'menu' => ['required', 'max:191'],
+            'label' => ['required', 'alpha', 'min:3', 'max:20', Rule::unique('tb_role', 'label')->ignore($id)],
+            'menu' => ['required', 'string', 'max:191'],
             'status' => ['required', 'string', 'in:Y,N'],
         ];
     }

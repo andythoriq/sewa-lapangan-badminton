@@ -27,8 +27,8 @@ class ConfigRequest extends FormRequest
     {
         $id = isset($this->config) ? ($this->config->id ?? null) : null;
         return  [
-            'slug' => ['required', 'string', 'max:90', Rule::unique('tb_configuration', 'slug')->ignore($id)],
-            'description' => ['required', 'max:120'],
+            'slug' => ['required', 'alpha_dash', 'min:3', 'max:90', Rule::unique('tb_configuration', 'slug')->ignore($id)],
+            'description' => ['required', 'max:90'],
             'value' => ['required', 'max:191'],
         ];
     }

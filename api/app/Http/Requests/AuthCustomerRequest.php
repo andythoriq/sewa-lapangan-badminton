@@ -37,13 +37,13 @@ class AuthCustomerRequest extends FormRequest
             case 'verify-otp':
                 $rules = [
                     // 'phone_number' => ['required', 'string', 'max:20'],
-                    'otp_code' => ['required', 'exists:tb_customer,otp_code']
+                    'otp_code' => ['required', 'digits:6', 'exists:tb_customer,otp_code']
                 ];
                 break;
             case 'send-otp':
                 $rules = [
-                    'name' => ['required', 'string', 'max:90'],
-                    'phone_number' => ['required', 'string', 'max:20'],
+                    'name' => ['required', 'alpha', 'min:3', 'max:60',],
+                    'phone_number' => ['required', 'numeric', 'min:10', 'max:20'],
                     // 'status' => ['required', 'string', 'in:Y,N'],
                     // 'password' => ['required', Password::defaults()]
                 ];

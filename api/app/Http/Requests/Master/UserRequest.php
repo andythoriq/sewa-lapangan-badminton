@@ -29,10 +29,10 @@ class UserRequest extends FormRequest
     {
         $id = isset($this->user) ? ($this->user->id ?? null) : null;
         return [
-            'name' => ['required', 'string', 'max:90'],
+            'name' => ['required', 'alpha', 'min:3', 'max:60'],
             // 'email' => ['required', 'string', 'email', 'max:90', Rule::unique('users', 'email')->ignore($id)],
-            'username' => ['required', 'string', 'max:90', Rule::unique('users', 'username')->ignore($id)],
-            'phone_number' => ['required', 'string', 'max:20', Rule::unique('users', 'phone_number')->ignore($id)],
+            'username' => ['required', 'alpha_dash', 'min:3', 'max:20', Rule::unique('users', 'username')->ignore($id)],
+            'phone_number' => ['required', 'numeric', 'max:20', Rule::unique('users', 'phone_number')->ignore($id)],
             'status' => ['required', 'string', 'in:Y,N'],
             'role_id' => ['required', 'integer', 'exists:tb_role,id'],
             'password' => ['required', Password::defaults()],

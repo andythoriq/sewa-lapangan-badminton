@@ -26,7 +26,7 @@ class CourtRequest extends FormRequest
     public function rules()
     {
         return [
-            'label' => ['required', 'string', 'max:90'],
+            'label' => ['required', 'alpha_num', 'min:3', 'max:60'],
             // 'image_path' => ['required', 'string', 'max:255'],
             // 'image_path' => ['required', 'image', 'max:5000', 'mimes:png,jpg,jpeg'],
             'image_path' => ['nullable', 'image', 'max:5000', 'mimes:png,jpg,jpeg'],

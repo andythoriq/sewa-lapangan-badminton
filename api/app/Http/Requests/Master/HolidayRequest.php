@@ -5,6 +5,7 @@ namespace App\Http\Requests\Master;
 use App\Models\HolidayModel;
 // use App\Traits\CollideCheck;
 // use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class HolidayRequest extends FormRequest
@@ -29,15 +30,15 @@ class HolidayRequest extends FormRequest
     {
         $id = isset($this->holiday) ? ($this->holiday->id ?? null) : null;
         $validation = [
-            'label' => ['required', 'string', 'max:90'],
-            'date' => ['required', 'date', 'date_format:Y-m-d'],
+            'label' => ['required', 'alpha_num', 'min:3','max:90'],
+            'date' => ['required', 'date', 'date_format:Y-m-d', Rule::unique('tb_holiday', 'date')->ignore($id)],
             // 'finish' => ['required', 'date', 'date_format:Y-m-d', 'after:start'],
         ];
         if($this->route()->getName() == 'create-multiple-holiday'){
             $validation = [
                 '*' => ['required', 'array', 'min:1'],
-                '*.label' => ['required', 'string', 'max:90'],
-                '*.date' => ['required', 'date', 'date_format:Y-m-d'],
+                '*.label' => ['required', 'alpha_num', 'min:3', 'max:90'],
+                '*.date' => ['required', 'date', 'date_format:Y-m-d', Rule::unique('tb_holiday', 'date')->ignore($id)],
                 // '*.finish' => ['required', 'date', 'date_format:Y-m-d', 'after:*.start']
             ];
         }
