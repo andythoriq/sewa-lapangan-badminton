@@ -30,14 +30,14 @@ class HolidayRequest extends FormRequest
     {
         $id = isset($this->holiday) ? ($this->holiday->id ?? null) : null;
         $validation = [
-            'label' => ['required', 'alpha_num', 'min:3','max:90'],
+            'label' => ['required', 'string', 'min:3','max:90'],
             'date' => ['required', 'date', 'date_format:Y-m-d', Rule::unique('tb_holiday', 'date')->ignore($id)],
             // 'finish' => ['required', 'date', 'date_format:Y-m-d', 'after:start'],
         ];
         if($this->route()->getName() == 'create-multiple-holiday'){
             $validation = [
                 '*' => ['required', 'array', 'min:1'],
-                '*.label' => ['required', 'alpha_num', 'min:3', 'max:90'],
+                '*.label' => ['required', 'string', 'min:3', 'max:90'],
                 '*.date' => ['required', 'date', 'date_format:Y-m-d', Rule::unique('tb_holiday', 'date')->ignore($id)],
                 // '*.finish' => ['required', 'date', 'date_format:Y-m-d', 'after:*.start']
             ];

@@ -42,8 +42,8 @@ class AuthCustomerRequest extends FormRequest
                 break;
             case 'send-otp':
                 $rules = [
-                    'name' => ['required', 'alpha', 'min:3', 'max:60',],
-                    'phone_number' => ['required', 'numeric', 'min:10', 'max:20'],
+                    'name' => ['required', 'regex:/^[A-Za-z\s]+$/', 'min:3', 'max:60',],
+                    'phone_number' => ['required', 'numeric', 'digits_between:10,20'],
                     // 'status' => ['required', 'string', 'in:Y,N'],
                     // 'password' => ['required', Password::defaults()]
                 ];

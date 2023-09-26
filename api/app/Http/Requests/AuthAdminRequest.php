@@ -32,10 +32,10 @@ class AuthAdminRequest extends FormRequest
         switch ($this->route()->getName()) {
             case 'register-admin':
                 $validation = [
-                    'name' => ['required', 'alpha', 'min:3', 'max:60'],
+                    'name' => ['required', 'regex:/^[A-Za-z\s]+$/', 'min:3', 'max:60'],
                     // 'email' => ['required', 'string', 'email', 'max:90', Rule::unique('users', 'email')],
                     'username' => ['required', 'alpha_dash', 'min:3', 'max:20', Rule::unique('users', 'username')],
-                    'phone_number' => ['required', 'numeric', 'min:10', 'max:20', Rule::unique('users', 'phone_number')],
+                    'phone_number' => ['required', 'numeric', 'digits_between:10,20', Rule::unique('users', 'phone_number')],
                     // 'status' => ['required', 'string', 'in:Y,N'],
                     'role_id' => ['required', 'integer', 'exists:tb_role,id'],
                     'password' => ['required', Password::defaults()],
