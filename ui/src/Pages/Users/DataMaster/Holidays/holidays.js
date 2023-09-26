@@ -87,12 +87,7 @@ const Holidays = () => {
         return rows.map((val, index) => {
           return (
             <tr key={val.id}>
-                <td className="text-center">
-                    <span className="custom-checkbox">
-                        <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                        <label htmlFor="checkbox1"></label>
-                    </span>
-                </td>
+                <td>{index + 1}</td>
                 <td>{val.label}</td>
                 <td>{FormatDate(val.date)}</td>
                 {/* <td>{FormatDate(val.finish)}</td> */}
@@ -139,7 +134,7 @@ const Holidays = () => {
                     <table className="table table-hover mt-3" border={1}>
                         <thead>
                             <tr>
-                                <th width={'1%'}></th>
+                                <th width={'1%'}>No</th>
                                 <th width={'30%'}>Label</th>
                                 <th width={'30%'} className="text-center">Date</th>
                                 {/* <th width={'30%'} className="text-center">Finish</th> */}

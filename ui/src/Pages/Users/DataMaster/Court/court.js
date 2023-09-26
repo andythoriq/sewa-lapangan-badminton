@@ -73,14 +73,9 @@ const Court = () => {
         return rows.map((val, index) => {
           return (
             <tr key={val.id}>
-                <td className="text-center">
-                    <span className="custom-checkbox">
-                        <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                        <label htmlFor="checkbox1"></label>
-                    </span>
-                </td>
+                <td>{index + 1}</td>
                 <td>{val.label}</td>
-                <td>{val.initial_price}</td>
+                <td>Rp {val.initial_price}</td>
                 <td>{val.image_path ? (
                       <img src={process.env.REACT_APP_BACKEND_URL + '/storage/' + val.image_path} alt={val.label} height={150} width={150} />
                   ) : (

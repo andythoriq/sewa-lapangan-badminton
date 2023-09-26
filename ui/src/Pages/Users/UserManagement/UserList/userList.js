@@ -81,12 +81,7 @@ const UserList = () => {
         return rows.map((val, index) => {
           return (
             <tr key={val.id}>
-                <td className="text-center">
-                    <span className="custom-checkbox">
-                        <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                        <label htmlFor="checkbox1"></label>
-                    </span>
-                </td>
+                <td>{index + 1}</td>
                 <td>{val.name}</td>
                 <td>{val.username === localStorage.getItem('username') ? val.username + ' (YOU)' : val.username }</td>
                 <td>{val.role}</td>
@@ -138,7 +133,7 @@ const UserList = () => {
                 <table className="table table-hover mt-3" border={1}>
                     <thead>
                         <tr>
-                            <th width={'1%'}></th>
+                            <th width={'1%'}>No</th>
                             <th width={'30%'}>Name</th>
                             <th width={'25%'}>Username</th>
                             <th width={'25%'}>Role</th>

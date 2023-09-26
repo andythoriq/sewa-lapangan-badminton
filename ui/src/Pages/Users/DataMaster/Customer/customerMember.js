@@ -3,24 +3,44 @@ import { Form, Card, Row, Col } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { Link, useParams } from "react-router-dom";
+import MaskedInput from "react-text-mask";
+import createNumberMask from "text-mask-addons/dist/createNumberMask";
+import CurrencyInput from "react-currency-input-field";
+import PhoneInput from "react-phone-input-2";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
 
+const defaultMaskOptions = {
+  prefix: "Rp",
+  suffix: "",
+  includeThousandsSeparator: true,
+  thousandsSeparatorSymbol: ",",
+  allowDecimal: true,
+  decimalSymbol: ".",
+  decimalLimit: 2, // how many digits allowed after the decimal
+  integerLimit: 7, // limit length of integer numbers
+  allowNegative: false,
+  allowLeadingZeroes: false,
+};
+
+const currencyMask = createNumberMask({
+  ...defaultMaskOptions,
+});
 
 const CustomerMember = () => {
   const { id } = useParams();
-  const [ selectedStatus, setSelectedStatus ] = useState("")
-  const [ isChange, setIsChange ] = useState(false)
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [isChange, setIsChange] = useState(false);
   const [values, setValues] = useState({ name: "", phone_number: "", deposit: "", hutang: "", status: selectedStatus, member_active_period: "" });
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
-    setSelectedStatus(e.target.value)
+    setSelectedStatus(e.target.value);
   };
 
-  const [ errors, setErrors ] = useState([])
+  const [errors, setErrors] = useState([]);
 
   const handleSubmitClick = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const data = {
       name: values.name,
       phone_number: values.phone_number,
@@ -28,22 +48,22 @@ const CustomerMember = () => {
       debt: values.hutang,
       status: values.status,
       isChangeToRegular: isChange,
-      member_active_period: values.member_active_period
-    }
+      member_active_period: values.member_active_period,
+    };
     const config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    }
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
     try {
-      await axios.get('/sanctum/csrf-cookie')
-      let response
+      await axios.get("/sanctum/csrf-cookie");
+      let response;
       if (id) {
-        response = await axios.put('/api/customer/member/' + id, data, config)
+        response = await axios.put("/api/customer/member/" + id, data, config);
       } else {
-        response = await axios.post('/api/customer/member', data, config);
+        response = await axios.post("/api/customer/member", data, config);
       }
-      setErrors('');
+      setErrors("");
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
         window.location.href = "/data-master/member";
@@ -53,37 +73,46 @@ const CustomerMember = () => {
         setErrors(e.response.data.errors)
       } else if (e?.response?.status === 404 || e?.response?.status === 403) {
         Swal.fire({
-          icon: "error", title: "Error!", html: e.response.data, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500
+          icon: "error",
+          title: "Error!",
+          html: e.response.data,
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          timer: 1500,
         });
-        setTimeout(function () { window.location.href = "/" }, 1500);
+        setTimeout(function () {
+          window.location.href = "/";
+        }, 1500);
       } else {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
     }
-  }
+  };
 
   useEffect(() => {
     if (id) {
-      axios.get('/api/customer/member/' + id + '/edit', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      })
+      axios
+        .get("/api/customer/member/" + id + "/edit", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
         .then(({ data }) => {
           setValues({
             ...values,
             name: data.name,
             phone_number: data.phone_number,
-            hutang: data.debt ?? '',
-            deposit: data.deposit ?? '',
-            member_active_period: data.member_active_period.substring(0, 10)
-          })
+            hutang: data.debt ?? "",
+            deposit: data.deposit ?? "",
+            member_active_period: data.member_active_period.substring(0, 10),
+          });
         })
         .catch((e) => {
           Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
         });
     }
-  },[])
+  }, []);
 
   return (
     <>
@@ -103,32 +132,31 @@ const CustomerMember = () => {
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
                     <FormInput type="text" name="name" label="Name" value={values.name} onChange={onChange} />
-                    {errors.name &&
-                      <span className="text-danger">{errors.name[ 0 ]}</span>}
+                    {errors.name && <span className="text-danger">{errors.name[0]}</span>}
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
-                    <FormInput type="text" name="phone_number" label="Phone number" value={values.phone_number} onChange={onChange} />
-                    {errors.phone_number &&
-                      <span className="text-danger">{errors.phone_number[ 0 ]}</span>}
+                    <label>Phone Number</label>
+                    <PhoneInput specialLabel={""} country={"id"} />
+                    {errors.phone_number && <span className="text-danger">{errors.phone_number[0]}</span>}
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
-                    <FormInput type="text" name="deposit" label="Deposit" value={values.deposit} onChange={onChange} />
-                    {errors.deposit &&
-                      <span className="text-danger">{errors.deposit[ 0 ]}</span>}
+                    <label>Deposit</label>
+                    <MaskedInput mask={currencyMask} className="form-control" name="deposit" value={values.deposit} onChange={onChange} />
+                    {errors.deposit && <span className="text-danger">{errors.deposit[0]}</span>}
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
-                    <FormInput type="text" name="hutang" label="Debt" value={values.hutang} onChange={onChange} />
-                    {errors.dept &&
-                      <span className="text-danger">{errors.dept[ 0 ]}</span>}
+                    <label>Debt</label>
+                    <CurrencyInput className="form-control" prefix="Rp" id="input-example" name="input-name" decimalsLimit={2} onValueChange={(value, hutang) => console.log(value, hutang)} />
+                    {errors.dept && <span className="text-danger">{errors.dept[0]}</span>}
                   </Form.Group>
                 </Col>
-                {id &&
+                {id && (
                   <Col className="col-12 col-sm-8 m-auto">
                     <label className="mt-2">change membership status</label>
                     <div className="d-flex">
@@ -137,12 +165,12 @@ const CustomerMember = () => {
                         <label htmlFor="chToRegId" className="text-success">Change to regular</label>
                       </div>
                     </div>
-                  </Col>}
+                  </Col>
+                )}
                 <Col className="col-12 col-sm-8 m-auto">
                   <Form.Group>
                     <FormInput type="date" name="member_active_period" label="Active Period" value={values.member_active_period} onChange={onChange} />
-                    {errors.member_active_period &&
-                      <span className="text-danger">{errors.member_active_period[ 0 ]}</span>}
+                    {errors.member_active_period && <span className="text-danger">{errors.member_active_period[0]}</span>}
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-sm-8 m-auto">
@@ -158,8 +186,7 @@ const CustomerMember = () => {
                       <label htmlFor="inActiveId">In active</label>
                     </div>
                   </div>
-                  {errors.status &&
-                    <span className="text-danger">{errors.status[ 0 ]}</span>}
+                  {errors.status && <span className="text-danger">{errors.status[0]}</span>}
                 </Col>
                 <Col className="col-12 col-sm-8 col-md-8 m-auto text-right pt-3">
                   <button onClick={handleSubmitClick} type="button" className="btn btn-danger mt-2">

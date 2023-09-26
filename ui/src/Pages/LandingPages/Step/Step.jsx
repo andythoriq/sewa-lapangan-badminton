@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Card, Col, Container, Row, Form, Button } from "react-bootstrap";
 import { logoApp, namaApp } from "../../../Components/Services/config";
 import FormInput from "../../../Components/Form/input";
+import PhoneInput from "react-phone-input-2";
 import axios from "../../../api/axios";
 import NavbarPublic from "../../../Components/NavbarPublic";
 import FooterPublic from "../../../Components/FooterPublic";
 
 const FormStep = () => {
-  const [values, setValues] = useState({ fullname: "", phonenumber: "",});
+  const [values, setValues] = useState({ fullname: "", phonenumber: "" });
   const [errors, setErrors] = useState({});
 
   const inputs = [
@@ -102,11 +103,14 @@ const FormStep = () => {
                 <br />
                 <br />
                 <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
-                  {inputs.map((input) => (
-                    <Form.Group key={input.id} className="mb-2">
-                      <FormInput key={input.id} {...input} value={values[input.name]} onChange={onChange} icon={input.icon} />
-                    </Form.Group>
-                  ))}
+                  <Form.Group className="mb-2">
+                    <FormInput type="text" name="name" label="Full name" value={values.name} placeholder="input full name" onChange={onChange} />
+                  </Form.Group>
+                  <Form.Group className="mb-2">
+                    <label>Phone Number</label>
+                    <PhoneInput specialLabel={""} country={"id"} placeholder="input phone number"/>
+                  </Form.Group>
+
                   {/* <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded" href="/step2">
                   Next
                 </Button> */}
@@ -119,7 +123,7 @@ const FormStep = () => {
           </Row>
         </Card>
       </Container>
-      <FooterPublic style={{marginTop: "100px"}}/>
+      <FooterPublic style={{ marginTop: "100px" }} />
     </>
   );
 };

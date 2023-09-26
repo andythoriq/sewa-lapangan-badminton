@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { Card, Col, Container, Row, Form, Button } from "react-bootstrap";
 import { logoApp, namaApp } from "../../../Components/Services/config";
 import FormInput from "../../../Components/Form/input";
+import OTPInput, { ResendOTP } from "otp-input-react";
 import Swal from "sweetalert2";
 import NavbarPublic from "../../../Components/NavbarPublic";
 import FooterPublic from "../../../Components/FooterPublic";
 import "../nav.css";
 
 const Step2 = () => {
+  const [OTP, setOTP] = useState("");
   const [values, setValues] = useState({ verifikasi: "" });
   const [errors, setErrors] = useState({});
 
@@ -71,14 +73,14 @@ const Step2 = () => {
               <b className="text-heading" style={{ fontSize: 25 }}>
                 Check your inbox!
               </b>
-              <p style={{fontSize:13}}>We are sending an phone<br/>numbererification code to WhatsApp<br/>please enter the code. - <b class="text-danger">BFB</b></p>
+              <p style={{fontSize:13}}>We are sending an phone<br/>numberverification code to WhatsApp<br/>please enter the code. - <b class="text-danger">BFB</b></p>
               <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
                 {inputs.map((input) => (
-                  <Form.Group key={input.id} className="mb-2">
-                    <FormInput key={input.id} {...input} value={values[input.name]} onChange={onChange} icon={input.icon} />
+                  <Form.Group className="mb-3">
+                    <OTPInput value={OTP} onChange={setOTP}  OTPLength={6} otpType="number" />
                   </Form.Group>
                 ))}
-                <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded" >
+                <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded m-2" >
                   Submit
                 </Button>
               </Form>

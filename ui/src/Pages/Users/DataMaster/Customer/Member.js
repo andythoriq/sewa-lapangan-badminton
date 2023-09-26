@@ -71,17 +71,12 @@ const Member = () => {
         return rows.map((val, index) => {
           return (
             <tr key={val.customer_code}>
-                <td className="text-center">
-                    <span className="custom-checkbox">
-                        <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                        <label htmlFor="checkbox1"></label>
-                    </span>
-                </td>
+                <td>{index + 1}</td>
                 <td>{val.name}</td>
                 <td>{val.phone_number}</td>
                 <td>{val.member_active_period}</td>
-                <td>{val.deposit}</td>
-                <td>{val.debt}</td>
+                <td>Rp {val.deposit}</td>
+                <td>Rp {val.debt}</td>
                 <td className="text-center"><label className={`badge text-bg-${val.status === 'Y' ? 'green' : 'danger'} text-dark`}>{val.status}</label></td>
                 <td className="text-center">
                     <Link to={'/data-master/customer-member/edit/'+val.customer_code} className="edit">
@@ -123,7 +118,7 @@ const Member = () => {
                 <table className="table table-hover mt-2" border={1}>
                     <thead>
                         <tr>
-                            <th width={'1%'}></th>
+                            <th width={'1%'}>No</th>
                             <th width={'15%'}>Name</th>
                             <th width={'15%'}>Phone number</th>
                             <th width={'20%'}>Active Peroid</th>

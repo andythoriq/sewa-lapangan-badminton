@@ -76,14 +76,15 @@ const UserRole = () => {
         return rows.map((val, index) => {
           return (
             <tr key={val.id}>
-                <td className="text-center">
+                {/* <td className="text-center">
                     <span className="custom-checkbox">
                         <input type="checkbox" id="checkbox1" name="options[]" value="1" />
                         <label htmlFor="checkbox1"></label>
                     </span>
-                </td>
+                </td> */}
                 <td>{val.label}</td>
                 <td className="text-center"><label className={`badge text-bg-${val.status === 'Y' ? 'green' : 'danger'} text-dark`}>{(val.status === 'Y' ? 'active' : 'in active')}</label></td>
+                <td>{index + 1}</td>
                 <td className="text-center">
                     <Link to={'/user-management/user-role/edit/'+val.id} className="edit">
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>
@@ -124,7 +125,7 @@ const UserRole = () => {
                     <table className="table table-hover mt-3" border={1}>
                         <thead>
                             <tr>
-                                <th width={'1%'}></th>
+                                <th width={'1%'}>No</th>
                                 <th width={'80%'}>Rolename</th>
                                 <th width={'10%'} className="text-center">Status</th>
                                 <th width={'9%'} className="text-center">Action</th>
