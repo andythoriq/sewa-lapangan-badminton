@@ -46,7 +46,7 @@ const FormSelect = (props) => {
             {...inputProps}
             className={`formSelect ${className?className:""}`}
             classNamePrefix="form-select-custom"  
-            onBlur={() => props.input.onBlur(props.input.value)}
+            // onBlur={() => props.input.onBlur(props.input.value)}
             defaultValue={selected ? selected:""}
             options={options}
             styles={styles}

@@ -125,6 +125,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(CourtController::class)->middleware('admin')->group(function () {
         Route::get('/court', 'index');
         Route::get('/court/{court}', 'show');
+        Route::get('/court-select', 'court_select');
         Route::get('/court-edit/{court}', 'edit');
         Route::post('/court', 'create');
         Route::post('/court/{court}', 'update');

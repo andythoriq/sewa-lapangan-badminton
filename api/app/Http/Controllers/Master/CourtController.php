@@ -22,6 +22,12 @@ class CourtController extends Controller
         return new CourtResource($court->loadMissing(['rentals', 'peak_times']));
     }
 
+    public function court_select()
+    {
+        $courts = CourtModel::select(['id AS value', 'label'])->get();
+        return response()->json($courts);
+    }
+
     public function edit(CourtModel $court)
     {
         return response()->json($court->only(['label', 'initial_price', 'description', 'image_path']));

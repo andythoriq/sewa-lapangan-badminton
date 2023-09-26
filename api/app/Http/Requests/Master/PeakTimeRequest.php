@@ -38,8 +38,8 @@ class PeakTimeRequest extends FormRequest
         if($this->route()->getName() == 'create-multiple-peak-time'){
             $validation = [
                 '*' => ['required', 'array', 'min:1'],
-                '*.start' => ['required', 'date', 'date_format:Y-m-d H:i', 'after_or_equal:now'],
-                '*.finish' => ['required', 'date', 'date_format:Y-m-d H:i', 'after:*.start'],
+                '*.start' => ['required', 'date', 'date_format:H:i', 'after_or_equal:now'],
+                '*.finish' => ['required', 'date', 'date_format:H:i', 'after:*.start'],
                 '*.court_id' => ['required', 'integer', 'exists:tb_court,id'],
                 '*.price_increase' => ['required', 'numeric', 'min:0.01', 'max:1000000.00'],
                 '*.day_name' => ['required', 'in:monday,tuesday,wednesday,thursday,friday,saturday,sunday', 'max:20']

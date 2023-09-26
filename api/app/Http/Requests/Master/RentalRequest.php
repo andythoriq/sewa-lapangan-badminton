@@ -34,7 +34,7 @@ class RentalRequest extends FormRequest
     public function rules()
     {
         $validation = [
-            'finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:start'],
+            'finish' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after:start'],
             // 'status' => ['required', 'string', 'in:B,O,F'],
             'court_id' => ['required', 'integer', 'exists:tb_court,id'],
             // 'transaction_id' => ['required', 'integer', 'exists:tb_transaction,id'],
@@ -44,23 +44,23 @@ class RentalRequest extends FormRequest
 
         switch ($this->route()->getName()) {
             case 'create-rental':
-                $validation['start'] = ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'];
+                $validation['start'] = ['required', 'date', 'date_format:Y-m-d\TH:i', 'after_or_equal:now'];
                 break;
 
             case 'update-rental':
-                $validation['start'] = ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . $this->created_at];
+                $validation['start'] = ['required', 'date', 'date_format:Y-m-d\TH:i', 'after_or_equal:' . $this->created_at];
                 break;
 
             case 'create-multiple-rental':
                 $validation = [
-                    '*' => ['required', 'array', 'min:1'],
-                    '*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'],
-                    '*.finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:*.start'],
+                    'customer_id' => ['required', 'string', 'exists:tb_customer,customer_code'],
+                    'user_id' => ['nullable', 'integer', 'exists:users,id'],
+                    'rentals' => ['required', 'array', 'min:1'],
+                    'rentals.*.start' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after_or_equal:now'],
+                    'rentals.*.finish' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after:*.start'],
                     // 'rentals.*.status' => ['required', 'string', 'in:B,O,F'],
-                    '*.court_id' => ['required', 'integer', 'exists:tb_court,id'],
+                    'rentals.*.court_id' => ['required', 'integer', 'exists:tb_court,id'],
                     // 'rentals.*.transaction_id' => ['required', 'integer', 'exists:tb_transaction,id'],
-                    '*.customer_id' => ['required', 'string', 'exists:tb_customer,customer_code'],
-                    '*.user_id' => ['nullable', 'integer', 'exists:users,id'],
                 ];
                 break;
         }
@@ -153,6 +153,7 @@ class RentalRequest extends FormRequest
             $transaction->total_hour += Carbon::parse($data[$i]['start'])->diffInHours($data[$i]['finish']);
 
             $data[$i]['transaction_id'] = $transaction->id;
+            $data[$i]['customer_id'] = $this->customer_id;
             $data[$i]['created_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
             $data[$i]['updated_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
         }
