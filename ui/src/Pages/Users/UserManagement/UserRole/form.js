@@ -21,7 +21,7 @@ const UserRoleForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        let data = {
+        const data = {
             label: values.rolename,
             menu: [],
             status: values.status,

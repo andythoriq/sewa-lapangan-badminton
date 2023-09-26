@@ -90,7 +90,7 @@ const UserList = () => {
                 <td>{val.name}</td>
                 <td>{val.username === localStorage.getItem('username') ? val.username + ' (YOU)' : val.username }</td>
                 <td>{val.role}</td>
-                <td className="text-center"><label className={`badge text-bg-${val.status === 'Y' ? 'green' : 'secondary'} text-dark`}>{val.status}</label></td>
+                <td className="text-center"><label className={`badge text-bg-${val.status === 'Y' ? 'green' : 'secondary'} text-dark`}>{(val.status === 'Y' ? 'active' : 'in active' )}</label></td>
                 <td className="text-center">
                     <Link to={'/user-management/user-list/edit/'+val.id} className="edit">
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>
