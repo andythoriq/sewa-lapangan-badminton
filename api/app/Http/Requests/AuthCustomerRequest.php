@@ -5,10 +5,10 @@ namespace App\Http\Requests;
 use App\Traits\SendWA;
 use App\Models\CustomerModel;
 use Illuminate\Support\Carbon;
-use Illuminate\Validation\Rule;
+// use Illuminate\Validation\Rule;
 use App\Traits\CustomerCodeFormat;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
+// use Illuminate\Support\Facades\Hash;
+// use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
@@ -73,10 +73,16 @@ class AuthCustomerRequest extends FormRequest
         $validated = $this->validated();
         $customer = CustomerModel::where('phone_number', $validated['phone_number']);
         if ($customer->exists()) {
-            $customer->update([
-                'otp_code' => $otp,
-                'expiration' => Carbon::now('Asia/Jakarta')->addMinutes(15)
-            ]);
+            if (Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->firstOrFail()->expiration))) {
+                throw ValidationException::withMessages([
+                    'phone_number' => ['Can\'t get OTP in less than 15 minutes.']
+                ]);
+            } else {
+                $customer->update([
+                    'otp_code' => $otp,
+                    'expiration' => Carbon::now('Asia/Jakarta')->addMinutes(15)
+                ]);
+            }
         } else {
             $validated['membership_status'] = 'R';
             $validated['status'] = 'Y';
