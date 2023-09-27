@@ -165,7 +165,7 @@ const Setting = () => {
                 </center>
                   <Col className="col-12 text-right mt-4">
                     <button type="submit" className="btn btn-danger btn-sm me-md-6">
-                      Save Change
+                      Save
                     </button>
                   </Col>
                 </Col>

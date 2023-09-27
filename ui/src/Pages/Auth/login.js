@@ -1,10 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { Form, Button } from "react-bootstrap";
 import FormInput from "../../Components/Form/input";
+import Loader from "../../Components/Loader/Loading";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
 
 const Login = () => {
+  // loader state
+  const [isLoading, setIsLoading] = useState(true);
+
+  // create sync method to fetch
+  useEffect(() => {
+    const DataFetch = () => {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 400);
+    };
+
+    DataFetch();
+  }, []);
   const [values, setValues] = useState({ username: "", password: "" });
   const [ errors, setErrors ] = useState([]);
 
@@ -68,7 +82,9 @@ const Login = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  return (
+  return isLoading? (
+    <Loader />
+    )  :  (
     <>
       <div className="wrapper bg-dark  d-flex align-items-center justify-content-center w-100" style={{ height: "100vh" }}>
         <div className="login w-400 bg-white rounded-3" style={{ padding: 50 }}>
@@ -89,6 +105,6 @@ const Login = () => {
         </div>
       </div>
     </>
-  );
+      );
 };
 export default Login;
