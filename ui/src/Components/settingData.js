@@ -13,9 +13,9 @@ export let settingData =
 {
     "data":{
         "name": "Gor ABC",
-        "whatsapp_number": "0808",
+        "whatsapp_number": "08952376327",
         "email": "gorabc@email.com",
-        "address": "lorem ipsum dolor sit"
+        "address": "Alamat ini terletak di daerah tangerang, dekat dengan wilayah sekolah. nyatanya memang lapangan badminton sekolah cuy."
     },
     "open_days": [
         {

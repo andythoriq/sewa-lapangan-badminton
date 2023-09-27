@@ -1,9 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import { Nav, Navbar } from "react-bootstrap";
 import "./nav.css";
+import Loader from "../../Components/Loader/Loading.js";
 
 const Landing = () => {
+  // loader state
+  const [isLoading, setIsLoading] = useState(true);
+
+  // create sync method to fetch
+  useEffect(() => {
+    const DataFetch = () => {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+    };
+
+    DataFetch();
+  }, []);
   const [color, setColor] = useState(false);
   const changeColor = () => {
     if (window.scrollY >= 90) {
@@ -15,8 +29,10 @@ const Landing = () => {
 
   window.addEventListener("scroll", changeColor);
 
-  return (
-    <>
+  return isLoading? (
+    <Loader />
+      )  : (
+   <>
       {/* navbar */}
       <Navbar expand="lg" className={color ? "nav nav-bg" : "nav"}>
         <Container>
@@ -38,9 +54,6 @@ const Landing = () => {
               <Nav.Link href="#servis" style={{ marginRight: "30px", color: "white" }}>
                 Services
               </Nav.Link>
-              <Nav.Link href="#contact" style={{ marginRight: "30px", color: "white" }}>
-                Contact
-              </Nav.Link>
             </Nav>
             <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} href="userstep">
               Register
@@ -49,7 +62,6 @@ const Landing = () => {
         </Container>
       </Navbar>
       {/* akhir navbar */}
-
       {/* header */}
       <div className="p-5 mb-4 bg-light jumbotron">
         <div className="container py-5">
@@ -63,7 +75,6 @@ const Landing = () => {
         </div>
       </div>
       {/* end header */}
-
       {/* about */}
       <section id="about" style={{ padding: "60px 0", marginBottom: "70px" }}>
         <div className="about-area section-padding" id="about">
@@ -91,7 +102,6 @@ const Landing = () => {
         </div>
       </section>
       {/* about */}
-
       {/* Card Court */}
       <section id="court">
         <div className="container py-5">
@@ -227,9 +237,8 @@ const Landing = () => {
         </div>
       </section>
       {/* end card court */}
-
       {/* Servicer */}
-      <Container id="servis" >
+      <Container id="servis">
         <section className="setup" style={{ padding: "30px 0", marginBottom: "70px" }}>
           <div className="container py-5">
             <div className="row cnt2 text-center">
@@ -279,7 +288,6 @@ const Landing = () => {
         </section>
       </Container>
       {/* end about work */}
-
       {/* footer */}
       <div className="footer lpages text-center text-light p-3 mt-5">
         <div className="last-footer">
@@ -287,7 +295,7 @@ const Landing = () => {
         </div>
       </div>
     </>
-  );
+    );
 };
 
 export default Landing;

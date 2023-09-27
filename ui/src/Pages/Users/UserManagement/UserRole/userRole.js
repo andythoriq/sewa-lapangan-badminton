@@ -82,9 +82,11 @@ const UserRole = () => {
                         <label htmlFor="checkbox1"></label>
                     </span>
                 </td> */}
-                <td>{val.label}</td>
-                <td className="text-center"><label className={`badge text-bg-${val.status === 'Y' ? 'green' : 'danger'} text-dark`}>{(val.status === 'Y' ? 'active' : 'in active')}</label></td>
                 <td>{index + 1}</td>
+                <td>{val.label}</td>
+                <td className="text-center">
+                    <label className={`badge text-bg-${val.status === 'Y' ? 'green' : 'danger'} text-dark`}>{(val.status === 'Y' ? 'active' : 'in active')}</label>
+                </td>
                 <td className="text-center">
                     <Link to={'/user-management/user-role/edit/'+val.id} className="edit">
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>

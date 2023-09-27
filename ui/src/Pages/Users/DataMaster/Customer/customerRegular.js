@@ -3,29 +3,10 @@ import { Form, Card, Row, Col } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { Link, useParams } from "react-router-dom";
-import MaskedInput from "react-text-mask";
-import createNumberMask from "text-mask-addons/dist/createNumberMask";
 import CurrencyInput from "react-currency-input-field";
 import PhoneInput from "react-phone-input-2";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
-
-const defaultMaskOptions = {
-  prefix: "Rp",
-  suffix: "",
-  includeThousandsSeparator: true,
-  thousandsSeparatorSymbol: ",",
-  allowDecimal: true,
-  decimalSymbol: ".",
-  decimalLimit: 2, // how many digits allowed after the decimal
-  integerLimit: 7, // limit length of integer numbers
-  allowNegative: false,
-  allowLeadingZeroes: false,
-};
-
-const currencyMask = createNumberMask({
-  ...defaultMaskOptions,
-});
 
 const CustomerRegular = (props) => {
   const { id } = useParams();
@@ -144,7 +125,7 @@ const CustomerRegular = (props) => {
                 <Col className="col-12 col-md-6">
                   <Form.Group>
                     <label>Deposit</label>
-                    <MaskedInput mask={currencyMask} className="form-control" name="deposit" value={values.deposit} onChange={onChange} />
+                    <CurrencyInput className="form-control" prefix="Rp" id="input-example" name="input-name" decimalsLimit={2} onValueChange={(value, deposit) => console.log(value, deposit)} />
                     {errors.deposit && <span className="text-danger">{errors.deposit[0]}</span>}
                   </Form.Group>
                 </Col>
