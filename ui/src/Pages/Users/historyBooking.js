@@ -45,7 +45,7 @@ const HistoryBooking = () => {
     const TableRows = ({ rows }) => {
         return rows.map((val, index) => {
           return (
-            <tr>
+            <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{val.name}</td>
                 <td>{val.court}</td>

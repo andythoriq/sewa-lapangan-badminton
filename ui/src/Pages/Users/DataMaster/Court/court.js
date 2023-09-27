@@ -48,12 +48,35 @@ const Court = () => {
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
+    const handleSearch = async (e) => {
+        e.preventDefault()
+        try {
+            const { data } = await axios.get('/api/court?keyword=' + values.search,{
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setCourts(data)
+            if (data.length < 1) {
+                Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in court not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        setCourts(originalCourts)
+                    }
+                })
+            }
+        } catch (e) {
+            Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+        }
+    }
+
     // let listData = [
     //     {id:1, court:"Court A", price:"Rp 50,000/hour", img:"", description:"", status:"Active", status_color:"cyan"},
     //     {id:2, court:"Court C", price:"Rp 50,000/hour", img:"", description:"", status:"In active", status_color:"red"},
     // ];
 
     const [courts, setCourts] = useState([]);
+    const [originalCourts, setOriginalCourts] = useState([])
 
     useEffect(() => {
         axios.get('/api/court', {
@@ -63,6 +86,7 @@ const Court = () => {
         })
         .then(({data}) => {
             setCourts(data);
+            setOriginalCourts(data)
         })
         .catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -109,7 +133,9 @@ const Court = () => {
             <Row>
                 <Col className="col-12 col-md-4" style={{marginTop:-20}} >
                     <Form.Group className="inputSearch">
-                        <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Search"/>
+                        <Form onSubmit={handleSearch}>
+                            <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Enter to search"/>
+                        </Form>
                     </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6 pt-1">

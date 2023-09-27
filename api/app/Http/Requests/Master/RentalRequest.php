@@ -57,7 +57,7 @@ class RentalRequest extends FormRequest
                     'user_id' => ['nullable', 'integer', 'exists:users,id'],
                     'rentals' => ['required', 'array', 'min:1'],
                     'rentals.*.start' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after_or_equal:now'],
-                    'rentals.*.finish' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after:*.start'],
+                    'rentals.*.finish' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after:rentals.*.start'],
                     // 'rentals.*.status' => ['required', 'string', 'in:B,O,F'],
                     'rentals.*.court_id' => ['required', 'integer', 'exists:tb_court,id'],
                     // 'rentals.*.transaction_id' => ['required', 'integer', 'exists:tb_transaction,id'],
@@ -143,9 +143,9 @@ class RentalRequest extends FormRequest
 
             $court_initial_price = CourtModel::select('initial_price')->where('id', $rental['court_id'])->firstOrFail()->initial_price;
 
-            $court_initial_price = ceil($court_initial_price / 1.25);
+            $ceiled = ceil($court_initial_price / 1.25);
 
-            $rental['price'] = $this->getCost($rental['start'], $rental['finish'], $court_initial_price);
+            $rental['price'] = $this->getCost($rental['start'], $rental['finish'], $ceiled);
 
             $transaction->total_price += $rental['price'];
             $transaction->total_hour += Carbon::parse($rental['start'])->diffInHours($rental['finish']);
@@ -156,7 +156,7 @@ class RentalRequest extends FormRequest
             $rental['updated_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
         }
         $transaction->saveOrFail();
-        RentalModel::insert($data);
+        RentalModel::insert($data['rentals']);
 
         return [
             'bc' => $transaction->booking_code,

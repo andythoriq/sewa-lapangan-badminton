@@ -12,7 +12,7 @@ const CustomerMember = () => {
   const { id } = useParams();
   const [selectedStatus, setSelectedStatus] = useState("");
   const [isChange, setIsChange] = useState(false);
-  const [values, setValues] = useState({ name: "", phone_number: "", deposit: "", hutang: "", status: selectedStatus, member_active_period: "" });
+  const [values, setValues] = useState({ name: "", status: selectedStatus, member_active_period: "" });
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
     setSelectedStatus(e.target.value);
@@ -20,13 +20,17 @@ const CustomerMember = () => {
 
   const [errors, setErrors] = useState([]);
 
+   const [debt, setDebt] = useState('')
+   const [deposit, setDeposit] = useState('')
+   const [phoneNumber, setPhoneNumber] = useState('')
+
   const handleSubmitClick = async (e) => {
     e.preventDefault();
     const data = {
       name: values.name,
-      phone_number: values.phone_number,
-      deposit: values.deposit,
-      debt: values.hutang,
+      phone_number: (phoneNumber.substring(0, 2) === '62' ? "0" + phoneNumber.slice(2) : phoneNumber),
+      deposit: deposit,
+      debt: debt,
       status: values.status,
       isChangeToRegular: isChange,
       member_active_period: values.member_active_period,
@@ -80,14 +84,10 @@ const CustomerMember = () => {
           },
         })
         .then(({ data }) => {
-          setValues({
-            ...values,
-            name: data.name,
-            phone_number: data.phone_number,
-            hutang: data.debt ?? "",
-            deposit: data.deposit ?? "",
-            member_active_period: data.member_active_period.substring(0, 10),
-          });
+          setValues({ ...values, name: data.name, member_active_period: data.member_active_period.substring(0, 10) });
+          setPhoneNumber(data.phone_number)
+          setDebt(data.debt ?? '')
+          setDeposit(data.deposit ?? '')
         })
         .catch((e) => {
           Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -119,22 +119,22 @@ const CustomerMember = () => {
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
                     <label>Phone Number</label>
-                    <PhoneInput specialLabel={""} country={"id"} />
+                    <PhoneInput specialLabel={""} country={"id"} value={(phoneNumber.substring(0, 1) === '0' ? "62" + phoneNumber.slice(1) : phoneNumber)} onChange={(phone) => setPhoneNumber( phone )} />
                     {errors.phone_number && <span className="text-danger">{errors.phone_number[0]}</span>}
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
                     <label>Deposit</label>
-                    <CurrencyInput className="form-control" prefix="Rp" id="input-example" name="input-name" decimalsLimit={2} onValueChange={(value, deposit) => console.log(value, deposit)} />
+                    <CurrencyInput className="form-control" prefix="Rp" id="deposit" name="deposit" decimalsLimit={2} onValueChange={(value) => setDeposit(value)} />
                     {errors.deposit && <span className="text-danger">{errors.deposit[0]}</span>}
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
                     <label>Debt</label>
-                    <CurrencyInput className="form-control" prefix="Rp" id="input-example" name="input-name" decimalsLimit={2} onValueChange={(value, hutang) => console.log(value, hutang)} />
-                    {errors.dept && <span className="text-danger">{errors.dept[0]}</span>}
+                    <CurrencyInput className="form-control" prefix="Rp" id="debt" name="debt" decimalsLimit={2} onValueChange={(value) => setDebt(value)} />
+                    {errors.debt && <span className="text-danger">{errors.debt[0]}</span>}
                   </Form.Group>
                 </Col>
                 {id && (
@@ -142,18 +142,20 @@ const CustomerMember = () => {
                     <label className="mt-2">change membership status</label>
                     <div className="d-flex">
                       <div className="form-check">
-                        <input id="chToRegId" type="radio" className="form-check-input border-success border-3" onClick={() => setIsChange(!isChange)} />
-                        <label htmlFor="chToRegId" className="text-success">Change to regular</label>
+                        <button type="button" className="btn btn-warning btn-sm text-white" onClick={() => setIsChange(!isChange)} label="Change">
+                          Change
+                        </button>
                       </div>
                     </div>
                   </Col>
                 )}
-                <Col className="col-12 col-sm-8 m-auto">
+                { isChange === false &&
+                  <Col className="col-12 col-sm-8 m-auto">
                   <Form.Group>
                     <FormInput type="date" name="member_active_period" label="Active Period" value={values.member_active_period} onChange={onChange} />
                     {errors.member_active_period && <span className="text-danger">{errors.member_active_period[0]}</span>}
                   </Form.Group>
-                </Col>
+                </Col>}
                 <Col className="col-12 col-sm-8 m-auto">
                   <label>Status</label>
                   <div className="d-flex">

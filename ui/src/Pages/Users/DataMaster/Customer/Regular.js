@@ -44,6 +44,29 @@ const Regular = () => {
     };
 
     const [regulars, setRegulars] = useState([])
+    const [originalRegulars, setOriginalRegulars] = useState([])
+
+    const handleSearch = async (e) => {
+        e.preventDefault()
+        try {
+            const { data } = await axios.get('/api/customer/regular?keyword=' + values.search,{
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setRegulars(data)
+            if (data.length < 1) {
+                Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in regular not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        setRegulars(originalRegulars)
+                    }
+                })
+            }
+        } catch (e) {
+            Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+        }
+    }
 
     useEffect(() => {
         axios.get('/api/customer/regular', {
@@ -52,6 +75,7 @@ const Regular = () => {
             }
         }).then(({data}) => {
             setRegulars(data)
+            setOriginalRegulars(data)
         }).catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
         })
@@ -99,7 +123,9 @@ const Regular = () => {
             <Row>
                 <Col className="col-12 col-md-4" style={{marginTop:-20}} >
                     <Form.Group className="inputSearch">
-                        <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Search"/>
+                        <Form onSubmit={handleSearch}>
+                            <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Enter to search"/>
+                        </Form>
                     </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6 pt-1">

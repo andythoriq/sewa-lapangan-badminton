@@ -43,7 +43,8 @@ const PeakTime = () => {
         }
     };
 
-    const [members, setMembers] = useState([])
+    const [peakTimes, setPeakTimes] = useState([])
+    const [original, setOriginal] = useState([])
 
     useEffect(() => {
         axios.get('/api/peak-time', {
@@ -51,7 +52,8 @@ const PeakTime = () => {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }).then(({ data }) => {
-            setMembers(data)
+            setPeakTimes(data)
+            setOriginal(data)
         }).catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
         })
@@ -60,6 +62,28 @@ const PeakTime = () => {
     const [values, setValues] = useState({ search: "" });
     const onChange = (e) => { 
         setValues({ ...values, [e.target.name]: e.target.value });
+    }
+
+    const handleSearch = async (e) => {
+        e.preventDefault()
+        try {
+            const { data } = await axios.get('/api/peak-time?keyword=' + values.search,{
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setPeakTimes(data)
+            if (data.length < 1) {
+                Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in peak time not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        setPeakTimes(original)
+                    }
+                })
+            }
+        } catch (e) {
+            Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+        }
     }
 
     // let listData = [
@@ -91,9 +115,9 @@ const PeakTime = () => {
     }
 
     const tableRowRemove = (index) => {
-        const dataRow = [...members];
+        const dataRow = [...peakTimes];
         dataRow.splice(index, 1);
-        setMembers(dataRow)
+        setPeakTimes(dataRow)
     };
 
     return (
@@ -103,7 +127,9 @@ const PeakTime = () => {
             <Row>
                 <Col className="col-12 col-md-4" style={{marginTop:-20}} >
                     <Form.Group className="inputSearch">
-                        <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Search"/>
+                        <Form onSubmit={handleSearch}>
+                            <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Enter to search"/>
+                        </Form>
                     </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6 pt-1">
@@ -126,7 +152,7 @@ const PeakTime = () => {
                     </thead>
                     <tbody>
                         <TableRows
-                            rows={members}
+                            rows={peakTimes}
                         />
                     </tbody>
                 </table>

@@ -2,32 +2,56 @@
 
 namespace App\Http\Controllers\Master;
 
+use Illuminate\Http\Request;
+use App\Models\CustomerModel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Master\MemberRequest;
 use App\Http\Requests\Master\RegularRequest;
-use App\Http\Resources\Master\MemberCollection;
 use App\Http\Resources\Master\MemberResource;
-use App\Http\Resources\Master\RegularCollection;
 use App\Http\Resources\Master\RegularResource;
-use App\Models\CustomerModel;
+use App\Http\Resources\Master\MemberCollection;
+use App\Http\Resources\Master\RegularCollection;
 
 class CustomerController extends Controller
 {
-    public function index_M()
+    public function index_M(Request $request)
     {
-        $members = CustomerModel::select(['customer_code', 'name', 'phone_number', 'deposit', 'debt', 'status', 'member_active_period'])
-            ->where('membership_status', 'M')
-            ->orWhere('membership_status', 'm')
+        $keyword = $request->input('keyword');
+
+        $members = CustomerModel::where(function ($query) use ($keyword) {
+            $query->where('name', 'like', '%' . $keyword . '%')
+                ->orWhere('phone_number', 'like', '%' . $keyword . '%')
+                ->orWhere('deposit', 'like', '%' . $keyword . '%')
+                ->orWhere('debt', 'like', '%' . $keyword . '%')
+                ->orWhere('member_active_period', 'like', '%' . $keyword . '%');
+        })
+            ->where(function ($query) {
+                $query->where('membership_status', 'M')
+                    ->orWhere('membership_status', 'm');
+            })
+            ->select(['customer_code', 'name', 'phone_number', 'deposit', 'debt', 'status', 'member_active_period'])
             ->get();
+
         return new MemberCollection($members);
     }
 
-    public function index_R()
+    public function index_R(Request $request)
     {
-        $regulars = CustomerModel::select(['customer_code', 'name', 'phone_number', 'deposit', 'debt', 'status'])
-            ->where('membership_status', 'R')
-            ->orWhere('membership_status', 'r')
+        $keyword = $request->input('keyword');
+
+        $regulars = CustomerModel::where(function ($query) use ($keyword) {
+            $query->where('name', 'like', '%' . $keyword . '%')
+                ->orWhere('phone_number', 'like', '%' . $keyword . '%')
+                ->orWhere('deposit', 'like', '%' . $keyword . '%')
+                ->orWhere('debt', 'like', '%' . $keyword . '%');
+        })
+            ->where(function ($query) {
+                $query->where('membership_status', 'R')
+                    ->orWhere('membership_status', 'r');
+            })
+            ->select(['customer_code', 'name', 'phone_number', 'deposit', 'debt', 'status'])
             ->get();
+
         return new RegularCollection($regulars);
     }
 

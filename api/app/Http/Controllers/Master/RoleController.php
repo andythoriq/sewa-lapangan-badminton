@@ -3,16 +3,22 @@
 namespace App\Http\Controllers\Master;
 
 use App\Models\RoleModel;
-use App\Http\Requests\Master\RoleRequest;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Master\RoleRequest;
 use App\Http\Resources\Master\RoleResource;
 use App\Http\Resources\Master\RoleCollection;
 
 class RoleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $roles = RoleModel::select(['id', 'label', 'status'])->get();
+        $keyword = $request->input('keyword');
+        $roles = RoleModel::when($keyword, function($query) use ($keyword){
+            $query->where('label', 'like', '%' . $keyword . '%');
+        })
+            ->select(['id', 'label', 'status'])->get();
+
         return new RoleCollection($roles);
     }
 

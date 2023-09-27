@@ -19,7 +19,30 @@ const UserList = () => {
     }
 
     const [users, setUsers] = useState([]);
-    
+    const [originalUsers, setOriginalUsers] = useState([])
+
+    const handleSearch = async (e) => {
+        e.preventDefault()
+        try {
+            const { data } = await axios.get('/api/admin?keyword=' + values.search,{
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setUsers(data)
+            if (data.length < 1) {
+                Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in user not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        setUsers(originalUsers)
+                    }
+                })
+            }
+        } catch (e) {
+            Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+        }
+    }
+
     useEffect(() => {
         axios.get('/api/admin', {
             headers: {
@@ -28,6 +51,7 @@ const UserList = () => {
         })
         .then(({data}) => {
             setUsers(data);
+            setOriginalUsers(data)
         })
         .catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -116,7 +140,9 @@ const UserList = () => {
             <Row>
                 <Col className="col-12 col-md-4" style={{marginTop:-20}} >
                     <Form.Group className="inputSearch">
-                        <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Search"/>
+                        <Form onSubmit={handleSearch}>
+                            <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Enter to search"/>
+                        </Form>
                     </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6 pt-1">

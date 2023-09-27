@@ -122,7 +122,7 @@ const CourtForm = () => {
           window.location.href = "/";
         }, 1500);
       } else {
-        console.error(`Error : ${e}`);
+        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
     }
   };
@@ -145,7 +145,7 @@ const CourtForm = () => {
           setImagePreview(data.image_path);
         })
         .catch((e) => {
-          console.error(`Error : ${e}`);
+          Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
         });
     }
   }, []);
