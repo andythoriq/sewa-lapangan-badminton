@@ -9,10 +9,9 @@ import Swal from "sweetalert2";
 const UserListForm = () => {
   const { id } = useParams();
   const [selectedStatus, setSelectedStatus] = useState("");
-  const [values, setValues] = useState({ full_name: "", phone_number: "", username: "", password: "", role_id: "", status: selectedStatus });
+  const [values, setValues] = useState({ full_name: "", phone_number: "", username: "", password: "", role_id: "" });
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
-    setSelectedStatus(e.target.value);
   };
   const [errors, setErrors] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -41,8 +40,10 @@ const UserListForm = () => {
                     full_name: data.name,
                     phone_number: data.phone_number,
                     username: data.username,
-                    password: data.password
+                    password: data.password,
+                    role_id: data.role_id
                 })
+                setSelectedStatus(data.status)
             })
             .catch((e) => {
                Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }); 
@@ -56,7 +57,7 @@ const UserListForm = () => {
       name: values.full_name,
       username: values.username,
       phone_number: values.phone_number,
-      status: values.status,
+      status: selectedStatus,
       role_id: values.role_id,
       password: values.password,
     };
@@ -142,7 +143,7 @@ const UserListForm = () => {
                             onChange={onChange}
                         /> */}
                   <Form.Label>User role</Form.Label>
-                  <Form.Select name="role_id" className="form-select form-select-sm" onChange={onChange}>
+                  <Form.Select name="role_id" className="form-select form-select-sm" onChange={onChange} value={values.role_id}>
                     <option value="">-- roles --</option>
                     {roles.map((role) => (
                       <option key={role.id} value={role.id}>
@@ -156,12 +157,12 @@ const UserListForm = () => {
                   <br />
                   <div className="d-flex mt-2">
                     <div className="form-check">
-                      <input id="activeId" type="radio" className="form-check-input" name="status" value="Y" onChange={onChange} />
+                      <input id="activeId" type="radio" className="form-check-input" name="status" value={selectedStatus} onChange={() => setSelectedStatus('Y')} checked={selectedStatus === 'Y'} />
                       <label htmlFor="activeId">Active</label>
                     </div>
                     &nbsp;&nbsp;&nbsp;
                     <div className="form-check form-check-inline">
-                      <input id="inActiveId" type="radio" className="form-check-input" name="status" value="N" onChange={onChange} />
+                      <input id="inActiveId" type="radio" className="form-check-input" name="status" value={selectedStatus} onChange={() => setSelectedStatus('N')} checked={selectedStatus === 'N'} />
                       <label htmlFor="inActiveId">In active</label>
                     </div>
                   </div>

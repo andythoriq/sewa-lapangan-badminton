@@ -24,7 +24,7 @@ class RoleController extends Controller
 
     public function edit(RoleModel $role)
     {
-        return response()->json($role->only(['label', 'menu']));
+        return response()->json($role->only(['label', 'menu', 'status']));
     }
 
     public function create(RoleRequest $request)

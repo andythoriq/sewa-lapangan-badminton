@@ -79,12 +79,12 @@ class CustomerController extends Controller
 
     public function edit_M(CustomerModel $customer)
     {
-        return response()->json($customer->only(['name', 'phone_number', 'deposit', 'debt', 'member_active_period']));
+        return response()->json($customer->only(['name', 'phone_number', 'deposit', 'debt', 'member_active_period', 'status']));
     }
 
     public function edit_R(CustomerModel $customer)
     {
-        return response()->json($customer->only(['name', 'phone_number', 'deposit', 'debt']));
+        return response()->json($customer->only(['name', 'phone_number', 'deposit', 'debt', 'status']));
     }
 
     public function update_M(MemberRequest $request, CustomerModel $customer)

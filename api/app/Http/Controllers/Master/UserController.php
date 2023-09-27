@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return response()->json($user->only(['name', 'username', 'phone_number', 'role_id', 'password']));
+        return response()->json($user->only(['name', 'username', 'phone_number', 'role_id', 'password', 'status']));
     }
 
     public function update(UserRequest $request, User $user)
