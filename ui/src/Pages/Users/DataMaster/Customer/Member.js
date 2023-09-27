@@ -18,6 +18,9 @@ const Member = () => {
         setShow(true)
     };
 
+    const price = "25,000,00";
+    new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(price);
+
     const handleYes = async () => {
         try {
             await axios.get('/sanctum/csrf-cookie')
@@ -99,8 +102,8 @@ const Member = () => {
                 <td>{val.name}</td>
                 <td>{val.phone_number}</td>
                 <td>{val.member_active_period}</td>
-                <td>Rp {val.deposit}</td>
-                <td>Rp {val.debt}</td>
+                <td>{ new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(val.deposit) }</td>
+                <td>{ new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(val.debt) }</td>
                 <td className="text-center"><label className={`badge text-bg-${val.status === 'Y' ? 'green' : 'danger'} text-dark`}>{val.status}</label></td>
                 <td className="text-center">
                     <Link to={'/data-master/customer-member/edit/'+val.customer_code} className="edit">
