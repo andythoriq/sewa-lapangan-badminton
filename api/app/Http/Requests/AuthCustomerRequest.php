@@ -93,7 +93,8 @@ class AuthCustomerRequest extends FormRequest
         }
 
         $message = 'Your OTP code is ' . $otp . ' expires after 15 minutes.';
-        $response = $this->sendWA($validated['phone_number'], $message);
+
+        $response = $this->sendWA($validated['phone_number'], $message, env('ZENZIVA_USER_KEY') ,env('ZENZIVA_API_KEY'));
         return $response;
     }
 
