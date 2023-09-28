@@ -41,7 +41,9 @@ const Layout = () => {
                         <div className="d-flex" id="wrapper">
                             <Sidebar/>
                             <div id="page-content-wrapper">
-                                <Navbar/>
+                                <Navbar />
+                                {/* {(curLoc.pathname === '/dashboard' || curLoc.pathname === '/' ) &&
+                                    <Navbar />} */}
                                 <div className="container-fluid"><Outlet /></div>
                                 <footer>
                                 <p className="copyright"> &copy; Copyright 2023 PKL Cibione. All Rights Reserved</p>
