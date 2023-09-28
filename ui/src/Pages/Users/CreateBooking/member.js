@@ -17,15 +17,9 @@ const CreateBookingFormMember = () => {
   const [ showSendBookingCode, setShowSendBookingCode ] = useState(false)
   const [ transactionResponse, setTransactionResponse ] = useState({})
   const [customerCode, setCustomerCode] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
 
   const onChangeSelectCustomer = (e) => {
-    const selectedValue = e.target.value;
-    if (selectedValue) {
-      const [ cc, pn ] = selectedValue.split(':');
-      setCustomerCode(cc)
-      setPhoneNumber(pn)
-    }
+      setCustomerCode(e.target.value)
   }
 
   useEffect(() => {
@@ -52,7 +46,7 @@ const CreateBookingFormMember = () => {
 
   const pluginSelect = 'react-select'
 
-  const BoxRow = ({ row, onRemove, onUpdate }) => {
+  const BoxRow = ({ row, onRemove, onUpdate, index }) => {
     const { court, start_time, finish_time } = row;
 
     const handleChange = (event) => {
@@ -73,6 +67,7 @@ const CreateBookingFormMember = () => {
                   options={dataCourt}
                   selected={court}
                   onChange={(value) => onUpdate("court", value)}
+                  isDisabled={showSendBookingCode}
                 />
               </Col>
               <Col className="col-12 col-md-4">
@@ -82,6 +77,7 @@ const CreateBookingFormMember = () => {
                   label="Start"
                   value={start_time}
                   onChange={handleChange}
+                  disabled={showSendBookingCode}
                 />
               </Col>
               <Col className="col-12 col-md-4">
@@ -91,6 +87,7 @@ const CreateBookingFormMember = () => {
                   label="Finish"
                   value={finish_time}
                   onChange={handleChange}
+                  disabled={showSendBookingCode}
                 />
               </Col>
               <Col className="col-12 mt-3 text-right">
@@ -98,10 +95,11 @@ const CreateBookingFormMember = () => {
                   type="button"
                   className="btn btn-danger btn-sm me-md-2 text-white"
                   onClick={onRemove}
+                  disabled={showSendBookingCode}
                 >
                   <Trash3 className="text-white" style={{ marginTop: -5 }} />
                 </button>
-                <button type="button" className="btn btn-danger btn-sm me-md-2" onClick={addRowBox}>
+                <button type="button" className="btn btn-danger btn-sm me-md-2" onClick={addRowBox} disabled={showSendBookingCode}>
                   + Add
                 </button>
               </Col>
@@ -162,39 +160,48 @@ const CreateBookingFormMember = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault()
-    try {
-      const { data } = await axios.post('/api/create-multiple-rental', {
-        customer_id: customerCode,
-        user_id: '',
-        rentals: rows.map(item => ({
-          start: item.start_time,
-          finish: item.finish_time,
-          court_id: item.court.value
-        }))
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        }
-      })
-      setErrors("");
-      Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
-        .then((result) => {
-          if (result.isConfirmed) {
-            setTransactionResponse(data.transaction)
-            setShowSendBookingCode(!showSendBookingCode)
+    if (showSendBookingCode) {
+      Swal.fire({ icon: "warning", title: "Warning!", html: "you have made a booking!", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+    } else {
+
+      try {
+        const { data } = await axios.post('/api/create-multiple-rental', {
+          customer_id: customerCode,
+          user_id: '', // TODO nanti ngambil dari authenticated admin
+          rentals: rows.map(item => ({
+            start: item.start_time,
+            finish: item.finish_time,
+            court_id: item.court.value
+          }))
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           }
         })
-    } catch (e) {
-      if (e?.response?.status === 422) {
-        setErrors(e.response.data.errors)
-      } else if (e?.response?.status === 404 || e?.response?.status === 403) {
-        Swal.fire({
-          icon: "error", title: "Error!", html: e.response.data, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500
-        });
-        setTimeout(function () { window.location.href = "/" }, 1500);
-      } else {
-        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+        setErrors("");
+        Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+          .then((result) => {
+            if (result.isConfirmed) {
+              setTransactionResponse(data.transaction)
+              setShowSendBookingCode(true)
+            }
+          })
+      } catch (e) {
+        if (e?.response?.status === 422) {
+          setErrors(e.response.data.errors)
+          if (!(e.response.data.errors.customer_id) || !(e.response.data.errors.user_id)) {
+            Swal.fire({ icon: "error", title: "Error!", html: "there is an error on the court or start or finish", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+          }
+        } else if (e?.response?.status === 404 || e?.response?.status === 403) {
+          Swal.fire({
+            icon: "error", title: "Error!", html: e.response.data, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500
+          });
+          setTimeout(function () { window.location.href = "/" }, 1500);
+        } else {
+          Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+        }
       }
+
     }
   };
 
@@ -202,7 +209,7 @@ const CreateBookingFormMember = () => {
     e.preventDefault()
     try {
       const { data } = await axios.post('/api/send-booking-code', {
-        phone_number: phoneNumber,
+        phone_number: transactionResponse.phone_number,
         booking_code: transactionResponse.booking_code
       }, {
         headers: {
@@ -217,20 +224,10 @@ const CreateBookingFormMember = () => {
             }
           })
       } else {
-        Swal.fire({ icon: "error", title: "Error!", html: "Booking code failed to send", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
-          .then((result) => {
-            if (result.isConfirmed) {
-              window.location.href = "/history-booking";
-            }
-          })
+        Swal.fire({ icon: "error", title: "Error!", html: data.text, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
       }
     } catch (e) {
       Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
-        .then((result) => {
-          if (result.isConfirmed) {
-            window.location.href = "/";
-          }
-        })
     }
   }
 
@@ -239,10 +236,10 @@ const CreateBookingFormMember = () => {
       <Form>
         <Col className="m-2 col-12 col-md-4 mb-3">
           <Form.Label>Customer</Form.Label>
-          <Form.Select name='customer' className='form-select form-select-sm' onChange={onChangeSelectCustomer}>
+          <Form.Select name='customer' className='form-select form-select-sm' onChange={onChangeSelectCustomer} disabled={showSendBookingCode} >
             <option value="">-- members --</option>
             {dataCustomer.map((customer, index) => (
-              <option key={customer.customer_code} value={`${customer.customer_code}:${customer.phone_number}`}>{customer.name}</option>
+              <option key={customer.customer_code} value={customer.customer_code}>{customer.name}</option>
             ))}
           </Form.Select>
           {errors.customer_id &&
@@ -272,7 +269,7 @@ const CreateBookingFormMember = () => {
             }
           </Col>
           <Col className="col-12 text-right mt-4">
-            <button type="button" className="btn btn-danger btn-sm me-md-4" onClick={onSubmit}>
+            <button type="button" className="btn btn-danger btn-sm me-md-4" onClick={onSubmit} disabled={showSendBookingCode} >
               Booking
             </button>
           </Col>
@@ -281,7 +278,7 @@ const CreateBookingFormMember = () => {
       {showSendBookingCode === true &&
         <div>
           <h1>{transactionResponse.booking_code}</h1>
-          <h2>Customer phone number : {phoneNumber}</h2>
+          <h2>Customer phone number : {transactionResponse.phone_number}</h2>
           <button onClick={sendBookingCode}>Send Via Whatsapp</button>
         </div>}
     </>

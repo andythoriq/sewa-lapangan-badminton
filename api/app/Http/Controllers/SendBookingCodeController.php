@@ -22,6 +22,8 @@ class SendBookingCodeController extends Controller
             'booking_code' => ['required', 'string', 'exists:tb_transaction,booking_code']
         ]);
 
+        $app_name = env('APP_NAME', 'GOR Badminton');
+
         $message = <<<EOT
         Dear valued customer,
 
@@ -29,10 +31,12 @@ class SendBookingCodeController extends Controller
 
         Booking code: {$data['booking_code']}
 
+        bring this booking code to our on-site administrator.
+
         Thank you for choosing our services. We look forward to serving you.
 
         Best regards,
-        {env('APP_NAME', 'GOR Badminton')}
+        $app_name
         EOT;
 
 
