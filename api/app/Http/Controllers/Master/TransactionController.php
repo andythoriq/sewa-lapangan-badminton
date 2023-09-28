@@ -22,8 +22,12 @@ class TransactionController extends Controller
         return new TransactionResource($transaction->loadMissing('rentals'));
     }
 
-    public function booking_verification(Request $request)
+    public function booking_verification(Request $request, string $booking_code = '')
     {
+        if (! $request->input('booking_code') && $booking_code) {
+            $request->merge(['booking_code' => $booking_code]);
+        }
+
         $data = $request->validate([
             'booking_code' => ['required', 'string', 'exists:tb_transaction,booking_code']
         ]);

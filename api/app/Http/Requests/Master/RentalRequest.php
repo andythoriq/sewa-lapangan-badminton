@@ -3,19 +3,21 @@
 namespace App\Http\Requests\Master;
 
 use App\Models\CourtModel;
+use App\Models\CustomerModel;
 use App\Models\RentalModel;
 use App\Traits\CollideCheck;
-use App\Traits\RentalDurationRule;
+use App\Traits\CreateQrCode;
 use Illuminate\Support\Carbon;
 use App\Models\TransactionModel;
 use App\Traits\BookingCodePattern;
+use App\Traits\RentalDurationRule;
 use App\Traits\RegularRentalsCheck;
 use App\Traits\RentalPriceCalculation;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RentalRequest extends FormRequest
 {
-    use CollideCheck, RentalPriceCalculation, RegularRentalsCheck, BookingCodePattern, RentalDurationRule;
+    use CollideCheck, RentalPriceCalculation, RegularRentalsCheck, BookingCodePattern, RentalDurationRule, CreateQrCode;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -88,19 +90,27 @@ class RentalRequest extends FormRequest
 
         $data['status'] = 'B';
 
+        $booking_code = $this->getBookingCode();
+
+        $qr_code = $this->createQrCode($booking_code, env('FRONTEND_URL'));
+
         $transaction = TransactionModel::create([
             'total_price' => $data['price'],
             'total_hour' => Carbon::parse($this->start)->diffInHours($this->finish),
-            'booking_code' => $this->getBookingCode()
+            'booking_code' => $booking_code,
+            'qr_code_image' => $qr_code
         ]);
         $data['transaction_id'] = $transaction->id;
 
         RentalModel::create($data);
 
+        $customer_phone_number = CustomerModel::select('phone_number')->where('customer_code', $this->customer_id)->firstOrFail()->phone_number;
+
         return [
             'bc' => $transaction->booking_code,
             'tp' => $transaction->total_price,
-            'th' => $transaction->total_hour
+            'th' => $transaction->total_hour,
+            'pn' => $customer_phone_number
         ];
     }
 
@@ -130,10 +140,14 @@ class RentalRequest extends FormRequest
             ]);
         }
 
+        $booking_code = $this->getBookingCode();
+        $qr_code = $this->createQrCode($booking_code, env('FRONTEND_URL'));
+
         $transaction = TransactionModel::create([
             'total_price' => 0,
             'total_hour' => 0,
-            'booking_code' => $this->getBookingCode()
+            'booking_code' => $booking_code,
+            'qr_code_image' => $qr_code,
         ]);
 
         foreach ($data['rentals'] as &$rental) {
@@ -158,10 +172,13 @@ class RentalRequest extends FormRequest
         $transaction->saveOrFail();
         RentalModel::insert($data['rentals']);
 
+        $customer_phone_number = CustomerModel::select('phone_number')->where('customer_code', $this->customer_id)->firstOrFail()->phone_number;
+
         return [
             'bc' => $transaction->booking_code,
             'tp' => $transaction->total_price,
-            'th' => $transaction->total_hour
+            'th' => $transaction->total_hour,
+            'pn' => $customer_phone_number
         ];
     }
 

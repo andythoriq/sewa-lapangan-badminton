@@ -105,20 +105,10 @@ const CreateBookingFormRegular = () => {
             }
           })
       } else {
-        Swal.fire({ icon: "error", title: "Error!", html: "Booking code failed to send", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
-          .then((result) => {
-            if (result.isConfirmed) {
-              window.location.href = "/history-booking";
-            }
-          })
+        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
     } catch (e) {
-      Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
-      .then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = "/";
-        }
-      })
+      Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
     }
   }
 
@@ -142,7 +132,7 @@ const CreateBookingFormRegular = () => {
             <Form.Select name='court' className='form-select form-select-sm' onChange={onChange}>
               <option value="">-- courts --</option>
               {dataCourt.map(court => (
-                <option key={court.id} value={court.id}>{court.label}</option>
+                <option key={court.id} value={court.id}>{court.label}. starting price: {court.initial_price}</option>
               ))}
             </Form.Select>
             {errors.court_id &&
@@ -189,7 +179,7 @@ const CreateBookingFormRegular = () => {
     {showSendBookingCode === true &&
     <div>
       <h1>{transactionResponse.booking_code}</h1>
-      <h2>Customer phone number : {phoneNumber}</h2>
+      <h2>Customer phone number : {transactionResponse.phone_number}</h2>
       <button onClick={sendBookingCode}>Send Via Whatsapp</button>
       </div>}
     </>
