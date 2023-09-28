@@ -92,7 +92,19 @@ class AuthCustomerRequest extends FormRequest
             CustomerModel::create($validated);
         }
 
-        $message = 'Your OTP code is ' . $otp . ' expires after 15 minutes.';
+        $app_name = env('APP_NAME', 'GOR Badminton');
+
+        $message = <<<EOT
+        Dear customer,
+
+        Your One-Time Password (OTP) code for verification is: $otp.
+        This OTP code is valid for the next 15 minutes.
+
+        Thank you for using our service.
+
+        Sincerely,
+        $app_name
+        EOT;
 
         $response = $this->sendWA($validated['phone_number'], $message, env('ZENZIVA_USER_KEY') ,env('ZENZIVA_API_KEY'));
         return $response;
