@@ -57,14 +57,19 @@ class AuthAdminRequest extends FormRequest
     public function getToken()
     {
         // $user = User::select(['password', 'name'])->where('email', $this->email)->firstOrFail();
-        $user = User::select(['password', 'id'])->where('username', $this->username)->firstOrFail();
+        $user = User::select(['password', 'id', 'role_id'])->where('username', $this->username)
+            ->with('role:id,menu')
+            ->firstOrFail();
 
         if (! $user || ! Hash::check($this->password, $user->password)) {
             throw ValidationException::withMessages([
                 'username' => ['The provided credentials are incorrect.'],
             ]);
         }
-        return $user->createToken(str_replace(' ', '', $user->username) . '-token')->plainTextToken;
+        return [
+            'token' => $user->createToken(str_replace(' ', '', $user->username) . '-token')->plainTextToken,
+            'menus' => $user->role->menu
+        ];
     }
 
     public function register()

@@ -158,7 +158,7 @@ const UserRoleForm = () => {
 
         const data = [...rows];
         data[i][name] = value;
-        // console.log(data)
+        console.log(rows)
         initRow(data);
     };
     const onCheckUpdate = (i, event) => {
