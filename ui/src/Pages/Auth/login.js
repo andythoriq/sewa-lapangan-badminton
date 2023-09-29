@@ -1,11 +1,15 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
 import FormInput from "../../Components/Form/input";
 import Loader from "../../Components/Loader/Loading";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
+import  LoginAdminProvider  from "../../Components/Contex React/LoginAdminProvider";
 
 const Login = () => {
+  // context
+  const { setLogin } = useContext(LoginAdminProvider);
+
   // loader state
   const [isLoading, setIsLoading] = useState(true);
 
@@ -20,7 +24,7 @@ const Login = () => {
     DataFetch();
   }, []);
   const [values, setValues] = useState({ username: "", password: "" });
-  const [ errors, setErrors ] = useState([]);
+  const [errors, setErrors] = useState([]);
 
   const inputs = [
     {
@@ -42,22 +46,23 @@ const Login = () => {
   ];
 
   if (errors.password) {
-    inputs[1].errorMessage = errors.password[0]
+    inputs[1].errorMessage = errors.password[0];
   }
 
   if (errors.username) {
-    inputs[0].errorMessage = errors.username[0]
+    inputs[0].errorMessage = errors.username[0];
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.get('/sanctum/csrf-cookie')
-      const { data } = await axios.post('/api/login-admin', {
+      await axios.get("/sanctum/csrf-cookie");
+      const { data } = await axios.post("/api/login-admin", {
         username: values.username,
-        password: values.password
+        password: values.password,
       });
-      setErrors('');
+      setErrors("");
+      setLogin({ data });
       localStorage.setItem("role", "admin");
       localStorage.setItem("token", data);
       localStorage.setItem("username", values.username);
@@ -70,21 +75,26 @@ const Login = () => {
         setErrors(e.response.data.errors);
       } else if (e?.response?.status === 404 || e?.response?.status === 403) {
         Swal.fire({
-          icon: "error", title: "Error!", html: e.response.data, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+          icon: "error",
+          title: "Error!",
+          html: e.response.data,
+          showConfirmButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
       } else {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
-    } 
+    }
   };
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  return isLoading? (
+  return isLoading ? (
     <Loader />
-    )  :  (
+  ) : (
     <>
       <div className="wrapper bg-dark  d-flex align-items-center justify-content-center w-100" style={{ height: "100vh" }}>
         <div className="login w-400 bg-white rounded-3" style={{ padding: 50 }}>
@@ -105,6 +115,6 @@ const Login = () => {
         </div>
       </div>
     </>
-      );
+  );
 };
 export default Login;

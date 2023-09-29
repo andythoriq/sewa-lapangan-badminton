@@ -1,4 +1,4 @@
-import { Component, useState } from "react";
+import { Component } from "react";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./Components/Layout";
 import Public from "./Components/Public";
@@ -13,7 +13,6 @@ import Court from "./Pages/Users/DataMaster/Court/court";
 import CourtForm from "./Pages/Users/DataMaster/Court/form";
 import CustomerRegular from "./Pages/Users/DataMaster/Customer/customerRegular";
 import CustomerMember from "./Pages/Users/DataMaster/Customer/customerMember";
-import Holidays from "./Pages/Users/DataMaster/Holidays/holidays";
 import UserList from "./Pages/Users/UserManagement/UserList/userList";
 import UserListForm from "./Pages/Users/UserManagement/UserList/form";
 import UserRole from "./Pages/Users/UserManagement/UserRole/userRole";
@@ -31,9 +30,11 @@ import Member from "./Pages/Users/DataMaster/Customer/Member";
 import LandingBookUser from "./Pages/LandingPages/Booking/LandingBooking";
 import Scanner from "./Pages/Users/ScannerQr/Scanner";
 import PeakTime from "./Pages/Users/DataMaster/Rush Hour/PeakTime";
+import Holidays from "./Pages/Users/DataMaster/Holidays/holidays";
+
 
 export default class App extends Component {
-  render() { 
+  render() {
     return (
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -54,7 +55,7 @@ export default class App extends Component {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/create-booking" element={<CreateBookingForm />} />
             <Route path="/schedule" element={<Schedule />} />
-            <Route path="/scanner" element={<Scanner/>} />
+            <Route path="/scanner" element={<Scanner />} />
             <Route path="/history-booking" element={<HistoryBooking />} />
             <Route path="/data-master/court" element={<Court />} />
             <Route path="/data-master/court/add" element={<CourtForm />} />
@@ -65,7 +66,7 @@ export default class App extends Component {
             <Route path="/data-master/member" element={<Member />} />
             <Route path="/data-master/customer-member/add" element={<CustomerMember />} />
             <Route path="/data-master/customer-member/edit/:id" element={<CustomerMember />} />
-            <Route path="/data-master/holidays" element={<Holidays />} />
+            <Route path="/data-master/holiday" element={<Holidays/>}/>
             <Route path="/data-master/peaktime" element={<PeakTime />} />
             <Route path="/data-master/rush/add" element={<Rush />} />
             <Route path="/data-master/rush/edit/:id" element={<Rush />} />
@@ -77,7 +78,6 @@ export default class App extends Component {
             <Route path="/user-management/user-role/edit/:id" element={<UserRoleForm />} />
             <Route path="/setting" element={<Setting />} />
           </Route>
-         
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
