@@ -84,8 +84,8 @@ const CustomerMember = () => {
         .then(({ data }) => {
           setValues({ ...values, name: data.name, member_active_period: data.member_active_period.substring(0, 10) });
           setPhoneNumber(data.phone_number)
-          setDebt(data.debt ?? '')
-          setDeposit(data.deposit ?? '')
+          setDebt(data.debt)
+          setDeposit(data.deposit)
           setSelectedStatus(data.status)
         })
         .catch((e) => {
@@ -125,14 +125,14 @@ const CustomerMember = () => {
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
                     <label>Deposit</label>
-                    <CurrencyInput className="form-control" prefix="Rp" id="deposit" name="deposit" decimalsLimit={2} onValueChange={(value) => setDeposit(value)} />
+                    <CurrencyInput className="form-control" prefix="Rp" value={deposit} id="deposit" name="deposit" decimalsLimit={2} onValueChange={(value) => setDeposit(value)} />
                     {errors.deposit && <span className="text-danger">{errors.deposit[0]}</span>}
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
                     <label>Debt</label>
-                    <CurrencyInput className="form-control" prefix="Rp" id="debt" name="debt" decimalsLimit={2} onValueChange={(value) => setDebt(value)} />
+                    <CurrencyInput className="form-control" prefix="Rp" value={debt} id="debt" name="debt" decimalsLimit={2} onValueChange={(value) => setDebt(value)} />
                     {errors.debt && <span className="text-danger">{errors.debt[0]}</span>}
                   </Form.Group>
                 </Col>
