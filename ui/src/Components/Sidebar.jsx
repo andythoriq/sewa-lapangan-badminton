@@ -27,6 +27,7 @@ const Sidebar = () => {
         {name:"History Booking", link:"/history-booking", icon:"history"},
         {name:"Data Master", link:"/", icon:"master", sub:subMaster},
         {name:"User Management", link:"/", icon:"user", sub:subUser},
+        {name:"Profile", link:"/profile", icon:"adminprofile"},
         {name:"Setting", link:"/setting", icon:"setting"},
     ];
     const [menuOpen, setMenuOpen] = useState(true);

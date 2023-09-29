@@ -31,6 +31,8 @@ import LandingBookUser from "./Pages/LandingPages/Booking/LandingBooking";
 import Scanner from "./Pages/Users/ScannerQr/Scanner";
 import PeakTime from "./Pages/Users/DataMaster/Rush Hour/PeakTime";
 import Holidays from "./Pages/Users/DataMaster/Holidays/holidays";
+import Profile from "./Pages/Users/Profile/profile";
+import FormProfile from "./Pages/Users/Profile/form";
 
 
 export default class App extends Component {
@@ -76,6 +78,8 @@ export default class App extends Component {
             <Route path="/user-management/user-role" element={<UserRole />} />
             <Route path="/user-management/user-role/add" element={<UserRoleForm />} />
             <Route path="/user-management/user-role/edit/:id" element={<UserRoleForm />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/formprofile/add" element={<FormProfile />} />
             <Route path="/setting" element={<Setting />} />
           </Route>
         </Route>
