@@ -14,9 +14,9 @@ class Configuration extends Migration
     public function up()
     {
         Schema::create('tb_configuration', function (Blueprint $table) {
-            $table->id();
-            $table->string('slug', 90);
-            $table->mediumText('description');
+            $table->smallIncrements('id');
+            $table->string('slug', 60);
+            $table->text('description');
             $table->text('value');
             $table->timestamps();
         });

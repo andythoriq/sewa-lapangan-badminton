@@ -14,10 +14,10 @@ class Court extends Migration
     public function up()
     {
         Schema::create('tb_court', function (Blueprint $table) {
-            $table->id();
-            $table->string('label', 90)->unique();
+            $table->smallIncrements('id');
+            $table->string('label', 60)->unique();
             $table->string('image_path', 255)->nullable()->default(null);
-            $table->mediumText('description');
+            $table->text('description');
             $table->float('initial_price');
             // $table->float('per_30_mnt_price');
             $table->timestamps();
