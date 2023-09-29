@@ -92,7 +92,7 @@ class RentalRequest extends FormRequest
 
         $booking_code = $this->getBookingCode();
 
-        $qr_code = $this->createQrCode($booking_code, env('FRONTEND_URL'));
+        $qr_code = $this->createQrCode($booking_code, env('FRONTEND_URL', 'http://localhost:3000'));
 
         $transaction = TransactionModel::create([
             'total_price' => $data['price'],
@@ -110,6 +110,7 @@ class RentalRequest extends FormRequest
             'bc' => $transaction->booking_code,
             'tp' => $transaction->total_price,
             'th' => $transaction->total_hour,
+            'qr' => $transaction->qr_code_image,
             'pn' => $customer_phone_number
         ];
     }
@@ -141,7 +142,7 @@ class RentalRequest extends FormRequest
         }
 
         $booking_code = $this->getBookingCode();
-        $qr_code = $this->createQrCode($booking_code, env('FRONTEND_URL'));
+        $qr_code = $this->createQrCode($booking_code, env('FRONTEND_URL', 'http://localhost:3000'));
 
         $transaction = TransactionModel::create([
             'total_price' => 0,
@@ -178,6 +179,7 @@ class RentalRequest extends FormRequest
             'bc' => $transaction->booking_code,
             'tp' => $transaction->total_price,
             'th' => $transaction->total_hour,
+            'qr' => $transaction->qr_code_image,
             'pn' => $customer_phone_number
         ];
     }

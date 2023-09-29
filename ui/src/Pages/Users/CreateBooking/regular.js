@@ -174,6 +174,7 @@ const CreateBookingFormRegular = () => {
     <div>
       <h1>{transactionResponse.booking_code}</h1>
       <h2>Customer phone number : {transactionResponse.phone_number}</h2>
+      <div><img src={process.env.REACT_APP_BACKEND_URL + '/storage/' + transactionResponse.qr_code_image} alt="qr-code" /></div>
       <button onClick={sendBookingCode}>Send Via Whatsapp</button>
       </div>}
     </>

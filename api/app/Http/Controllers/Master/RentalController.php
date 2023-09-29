@@ -52,6 +52,7 @@ class RentalController extends Controller
                 'booking_code' => $response['bc'],
                 'total_hour' => $response['th'],
                 'total_price' => $response['tp'],
+                'qr_code_image' => $response['qr'],
                 'phone_number' => $response['pn']
             ]
         ], 201, ['success' => 'Created New Rental data.']);
@@ -78,6 +79,7 @@ class RentalController extends Controller
                 'booking_code' => $response['bc'],
                 'total_hour' => $response['th'],
                 'total_price' => $response['tp'],
+                'qr_code_image' => $response['qr'],
                 'phone_number' => $response['pn']
             ]
         ], 201, ['success' => 'Multiple rental Created.']);
