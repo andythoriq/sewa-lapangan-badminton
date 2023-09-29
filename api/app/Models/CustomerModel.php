@@ -29,7 +29,7 @@ class CustomerModel extends User
 
     protected $primaryKey = 'customer_code';
 
-    protected $keyType = "string";
+    protected $keyType = "integer";
 
     public $incrementing = false;
 

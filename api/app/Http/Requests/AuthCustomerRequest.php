@@ -88,7 +88,7 @@ class AuthCustomerRequest extends FormRequest
             $validated['status'] = 'Y';
             $validated['otp_code'] = $otp;
             $validated['expiration'] = Carbon::now('Asia/Jakarta')->addMinutes(15);
-            $validated['customer_code'] = $this->getFormattedCode('r');
+            $validated['customer_code'] = $this->getFormattedCode();
             CustomerModel::create($validated);
         }
 
