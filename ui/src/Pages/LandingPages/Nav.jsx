@@ -13,7 +13,7 @@ const Landing = () => {
     const DataFetch = () => {
       setTimeout(() => {
         setIsLoading(false);
-      }, 1000);
+      }, 900);
     };
 
     DataFetch();

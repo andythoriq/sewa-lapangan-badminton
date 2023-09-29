@@ -13,7 +13,7 @@ const Sidebar = () => {
         {name:"Court", link:"/data-master/court"},
         {name:"Customer Regular", link:"/data-master/regular"},
         {name:"Customer Member", link:"/data-master/member"},
-        {name:"Holidays", link:"/data-master/holidays"},
+        {name:"Holidays", link:"/data-master/holiday"},
         {name:"Peak Time", link:"/data-master/peaktime"},
     ];
     let subUser = [
@@ -27,6 +27,7 @@ const Sidebar = () => {
         {name:"History Booking", link:"/history-booking", icon:"history"},
         {name:"Data Master", link:"/", icon:"master", sub:subMaster},
         {name:"User Management", link:"/", icon:"user", sub:subUser},
+        {name:"Profile", link:"/profile", icon:"adminprofile"},
         {name:"Setting", link:"/setting", icon:"setting"},
     ];
     const [menuOpen, setMenuOpen] = useState(true);

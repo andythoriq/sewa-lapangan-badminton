@@ -18,6 +18,9 @@ const PeakTime = () => {
         setShow(true)
     };
 
+    const price = "25,000,00";
+    new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(price);
+
     const handleYes = async () => {
         try {
             await axios.get('/sanctum/csrf-cookie')
@@ -96,7 +99,7 @@ const PeakTime = () => {
             <tr key={val.id}>
                 <td>{index + 1}</td>
                 <td>{val.day_name}</td>
-                <td>Rp {val.price_increase}</td>
+                <td>{ new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(val.price_increase) }</td>
                 <td>{val.start}</td>
                 <td>{val.finish}</td>
                 <td className="text-center">

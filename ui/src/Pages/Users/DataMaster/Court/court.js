@@ -17,6 +17,9 @@ const Court = () => {
         set_item_id(id)
         setShow(true)
     };
+    const price = "25,000,00";
+    new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(price);
+
 
     const handleYes = async () => {
         try {
@@ -98,7 +101,7 @@ const Court = () => {
             <tr key={val.id}>
                 <td>{index + 1}</td>
                 <td>{val.label}</td>
-                <td>Rp {val.initial_price}</td>
+                <td>{ new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(val.initial_price) }</td>
                 <td>{val.image_path ? (
                       <img src={process.env.REACT_APP_BACKEND_URL + '/storage/' + val.image_path} alt={val.label} height={150} width={150} />
                   ) : (

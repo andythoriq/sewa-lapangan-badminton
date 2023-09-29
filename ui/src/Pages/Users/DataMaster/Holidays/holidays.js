@@ -134,7 +134,6 @@ const Holidays = () => {
         setHolidays(dataRow);
     };
     
-
     return (
     <>
         <h4><b>Holidays</b></h4>
@@ -173,16 +172,21 @@ const Holidays = () => {
                             />
                         </tbody>
                     </table>
+
+                    {/* paginasi */}
                     <div className="clearfix">
                         <ul className="pagination ms-2">
                             <li className="page-item">
-                                <a href="#previous" className="page-link prev"><ChevronLeft/></a>
+                                <a href="#previrius" className="page-link prev"><ChevronLeft/></a>
                             </li>
                             <li className="page-item">
                                 <a href="#1" className="page-link">1</a>
                             </li>
                             <li className="page-item">
                                 <a href="#2" className="page-link">2</a>
+                            </li>
+                            <li className="page-item">
+                                <a href="#3" className="page-link">3</a>
                             </li>
                             <li className="page-item">
                                 <a href="#next" className="page-link next"><ChevronRight/></a>

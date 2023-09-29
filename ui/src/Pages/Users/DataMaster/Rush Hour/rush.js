@@ -137,7 +137,8 @@ const Rush = () => {
                 <Col className="col-12">
                   <label>Price Time</label>
                   <CurrencyInput className="form-control" prefix="Rp" name="price_increase" decimalsLimit={2} onValueChange={(value) => setPriceIncrease(value)} />
-                  {initialPrice && <span className="d-block mt-2 text-success">Price Rp{initialPrice}</span>}
+                  
+                  {initialPrice && <span className="d-block mt-2 text-success">Price { new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(initialPrice) }{}</span>}
                   {errors.price_increase && <span className="text-danger">{errors.price_increase[0]}</span>}
                 </Col>
                 <Col className="col-6 col-md-3">
