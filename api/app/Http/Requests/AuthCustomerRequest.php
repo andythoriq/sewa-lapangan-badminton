@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\OTPModel;
 use App\Traits\SendWA;
 use App\Models\CustomerModel;
 use Illuminate\Support\Carbon;
@@ -82,6 +83,10 @@ class AuthCustomerRequest extends FormRequest
                     'otp_code' => $otp,
                     'expiration' => Carbon::now('Asia/Jakarta')->addMinutes(15)
                 ]);
+                OTPModel::create([
+                    'customer_id' => $customer->customer_code,
+                    'otp_code' => $otp
+                ]);
             }
         } else {
             $validated['membership_status'] = 'R';
@@ -89,7 +94,11 @@ class AuthCustomerRequest extends FormRequest
             $validated['otp_code'] = $otp;
             $validated['expiration'] = Carbon::now('Asia/Jakarta')->addMinutes(15);
             $validated['customer_code'] = $this->getFormattedCode();
-            CustomerModel::create($validated);
+            $newCustomer = CustomerModel::create($validated);
+            OTPModel::create([
+                'customer_id' => $newCustomer->customer_code,
+                'otp_code' => $otp
+            ]);
         }
 
         $app_name = env('APP_NAME', 'GOR Badminton');

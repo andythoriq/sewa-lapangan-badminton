@@ -8,7 +8,7 @@ trait CustomerCodeFormat
 {
     public function getFormattedCode()
     {
-        $latest = CustomerModel::select('customer_code')->latest()->firstOrFail();
+        $latest = CustomerModel::select('customer_code')->latest()->first();
         if (! $latest) {
             $incremented = 0;
         } else {
