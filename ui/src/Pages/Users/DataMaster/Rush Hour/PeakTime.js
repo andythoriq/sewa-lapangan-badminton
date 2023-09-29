@@ -34,9 +34,8 @@ const PeakTime = () => {
         } catch(e) {
             if (e?.response?.status === 404 || e?.response?.status === 403) {
                 Swal.fire({
-                    icon: "error", title: "Error!", html: e.response.data, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500
+                    icon: "error", title: "Error!", html: e.response.data, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
                 });
-                setTimeout(function () { window.location.href = "/" }, 1500);
             } else {
                 Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
             }

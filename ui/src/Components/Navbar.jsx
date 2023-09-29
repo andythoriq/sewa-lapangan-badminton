@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setToggle } from "../Reducers/menuSlice";
 import FormSelect from "./Form/select";
 import axios from "../api/axios";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   const { menuSidebar } = useSelector((state) => state.menu);
@@ -21,18 +22,38 @@ const Navbar = () => {
   };
 
   const handleLogout = async () => {
-    await axios.get("/sanctum/csrf-cookie");
-    await axios.post("/api/logout-admin", null, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    localStorage.removeItem("username");
-    setTimeout(function () {
-      window.location.href = "/";
-    }, 500);
+    try {
+      await axios.get("/sanctum/csrf-cookie");
+      await axios.post("/api/logout-admin", null, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("username");
+      setTimeout(function () {
+        window.location.href = "/";
+      }, 500);
+    } catch(e) {
+      if (e?.response?.status === 404 || e?.response?.status === 403) {
+        Swal.fire({
+          icon: "error", title: "Error!", html: e.response.data, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("role");
+            localStorage.removeItem("username");
+            window.location.href = "/";
+          }
+        });
+      } else {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        localStorage.removeItem("username");
+        window.location.href = "/";
+      }
+    }
   };
 
   let dataCourt = [

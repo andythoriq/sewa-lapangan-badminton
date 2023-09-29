@@ -82,14 +82,13 @@ const Rush = () => {
           icon: "error",
           title: "Error!",
           html: e.response.data,
-          showConfirmButton: false,
+          showConfirmButton: true,
           allowOutsideClick: false,
-          allowEscapeKey: false,
-          timer: 1500,
+          allowEscapeKey: false
         });
-        setTimeout(function () {
-          window.location.href = "/";
-        }, 1500);
+        Swal.fire({
+          icon: "error", title: "Error!", html: e.response.data, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+        });
       } else {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
