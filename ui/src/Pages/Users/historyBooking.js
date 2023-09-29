@@ -1,35 +1,87 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Form, Card, Row, Col } from "react-bootstrap";
 import { Trash3, Search, ChevronLeft, ChevronRight } from "react-bootstrap-icons";
 import FormInput from "../../Components/Form/input";
 import ModalConfirmDelete from "../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
+import axios from "../../api/axios";
 
 const HistoryBooking = () => {
       
     const [show, setShow] = useState(false);
     const [deleteId, setDeleteId] = useState("");
-    const handleClose = () => setShow(false);
-    const handleShow = (index) => {
+    const [item_id, set_item_id] = useState('')
+
+    const handleShow = (index, id) => {
+        set_item_id(id)
         setDeleteId(index);
         setShow(true)
     };
 
-    const handleChange=(e)=>{ 
-        const { name, checked}= e.target;
-      if(name==="allselect")
-      {
-      const checkedvalue = ( (user)=>{ return {...user, isChecked:checked}});
-      console.log(checkedvalue);
-      } 
+    const [rentals, setRentals] = useState([])
+    const [ originalRentals, setOriginalRentals ] = useState([])
+
+    useEffect(() => {
+        axios.get('/api/rental', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(({data}) => {
+            setRentals(data)
+            setOriginalRentals(data)
+        }).catch((e) => {
+            Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+        })
+    }, [])
+
+    const handleSearch = async (e) => {
+        e.preventDefault()
+        try {
+            const {data} = await axios.get('/api/rental?keyword=' + values.search, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            setRentals(data)
+            if (data.length < 1) {
+                Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in booking not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            setRentals(originalRentals)
+                        }
+                    })
+            }
+        } catch (e) {
+            Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+        }
     }
 
-    const handleYes = () => {
-        tableRowRemove(deleteId);
-        Swal.fire({icon:"success", title:"Success!", html:'Delete successfully', 
-            showConfirmButton: false, allowOutsideClick: false,
-            allowEscapeKey:false, timer: 2000});
-        setShow(false);
+    const handleYes = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.get('/sanctum/csrf-cookie')
+            const { data } = await axios.delete('/api/rental/' + item_id, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            tableRowRemove(deleteId)
+            Swal.fire({
+                icon: "success", title: "Success!", html: data.message,
+                showConfirmButton: false, allowOutsideClick: false,
+                allowEscapeKey: false, timer: 2000
+            });
+            setShow(false)
+        } catch {
+            if (e?.response?.status === 404 || e?.response?.status === 403) {
+                Swal.fire({
+                    icon: "error", title: "Error!", html: e.response.data, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+                });
+            } else {
+                Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+            }
+        }
     };
 
     const [values, setValues] = useState({ search: "" });
@@ -37,24 +89,24 @@ const HistoryBooking = () => {
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
-    let listData = [
-        {name:"Hodijah", court:"Court A", schedule:"10.00-11.00", totally_hour:"1 hour", totally_price:"Rp 50,000", status:"Finished", status_color:"green"},
-        {name:"Siti", court:"Court C", schedule:"10.00-11.00", totally_hour:"1 hour", totally_price:"Rp 50,000", status:"on progress", status_color:"orange"},
-    ];
+    // let listData = [
+    //     {name:"Hodijah", court:"Court A", schedule:"10.00-11.00", totally_hour:"1 hour", totally_price:"Rp 50,000", status:"Finished", status_color:"green"},
+    //     {name:"Siti", court:"Court C", schedule:"10.00-11.00", totally_hour:"1 hour", totally_price:"Rp 50,000", status:"on progress", status_color:"orange"},
+    // ];
 
     const TableRows = ({ rows }) => {
         return rows.map((val, index) => {
           return (
-            <tr key={index}>
+            <tr key={val.id}>
                 <td>{index + 1}</td>
-                <td>{val.name}</td>
-                <td>{val.court}</td>
-                <td>{val.schedule}</td>
-                <td>{val.totally_hour}</td>
-                <td>{val.totally_price}</td>
-                <td className="text-center"><label className={`badge text-bg-${val.status_color} text-dark`}>{val.status}</label></td>
+                <td>{val.customer.name} ({val.customer.phone_number})</td>
+                <td>{val.court.label} (Rp {val.court.initial_price}) </td>
+                <td><span>{val.start}</span> - <span>{val.finish}</span></td>
+                <td>{val.transaction.total_hour}</td>
+                <td>Rp {val.transaction.total_price}</td>
+                <td className="text-center">{(val.status === 'B' ? 'Booked' : (val.status === 'O' ? 'On progress' : 'Finished'))}</td>
                 <td className="text-center">
-                    <a href="#delete" onClick={() => handleShow(index)}>
+                    <a href="#delete" onClick={() => handleShow(index, val.id)}>
                         <Trash3 className="material-icons" color="dark" title="Delete" />
                     </a>
                 </td>
@@ -62,11 +114,11 @@ const HistoryBooking = () => {
           )
         });
     }
-    const [rows, initRow] = useState(listData);
+
     const tableRowRemove = (index) => {
-        const dataRow = [...rows];
+        const dataRow = [...rentals];
         dataRow.splice(index, 1);
-        initRow(dataRow);
+        setRentals(dataRow);
     };
 
     return (
@@ -76,7 +128,9 @@ const HistoryBooking = () => {
             <Row className="">
                 <Col className="col-12 col-md-4" style={{marginTop:-20}}>
                     <Form.Group className="inputSearch" >
-                        <FormInput type="text" name="search" value={values.search} icon={<Search/>} onChange={onChange} placeholder="Search"/>
+                        <Form onSubmit={handleSearch}>
+                            <FormInput type="text" name="search" value={values.search} icon={<Search />} onChange={onChange} placeholder="Enter to search" />
+                        </Form>
                     </Form.Group>
                 </Col>
             </Row>
@@ -85,19 +139,18 @@ const HistoryBooking = () => {
                     <thead>
                         <tr >
                             <th width={'1%'}>No</th>
-                            <th width={'30%'}>Name Customer</th>
-                            <th width={'10%'}>Court</th>
-                            <th width={'15%'}>Schedule</th>
-                            <th width={'15%'}>Totally hour</th>
-                            <th width={'15%'}>Totally Price</th>
+                            <th width={'20%'}>Name Customer</th>
+                            <th width={'15%'}>Court</th>
+                            <th width={'30%'}>Start - Finish</th>
+                            <th width={'10%'}>Totally hour</th>
+                            <th width={'10%'}>Totally Price</th>
                             <th width={'10%'} className="text-center">Status</th>
                             <th width={'4%'} className="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <TableRows
-                            rows={rows}
-                            tableRowRemove={tableRowRemove}
+                            rows={rentals}
                         />
                     </tbody>
                 </table>
@@ -119,7 +172,7 @@ const HistoryBooking = () => {
                 </div>
             </div>
         </Card>
-        <ModalConfirmDelete show={show} handleClose={handleClose} handleYes={handleYes}/>
+        <ModalConfirmDelete show={show} handleClose={() => setShow(false)} handleYes={handleYes}/>
     </>
     )
 }
