@@ -41,7 +41,10 @@ class UserController extends Controller
 
         $users = User::when($keyword, function ($query) use ($keyword) {
             $query->where('name', 'like', '%' . $keyword . '%')
-                ->orWhere('username', 'like', '%' . $keyword . '%');
+                ->orWhere('username', 'like', '%' . $keyword . '%')
+                ->orWhereHas('role', function ($roleQuery) use ($keyword) {
+                    $roleQuery->where('label', 'like', '%' . $keyword . '%');
+                });
         })
             ->select(['id', 'name', 'username', 'status', 'role_id'])
             ->with('role:id,label')
