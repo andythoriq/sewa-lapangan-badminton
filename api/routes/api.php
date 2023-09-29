@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, StartRentalController, FinishRentalController};
+use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, StartRentalController, FinishRentalController, DashboardController};
 use App\Http\Controllers\Master\{HolidayController, ConfigController, OpenTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController, TransactionController};
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +54,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/start-rental', StartRentalController::class)->middleware('admin');
     Route::post('/finish-rental', FinishRentalController::class)->middleware('admin');
 
+    Route::get('/admin-role-menu-list', GetRoleMenusController::class)->middleware('admin');
+    Route::get('/dashboard', DashboardController::class)->middleware('admin');
+
     /** START MASTER DATA */
 
     /** Master User/Admin Role
@@ -66,8 +69,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/role/{role}', 'update');
         Route::delete('/role/{role}', 'delete');
     });
-
-    Route::get('/admin-role-menu-list', GetRoleMenusController::class)->middleware('admin');
 
     /** Master Admin/User Management
      * policy/role: user-handle, admin */
