@@ -57,7 +57,7 @@ class AuthAdminRequest extends FormRequest
     public function getToken()
     {
         // $user = User::select(['password', 'name'])->where('email', $this->email)->firstOrFail();
-        $user = User::select(['password', 'id', 'role_id'])->where('username', $this->username)
+        $user = User::select(['password', 'id', 'role_id', 'username'])->where('username', $this->username)
             ->with('role:id,menu')
             ->firstOrFail();
 
@@ -68,7 +68,9 @@ class AuthAdminRequest extends FormRequest
         }
         return [
             'token' => $user->createToken(str_replace(' ', '', $user->username) . '-token')->plainTextToken,
-            'menus' => $user->role->menu
+            'menus' => $user->role->menu,
+            'username' => $user->username,
+            'id' => $user->id
         ];
     }
 
