@@ -159,7 +159,7 @@ const CreateBookingFormRegular = () => {
             <br/>
             <br/>
             {transactionResponse.total_price ? 
-              <span>{transactionResponse.total_price}</span> :
+              <span>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(transactionResponse.total_price)}</span> :
               <span>...</span>
             }
         </Col>

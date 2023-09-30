@@ -100,10 +100,10 @@ const HistoryBooking = () => {
             <tr key={val.id}>
                 <td>{index + 1}</td>
                 <td>{val.customer.name} ({val.customer.phone_number})</td>
-                <td>{val.court.label} (Rp {val.court.initial_price}) </td>
+                  <td>{val.court.label} ({new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(val.court.initial_price)}) </td>
                 <td><span>{val.start}</span> - <span>{val.finish}</span></td>
                 <td>{val.transaction.total_hour}</td>
-                <td>Rp {val.transaction.total_price}</td>
+                  <td>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(val.transaction.total_price)}</td>
                 <td className="text-center">{(val.status === 'B' ? 'Booked' : (val.status === 'O' ? 'On progress' : 'Finished'))}</td>
                 <td className="text-center">
                     <a href="#delete" onClick={() => handleShow(index, val.id)}>
