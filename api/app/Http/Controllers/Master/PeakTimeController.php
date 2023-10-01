@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Master;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Master\PeakTimeRequest;
 use App\Http\Resources\Master\PeakTimeResource;
+use App\Http\Resources\PeakTimeCollection;
 use App\Models\PeakTimeModel;
 use Illuminate\Http\Request;
 
@@ -21,14 +22,27 @@ class PeakTimeController extends Controller
                 ->orWhere('price_increase', 'like', '%' . $keyword . '%');
         })
             ->select(['id', 'start', 'finish', 'day_name', 'price_increase'])
-            ->get();
+            ->paginate(10);
 
-        return response()->json($peak_times);
+        return new PeakTimeCollection($peak_times);
     }
 
     public function show(PeakTimeModel $peak_time)
     {
         return new PeakTimeResource($peak_time->loadMissing('court:id,label,image_path,description,initial_price'));
+    }
+
+    public function edit(PeakTimeModel $peak_time)
+    {
+        $peak_time->loadMissing('court:id,initial_price');
+        return response()->json([
+            'start' => $peak_time->start,
+            'finish' => $peak_time->finish,
+            'court_id' => $peak_time->court_id,
+            'price_increase' => $peak_time->price_increase,
+            'day_name' => $peak_time->day_name,
+            'initial_price' => $peak_time->court->initial_price
+        ]);
     }
 
     public function create(PeakTimeRequest $request)

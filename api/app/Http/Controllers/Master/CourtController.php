@@ -22,7 +22,7 @@ class CourtController extends Controller
                 ->orWhere('initial_price', 'like', '%' . $keyword . '%');
         })
             ->select(['id', 'label', 'initial_price', 'image_path', 'description'])
-            ->get();
+            ->paginate(3);
 
         return new CourtCollection($courts);
     }
@@ -34,7 +34,7 @@ class CourtController extends Controller
 
     public function court_select()
     {
-        $courts = CourtModel::select(['id AS value', 'label'])->get();
+        $courts = CourtModel::select(['id AS value', 'label', 'initial_price'])->get();
         return response()->json($courts);
     }
 

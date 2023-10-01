@@ -6,6 +6,7 @@ import FormInput from "../../../../Components/Form/input";
 import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
+import ReactPaginate from 'react-paginate';
 
 const Member = () => {
     const [show, setShow] = useState(false);
@@ -18,8 +19,8 @@ const Member = () => {
         setShow(true)
     };
 
-    const price = "25,000,00";
-    new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(price);
+    const [ currentPage, setCurrentPage ] = useState(0)
+    const [ pageCount, setPageCount ] = useState(0)
 
     const handleYes = async () => {
         try {
@@ -49,17 +50,19 @@ const Member = () => {
     const [originalMembers, setOriginalMembers] = useState([])
 
     useEffect(() => {
-        axios.get('/api/customer/member', {
+        axios.get('/api/customer/member?page=' + currentPage, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }).then(({ data }) => {
-            setMembers(data)
-            setOriginalMembers(data)
+            setMembers(data.data)
+            setOriginalMembers(data.data)
+            setPageCount(data.meta.last_page)
+            setCurrentPage(data.meta.current_page)
         }).catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
         })
-    }, [])
+    }, [currentPage])
 
     const [values, setValues] = useState({ search: "" });
     const onChange = (e) => { 
@@ -74,8 +77,8 @@ const Member = () => {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             });
-            setMembers(data)
-            if (data.length < 1) {
+            setMembers(data.data)
+            if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in member not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
                 .then((result) => {
                     if (result.isConfirmed) {
@@ -124,6 +127,11 @@ const Member = () => {
         setMembers(dataRow)
     };
 
+    const handlePageClick = (e) => {
+        const number = e.selected + 1
+        setCurrentPage(number)
+    }
+
     return (
     <>
         <h4><b>Customer Member</b></h4>
@@ -163,20 +171,18 @@ const Member = () => {
                     </tbody>
                 </table>
                 <div className="clearfix">
-                    <ul className="pagination ms-2">
-                        <li className="page-item">
-                            <a href="#previous" className="page-link prev"><ChevronLeft/></a>
-                        </li>
-                        <li className="page-item">
-                            <a href="#1" className="page-link">1</a>
-                        </li>
-                        <li className="page-item">
-                            <a href="#2" className="page-link">2</a>
-                        </li>
-                        <li className="page-item">
-                            <a href="#next" className="page-link next"><ChevronRight/></a>
-                        </li>
-                    </ul>
+                        <ReactPaginate
+                            className="pagination"
+                            pageClassName="page-item"
+                            pageLinkClassName="page-link"
+                            breakLabel="..."
+                            nextLabel="next >"
+                            onPageChange={handlePageClick}
+                            pageRangeDisplayed={5}
+                            pageCount={pageCount}
+                            previousLabel="< previous"
+                            renderOnZeroPageCount={null}
+                        />
                 </div>
             </div>
         </Card>

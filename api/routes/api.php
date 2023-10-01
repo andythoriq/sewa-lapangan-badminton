@@ -115,6 +115,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(PeakTimeController::class)->middleware('admin')->group(function () {
         Route::get('/peak-time', 'index');
         Route::get('/peak-time/{peak_time}', 'show');
+        Route::get('/peak-time-edit/{peak_time}', 'edit');
         Route::post('/peak-time', 'create');
         Route::post('/create-multiple-peak-time', 'create_multiple')->name('create-multiple-peak-time');
         Route::put('/peak-time/{peak_time}', 'update');

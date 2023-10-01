@@ -48,7 +48,7 @@ class UserController extends Controller
         })
             ->select(['id', 'name', 'username', 'status', 'role_id'])
             ->with('role:id,label')
-            ->get();
+            ->paginate(5);
 
         return new UserCollection($users);
     }

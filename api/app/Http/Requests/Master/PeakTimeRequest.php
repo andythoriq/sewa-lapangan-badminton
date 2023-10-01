@@ -28,8 +28,8 @@ class PeakTimeRequest extends FormRequest
     public function rules()
     {
         $validation = [
-            'start' => ['required', 'date_format:H:i', 'before:finish'],
-            'finish' => ['required', 'date_format:H:i', 'after:start'],
+            'start' => ['required', 'date_format:H:i:s', 'before:finish'],
+            'finish' => ['required', 'date_format:H:i:s', 'after:start'],
             'court_id' => ['required', 'integer', 'exists:tb_court,id'],
             'price_increase' => ['required', 'numeric', 'min:1000.00', 'max:1000000.00'],
             'day_name' => ['required', 'in:monday,tuesday,wednesday,thursday,friday,saturday,sunday']

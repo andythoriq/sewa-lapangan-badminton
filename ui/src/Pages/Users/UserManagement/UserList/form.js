@@ -23,7 +23,7 @@ const UserListForm = () => {
             }
         })
         .then(({ data }) => {
-            setRoles(data);
+            setRoles(data.data);
         })
         .catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });

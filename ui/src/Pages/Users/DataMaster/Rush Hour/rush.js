@@ -34,7 +34,7 @@ const Rush = () => {
 
   useEffect(() => {
     axios
-      .get("/api/court", {
+      .get("/api/court-select", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -45,6 +45,22 @@ const Rush = () => {
       .catch((e) => {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       });
+      if (id > 0) {
+        axios.get('/api/peak-time-edit/' + id, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }).then(({data}) => {
+          setValues({
+            start: data.start,
+            finish: data.finish,
+            day_name: data.day_name
+          })
+          setPriceIncrease(data.price_increase)
+          setCourtId(data.court_id)
+          setInitialPrice(data.initial_price)
+        })
+      }
   }, []);
 
   const handleSubmitClick = async (e) => {
@@ -112,10 +128,10 @@ const Rush = () => {
               <Row>
                 <Col className="col-12">
                   <Form.Label>Court</Form.Label>
-                  <Form.Select name="court" className="form-select form-select-sm" onChange={onChangeSelectCourt}>
+                  <Form.Select name="court" className="form-select form-select-sm" value={`${courtId}:${initialPrice}`} onChange={onChangeSelectCourt}>
                     <option value="">-- courts --</option>
                     {courts.map((court) => (
-                      <option key={court.id} value={`${court.id}:${court.initial_price}`}>
+                      <option key={court.value} value={`${court.value}:${court.initial_price}`}>
                         {court.label}
                       </option>
                     ))}
@@ -124,7 +140,7 @@ const Rush = () => {
                 </Col>
                 <Col className="col-12">
                   <Form.Label>Select day</Form.Label>
-                  <Form.Select name="day_name" className="form-select form-select-sm" onChange={onChange}>
+                  <Form.Select name="day_name" className="form-select form-select-sm" value={values.day_name} onChange={onChange}>
                     <option value="">-- days --</option>
                     {dayNames.map((name) => (
                       <option key={name} value={name}>
@@ -136,7 +152,7 @@ const Rush = () => {
                 </Col>
                 <Col className="col-12">
                   <label>Price Time</label>
-                  <CurrencyInput className="form-control" prefix="Rp" name="price_increase" decimalsLimit={2} onValueChange={(value) => setPriceIncrease(value)} />
+                  <CurrencyInput className="form-control" prefix="Rp" name="price_increase" decimalsLimit={2} value={priceIncrease} onValueChange={(value) => setPriceIncrease(value)} />
                   
                   {initialPrice && <span className="d-block mt-2 text-success">Price { new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(initialPrice) }{}</span>}
                   {errors.price_increase && <span className="text-danger">{errors.price_increase[0]}</span>}

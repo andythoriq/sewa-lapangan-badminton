@@ -30,7 +30,7 @@ class CustomerController extends Controller
                     ->orWhere('membership_status', 'm');
             })
             ->select(['customer_code', 'name', 'phone_number', 'deposit', 'debt', 'status', 'member_active_period'])
-            ->get();
+            ->paginate(5);
 
         return new MemberCollection($members);
     }
@@ -50,7 +50,7 @@ class CustomerController extends Controller
                     ->orWhere('membership_status', 'r');
             })
             ->select(['customer_code', 'name', 'phone_number', 'deposit', 'debt', 'status'])
-            ->get();
+            ->paginate(5);
 
         return new RegularCollection($regulars);
     }

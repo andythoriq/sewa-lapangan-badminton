@@ -30,7 +30,7 @@ const CreateBookingFormMember = () => {
     }
     axios.get('/api/customer/member', config)
       .then(({ data }) => {
-        setDataCustomer(data);
+        setDataCustomer(data.data);
       })
       .catch((e) => {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -194,7 +194,7 @@ const CreateBookingFormMember = () => {
           }
         } else if (e?.response?.status === 404 || e?.response?.status === 403) {
           Swal.fire({
-            icon: "error", title: "Error!", html: e.response.data, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+            icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
           });
         } else {
           Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });

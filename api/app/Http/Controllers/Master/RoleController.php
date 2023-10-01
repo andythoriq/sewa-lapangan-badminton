@@ -17,7 +17,7 @@ class RoleController extends Controller
         $roles = RoleModel::when($keyword, function($query) use ($keyword){
             $query->where('label', 'like', '%' . $keyword . '%');
         })
-            ->select(['id', 'label', 'status'])->get();
+            ->select(['id', 'label', 'status'])->paginate(5);
 
         return new RoleCollection($roles);
     }

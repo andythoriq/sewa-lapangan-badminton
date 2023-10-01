@@ -19,12 +19,12 @@ const CreateBookingFormRegular = () => {
     }
     axios.get('/api/customer/regular', config)
     .then(({ data }) => {
-      setDataCustomer(data);
+      setDataCustomer(data.data);
     })
     .catch((e) => {
       Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
     });
-    axios.get('/api/court', config)
+    axios.get('/api/court-select', config)
     .then(({ data }) => {
       setDataCourt(data);
     })
@@ -70,7 +70,7 @@ const CreateBookingFormRegular = () => {
           setErrors(e.response.data.errors)
         } else if (e?.response?.status === 404 || e?.response?.status === 403) {
           Swal.fire({
-            icon: "error", title: "Error!", html: e.response.data, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+            icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
           });
         } else {
           Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -126,7 +126,7 @@ const CreateBookingFormRegular = () => {
             <Form.Select name='court' className='form-select form-select-sm' onChange={onChange} disabled={showSendBookingCode}>
               <option value="">-- courts --</option>
               {dataCourt.map(court => (
-                <option key={court.id} value={court.id}>{court.label}. starting price: {court.initial_price}</option>
+                <option key={court.value} value={court.value}>{court.label}. starting price: {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(court.initial_price)}</option>
               ))}
             </Form.Select>
             {errors.court_id &&

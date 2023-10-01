@@ -6,6 +6,7 @@ import FormInput from "../../../../Components/Form/input";
 import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
+import ReactPaginate from 'react-paginate';
 
 const UserList = () => {
     const [show, setShow] = useState(false);
@@ -21,6 +22,9 @@ const UserList = () => {
     const [users, setUsers] = useState([]);
     const [originalUsers, setOriginalUsers] = useState([])
 
+    const [ currentPage, setCurrentPage ] = useState(0)
+    const [ pageCount, setPageCount ] = useState(0)
+
     const handleSearch = async (e) => {
         e.preventDefault()
         try {
@@ -29,8 +33,8 @@ const UserList = () => {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             });
-            setUsers(data)
-            if (data.length < 1) {
+            setUsers(data.data)
+            if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in user not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
                 .then((result) => {
                     if (result.isConfirmed) {
@@ -44,19 +48,21 @@ const UserList = () => {
     }
 
     useEffect(() => {
-        axios.get('/api/admin', {
+        axios.get('/api/admin?page=' + currentPage, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
         .then(({data}) => {
-            setUsers(data);
-            setOriginalUsers(data)
+            setUsers(data.data);
+            setOriginalUsers(data.data)
+            setPageCount(data.meta.last_page)
+            setCurrentPage(data.meta.current_page)
         })
         .catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
         });
-    }, []);
+    }, [currentPage]);
 
     const handleYes = async () => {
         try {
@@ -95,11 +101,6 @@ const UserList = () => {
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
-    // let listData = [
-    //     {id:1, name:"Thoriq", email:"andythoriq@gmail.com", role:"Master Data - lapangan", status:"Active", status_color:"cyan"},
-    //     {id:2, name:"uus", email:"uus_26@gmail.com", role:"Master Data - lapangan", status:"In active", status_color:"red"},
-    // ];
-
     const TableRows = ({ rows }) => {
         return rows.map((val, index) => {
           return (
@@ -114,9 +115,6 @@ const UserList = () => {
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>
                     </Link>
                     &nbsp;&nbsp;
-                    {/* <a href="#delete" onClick={()=>handleShow(index)}>
-                        <Trash3 className="material-icons" color="dark" title="Delete" />
-                    </a> */}
                     <a href="#delete" onClick={() => handleDelete(val.id, index)}>
                           <Trash3 className="material-icons" color="dark" title="Delete" />
                     </a>
@@ -125,12 +123,11 @@ const UserList = () => {
           )
         });
     }
-    // const [rows, initRow] = useState(listData);
-    // const tableRowRemove = (index) => {
-    //     const dataRow = [...rows];
-    //     dataRow.splice(index, 1);
-    //     initRow(dataRow);
-    // };
+
+    const handlePageClick = (e) => {
+        const number = e.selected + 1
+        setCurrentPage(number)
+    }
 
     return (
     <>
@@ -149,10 +146,6 @@ const UserList = () => {
                         + Add User
                     </Link>
                 </Col>
-                {/* <Col className="col-12 col-md-12 pt-2">
-                    <div className="float-right"><div className="bullet bullet-red"></div> <div className="bullet-text">In Active</div></div>
-                    <div className="float-right"><div className="bullet bullet-cyan"></div> <div className="bullet-text">Active</div></div>
-                </Col> */}
             </Row>
             <div className="table-responsive">
                 <table className="table table-hover mt-3" border={1}>
@@ -169,12 +162,11 @@ const UserList = () => {
                     <tbody>
                         <TableRows
                             rows={users}
-                            // tableRowRemove={tableRowRemove}
                         />
                     </tbody>
                 </table>
                 <div className="clearfix">
-                    <ul className="pagination ms-2">
+                    {/* <ul className="pagination ms-2">
                         <li className="page-item">
                             <a href="#previous" className="page-link prev"><ChevronLeft/></a>
                         </li>
@@ -187,7 +179,19 @@ const UserList = () => {
                         <li className="page-item">
                             <a href="#next" className="page-link next"><ChevronRight/></a>
                         </li>
-                    </ul>
+                    </ul> */}
+                    <ReactPaginate
+                        className="pagination"
+                        pageClassName="page-item"
+                        pageLinkClassName="page-link"
+                        breakLabel="..."
+                        nextLabel="next >"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={5}
+                        pageCount={pageCount}
+                        previousLabel="< previous"
+                        renderOnZeroPageCount={null}
+                    />
                 </div>
             </div>
         </Card>
