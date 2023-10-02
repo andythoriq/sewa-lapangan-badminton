@@ -9,6 +9,7 @@ const Sidebar = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const dirIcon = "/assets/icon/";
+    const roleMenus = JSON.parse(localStorage.getItem('menus').replace(/'/g, "\""))
     let subMaster = [
         {name:"Court", link:"/data-master/court"},
         {name:"Customer Regular", link:"/data-master/regular"},
@@ -57,12 +58,28 @@ const Sidebar = () => {
         }
     }
       
+    const filteredLinks = Links.filter((val, key) => {
+        if (val.sub) {
+
+            const filteredSubmenu = val.sub.filter((val2, key2) => {
+                return roleMenus.includes(val2.link);
+            });
+
+            val.sub = filteredSubmenu;
+
+            return filteredSubmenu.length > 0;
+        } else {
+
+            return roleMenus.includes(val.link);
+        }
+    });
+
     return (
     <div className="border-end text-dark" id="sidebar-wrapper">
         <div onClick={handleToggle} className={`sidebar-heading border-bottom text-white menu_sidebar mb-5 ${menuOpen ? "open" : ""}`}>{menuOpen?<ArrowLeftCircleIcon/>:<ArrowRightCircleIcon />}</div>
         <div className="list-group list-group-flush list_menu_sidebar">
         {
-          Links.map((val, key) => (
+          filteredLinks.map((val, key) => (
             {...val.sub ? 
                 <div key={`submenu${key}`} title={val.name} className={`list-group-item list-group-item-action list-group-item-light dropdown_menu ${menuSubOpen===key ? "active":""}`}>
                     <img src={`${dirIcon}${val.icon}.png`} alt="" onClick={()=>handleToggle2(key, 'close')}/>

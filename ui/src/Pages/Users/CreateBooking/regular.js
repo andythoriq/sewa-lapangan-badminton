@@ -53,7 +53,7 @@ const CreateBookingFormRegular = () => {
           customer_id: values.customer_id,
           start: values.start_time,
           finish: values.finish_time,
-          user_id: '', // ngambil dari authenticated admin
+          user_id: localStorage.getItem('id') ?? '',
         }, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,

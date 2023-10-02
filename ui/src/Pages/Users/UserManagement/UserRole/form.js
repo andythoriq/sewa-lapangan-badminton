@@ -41,13 +41,12 @@ const UserRoleForm = () => {
 
             if (menuSet.size === data.menu.length) {
                 data.menu = JSON.stringify(data.menu);
+                if (localStorage.getItem('id').toString() === id.toString()) {
+                    localStorage.setItem('menus', JSON.stringify(data.menu))
+                }
             } else {
                 data.menu = '86afe930-5c36-11ee-8c99-0242ac120002';
             }
-        }
-
-        if (id > 0) {
-            data.menu = menus
         }
 
         const config = {
@@ -159,7 +158,7 @@ const UserRoleForm = () => {
 
         const data = [...rows];
         data[i][name] = value;
-        console.log(rows)
+        // console.log(rows)
         initRow(data);
     };
     const onCheckUpdate = (i, event) => {
@@ -211,6 +210,7 @@ const UserRoleForm = () => {
                 </div>
                 {errors.menu &&
                             <span className="text-danger">{errors.menu[ 0 ]}</span>}
+                <div className="mb-3"><span className="text-secondary"><small>initial value: {menus}</small></span></div>
                 <center>
                     <button type="button" className="btn btn-danger btn-sm" onClick={addRowTable}>
                         + Add

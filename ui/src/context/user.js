@@ -8,24 +8,6 @@ function UserProvider({ children }) {
 
   const [ user, setUser ] = useState({})
 
-  const getMenus = async () => {
-    try {
-      const response = await axios.get('/api/role-menus', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-      const menusArray = JSON.parse(response.data.replace(/'/g, "\""))
-      return menusArray
-    } catch (e) {
-      if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
-        Swal.fire({ icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
-      } else {
-        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
-      }
-    }
-  }
-
   const me = async () => {
     try {
       await axios.get('/sanctum/csrf-cookie')
@@ -46,7 +28,7 @@ function UserProvider({ children }) {
 
   return (
     <UserContext.Provider value={
-      {getMenus, user, setUser, me}
+      {user, setUser, me}
     }>
       {children}
     </UserContext.Provider>

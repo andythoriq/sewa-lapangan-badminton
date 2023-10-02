@@ -169,7 +169,7 @@ const CreateBookingFormMember = () => {
       try {
         const { data } = await axios.post('/api/create-multiple-rental', {
           customer_id: customerCode,
-          user_id: '', // TODO nanti ngambil dari authenticated admin
+          user_id: localStorage.getItem('id') ?? '',
           rentals: rows.map(item => ({
             start: item.start_time,
             finish: item.finish_time,

@@ -61,8 +61,10 @@ const Login = () => {
         password: values.password,
       });
       setErrors("");
-      localStorage.setItem('token', data)
-      localStorage.setItem('username', values.username)
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('username', data.user.username)
+      localStorage.setItem('id', data.user.id)
+      localStorage.setItem('menus', data.user.role.menu)
       localStorage.setItem('role', 'admin')
       Swal.fire({ icon: "success", title: "Success!", html: "Login successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {

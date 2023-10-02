@@ -66,7 +66,10 @@ class AuthAdminRequest extends FormRequest
                 'username' => ['The provided credentials are incorrect.'],
             ]);
         }
-        return $user->createToken(str_replace(' ', '', $user->username) . '-token')->plainTextToken;
+        return [
+            'token' => $user->createToken(str_replace(' ', '', $user->username) . '-token')->plainTextToken,
+            'user' => $user
+        ];
     }
 
     public function register()

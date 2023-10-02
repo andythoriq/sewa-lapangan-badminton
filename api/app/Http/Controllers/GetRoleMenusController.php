@@ -32,6 +32,10 @@ class GetRoleMenusController extends Controller
                 'value' => '/history-booking'
             ],
             [
+                'label' => 'Scanner page',
+                'value' => '/scanner'
+            ],
+            [
                 'label' => 'Master - Court',
                 'value' => '/data-master/court'
             ],
@@ -40,24 +44,20 @@ class GetRoleMenusController extends Controller
                 'value' => '/data-master/regular'
             ],
             [
-                'label' => 'Master - Regular',
-                'value' => '/data-master/customer-regular'
-            ],
-            [
                 'label' => 'Master - Member (list)',
                 'value' => '/data-master/member'
-            ],
-            [
-                'label' => 'Master - Member',
-                'value' => '/data-master/customer-member'
             ],
             [
                 'label' => 'Master - Holiday',
                 'value' => '/data-master/holidays'
             ],
             [
-                'label' => 'Master - Peak time',
-                'value' => '/data-master/rush'
+                'label' => 'Master - Calendar',
+                'value' => '/data-master/calendar'
+            ],
+            [
+                'label' => 'Master - Peak time (list)',
+                'value' => '/data-master/peaktime'
             ],
             [
                 'label' => 'Master - User',
@@ -68,9 +68,13 @@ class GetRoleMenusController extends Controller
                 'value' => '/user-management/user-role'
             ],
             [
-                'label' => 'Scanner page',
-                'value' => '/scanner'
-            ]
+                'label' => 'Profile page',
+                'value' => '/profile'
+            ],
+            [
+                'label' => 'Setting page',
+                'value' => '/setting'
+            ],
         ];
         return response()->json($menus);
     }
