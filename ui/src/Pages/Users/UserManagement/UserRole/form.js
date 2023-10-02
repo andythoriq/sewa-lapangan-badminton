@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Form, Card, Row, Col } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import FormSelect from "../../../../Components/Form/select";
@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 
 const UserRoleForm = () => {
     const {id} = useParams();
+    const navigate = useNavigate();
     const [ selectedStatus, setSelectedStatus ] = useState("")
     const [ menuList, setMenuList ] = useState([])
     const [ values, setValues ] = useState({ rolename: "" });
@@ -40,13 +41,12 @@ const UserRoleForm = () => {
 
             if (menuSet.size === data.menu.length) {
                 data.menu = JSON.stringify(data.menu);
+                if (localStorage.getItem('id').toString() === id.toString()) {
+                    localStorage.setItem('menus', JSON.stringify(data.menu))
+                }
             } else {
                 data.menu = '86afe930-5c36-11ee-8c99-0242ac120002';
             }
-        }
-
-        if (id > 0) {
-            data.menu = menus
         }
 
         const config = {
@@ -65,7 +65,7 @@ const UserRoleForm = () => {
             setErrors('');
             Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
             setTimeout(function () {
-                window.location.href = "/user-management/user-role";
+                navigate('/user-management/user-role', { replace: true })
             }, 2000);
         } catch (e) {
             if (e?.response?.status === 422) {
@@ -158,7 +158,7 @@ const UserRoleForm = () => {
 
         const data = [...rows];
         data[i][name] = value;
-        console.log(rows)
+        // console.log(rows)
         initRow(data);
     };
     const onCheckUpdate = (i, event) => {
@@ -210,6 +210,7 @@ const UserRoleForm = () => {
                 </div>
                 {errors.menu &&
                             <span className="text-danger">{errors.menu[ 0 ]}</span>}
+                <div className="mb-3"><span className="text-secondary"><small>initial value: {menus}</small></span></div>
                 <center>
                     <button type="button" className="btn btn-danger btn-sm" onClick={addRowTable}>
                         + Add

@@ -3,11 +3,12 @@ import { Row, Col, Card, Form } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "react-bootstrap-icons";
 import CurrencyInput from "react-currency-input-field";
 
 const Rush = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [values, setValues] = useState({ start: "", finish: "", day_name: "" });
   const [courts, setCourts] = useState([]);
@@ -36,7 +37,7 @@ const Rush = () => {
     axios
       .get("/api/court-select", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
       .then(({ data }) => {
@@ -74,7 +75,7 @@ const Rush = () => {
     };
     const config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     };
     try {
@@ -88,7 +89,7 @@ const Rush = () => {
       setErrors("");
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
-        window.location.href = "/data-master/peaktime";
+        navigate('/data-master/peaktime', { replace: true })
       }, 2000);
     } catch (e) {
       if (e?.response?.status === 422) {

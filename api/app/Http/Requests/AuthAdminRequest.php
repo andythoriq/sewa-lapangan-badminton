@@ -68,10 +68,7 @@ class AuthAdminRequest extends FormRequest
         }
         return [
             'token' => $user->createToken(str_replace(' ', '', $user->username) . '-token')->plainTextToken,
-            'menus' => $user->role->menu,
-            'username' => $user->username,
-            'id' => $user->id,
-            'role' => $user->role->label
+            'user' => $user
         ];
     }
 

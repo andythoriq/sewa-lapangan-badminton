@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Form, Card, Row, Col, Image } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import FormTextarea from "../../../../Components/Form/textarea";
@@ -33,6 +33,7 @@ const currencyMask = createNumberMask({
 
 const CourtForm = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState("");
   const [values, setValues] = useState({ label: "", price: "", description: "" });
   const [errors, setErrors] = useState([]);
@@ -88,7 +89,7 @@ const CourtForm = () => {
 
     const config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     };
     try {
@@ -103,7 +104,7 @@ const CourtForm = () => {
       setErrors("");
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
-        window.location.href = "/data-master/court";
+        navigate('/data-master/court', { replace: true })
       }, 2000);
     } catch (e) {
       if (e.response.status === 422) {
@@ -131,7 +132,7 @@ const CourtForm = () => {
       axios
         .get("/api/court-edit/" + id, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         })
         .then(({ data }) => {

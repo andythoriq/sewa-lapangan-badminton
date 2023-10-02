@@ -38,4 +38,11 @@ class AuthAdminController extends Controller
         $request->createTokenFor($admin);
         return response(null, 201, ['success' => 'Token for specific user created.']);
     }
+
+    public function get_role_menus(Request $request)
+    {
+        $menus = $request->user()->role->menu;
+
+        return response()->json($menus);
+    }
 }

@@ -3,8 +3,10 @@ import { Form, Row, Col } from "react-bootstrap";
 import FormInput from '../../../Components/Form/input';
 import axios from '../../../api/axios';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const CreateBookingFormRegular = () => {
+  const navigate = useNavigate();
   const [ dataCustomer, setDataCustomer ] = useState([])
   const [ dataCourt, setDataCourt ] = useState([])
   const [ showSendBookingCode, setShowSendBookingCode ] = useState(false)
@@ -51,10 +53,10 @@ const CreateBookingFormRegular = () => {
           customer_id: values.customer_id,
           start: values.start_time,
           finish: values.finish_time,
-          user_id: '', // ngambil dari authenticated admin
+          user_id: localStorage.getItem('id') ?? '',
         }, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           }
         })
         setErrors("");
@@ -88,14 +90,14 @@ const CreateBookingFormRegular = () => {
         booking_code: transactionResponse.booking_code
       }, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         }
       })
       if (data.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `Booking code has been sent to ${data.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
           .then((result) => {
             if (result.isConfirmed) {
-              window.location.href = "/history-booking";
+              navigate('/history-booking', { replace: true })
             }
           })
       } else {

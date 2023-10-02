@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Form, Card, Row, Col, Button } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import { ArrowLeft } from "react-bootstrap-icons";
@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 
 const UserListForm = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [selectedStatus, setSelectedStatus] = useState("");
   const [values, setValues] = useState({ full_name: "", phone_number: "", username: "", password: "", role_id: "" });
   const onChange = (e) => {
@@ -63,7 +64,7 @@ const UserListForm = () => {
     };
     const config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     };
     try {
@@ -77,7 +78,7 @@ const UserListForm = () => {
       setErrors("");
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
-        window.location.href = "/user-management/user-list";
+        navigate('/user-management/user-list', { replace: true })
       }, 2000);
     } catch (e) {
       if (e?.response?.status === 422) {

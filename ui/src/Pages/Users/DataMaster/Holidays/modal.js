@@ -3,9 +3,11 @@ import { Form, Modal, Button, Row, Col  } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const HolidaysModal = ({show="", handleClose, size="md", data=[]}) => {
 
+    const navigate = useNavigate();
     const [values, setValues] = useState({ label:"", date:"" });
     const [errors, setErrors] = useState([])
     const onChange = (e) => { 
@@ -37,7 +39,7 @@ const HolidaysModal = ({show="", handleClose, size="md", data=[]}) => {
             }
             setErrors('');
             Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
-            setTimeout(function () { window.location.href = "/data-master/holidays";}, 2000);
+            setTimeout(function () { navigate('/data-master/holidays', { replace: true }) }, 2000);
         } catch (e) {
             if (e?.response?.status === 422) {
                 setErrors(e.response.data.errors)

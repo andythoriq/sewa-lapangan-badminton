@@ -8,8 +8,10 @@ import FormSelect from "../../Components/Form/select";
 import { dayData, settingData } from "../../Components/settingData";
 import axios from "../../api/axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const Setting = () => {
+  const navigate = useNavigate()
   const [values, setValues] = useState({ name:"", number:"", email:"", address:"", slug: "", description: "" });
   const [rows, initRow] = useState([]);
   const [slug, setSlug] = useState('')
@@ -89,7 +91,7 @@ const Setting = () => {
 
     const config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       }
     }
     try {
@@ -97,7 +99,7 @@ const Setting = () => {
       const response = await axios.post('/api/config', data, config)
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
-        window.location.href = "/";
+        navigate('/dashboard', { replace: true })
       }, 2000);
     } catch (e) {
       if (e?.response?.status === 422) {

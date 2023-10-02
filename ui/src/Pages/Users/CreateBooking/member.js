@@ -6,8 +6,10 @@ import { Trash3 } from "react-bootstrap-icons";
 import "./form.css";
 import axios from "../../../api/axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const CreateBookingFormMember = () => {
+  const navigate = useNavigate();
 
   const [dataCustomer, setDataCustomer] = useState([])
   const [dataCourt, setDataCourt] = useState([])
@@ -167,7 +169,7 @@ const CreateBookingFormMember = () => {
       try {
         const { data } = await axios.post('/api/create-multiple-rental', {
           customer_id: customerCode,
-          user_id: '', // TODO nanti ngambil dari authenticated admin
+          user_id: localStorage.getItem('id') ?? '',
           rentals: rows.map(item => ({
             start: item.start_time,
             finish: item.finish_time,
@@ -175,7 +177,7 @@ const CreateBookingFormMember = () => {
           }))
         }, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           }
         })
         setErrors("");
@@ -212,14 +214,14 @@ const CreateBookingFormMember = () => {
         booking_code: transactionResponse.booking_code
       }, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         }
       })
       if (data.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `Booking code has been sent to ${data.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
           .then((result) => {
             if (result.isConfirmed) {
-              window.location.href = "/history-booking";
+              navigate('/history-booking', { replace: true })
             }
           })
       } else {
@@ -275,7 +277,7 @@ const CreateBookingFormMember = () => {
         </Row>
       </Form>
       {showSendBookingCode === true &&
-        <div>
+        <div style={{ justifyContent: "center", alignItems: "center" }}>
           <h1>{transactionResponse.booking_code}</h1>
           <h2>Customer phone number : {transactionResponse.phone_number}</h2>
           <div><img src={process.env.REACT_APP_BACKEND_URL + '/storage/' + transactionResponse.qr_code_image} alt="qr-code" /></div>

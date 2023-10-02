@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { namaApp, logoApp, dirIcon } from "./Services/config";
 import { Row, Col } from "react-bootstrap";
@@ -11,6 +11,7 @@ import axios from "../api/axios";
 import Swal from "sweetalert2";
 
 const Navbar = () => {
+  const navigate = useNavigate()
   const { menuSidebar } = useSelector((state) => state.menu);
   const dispatch = useDispatch();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -26,14 +27,12 @@ const Navbar = () => {
       await axios.get("/sanctum/csrf-cookie");
       await axios.post("/api/logout-admin", null, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      localStorage.removeItem("token");
-      localStorage.removeItem("role");
-      localStorage.removeItem("username");
+      localStorage.clear()
       setTimeout(function () {
-        window.location.href = "/";
+        navigate('/', {replace:true})
       }, 500);
     } catch(e) {
       if (e?.response?.status === 404 || e?.response?.status === 403) {
@@ -41,19 +40,11 @@ const Navbar = () => {
           icon: "error", title: "Error!", html: e.response.data, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
         }).then((result) => {
           if (result.isConfirmed) {
-            localStorage.removeItem("token");
-            localStorage.removeItem("role");
-            localStorage.removeItem("username");
-            localStorage.removeItem("menus");
-            window.location.href = "/";
+            localStorage.clear()
           }
         });
       } else {
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
-        localStorage.removeItem("username");
-        localStorage.removeItem("menus");
-        window.location.href = "/";
+        localStorage.clear()
       }
     }
   };
