@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "react-bootstrap-icons";
 import CurrencyInput from "react-currency-input-field";
+import secureLocalStorage from "react-secure-storage";
 
 const Rush = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const Rush = () => {
     axios
       .get("/api/court-select", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
         },
       })
       .then(({ data }) => {
@@ -49,7 +50,7 @@ const Rush = () => {
       if (id > 0) {
         axios.get('/api/peak-time-edit/' + id, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
           }
         }).then(({data}) => {
           setValues({
@@ -75,7 +76,7 @@ const Rush = () => {
     };
     const config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
       },
     };
     try {

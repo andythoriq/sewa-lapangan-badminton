@@ -7,6 +7,7 @@ import "./form.css";
 import axios from "../../../api/axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import secureLocalStorage from "react-secure-storage";
 
 const CreateBookingFormMember = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const CreateBookingFormMember = () => {
   useEffect(() => {
     let config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
       }
     }
     axios.get('/api/customer/member', config)
@@ -169,7 +170,7 @@ const CreateBookingFormMember = () => {
       try {
         const { data } = await axios.post('/api/create-multiple-rental', {
           customer_id: customerCode,
-          user_id: localStorage.getItem('id') ?? '',
+          user_id: secureLocalStorage.getItem('id') ?? '',
           rentals: rows.map(item => ({
             start: item.start_time,
             finish: item.finish_time,
@@ -177,7 +178,7 @@ const CreateBookingFormMember = () => {
           }))
         }, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
           }
         })
         setErrors("");
@@ -214,7 +215,7 @@ const CreateBookingFormMember = () => {
         booking_code: transactionResponse.booking_code
       }, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
         }
       })
       if (data.text === "Success") {

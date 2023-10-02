@@ -4,6 +4,7 @@ import FormInput from '../../../Components/Form/input';
 import axios from '../../../api/axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import secureLocalStorage from 'react-secure-storage';
 
 const CreateBookingFormRegular = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const CreateBookingFormRegular = () => {
   useEffect(() => {
     let config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
       }
     }
     axios.get('/api/customer/regular', config)
@@ -53,10 +54,10 @@ const CreateBookingFormRegular = () => {
           customer_id: values.customer_id,
           start: values.start_time,
           finish: values.finish_time,
-          user_id: localStorage.getItem('id') ?? '',
+          user_id: secureLocalStorage.getItem('id') ?? '',
         }, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
           }
         })
         setErrors("");
@@ -90,7 +91,7 @@ const CreateBookingFormRegular = () => {
         booking_code: transactionResponse.booking_code
       }, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
         }
       })
       if (data.text === "Success") {

@@ -7,6 +7,7 @@ import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmD
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import ReactPaginate from 'react-paginate';
+import secureLocalStorage from "react-secure-storage";
 
 const Regular = () => {
     const [show, setShow] = useState(false);
@@ -27,7 +28,7 @@ const Regular = () => {
             await axios.get('/sanctum/csrf-cookie')
             const { data } = await axios.delete('/api/customer/regular/' + customerCode, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             })
             tableRowRemove(deleteId);
@@ -54,7 +55,7 @@ const Regular = () => {
         try {
             const { data } = await axios.get('/api/customer/regular?keyword=' + values.search,{
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             });
             setRegulars(data.data)
@@ -74,7 +75,7 @@ const Regular = () => {
     useEffect(() => {
         axios.get('/api/customer/regular?page=' + currentPage, {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
             }
         }).then(({data}) => {
             setRegulars(data.data)

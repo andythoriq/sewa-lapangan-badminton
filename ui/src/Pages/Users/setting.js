@@ -9,6 +9,7 @@ import { dayData, settingData } from "../../Components/settingData";
 import axios from "../../api/axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import secureLocalStorage from "react-secure-storage";
 
 const Setting = () => {
   const navigate = useNavigate()
@@ -91,7 +92,7 @@ const Setting = () => {
 
     const config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
       }
     }
     try {

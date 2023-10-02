@@ -5,6 +5,7 @@ import FormInput from "../../../../Components/Form/input";
 import { ArrowLeft } from "react-bootstrap-icons";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
+import secureLocalStorage from "react-secure-storage";
 
 const UserListForm = () => {
   const { id } = useParams();
@@ -20,7 +21,7 @@ const UserListForm = () => {
     useEffect(() => {
         axios.get('/api/role', {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
             }
         })
         .then(({ data }) => {
@@ -32,7 +33,7 @@ const UserListForm = () => {
         if (id > 0) {
             axios.get('/api/admin-edit/' + id, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             })
             .then(({data}) => {
@@ -64,7 +65,7 @@ const UserListForm = () => {
     };
     const config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
       },
     };
     try {

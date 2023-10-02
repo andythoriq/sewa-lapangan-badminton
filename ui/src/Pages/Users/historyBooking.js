@@ -5,6 +5,7 @@ import FormInput from "../../Components/Form/input";
 import ModalConfirmDelete from "../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
+import secureLocalStorage from "react-secure-storage";
 
 const HistoryBooking = () => {
       
@@ -24,7 +25,7 @@ const HistoryBooking = () => {
     useEffect(() => {
         axios.get('/api/rental', {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
             }
         })
         .then(({data}) => {
@@ -40,7 +41,7 @@ const HistoryBooking = () => {
         try {
             const {data} = await axios.get('/api/rental?keyword=' + values.search, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             })
             setRentals(data)
@@ -63,7 +64,7 @@ const HistoryBooking = () => {
             await axios.get('/sanctum/csrf-cookie')
             const { data } = await axios.delete('/api/rental/' + item_id, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             })
             tableRowRemove(deleteId)

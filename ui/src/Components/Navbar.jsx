@@ -9,6 +9,7 @@ import { setToggle } from "../Reducers/menuSlice";
 import FormSelect from "./Form/select";
 import axios from "../api/axios";
 import Swal from "sweetalert2";
+import secureLocalStorage from "react-secure-storage";
 
 const Navbar = () => {
   const navigate = useNavigate()
@@ -27,10 +28,10 @@ const Navbar = () => {
       await axios.get("/sanctum/csrf-cookie");
       await axios.post("/api/logout-admin", null, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
         },
       });
-      localStorage.clear()
+      secureLocalStorage.clear()
       setTimeout(function () {
         navigate('/', {replace:true})
       }, 500);
@@ -40,11 +41,11 @@ const Navbar = () => {
           icon: "error", title: "Error!", html: e.response.data, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
         }).then((result) => {
           if (result.isConfirmed) {
-            localStorage.clear()
+            secureLocalStorage.clear()
           }
         });
       } else {
-        localStorage.clear()
+        secureLocalStorage.clear()
       }
     }
   };
@@ -125,7 +126,7 @@ const Navbar = () => {
         <li>
           <Dropdown>
             <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-              <div><img src={`${dirIcon}user-circle.png`} alt="" /> <span className="text-white localstorge">Hi,</span> <span className="localstorge">{localStorage.getItem('username')}</span></div>
+              <div><img src={`${dirIcon}user-circle.png`} alt="" /> <span className="text-white localstorge">Hi,</span> <span className="localstorge">{secureLocalStorage.getItem('username')}</span></div>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {/* <Dropdown.Item eventKey="1" href="/logout">Logout</Dropdown.Item> */}

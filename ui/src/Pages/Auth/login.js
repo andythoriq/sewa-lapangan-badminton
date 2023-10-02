@@ -5,6 +5,7 @@ import Loader from "../../Components/Loader/Loading";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
 import { useNavigate } from "react-router-dom";
+import secureLocalStorage from "react-secure-storage";
 
 const Login = () => {
   // loader state
@@ -61,11 +62,11 @@ const Login = () => {
         password: values.password,
       });
       setErrors("");
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('username', data.user.username)
-      localStorage.setItem('id', data.user.id)
-      localStorage.setItem('menus', data.user.role.menu)
-      localStorage.setItem('role', 'admin')
+      secureLocalStorage.setItem('token', data.token)
+      secureLocalStorage.setItem('username', data.user.username)
+      secureLocalStorage.setItem('id', data.user.id)
+      secureLocalStorage.setItem('menus', data.user.role.menu)
+      secureLocalStorage.setItem('role', 'admin')
       Swal.fire({ icon: "success", title: "Success!", html: "Login successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
         navigate('/', {replace:true})

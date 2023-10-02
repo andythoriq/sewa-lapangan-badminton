@@ -7,6 +7,7 @@ import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmD
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import ReactPaginate from 'react-paginate';
+import secureLocalStorage from "react-secure-storage";
 
 const UserList = () => {
     const [show, setShow] = useState(false);
@@ -30,7 +31,7 @@ const UserList = () => {
         try {
             const { data } = await axios.get('/api/admin?keyword=' + values.search,{
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             });
             setUsers(data.data)
@@ -50,7 +51,7 @@ const UserList = () => {
     useEffect(() => {
         axios.get('/api/admin?page=' + currentPage, {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
             }
         })
         .then(({data}) => {
@@ -69,7 +70,7 @@ const UserList = () => {
             await axios.get('/sanctum/csrf-cookie');
             const { data } = await axios.delete('/api/admin/' + deleteId, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             });
             handleRemove()
@@ -107,7 +108,7 @@ const UserList = () => {
             <tr key={val.id}>
                 <td>{index + 1}</td>
                 <td>{val.name}</td>
-                <td>{val.username === localStorage.getItem('username') ? val.username + ' (YOU)' : val.username }</td>
+                <td>{val.username === secureLocalStorage.getItem('username') ? val.username + ' (YOU)' : val.username }</td>
                 <td>{val.role}</td>
                 <td className="text-center"><label className={`badge text-bg-${val.status === 'Y' ? 'green' : 'danger'} text-dark`}>{(val.status === 'Y' ? 'active' : 'in active' )}</label></td>
                 <td className="text-center">

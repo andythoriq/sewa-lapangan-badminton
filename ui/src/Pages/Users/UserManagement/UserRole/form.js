@@ -6,6 +6,7 @@ import FormSelect from "../../../../Components/Form/select";
 import { ArrowLeft, Trash3 } from "react-bootstrap-icons";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
+import secureLocalStorage from "react-secure-storage";
 
 const UserRoleForm = () => {
     const {id} = useParams();
@@ -41,8 +42,8 @@ const UserRoleForm = () => {
 
             if (menuSet.size === data.menu.length) {
                 data.menu = JSON.stringify(data.menu);
-                if (localStorage.getItem('id').toString() === id.toString()) {
-                    localStorage.setItem('menus', JSON.stringify(data.menu))
+                if (secureLocalStorage.getItem('id').toString() === id.toString()) {
+                    secureLocalStorage.setItem('menus', JSON.stringify(data.menu))
                 }
             } else {
                 data.menu = '86afe930-5c36-11ee-8c99-0242ac120002';
@@ -51,7 +52,7 @@ const UserRoleForm = () => {
 
         const config = {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
             }
         }
         try {
@@ -83,7 +84,7 @@ const UserRoleForm = () => {
     useEffect(() => {
         axios.get('/api/admin-role-menu-list', {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
             }
         })
         .then(({ data }) => {
@@ -95,7 +96,7 @@ const UserRoleForm = () => {
         if (id > 0) {
             axios.get('/api/role-edit/' + id, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             })
             .then(({data}) => {

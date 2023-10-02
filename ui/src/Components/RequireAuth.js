@@ -1,10 +1,11 @@
 import React from "react";
 import { useLocation, Navigate, Outlet } from "react-router-dom"
 import NotFound from "../Pages/NotFound";
+import secureLocalStorage from "react-secure-storage";
 
 const RequireAuth = ({role=''}) => {
-    const token = localStorage.getItem('token');
-    const isRole = localStorage.getItem('role');
+    const token = secureLocalStorage.getItem('token');
+    const isRole = secureLocalStorage.getItem('role');
     const location = useLocation()
     
     return (

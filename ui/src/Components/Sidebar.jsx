@@ -4,12 +4,13 @@ import { ChevronUpIcon, ChevronDownIcon,  ArrowLeftCircleIcon , ArrowRightCircle
 import { useDispatch } from 'react-redux';
 import { setToggle } from '../Reducers/menuSlice';
 import "./style.css";
+import secureLocalStorage from 'react-secure-storage';
 
 const Sidebar = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const dirIcon = "/assets/icon/";
-    const roleMenus = JSON.parse(localStorage.getItem('menus').replace(/'/g, "\""))
+    const roleMenus = JSON.parse(secureLocalStorage.getItem('menus').replace(/'/g, "\""))
     let subMaster = [
         {name:"Court", link:"/data-master/court"},
         {name:"Customer Regular", link:"/data-master/regular"},
