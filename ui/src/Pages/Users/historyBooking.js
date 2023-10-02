@@ -6,6 +6,7 @@ import ModalConfirmDelete from "../../Components/ModalDialog/modalConfirmDelete"
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
 import secureLocalStorage from "react-secure-storage";
+import ReactPaginate from "react-paginate";
 
 const HistoryBooking = () => {
       
@@ -23,7 +24,7 @@ const HistoryBooking = () => {
     const [ originalRentals, setOriginalRentals ] = useState([])
 
     useEffect(() => {
-        axios.get('/api/rental', {
+        axios.get('/api/booking-history', {
             headers: {
                 Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
             }
@@ -39,7 +40,7 @@ const HistoryBooking = () => {
     const handleSearch = async (e) => {
         e.preventDefault()
         try {
-            const {data} = await axios.get('/api/rental?keyword=' + values.search, {
+            const {data} = await axios.get('/api/booking-history?keyword=' + values.search, {
                 headers: {
                     Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
@@ -62,7 +63,7 @@ const HistoryBooking = () => {
         e.preventDefault()
         try {
             await axios.get('/sanctum/csrf-cookie')
-            const { data } = await axios.delete('/api/rental/' + item_id, {
+            const { data } = await axios.delete('/api/booking-history/' + item_id, {
                 headers: {
                     Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
@@ -122,6 +123,11 @@ const HistoryBooking = () => {
         setRentals(dataRow);
     };
 
+    // const handlePageClick = (e) => {
+    //     const number = e.selected + 1
+    //     setCurrentPage(number)
+    // }
+
     return (
     <>
         <h4><b>History Booking</b></h4>
@@ -156,20 +162,18 @@ const HistoryBooking = () => {
                     </tbody>
                 </table>
                 <div className="clearfix">
-                    <ul className="pagination ms-2">
-                        <li className="page-item">
-                            <a href="#previous" className="page-link prev"><ChevronLeft/></a>
-                        </li>
-                        <li className="page-item">
-                            <a href="#1" className="page-link">1</a>
-                        </li>
-                        <li className="page-item">
-                            <a href="#2" className="page-link">2</a>
-                        </li>
-                        <li className="page-item">
-                            <a href="#next" className="page-link next"><ChevronRight/></a>
-                        </li>
-                    </ul>
+                        {/* <ReactPaginate
+                            className="pagination"
+                            pageClassName="page-item"
+                            pageLinkClassName="page-link"
+                            breakLabel="..."
+                            nextLabel="next >"
+                            onPageChange={handlePageClick}
+                            pageRangeDisplayed={5}
+                            pageCount={pageCount}
+                            previousLabel="< previous"
+                            renderOnZeroPageCount={null}
+                        /> */}
                 </div>
             </div>
         </Card>
