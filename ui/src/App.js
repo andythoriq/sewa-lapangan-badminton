@@ -30,9 +30,9 @@ import Member from "./Pages/Users/DataMaster/Customer/Member";
 import LandingBookUser from "./Pages/LandingPages/Booking/LandingBooking";
 import Scanner from "./Pages/Users/ScannerQr/Scanner";
 import PeakTime from "./Pages/Users/DataMaster/Rush Hour/PeakTime";
-import Holidays from "./Pages/Users/DataMaster/Holidays/holidays";
 import Profile from "./Pages/Users/Profile/profile";
 import FormProfile from "./Pages/Users/Profile/form";
+import Kalendar from "./Pages/Users/DataMaster/Holidays/calendar";
 
 
 export default class App extends Component {
@@ -68,7 +68,7 @@ export default class App extends Component {
             <Route path="/data-master/member" element={<Member />} />
             <Route path="/data-master/customer-member/add" element={<CustomerMember />} />
             <Route path="/data-master/customer-member/edit/:id" element={<CustomerMember />} />
-            <Route path="/data-master/holiday" element={<Holidays/>}/>
+            <Route path="/data-master/calendar" element={<Kalendar />} />
             <Route path="/data-master/peaktime" element={<PeakTime />} />
             <Route path="/data-master/rush/add" element={<Rush />} />
             <Route path="/data-master/rush/edit/:id" element={<Rush />} />
