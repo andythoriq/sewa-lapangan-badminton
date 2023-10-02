@@ -22,18 +22,18 @@ class ConfigController extends Controller
     public function create(ConfigRequest $request)
     {
         $request->createConfig();
-        return response(null, 201, ['success' => 'Configuration created.']);
+        return response()->json(['message' => 'Configuration created.'], 201, ['success' => 'Configuration created.']);
     }
 
     public function update(ConfigRequest $request, ConfigModel $config)
     {
         $request->updateConfig($config);
-        return response(null, 204, ['success' => 'Configuration updated.']);
+        return response()->json(['message' => 'Configuration updated.'], 202, ['success' => 'Configuration updated.']);
     }
 
     public function delete(ConfigModel $config)
     {
         $config->deleteOrFail();
-        return response(null, 204, ['success' => 'Configuration deleted.']);
+        return response()->json(['message' => 'Configuration deleted.'], 202, ['success' => 'Configuration deleted.']);
     }
 }

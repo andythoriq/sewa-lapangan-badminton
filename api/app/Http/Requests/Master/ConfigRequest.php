@@ -27,9 +27,25 @@ class ConfigRequest extends FormRequest
     {
         $id = isset($this->config) ? ($this->config->id ?? null) : null;
         return  [
-            'slug' => ['required', 'alpha_dash', 'min:3', 'max:90', Rule::unique('tb_configuration', 'slug')->ignore($id)],
+            'slug' => ['required', 'alpha_dash', 'min:3', 'max:60', Rule::unique('tb_configuration', 'slug')->ignore($id)],
             'description' => ['required', 'max:90'],
-            'value' => ['required', 'max:191'],
+            'value' => ['required', function ($attr, $value, $fail) {
+                if ($value === '38569de2-6078-11ee-8c99-0242ac120002') {
+                    $fail($attr . ': Company data is incomplete.');
+
+                } else if ($value === '3fc8d328-6079-11ee-8c99-0242ac120002') {
+                    $fail($attr . ': Invalid day name.');
+
+                } else if ($value === '7a789d1e-6079-11ee-8c99-0242ac120002') {
+                    $fail($attr . ': Start and finish times are required.');
+
+                } else if ($value === '93a80a18-6079-11ee-8c99-0242ac120002') {
+                    $fail($attr . ': Finish time must be after start time.');
+
+                } else if ($value === 'ae004b00-6079-11ee-8c99-0242ac120002') {
+                    $fail($attr . ': Start and finish times cannot be the same.');
+                }
+            }],
         ];
     }
 
