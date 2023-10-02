@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Form, Card, Row, Col } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import { ArrowLeft } from "react-bootstrap-icons";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import CurrencyInput from "react-currency-input-field";
 import PhoneInput from "react-phone-input-2";
 import axios from "../../../../api/axios";
@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 
 const CustomerMember = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [selectedStatus, setSelectedStatus] = useState("");
   const [isChange, setIsChange] = useState(false);
   const [values, setValues] = useState({ name: "", member_active_period: "" });
@@ -36,7 +37,7 @@ const CustomerMember = () => {
     };
     const config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     };
     try {
@@ -50,7 +51,8 @@ const CustomerMember = () => {
       setErrors("");
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
-        window.location.href = "/data-master/member";
+        navigate('/data-master/member', { replace: true })
+        
       }, 2000);
     } catch (e) {
       if (e?.response?.status === 422) {
@@ -78,7 +80,7 @@ const CustomerMember = () => {
       axios
         .get("/api/customer/member/" + id + "/edit", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         })
         .then(({ data }) => {

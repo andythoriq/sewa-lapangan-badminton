@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Form, Card, Row, Col } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import FormSelect from "../../../../Components/Form/select";
@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 
 const UserRoleForm = () => {
     const {id} = useParams();
+    const navigate = useNavigate();
     const [ selectedStatus, setSelectedStatus ] = useState("")
     const [ menuList, setMenuList ] = useState([])
     const [ values, setValues ] = useState({ rolename: "" });
@@ -65,7 +66,7 @@ const UserRoleForm = () => {
             setErrors('');
             Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
             setTimeout(function () {
-                window.location.href = "/user-management/user-role";
+                navigate('/user-management/user-role', { replace: true })
             }, 2000);
         } catch (e) {
             if (e?.response?.status === 422) {

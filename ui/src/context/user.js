@@ -1,0 +1,57 @@
+import { createContext, useState } from "react";
+import axios from "../api/axios";
+import Swal from "sweetalert2";
+
+const UserContext = createContext();
+
+function UserProvider({ children }) {
+
+  const [ user, setUser ] = useState({})
+
+  const getMenus = async () => {
+    try {
+      const response = await axios.get('/api/role-menus', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      const menusArray = JSON.parse(response.data.replace(/'/g, "\""))
+      return menusArray
+    } catch (e) {
+      if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
+        Swal.fire({ icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      } else {
+        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      }
+    }
+  }
+
+  const me = async () => {
+    try {
+      await axios.get('/sanctum/csrf-cookie')
+      const response = await axios.post('/api/me-admin', null, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      setUser(response.data)
+    } catch(e) {
+      if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
+        Swal.fire({ icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      } else {
+        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      }
+    }
+  }
+
+  return (
+    <UserContext.Provider value={
+      {getMenus, user, setUser, me}
+    }>
+      {children}
+    </UserContext.Provider>
+  )
+}
+
+export { UserProvider }
+export default UserContext

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, StartRentalController, FinishRentalController, DashboardController};
+use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, StartRentalController, FinishRentalController, DashboardController, getUserTypeController};
 use App\Http\Controllers\Master\{HolidayController, ConfigController, OpenTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController, TransactionController};
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +26,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/login-admin/{admin}', 'login_for_other');
         // Route::post('/register-admin', 'register')->name('register-admin')->withoutMiddleware(['auth:sanctum', 'admin']);
         Route::post('/logout-admin', 'logout');
-        Route::get('/me-admin', 'me');
+        Route::post('/me-admin', 'me');
+        Route::get('/role-menus', 'get_role_menus');
     });
 
     /** Customer AUTH ROUTES
@@ -37,6 +38,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', 'logout');
         Route::get('/me', 'me');
     });
+
+    Route::get('/type-of-user', getUserTypeController::class);
 
     /** Master Rental
      * policy/role: customer-handle, schedule-handle, rental-handle, admin */

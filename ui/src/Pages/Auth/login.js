@@ -1,17 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import FormInput from "../../Components/Form/input";
 import Loader from "../../Components/Loader/Loading";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
-import  LoginAdminProvider  from "../../Components/Contex React/LoginAdminProvider";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  // context
-  const { setLogin } = useContext(LoginAdminProvider);
-
   // loader state
   const [isLoading, setIsLoading] = useState(true);
+
+  const navigate = useNavigate()
 
   // create sync method to fetch
   useEffect(() => {
@@ -62,14 +61,12 @@ const Login = () => {
         password: values.password,
       });
       setErrors("");
-      setLogin({ data });
-      localStorage.setItem("role", "admin");
-      localStorage.setItem("menus", data.menus);
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("username", data.username);
+      localStorage.setItem('token', data)
+      localStorage.setItem('username', values.username)
+      localStorage.setItem('role', 'admin')
       Swal.fire({ icon: "success", title: "Success!", html: "Login successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
-        window.location.href = "/";
+        navigate('/', {replace:true})
       }, 2000);
     } catch (e) {
       if (e?.response?.status === 422) {

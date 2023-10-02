@@ -7,20 +7,20 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store";
-import { LoginAdminProvider } from "./Components/Contex React/LoginAdminProvider";
+import { UserProvider } from "./context/user";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <LoginAdminProvider>
     <Provider store={store}>
+      <UserProvider>
         <Router>
           <Routes>
             <Route path="/*" element={<App />} />
           </Routes>
         </Router>
+      </UserProvider>
     </Provider>
-    </LoginAdminProvider>
   </React.StrictMode>
 );
 

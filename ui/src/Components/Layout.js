@@ -9,7 +9,7 @@ const Layout = () => {
 
     const token = localStorage.getItem('token');
     const isRole = localStorage.getItem('role');
-
+    
     let curLoc = useLocation();
     useEffect(() => {
         const titleMap = [
