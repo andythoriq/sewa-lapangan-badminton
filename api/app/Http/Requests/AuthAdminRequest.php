@@ -58,7 +58,7 @@ class AuthAdminRequest extends FormRequest
     {
         // $user = User::select(['password', 'name'])->where('email', $this->email)->firstOrFail();
         $user = User::select(['password', 'id', 'role_id', 'username'])->where('username', $this->username)
-            ->with('role:id,menu')
+            ->with('role:id,menu,label')
             ->firstOrFail();
 
         if (! $user || ! Hash::check($this->password, $user->password)) {
@@ -70,7 +70,8 @@ class AuthAdminRequest extends FormRequest
             'token' => $user->createToken(str_replace(' ', '', $user->username) . '-token')->plainTextToken,
             'menus' => $user->role->menu,
             'username' => $user->username,
-            'id' => $user->id
+            'id' => $user->id,
+            'role' => $user->role->label
         ];
     }
 

@@ -64,8 +64,9 @@ const Login = () => {
       setErrors("");
       setLogin({ data });
       localStorage.setItem("role", "admin");
-      localStorage.setItem("token", data);
-      localStorage.setItem("username", values.username);
+      localStorage.setItem("menus", data.menus);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("username", data.username);
       Swal.fire({ icon: "success", title: "Success!", html: "Login successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
         window.location.href = "/";

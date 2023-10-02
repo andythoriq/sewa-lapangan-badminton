@@ -94,7 +94,7 @@ const Setting = () => {
     }
     try {
       await axios.get('/sanctum/csrf-cookie')
-      const response = await axios.post('/api/config', config)
+      const response = await axios.post('/api/config', data, config)
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
         window.location.href = "/";
@@ -102,7 +102,7 @@ const Setting = () => {
     } catch (e) {
       if (e?.response?.status === 422) {
         setErrors(e.response.data.errors)
-      } else if (e?.response?.status === 404 || e?.response?.status === 403) {
+      } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
         Swal.fire({
           icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
         });
@@ -184,12 +184,16 @@ const Setting = () => {
                     <Form.Group>
                       <label style={{ fontSize: "18px" }}>Slug</label>
                       <FormInput type="text" name="slug" value={slug} onChange={(e) => setSlug(e.target.value)} />
+                      {errors.slug &&
+                            <span className="text-danger">{errors.slug[ 0 ]}</span>}
                     </Form.Group>
                   </Col>
                   <Col className="col-12 col-sm-8 col-md-12 m-auto">
                     <Form.Group>
                       <label style={{ fontSize: "18px" }}>Description</label>
-                      <FormTextarea name="description" value={description} onChange={(e) => setDescription(e.target.description)}></FormTextarea>
+                      <FormTextarea name="description" value={description} onChange={(e) => setDescription(e.target.value)}></FormTextarea>
+                      {errors.description &&
+                            <span className="text-danger">{errors.description[ 0 ]}</span>}
                     </Form.Group>
                   </Col>
                   <Col className="col-12 col-sm-8 col-md-12 m-auto">
@@ -236,6 +240,8 @@ const Setting = () => {
                         </tbody>
                     </table>
                 </div>
+                {errors.value &&
+                    <span className="text-danger">{errors.value[ 0 ]}</span>}
                 <center>
                     <button type="button" className="btn btn-danger btn-sm" onClick={addRowTable}>
                         + Add

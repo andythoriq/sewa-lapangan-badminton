@@ -123,7 +123,7 @@ class AuthCustomerRequest extends FormRequest
     {
         $customer = CustomerModel::select(['otp_code', 'phone_number', 'customer_code', 'expiration'])->where('otp_code', $this->otp_code)->firstOrFail();
         if (Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->expiration))) {
-            return $customer->createToken(str_replace(' ', '', $customer->phone_number) . '-token')->plainTextToken;
+            return $customer->createToken(str_replace(' ', '', $customer->phone_number) . '-token')->plainTextToken; // token, id, name, phone_number
         }
         throw ValidationException::withMessages([
             'otp_code' => ['The code has expired.']

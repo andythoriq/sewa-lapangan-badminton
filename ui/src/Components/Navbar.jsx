@@ -44,6 +44,7 @@ const Navbar = () => {
             localStorage.removeItem("token");
             localStorage.removeItem("role");
             localStorage.removeItem("username");
+            localStorage.removeItem("menus");
             window.location.href = "/";
           }
         });
@@ -51,6 +52,7 @@ const Navbar = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("role");
         localStorage.removeItem("username");
+        localStorage.removeItem("menus");
         window.location.href = "/";
       }
     }
