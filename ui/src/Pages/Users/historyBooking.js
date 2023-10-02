@@ -104,6 +104,7 @@ const HistoryBooking = () => {
                 <td><span>{val.start}</span> - <span>{val.finish}</span></td>
                 <td>{val.transaction.total_hour}</td>
                   <td>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(val.transaction.total_price)}</td>
+                <td className="text-center"></td>
                 <td className="text-center">{(val.status === 'B' ? 'Booked' : (val.status === 'O' ? 'On progress' : 'Finished'))}</td>
                 <td className="text-center">
                     <a href="#delete" onClick={() => handleShow(index, val.id)}>
@@ -142,9 +143,10 @@ const HistoryBooking = () => {
                             <th width={'20%'}>Name Customer</th>
                             <th width={'15%'}>Court</th>
                             <th width={'30%'}>Start - Finish</th>
-                            <th width={'10%'}>Totally hour</th>
-                            <th width={'10%'}>Totally Price</th>
-                            <th width={'10%'} className="text-center">Status</th>
+                            <th width={'8%'}>Totally hour</th>
+                            <th width={'8%'}>Totally Price</th>
+                            <th width={'16%'}>Transaction Details</th>
+                            <th width={'16%'} className="text-center">Status</th>
                             <th width={'4%'} className="text-center">Action</th>
                         </tr>
                     </thead>
