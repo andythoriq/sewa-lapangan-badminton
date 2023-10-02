@@ -72,7 +72,7 @@ class RentalRequest extends FormRequest
 
     public function createRental()
     {
-        $this->regularRentalsCheck($this->customer_id);
+        // $this->regularRentalsCheck($this->customer_id);
 
         $this->validateDuration($this->start, $this->finish);
 
@@ -117,7 +117,7 @@ class RentalRequest extends FormRequest
 
     public function updateRental(RentalModel $rental)
     {
-        $this->regularRentalsCheck($this->customer_id);
+        // $this->regularRentalsCheck($this->customer_id);
 
         $this->validateDuration($this->start, $this->finish);
 
@@ -133,6 +133,8 @@ class RentalRequest extends FormRequest
 
     public function createMultipleRental()
     {
+        $this->regularRentalsCheck($this->customer_id);
+
         $data = $this->validated();
 
         if (strtolower($data['customer_id'][0]) == 'r') {

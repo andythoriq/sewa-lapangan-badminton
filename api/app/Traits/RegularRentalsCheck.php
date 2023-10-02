@@ -16,7 +16,7 @@ trait RegularRentalsCheck
 
             if ($unfinishedRentalsCount > 1) {
                 throw ValidationException::withMessages([
-                    'customer_id' => ['Regular customer can only make one rental.'],
+                    'customer_id' => ['Regular customer can\'t booking multiple times.'],
                 ]);
             }
         }
