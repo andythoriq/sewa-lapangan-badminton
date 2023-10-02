@@ -12,10 +12,9 @@ const CustomerMember = () => {
   const { id } = useParams();
   const [selectedStatus, setSelectedStatus] = useState("");
   const [isChange, setIsChange] = useState(false);
-  const [values, setValues] = useState({ name: "", status: selectedStatus, member_active_period: "" });
+  const [values, setValues] = useState({ name: "", member_active_period: "" });
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
-    setSelectedStatus(e.target.value);
   };
 
   const [errors, setErrors] = useState([]);
@@ -31,7 +30,7 @@ const CustomerMember = () => {
       phone_number: (phoneNumber.substring(0, 2) === '62' ? "0" + phoneNumber.slice(2) : phoneNumber),
       deposit: deposit,
       debt: debt,
-      status: values.status,
+      status: selectedStatus,
       isChangeToRegular: isChange,
       member_active_period: values.member_active_period,
     };
@@ -61,14 +60,13 @@ const CustomerMember = () => {
           icon: "error",
           title: "Error!",
           html: e.response.data,
-          showConfirmButton: false,
+          showConfirmButton: true,
           allowOutsideClick: false,
-          allowEscapeKey: false,
-          timer: 1500,
+          allowEscapeKey: false
         });
-        setTimeout(function () {
-          window.location.href = "/";
-        }, 1500);
+        Swal.fire({
+          icon: "error", title: "Error!", html: e.response.data, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+        });
       } else {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
@@ -86,8 +84,9 @@ const CustomerMember = () => {
         .then(({ data }) => {
           setValues({ ...values, name: data.name, member_active_period: data.member_active_period.substring(0, 10) });
           setPhoneNumber(data.phone_number)
-          setDebt(data.debt ?? '')
-          setDeposit(data.deposit ?? '')
+          setDebt(data.debt)
+          setDeposit(data.deposit)
+          setSelectedStatus(data.status)
         })
         .catch((e) => {
           Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -126,14 +125,14 @@ const CustomerMember = () => {
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
                     <label>Deposit</label>
-                    <CurrencyInput className="form-control" prefix="Rp" id="deposit" name="deposit" decimalsLimit={2} onValueChange={(value) => setDeposit(value)} />
+                    <CurrencyInput className="form-control" prefix="Rp" value={deposit} id="deposit" name="deposit" decimalsLimit={2} onValueChange={(value) => setDeposit(value)} />
                     {errors.deposit && <span className="text-danger">{errors.deposit[0]}</span>}
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
                     <label>Debt</label>
-                    <CurrencyInput className="form-control" prefix="Rp" id="debt" name="debt" decimalsLimit={2} onValueChange={(value) => setDebt(value)} />
+                    <CurrencyInput className="form-control" prefix="Rp" value={debt} id="debt" name="debt" decimalsLimit={2} onValueChange={(value) => setDebt(value)} />
                     {errors.debt && <span className="text-danger">{errors.debt[0]}</span>}
                   </Form.Group>
                 </Col>
@@ -160,12 +159,12 @@ const CustomerMember = () => {
                   <label>Status</label>
                   <div className="d-flex">
                     <div className="form-check">
-                      <input id="activeId" type="radio" className="form-check-input" name="status" value="Y" onChange={onChange} />
+                      <input id="activeId" type="radio" className="form-check-input" name="status" value={selectedStatus} onChange={() => setSelectedStatus('Y')} checked={selectedStatus === 'Y'} />
                       <label htmlFor="activeId">Active</label>
                     </div>
                     &nbsp;&nbsp;&nbsp;
                     <div className="form-check form-check-inline">
-                      <input id="inActiveId" type="radio" className="form-check-input" name="status" value="N" onChange={onChange} />
+                      <input id="inActiveId" type="radio" className="form-check-input" name="status" value={selectedStatus} onChange={() => setSelectedStatus('N')} checked={selectedStatus === 'N'} />
                       <label htmlFor="inActiveId">In active</label>
                     </div>
                   </div>

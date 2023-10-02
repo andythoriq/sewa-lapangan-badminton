@@ -1052,7 +1052,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'start' => '08:00:00',
-                'finish' => '18:00:00',
+                'finish' => '15:00:00',
                 'price_increase' => 65_000.00,
                 'day_name' => 'monday',
                 'court_id' => 2,
@@ -1063,7 +1063,7 @@ class DatabaseSeeder extends Seeder
                 'start' => '08:00:00',
                 'finish' => '16:00:00',
                 'price_increase' => 60_000.00,
-                'day_name' => 'saturday',
+                'day_name' => 'sunday',
                 'court_id' => 3,
                 'created_at' => now(),
                 'updated_at' => now()

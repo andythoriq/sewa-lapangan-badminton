@@ -57,7 +57,7 @@ class MemberRequest extends FormRequest
         $customer = $this->except('isChangeToRegular');
         $customer['membership_status'] = 'M';
         $customer['status'] = strtoupper($customer['status']);
-        $customer['customer_code'] = $this->getFormattedCode('m');
+        $customer['customer_code'] = $this->getFormattedCode();
         CustomerModel::create($customer);
     }
 
@@ -67,7 +67,7 @@ class MemberRequest extends FormRequest
             $data = $this->except('isChangeToRegular');
             $data['membership_status'] = 'R';
             $data['member_active_period'] = null;
-            $data['customer_code'] = $this->getFormattedCode('r');
+            $data['customer_code'] = $this->getFormattedCode();
             $customer->updateOrFail($data);
         } else {
             $customer->updateOrFail($this->except('isChangeToRegular'));

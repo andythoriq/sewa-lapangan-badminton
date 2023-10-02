@@ -2,13 +2,14 @@
 
 namespace App\Http\Requests;
 
+use App\Models\OTPModel;
 use App\Traits\SendWA;
 use App\Models\CustomerModel;
 use Illuminate\Support\Carbon;
-use Illuminate\Validation\Rule;
+// use Illuminate\Validation\Rule;
 use App\Traits\CustomerCodeFormat;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
+// use Illuminate\Support\Facades\Hash;
+// use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
@@ -73,21 +74,48 @@ class AuthCustomerRequest extends FormRequest
         $validated = $this->validated();
         $customer = CustomerModel::where('phone_number', $validated['phone_number']);
         if ($customer->exists()) {
-            $customer->update([
-                'otp_code' => $otp,
-                'expiration' => Carbon::now('Asia/Jakarta')->addMinutes(15)
-            ]);
+            if (Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->firstOrFail()->expiration))) {
+                throw ValidationException::withMessages([
+                    'phone_number' => ['Can\'t get OTP in less than 15 minutes.']
+                ]);
+            } else {
+                $customer->update([
+                    'otp_code' => $otp,
+                    'expiration' => Carbon::now('Asia/Jakarta')->addMinutes(15)
+                ]);
+                OTPModel::create([
+                    'customer_id' => $customer->customer_code,
+                    'otp_code' => $otp
+                ]);
+            }
         } else {
             $validated['membership_status'] = 'R';
             $validated['status'] = 'Y';
             $validated['otp_code'] = $otp;
             $validated['expiration'] = Carbon::now('Asia/Jakarta')->addMinutes(15);
-            $validated['customer_code'] = $this->getFormattedCode('r');
-            CustomerModel::create($validated);
+            $validated['customer_code'] = $this->getFormattedCode();
+            $newCustomer = CustomerModel::create($validated);
+            OTPModel::create([
+                'customer_id' => $newCustomer->customer_code,
+                'otp_code' => $otp
+            ]);
         }
 
-        $message = 'Your OTP code is ' . $otp . ' expires after 15 minutes.';
-        $response = $this->sendWA($validated['phone_number'], $message);
+        $app_name = env('APP_NAME', 'GOR Badminton');
+
+        $message = <<<EOT
+        Dear customer,
+
+        Your One-Time Password (OTP) code for verification is: $otp.
+        This OTP code is valid for the next 15 minutes.
+
+        Thank you for using our service.
+
+        Sincerely,
+        $app_name
+        EOT;
+
+        $response = $this->sendWA($validated['phone_number'], $message, env('ZENZIVA_USER_KEY') ,env('ZENZIVA_API_KEY'));
         return $response;
     }
 
@@ -95,7 +123,7 @@ class AuthCustomerRequest extends FormRequest
     {
         $customer = CustomerModel::select(['otp_code', 'phone_number', 'customer_code', 'expiration'])->where('otp_code', $this->otp_code)->firstOrFail();
         if (Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->expiration))) {
-            return $customer->createToken(str_replace(' ', '', $customer->phone_number) . '-token')->plainTextToken;
+            return $customer->createToken(str_replace(' ', '', $customer->phone_number) . '-token')->plainTextToken; // token, id, name, phone_number
         }
         throw ValidationException::withMessages([
             'otp_code' => ['The code has expired.']

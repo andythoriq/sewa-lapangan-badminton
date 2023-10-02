@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Master;
 
 use App\Models\CourtModel;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,8 +26,9 @@ class CourtRequest extends FormRequest
      */
     public function rules()
     {
+        $id = isset($this->court) ? ($this->court->id ?? null) : null;
         return [
-            'label' => ['required', 'string', 'min:3', 'max:60'],
+            'label' => ['required', 'string', 'min:3', 'max:60', Rule::unique('tb_court', 'label')->ignore($id)],
             // 'image_path' => ['required', 'string', 'max:255'],
             // 'image_path' => ['required', 'image', 'max:5000', 'mimes:png,jpg,jpeg'],
             'image_path' => ['nullable', 'image', 'max:5000', 'mimes:png,jpg,jpeg'],

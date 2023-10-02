@@ -28,8 +28,8 @@ class PeakTimeRequest extends FormRequest
     public function rules()
     {
         $validation = [
-            'start' => ['required', 'date_format:H:i', 'before:finish'],
-            'finish' => ['required', 'date_format:H:i', 'after:start'],
+            'start' => ['required', 'before:finish'],
+            'finish' => ['required', 'after:start'],
             'court_id' => ['required', 'integer', 'exists:tb_court,id'],
             'price_increase' => ['required', 'numeric', 'min:1000.00', 'max:1000000.00'],
             'day_name' => ['required', 'in:monday,tuesday,wednesday,thursday,friday,saturday,sunday']
@@ -38,8 +38,8 @@ class PeakTimeRequest extends FormRequest
         if($this->route()->getName() == 'create-multiple-peak-time'){
             $validation = [
                 '*' => ['required', 'array', 'min:1'],
-                '*.start' => ['required', 'date', 'date_format:H:i', 'after_or_equal:now'],
-                '*.finish' => ['required', 'date', 'date_format:H:i', 'after:*.start'],
+                '*.start' => ['required', 'date', 'after_or_equal:now'],
+                '*.finish' => ['required', 'date', 'after:*.start'],
                 '*.court_id' => ['required', 'integer', 'exists:tb_court,id'],
                 '*.price_increase' => ['required', 'numeric', 'min:1000.00', 'max:1000000.00'],
                 '*.day_name' => ['required', 'in:monday,tuesday,wednesday,thursday,friday,saturday,sunday']

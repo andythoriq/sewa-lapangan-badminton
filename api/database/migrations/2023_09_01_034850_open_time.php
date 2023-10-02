@@ -14,7 +14,7 @@ class OpenTime extends Migration
     public function up()
     {
         Schema::create('tb_open_time', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->time('start')->unique();
             $table->time('finish')->unique();
             $table->timestamps();

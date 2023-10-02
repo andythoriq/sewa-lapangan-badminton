@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, StartRentalController, FinishRentalController};
+use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, StartRentalController, FinishRentalController, DashboardController};
 use App\Http\Controllers\Master\{HolidayController, ConfigController, OpenTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController, TransactionController};
 use Illuminate\Support\Facades\Route;
 
@@ -50,9 +50,12 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::post('/send-booking-code', SendBookingCodeController::class);
-    Route::post('/booking-verification', [TransactionController::class, 'booking_verification'])->middleware('admin');
+    Route::post('/booking-verification/{booking_code}', [TransactionController::class, 'booking_verification'])->middleware('admin');
     Route::post('/start-rental', StartRentalController::class)->middleware('admin');
     Route::post('/finish-rental', FinishRentalController::class)->middleware('admin');
+
+    Route::get('/admin-role-menu-list', GetRoleMenusController::class)->middleware('admin');
+    Route::get('/dashboard', DashboardController::class)->middleware('admin');
 
     /** START MASTER DATA */
 
@@ -66,8 +69,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/role/{role}', 'update');
         Route::delete('/role/{role}', 'delete');
     });
-
-    Route::get('/admin-role-menu-list', GetRoleMenusController::class)->middleware('admin');
 
     /** Master Admin/User Management
      * policy/role: user-handle, admin */
@@ -114,6 +115,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(PeakTimeController::class)->middleware('admin')->group(function () {
         Route::get('/peak-time', 'index');
         Route::get('/peak-time/{peak_time}', 'show');
+        Route::get('/peak-time-edit/{peak_time}', 'edit');
         Route::post('/peak-time', 'create');
         Route::post('/create-multiple-peak-time', 'create_multiple')->name('create-multiple-peak-time');
         Route::put('/peak-time/{peak_time}', 'update');

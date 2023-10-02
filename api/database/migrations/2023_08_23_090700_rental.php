@@ -14,16 +14,21 @@ class Rental extends Migration
     public function up()
     {
         Schema::create('tb_rental', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->dateTime('start');
             $table->dateTime('finish');
             $table->enum('status', ['B', 'O', 'F'])->comment('B: booked, O: onprogress, F: finished')->default('B');
             $table->float('price');
-            $table->foreignId('court_id')->constrained('tb_court', 'id')->cascadeOnDelete();
-            $table->foreignId('transaction_id')->constrained('tb_transaction', 'id')->cascadeOnDelete();
-            $table->string('customer_id', 20);
+
+            $table->unsignedSmallInteger('court_id');
+            $table->unsignedInteger('transaction_id');
+            $table->unsignedInteger('user_id')->nullable()->default(null);
+            $table->integer('customer_id');
+
+            $table->foreign('court_id')->references('id')->on('tb_court')->cascadeOnDelete();
+            $table->foreign('transaction_id')->references('id')->on('tb_transaction')->cascadeOnDelete();
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreign('customer_id')->references('customer_code')->on('tb_customer')->cascadeOnDelete();
-            $table->foreignId('user_id')->nullable()->default(null)->constrained('users', 'id')->cascadeOnDelete();
             $table->timestamps();
         });
     }

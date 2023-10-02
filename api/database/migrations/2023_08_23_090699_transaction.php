@@ -14,7 +14,7 @@ class Transaction extends Migration
     public function up()
     {
         Schema::create('tb_transaction', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->float('total_price');
             $table->float('total_hour');
             $table->string('qr_code_image', 255)->nullable()->default(null);

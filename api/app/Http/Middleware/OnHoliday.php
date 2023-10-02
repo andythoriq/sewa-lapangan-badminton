@@ -17,7 +17,7 @@ class OnHoliday
      */
     public function handle(Request $request, Closure $next)
     {
-        $currentDate = now('Asia/Jakarta')->toString();
+        $currentDate = now('Asia/Jakarta')->format('Y-m-d'); // m-d
 
         $isHoliday = HolidayModel::where('date', $currentDate)->exists();
 

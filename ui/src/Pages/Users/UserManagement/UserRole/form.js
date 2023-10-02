@@ -11,12 +11,12 @@ const UserRoleForm = () => {
     const {id} = useParams();
     const [ selectedStatus, setSelectedStatus ] = useState("")
     const [ menuList, setMenuList ] = useState([])
-    const [ values, setValues ] = useState({ rolename: "", status: selectedStatus });
+    const [ values, setValues ] = useState({ rolename: "" });
     const [errors, setErrors] = useState([])
+    const [menus, setMenus] = useState('')
 
     const onChange = (e) => { 
         setValues({ ...values, [e.target.name]: e.target.value });
-        setSelectedStatus(e.target.value)
     }
 
     const handleSubmit = async (e) => {
@@ -24,13 +24,15 @@ const UserRoleForm = () => {
         const data = {
             label: values.rolename,
             menu: [],
-            status: values.status,
+            status: selectedStatus,
         };
+
         for (let i = 0; i < rows.length; i++) {
             if (rows[i].menu !== '') {
                 data.menu.push(rows[ i ].menu)
             }
         }
+
         if (data.menu.length < 1) {
             data.menu = ''
         } else {
@@ -41,6 +43,10 @@ const UserRoleForm = () => {
             } else {
                 data.menu = '86afe930-5c36-11ee-8c99-0242ac120002';
             }
+        }
+
+        if (id > 0) {
+            data.menu = menus
         }
 
         const config = {
@@ -64,11 +70,10 @@ const UserRoleForm = () => {
         } catch (e) {
             if (e?.response?.status === 422) {
                 setErrors(e.response.data.errors)
-            } else if (e?.response?.status === 404 || e?.response?.status === 403) {
+            } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
                 Swal.fire({
-                    icon: "error", title: "Error!", html: e.response.data, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500
+                    icon: "error", title: "Error!", html: e.response.data, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
                 });
-                setTimeout(function () { window.location.href = "/" }, 1500);
             } else {
                 Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
             }
@@ -95,6 +100,8 @@ const UserRoleForm = () => {
             })
             .then(({data}) => {
                 setValues({ ...values, rolename: data.label })
+                setSelectedStatus(data.status)
+                setMenus(data.menu)
             })
             .catch((e) => {
                 Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }); 
@@ -151,7 +158,7 @@ const UserRoleForm = () => {
 
         const data = [...rows];
         data[i][name] = value;
-        // console.log(data)
+        console.log(rows)
         initRow(data);
     };
     const onCheckUpdate = (i, event) => {
@@ -210,12 +217,12 @@ const UserRoleForm = () => {
                 </center>
                 <div className="d-flex mt-2">
                     <div className="form-check">
-                        <input id="activeId" type="radio" className="form-check-input" name="status" value="Y" onChange={onChange} />
+                        <input id="activeId" type="radio" className="form-check-input" name="status" value={selectedStatus} onChange={() => setSelectedStatus('Y')} checked={selectedStatus === 'Y'} />
                         <label htmlFor="activeId">Active</label>
                     </div>
                     &nbsp;&nbsp;&nbsp;
                     <div className="form-check form-check-inline">
-                        <input id="inActiveId" type="radio" className="form-check-input" name="status" value="N" onChange={onChange} />
+                        <input id="inActiveId" type="radio" className="form-check-input" name="status" value={selectedStatus} onChange={() => setSelectedStatus('N')} checked={selectedStatus === 'N'} />
                         <label htmlFor="inActiveId">In active</label>
                     </div>
                 </div>

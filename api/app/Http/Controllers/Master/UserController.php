@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return response()->json($user->only(['name', 'username', 'phone_number', 'role_id', 'password']));
+        return response()->json($user->only(['name', 'username', 'phone_number', 'role_id', 'password', 'status']));
     }
 
     public function update(UserRequest $request, User $user)
@@ -41,11 +41,14 @@ class UserController extends Controller
 
         $users = User::when($keyword, function ($query) use ($keyword) {
             $query->where('name', 'like', '%' . $keyword . '%')
-                ->orWhere('username', 'like', '%' . $keyword . '%');
+                ->orWhere('username', 'like', '%' . $keyword . '%')
+                ->orWhereHas('role', function ($roleQuery) use ($keyword) {
+                    $roleQuery->where('label', 'like', '%' . $keyword . '%');
+                });
         })
             ->select(['id', 'name', 'username', 'status', 'role_id'])
             ->with('role:id,label')
-            ->get();
+            ->paginate(5);
 
         return new UserCollection($users);
     }

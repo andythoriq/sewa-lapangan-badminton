@@ -6,10 +6,16 @@ import FormInput from "../../Components/Form/input";
 import FormTextarea from "../../Components/Form/textarea";
 import FormSelect from "../../Components/Form/select";
 import { dayData, settingData } from "../../Components/settingData";
+import axios from "../../api/axios";
+import Swal from "sweetalert2";
 
 const Setting = () => {
-  const [values, setValues] = useState({ name:"", number:"", email:"", address:"" });
+  const [values, setValues] = useState({ name:"", number:"", email:"", address:"", slug: "", description: "" });
   const [rows, initRow] = useState([]);
+  const [slug, setSlug] = useState('')
+  const [description, setDescription] = useState('')
+
+  const [errors, setErrors] = useState('')
 
   useEffect(() => {
     const setFormData = () => {
@@ -24,25 +30,85 @@ const Setting = () => {
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
+
+  function validateSchedule(schedule) {
+    const validDays = [ "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday" ];
+    const errors = [];
+
+    schedule.forEach((item) => {
+      const { day, hours } = item;
+
+      if (!values.name || !values.number || !values.email || !values.address) {
+        errors.push('38569de2-6078-11ee-8c99-0242ac120002'); // Company data is incomplete.
+      }
+
+      if (!day || !validDays.includes(day.toLowerCase())) {
+        errors.push('3fc8d328-6079-11ee-8c99-0242ac120002'); // Invalid day
+      }
+
+      const { start, finish } = hours;
+      if (!start || !finish) {
+        errors.push('7a789d1e-6079-11ee-8c99-0242ac120002'); // Start and finish times are required
+      } else {
+        const startTime = new Date(`2000-01-01T${start}`);
+        const finishTime = new Date(`2000-01-01T${finish}`);
+
+        if (startTime >= finishTime) {
+          errors.push('93a80a18-6079-11ee-8c99-0242ac120002'); // Finish time must be after start time
+        }
+
+        if (start === finish) {
+          errors.push('ae004b00-6079-11ee-8c99-0242ac120002'); // Start and finish times cannot be the same
+        }
+      }
+    });
+
+    return errors;
+  }
   
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    // console.log("Data : ", values);
-    // console.log("Open Days : ", rows);
+    e.preventDefault(); 
     const data = {
-      slug: '',
-      description: '',
+      slug: slug,
+      description: description,
       value: '',
     }
+
+    const scheduleErrors = validateSchedule(rows);
+    if (scheduleErrors.length > 0) {
+      data.value = scheduleErrors[0]
+    } else {
+      data.value = JSON.stringify({
+        name: values.name,
+        number: values.number,
+        email: values.email,
+        address: values.address,
+        schedule: rows
+      })
+    }
+
     const config = {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       }
     }
     try {
-        
-    } catch (error) {
-      
+      await axios.get('/sanctum/csrf-cookie')
+      const response = await axios.post('/api/config', data, config)
+      Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
+      setTimeout(function () {
+        window.location.href = "/";
+      }, 2000);
+    } catch (e) {
+      if (e?.response?.status === 422) {
+        setErrors(e.response.data.errors)
+      } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
+        Swal.fire({
+          icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+        });
+      } else {
+        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      }
     }
   }
 
@@ -116,6 +182,22 @@ const Setting = () => {
                 <Col>
                   <Col className="col-12 col-sm-8 col-md-12 m-auto">
                     <Form.Group>
+                      <label style={{ fontSize: "18px" }}>Slug</label>
+                      <FormInput type="text" name="slug" value={slug} onChange={(e) => setSlug(e.target.value)} />
+                      {errors.slug &&
+                            <span className="text-danger">{errors.slug[ 0 ]}</span>}
+                    </Form.Group>
+                  </Col>
+                  <Col className="col-12 col-sm-8 col-md-12 m-auto">
+                    <Form.Group>
+                      <label style={{ fontSize: "18px" }}>Description</label>
+                      <FormTextarea name="description" value={description} onChange={(e) => setDescription(e.target.value)}></FormTextarea>
+                      {errors.description &&
+                            <span className="text-danger">{errors.description[ 0 ]}</span>}
+                    </Form.Group>
+                  </Col>
+                  <Col className="col-12 col-sm-8 col-md-12 m-auto">
+                    <Form.Group>
                       <label style={{ fontSize: "18px" }}>Name</label>
                       <FormInput type="text" name="name" value={values.name} onChange={onChange} />
                     </Form.Group>
@@ -158,6 +240,8 @@ const Setting = () => {
                         </tbody>
                     </table>
                 </div>
+                {errors.value &&
+                    <span className="text-danger">{errors.value[ 0 ]}</span>}
                 <center>
                     <button type="button" className="btn btn-danger btn-sm" onClick={addRowTable}>
                         + Add

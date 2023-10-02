@@ -4,13 +4,13 @@ namespace App\Traits;
 
 trait SendWA
 {
-    public function sendWA(string $telepon, string $message)
+    public function sendWA(string $telepon, string $message, string $userKey, string $apiKey)
     {
         $url = 'https://console.zenziva.net/wareguler/api/sendWA/';
 
         $data = array(
-            'userkey' => env('ZENZIVA_USER_KEY'),
-            'passkey' => env('ZENZIVA_API_KEY'),
+            'userkey' => $userKey,
+            'passkey' => $apiKey,
             'to' => $telepon,
             'message' => $message
         );
@@ -37,13 +37,13 @@ trait SendWA
         return $response;
     }
 
-    public function sendImage(string $telepon, string $image_link, string $caption)
+    public function sendImage(string $telepon, string $image_link, string $caption, string $userKey, string $apiKey)
     {
         $url = 'https://console.zenziva.net/wareguler/api/sendWAFile/';
 
         $data = array(
-            'userkey' => env('ZENZIVA_USER_KEY'),
-            'passkey' => env('ZENZIVA_API_KEY'),
+            'userkey' => $userKey,
+            'passkey' => $apiKey,
             'to' => $telepon,
             'link' => $image_link,
             'caption' => $caption

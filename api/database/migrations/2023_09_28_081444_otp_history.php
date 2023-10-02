@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Role extends Migration
+class OtpHistory extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class Role extends Migration
      */
     public function up()
     {
-        Schema::create('tb_role', function (Blueprint $table) {
-            $table->smallIncrements('id');
-            $table->string('label', 60)->unique();
-            $table->text('menu');
-            $table->enum('status', ['Y', 'N'])->comment('Y: Active, N: Inactive')->default('Y');
+        Schema::create('tb_otp_history', function (Blueprint $table) {
+            $table->increments('id');
+
+            $table->integer('customer_id');
+            $table->foreign('customer_id')->references('customer_code')->on('tb_customer')->cascadeOnDelete();
+            $table->string('otp_code', 6);
+
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class Role extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_role');
+        Schema::dropIfExists('tb_otp_history');
     }
 }

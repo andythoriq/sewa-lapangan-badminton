@@ -22,10 +22,30 @@ class SendBookingCodeController extends Controller
             'booking_code' => ['required', 'string', 'exists:tb_transaction,booking_code']
         ]);
 
-        $caption = 'Booking code: ' . $data['booking_code'];
+        $app_name = env('APP_NAME', 'GOR Badminton');
 
-        $response = $this->sendImage($data['phone_number'], 'https://picsum.photos/id/995/200/300.jpg', $caption);
+        $message = <<<EOT
+        Dear valued customer,
 
-        return response()->json($response);
+        We are pleased to confirm your booking with the following details:
+
+        Booking code: {$data['booking_code']}
+
+        bring this booking code to our on-site administrator.
+
+        Thank you for choosing our services. We look forward to serving you.
+
+        Best regards,
+        $app_name
+        EOT;
+
+
+        // $image_link = public_path('storage/qr-code-images/') . $data['booking_code'] . 'svg';
+
+        // $response = $this->sendImage($data['phone_number'], $image_link, $caption);
+
+        $response = $this->sendWA($data['phone_number'], $message, env('ZENZIVA_USER_KEY'), env('ZENZIVA_API_KEY'));
+
+        return response($response);
     }
 }

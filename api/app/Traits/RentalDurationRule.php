@@ -21,7 +21,8 @@ trait RentalDurationRule
             ]);
         }
 
-        if ($start->diffInMinutes($finish) % $multipleOf !== 0) {
+        $minutesDiff = $start->diffInMinutes($finish);
+        if ($minutesDiff % $multipleOf !== 0 || $start->minute % $multipleOf !== 0 || $finish->minute % $multipleOf !== 0) {
             throw ValidationException::withMessages([
                 'start' => ['Start and Finish must be multiplied by 30 minutes.'],
             ]);

@@ -6,16 +6,33 @@ use App\Models\CustomerModel;
 
 trait CustomerCodeFormat
 {
-    public function getFormattedCode(string $prefix)
+    public function getFormattedCode()
     {
-        $max_customer_code = CustomerModel::count();
-        $incremented = $max_customer_code + 1;
+        $latest = CustomerModel::select('customer_code')->latest()->first();
+        if (! $latest) {
+            $incremented = 0;
+        } else {
+            $latestCode = $latest->customer_code;
+            $latestDate = substr($latestCode, 0, 6);
 
-        $attempt = 1;
+            if (date('ymd') == $latestDate) {
+                $incremented = (int) substr($latestCode, -3) + 1;
+            } else {
+                $incremented = 1;
+            }
+        }
+
         do {
-            $customer_code = $prefix . date('Ym') . str_pad((string) $incremented + $attempt, 3, '0', STR_PAD_LEFT);
-            $attempt++;
-        } while (CustomerModel::where('customer_code', $customer_code)->exists());
+            $incremented = str_pad($incremented, 3, '0', STR_PAD_LEFT);
+
+            $customer_code = date('ymd') . $incremented;
+
+            $existingCustomer = CustomerModel::where('customer_code', $customer_code)->exists();
+
+            if ($existingCustomer) {
+                $incremented++;
+            }
+        } while ($existingCustomer);
 
         return $customer_code;
     }

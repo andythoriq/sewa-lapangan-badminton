@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CustomerModel extends User
 {
@@ -29,7 +30,7 @@ class CustomerModel extends User
 
     protected $primaryKey = 'customer_code';
 
-    protected $keyType = "string";
+    protected $keyType = "integer";
 
     public $incrementing = false;
 
@@ -38,8 +39,13 @@ class CustomerModel extends User
         'remember_token',
     ];
 
-    public function rentals(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function rentals(): HasMany
     {
         return $this->hasMany(RentalModel::class, 'customer_id', 'customer_code');
+    }
+
+    public function otp_codes() : HasMany
+    {
+        return $this->hasMany(OTPModel::class, 'customer_id', 'customer_code');
     }
 }

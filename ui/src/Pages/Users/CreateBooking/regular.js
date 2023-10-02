@@ -9,8 +9,6 @@ const CreateBookingFormRegular = () => {
   const [ dataCourt, setDataCourt ] = useState([])
   const [ showSendBookingCode, setShowSendBookingCode ] = useState(false)
   const [ transactionResponse, setTransactionResponse ] = useState({})
-  const [ phoneNumber, setPhoneNumber ] = useState('')
-  const [ customerCode, setCustomerCode ] = useState('')
   const [ errors, setErrors ] = useState([])
 
   useEffect(() => {
@@ -21,12 +19,12 @@ const CreateBookingFormRegular = () => {
     }
     axios.get('/api/customer/regular', config)
     .then(({ data }) => {
-      setDataCustomer(data);
+      setDataCustomer(data.data);
     })
     .catch((e) => {
       Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
     });
-    axios.get('/api/court', config)
+    axios.get('/api/court-select', config)
     .then(({ data }) => {
       setDataCourt(data);
     })
@@ -35,54 +33,50 @@ const CreateBookingFormRegular = () => {
     })
   }, [])
 
-  const [values, setValues] = useState({ court: "", start_time:"", finish_time:"" });
+  const [values, setValues] = useState({ court: "", customer_id: "", start_time:"", finish_time:"" });
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const onChangeSelectCustomer = (e) => {
-    const selectedValue = e.target.value;
-    if (selectedValue) {
-      const [cc, pn] = selectedValue.split(':');
-      setCustomerCode(cc)
-      setPhoneNumber(pn)
-    }
-  }
-
   const onSubmit = async (e) => {
    e.preventDefault()
-    try {
-      await axios.get('/sanctum/csrf-cookie')
-      const { data } = await axios.post('/api/rental', {
-        court_id: values.court,
-        customer_id: customerCode,
-        start: values.start_time,
-        finish: values.finish_time,
-        user_id: '',
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+    if (showSendBookingCode) {
+      Swal.fire({ icon: "warning", title: "Warning!", html: "you have made a booking!", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+    } else {
+
+      try {
+        await axios.get('/sanctum/csrf-cookie')
+        const { data } = await axios.post('/api/rental', {
+          court_id: values.court,
+          customer_id: values.customer_id,
+          start: values.start_time,
+          finish: values.finish_time,
+          user_id: '', // ngambil dari authenticated admin
+        }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          }
+        })
+        setErrors("");
+        Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+          .then((result) => {
+            if (result.isConfirmed) {
+              setTransactionResponse(data.transaction)
+              setShowSendBookingCode(true)
+            }
+          })
+      } catch (e) {
+        if (e?.response?.status === 422) {
+          setErrors(e.response.data.errors)
+        } else if (e?.response?.status === 404 || e?.response?.status === 403) {
+          Swal.fire({
+            icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+          });
+        } else {
+          Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
         }
-      })
-      setErrors("");
-      Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false})
-      .then((result) => {
-        if (result.isConfirmed) {
-          setTransactionResponse(data.transaction)
-          setShowSendBookingCode(!showSendBookingCode)
-        }
-      })
-    } catch(e) {
-      if (e?.response?.status === 422) {
-        setErrors(e.response.data.errors)
-      } else if (e?.response?.status === 404 || e?.response?.status === 403) {
-        Swal.fire({
-          icon: "error", title: "Error!", html: e.response.data, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500
-        });
-        setTimeout(function () { window.location.href = "/" }, 1500);
-      } else {
-        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
+
     }
   }
 
@@ -90,7 +84,7 @@ const CreateBookingFormRegular = () => {
     e.preventDefault()
     try {
       const { data } = await axios.post('/api/send-booking-code', {
-        phone_number: phoneNumber,
+        phone_number: transactionResponse.phone_number,
         booking_code: transactionResponse.booking_code
       }, {
         headers: {
@@ -105,20 +99,10 @@ const CreateBookingFormRegular = () => {
             }
           })
       } else {
-        Swal.fire({ icon: "error", title: "Error!", html: "Booking code failed to send", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
-          .then((result) => {
-            if (result.isConfirmed) {
-              window.location.href = "/history-booking";
-            }
-          })
+        Swal.fire({ icon: "error", title: "Error!", html: data.text, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
     } catch (e) {
-      Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
-      .then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = "/";
-        }
-      })
+      Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
     }
   }
 
@@ -128,10 +112,10 @@ const CreateBookingFormRegular = () => {
       <Row>
         <Col className="col-12 col-md-6">
             <Form.Label>Customer</Form.Label>
-            <Form.Select name='customer' className='form-select form-select-sm' onChange={onChangeSelectCustomer}>
+            <Form.Select name='customer_id' className='form-select form-select-sm' onChange={onChange} disabled={showSendBookingCode} >
               <option value="">-- regulars --</option>
               {dataCustomer.map((customer, index) => (
-                <option key={customer.customer_code} value={`${customer.customer_code}:${customer.phone_number}`}>{customer.name}</option>
+                <option key={customer.customer_code} value={customer.customer_code}>{customer.name}</option>
               ))}
             </Form.Select>
             {errors.customer_id &&
@@ -139,22 +123,22 @@ const CreateBookingFormRegular = () => {
         </Col>
         <Col className="col-12 col-md-6">
             <Form.Label>Court</Form.Label>
-            <Form.Select name='court' className='form-select form-select-sm' onChange={onChange}>
+            <Form.Select name='court' className='form-select form-select-sm' onChange={onChange} disabled={showSendBookingCode}>
               <option value="">-- courts --</option>
               {dataCourt.map(court => (
-                <option key={court.id} value={court.id}>{court.label}</option>
+                <option key={court.value} value={court.value}>{court.label}. starting price: {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(court.initial_price)}</option>
               ))}
             </Form.Select>
             {errors.court_id &&
               <span className="text-danger">{errors.court_id[ 0 ]}</span>}
         </Col>
         <Col className="col-6 col-md-3">
-          <FormInput type="datetime-local" name="start_time" label="Start" value={values.start_time} onChange={onChange} />
+          <FormInput type="datetime-local" name="start_time" label="Start" value={values.start_time} onChange={onChange} disabled={showSendBookingCode} />
             {errors.start &&
               <span className="text-danger">{errors.start[ 0 ]}</span>}
         </Col>
         <Col className="col-6 col-md-3">
-          <FormInput type="datetime-local" name="finish_time" label="Finish" value={values.finish_time} onChange={onChange} />
+          <FormInput type="datetime-local" name="finish_time" label="Finish" value={values.finish_time} onChange={onChange} disabled={showSendBookingCode} />
             {errors.finish &&
               <span className="text-danger">{errors.finish[ 0 ]}</span>}
         </Col>
@@ -175,12 +159,12 @@ const CreateBookingFormRegular = () => {
             <br/>
             <br/>
             {transactionResponse.total_price ? 
-              <span>{transactionResponse.total_price}</span> :
+              <span>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(transactionResponse.total_price)}</span> :
               <span>...</span>
             }
         </Col>
         <Col className="col-12 text-right mt-4">
-            <button type="button" className="btn btn-danger btn-sm me-md-4" onClick={onSubmit}>
+            <button type="button" className="btn btn-danger btn-sm me-md-4" onClick={onSubmit} disabled={showSendBookingCode}>
                 Booking
             </button>
         </Col>
@@ -189,7 +173,8 @@ const CreateBookingFormRegular = () => {
     {showSendBookingCode === true &&
     <div>
       <h1>{transactionResponse.booking_code}</h1>
-      <h2>Customer phone number : {phoneNumber}</h2>
+      <h2>Customer phone number : {transactionResponse.phone_number}</h2>
+      <div><img src={process.env.REACT_APP_BACKEND_URL + '/storage/' + transactionResponse.qr_code_image} alt="qr-code" /></div>
       <button onClick={sendBookingCode}>Send Via Whatsapp</button>
       </div>}
     </>
