@@ -147,7 +147,7 @@ const CreateBookingFormMember = () => {
           headers: {
             Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
           }
-        );
+        });
         setErrors("");
         Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
@@ -187,7 +187,7 @@ const CreateBookingFormMember = () => {
         headers: {
           Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
         }
-      );
+      });
       if (data.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `Booking code has been sent to ${data.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
