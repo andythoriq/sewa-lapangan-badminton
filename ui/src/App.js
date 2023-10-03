@@ -33,6 +33,7 @@ import PeakTime from "./Pages/Users/DataMaster/Rush Hour/PeakTime";
 import Profile from "./Pages/Users/Profile/profile";
 import FormProfile from "./Pages/Users/Profile/form";
 import Kalendar from "./Pages/Users/DataMaster/Holidays/calendar";
+import Verification from "./Pages/Verifikasi/verifikasi";
 
 
 export default class App extends Component {
@@ -58,6 +59,7 @@ export default class App extends Component {
             <Route path="/create-booking" element={<CreateBookingForm />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/scanner" element={<Scanner />} />
+            <Route path="/verification" element={<Verification/>} />
             <Route path="/history-booking" element={<HistoryBooking />} />
             <Route path="/data-master/court" element={<Court />} />
             <Route path="/data-master/court/add" element={<CourtForm />} />

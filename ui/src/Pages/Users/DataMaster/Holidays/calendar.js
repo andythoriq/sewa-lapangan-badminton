@@ -29,8 +29,8 @@ const events = [
   {
     title: "Hari Natal",
     allDay: true,
-    start: new Date(2023, 11, 25),
-    end: new Date(2023, 11, 26),
+    start: new Date(2023, 10, 25),
+    end: new Date(2023, 10, 26),
   },
 ];
 
@@ -44,8 +44,8 @@ function Kalendar() {
     <div className="calendar">
         <h3 className="mt-2">Calendar</h3>
       <div className=" row g-3 align-items-center mt-2 col align-self-center">
-        <div className="col-12">
-            <input className="form-control" type="text" placeholder="add title" style={{ width: "20%", marginRight: "10px" }} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
+        <div className="col-12 col-md-6">
+            <input className="form-control" type="text" placeholder="add title" value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
         </div>
         <div className="col-12">
             {/* <DatePicker className="form-control" placeholderText="Start Date" selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start: start })} /> */}
@@ -55,7 +55,7 @@ function Kalendar() {
         </div>
       </div>
       <button onClick={handleAddEvent} className="btn btn-danger btn-sm text-right">
-          Add event
+          Add event holiday
         </button>
       {/* <Calendar selectable showMultiDayTimes localizer={localizer} events={allevents} startAccessor="start" endAccessor="end" style={{ height: 500, margin: "50px" }} /> */}
     </div>
