@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookingDetailResource;
-use App\Http\Resources\Master\RentalCollection;
+use App\Http\Resources\HistoryBookingCollection;
 use App\Http\Resources\Master\TransactionCollection;
 use App\Http\Resources\Master\TransactionResource;
 use App\Models\RentalModel;
@@ -48,8 +48,8 @@ class TransactionController extends Controller
                 'customer:customer_code,name,phone_number',
                 'court:id,label,initial_price'
             ])
-            ->get();
-        return new RentalCollection($rentals);
+            ->paginate(10);
+        return new HistoryBookingCollection($rentals);
     }
 
     public function booking_verification(Request $request, string $booking_code = '')
@@ -59,14 +59,14 @@ class TransactionController extends Controller
         }
 
         $data = $request->validate([
-            'booking_code' => ['required', 'string', 'exists:tb_transaction,booking_code']
+            'booking_code' => ['required', 'exists:tb_transaction,booking_code']
         ]);
 
         $transactions = TransactionModel::with([
             'rentals',
             'rentals.customer:customer_code,name,phone_number',
             'rentals.user:id,name,username',
-            'rentals.court:id,label'
+            'rentals.court:id,label,initial_price'
         ])
         ->where('booking_code', $data['booking_code'])->firstOrFail();
 

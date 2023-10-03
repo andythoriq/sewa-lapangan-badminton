@@ -18,10 +18,7 @@ class BookingDetailResource extends JsonResource
         return [
             'total_price' => $this->total_price,
             'total_hour' => $this->total_hour,
-            'isPaid' => $this->isPaid,
-            'customer_paid' => $this->customer_paid ?? '',
-            'isDebt' => $this->isDebt,
-            'customer_debt' => $this->customer_debt ?? '',
+            'booking_code' => $this->booking_code,
             'rentals' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
                 'id' => $rental->id,
                 'start' => $rental->start,
@@ -29,7 +26,8 @@ class BookingDetailResource extends JsonResource
                 'status' => $rental->status,
                 'price' => $rental->price,
                 'court' => [
-                    'label' => $rental->court->label
+                    'label' => $rental->court->label,
+                    'initial_price' => $rental->court->initial_price
                 ],
                 'admin' => [
                     'name' => $rental->user->name,

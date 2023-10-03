@@ -18,8 +18,8 @@ class SendBookingCodeController extends Controller
     public function __invoke(Request $request)
     {
         $data = $request->validate([
-            'phone_number' => ['required', 'string', 'exists:tb_customer,phone_number'],
-            'booking_code' => ['required', 'string', 'exists:tb_transaction,booking_code']
+            'phone_number' => ['required', 'exists:tb_customer,phone_number'],
+            'booking_code' => ['required', 'exists:tb_transaction,booking_code']
         ]);
 
         $app_name = env('APP_NAME', 'GOR Badminton');

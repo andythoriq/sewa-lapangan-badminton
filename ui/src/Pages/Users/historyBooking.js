@@ -1,18 +1,30 @@
 import React, {useEffect, useState} from "react";
 import { Form, Card, Row, Col } from "react-bootstrap";
-import { Trash3, Search, ChevronLeft, ChevronRight } from "react-bootstrap-icons";
+import { Trash3, Search, ChevronLeft, ChevronRight, EyeFill } from "react-bootstrap-icons";
 import FormInput from "../../Components/Form/input";
 import ModalConfirmDelete from "../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
 import secureLocalStorage from "react-secure-storage";
 import ReactPaginate from "react-paginate";
+import ModalShowDetailTransaction from "../../Components/ModalDialog/modalShowDetailTransaction";
 
 const HistoryBooking = () => {
       
     const [show, setShow] = useState(false);
     const [deleteId, setDeleteId] = useState("");
     const [item_id, set_item_id] = useState('')
+
+    const [currentPage, setCurrentPage] = useState(0)
+    const [pageCount, setPageCount] = useState(0)
+
+    const [ detailData, setDetailData ] = useState({})
+    const [ showDetail, setShowDetail ] = useState(false)
+
+    const handleShowDetail = ({transaction})  => {
+        setDetailData(transaction)
+        setShowDetail(true)
+    }
 
     const handleShow = (index, id) => {
         set_item_id(id)
@@ -24,18 +36,20 @@ const HistoryBooking = () => {
     const [ originalRentals, setOriginalRentals ] = useState([])
 
     useEffect(() => {
-        axios.get('/api/booking-history', {
+        axios.get('/api/booking-history?page=' + currentPage, {
             headers: {
                 Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
             }
         })
         .then(({data}) => {
-            setRentals(data)
-            setOriginalRentals(data)
+            setRentals(data.data)
+            setOriginalRentals(data.data)
+            setPageCount(data.meta.last_page)
+            setCurrentPage(data.meta.current_page)
         }).catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
         })
-    }, [])
+    }, [currentPage])
 
     const handleSearch = async (e) => {
         e.preventDefault()
@@ -45,8 +59,8 @@ const HistoryBooking = () => {
                     Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             })
-            setRentals(data)
-            if (data.length < 1) {
+            setRentals(data.data)
+            if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in booking not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
                     .then((result) => {
                         if (result.isConfirmed) {
@@ -104,12 +118,13 @@ const HistoryBooking = () => {
                 <td>{val.customer.name} ({val.customer.phone_number})</td>
                   <td>{val.court.label} ({new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(val.court.initial_price)}) </td>
                 <td><span>{val.start}</span> - <span>{val.finish}</span></td>
-                <td>{val.transaction.total_hour}</td>
-                  <td>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(val.transaction.total_price)}</td>
                 <td className="text-center">{(val.status === 'B' ? 'Booked' : (val.status === 'O' ? 'On progress' : 'Finished'))}</td>
                 <td className="text-center">
                     <a href="#delete" onClick={() => handleShow(index, val.id)}>
                         <Trash3 className="material-icons" color="dark" title="Delete" />
+                    </a>
+                    <a href="#detail" onClick={() => handleShowDetail(val)}>
+                          <EyeFill className="material-icons" color="dark" title="Detail" />
                     </a>
                 </td>
             </tr>
@@ -123,10 +138,10 @@ const HistoryBooking = () => {
         setRentals(dataRow);
     };
 
-    // const handlePageClick = (e) => {
-    //     const number = e.selected + 1
-    //     setCurrentPage(number)
-    // }
+    const handlePageClick = (e) => {
+        const number = e.selected + 1
+        setCurrentPage(number)
+    }
 
     return (
     <>
@@ -147,10 +162,8 @@ const HistoryBooking = () => {
                         <tr >
                             <th width={'1%'}>No</th>
                             <th width={'20%'}>Name Customer</th>
-                            <th width={'15%'}>Court</th>
-                            <th width={'30%'}>Start - Finish</th>
-                            <th width={'10%'}>Totally hour</th>
-                            <th width={'10%'}>Totally Price</th>
+                            <th width={'25%'}>Court</th>
+                            <th width={'40%'}>Start - Finish</th>
                             <th width={'10%'} className="text-center">Status</th>
                             <th width={'4%'} className="text-center">Action</th>
                         </tr>
@@ -162,7 +175,7 @@ const HistoryBooking = () => {
                     </tbody>
                 </table>
                 <div className="clearfix">
-                        {/* <ReactPaginate
+                        <ReactPaginate
                             className="pagination"
                             pageClassName="page-item"
                             pageLinkClassName="page-link"
@@ -173,11 +186,15 @@ const HistoryBooking = () => {
                             pageCount={pageCount}
                             previousLabel="< previous"
                             renderOnZeroPageCount={null}
-                        /> */}
+                        />
                 </div>
             </div>
         </Card>
         <ModalConfirmDelete show={show} handleClose={() => setShow(false)} handleYes={handleYes}/>
+        <ModalShowDetailTransaction show={showDetail} handleClose={() => {
+            setShowDetail(false)
+            setDetailData({})
+        }} data={detailData} />
     </>
     )
 }
