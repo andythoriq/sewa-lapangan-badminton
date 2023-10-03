@@ -115,8 +115,11 @@ class AuthCustomerRequest extends FormRequest
         $app_name
         EOT;
 
-        $response = $this->sendWA($validated['phone_number'], $message, env('ZENZIVA_USER_KEY') ,env('ZENZIVA_API_KEY'));
-        return $response;
+        // $response = $this->sendWA($validated['phone_number'], $message, env('ZENZIVA_USER_KEY') ,env('ZENZIVA_API_KEY'));
+        // return $response;
+        return [
+            'text' => 'Success'
+        ];
     }
 
     public function verify_otp()
