@@ -63,8 +63,10 @@ class TransactionController extends Controller
         ]);
 
         $transactions = TransactionModel::with([
-            'rentals',
-            'rentals.customer:customer_code,name,phone_number',
+            'rentals' => function ($query) {
+                $query->where('status', '!=', 'F');
+            },
+            'rentals.customer:customer_code,name,phone_number,deposit',
             'rentals.user:id,name,username',
             'rentals.court:id,label,initial_price'
         ])

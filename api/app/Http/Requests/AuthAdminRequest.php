@@ -59,7 +59,7 @@ class AuthAdminRequest extends FormRequest
         // $user = User::select(['password', 'name'])->where('email', $this->email)->firstOrFail();
         $user = User::select(['password', 'id', 'role_id', 'username'])->where('username', $this->username)
             ->with('role:id,menu,label')
-            ->firstOrFail();
+            ->first();
 
         if (! $user || ! Hash::check($this->password, $user->password)) {
             throw ValidationException::withMessages([

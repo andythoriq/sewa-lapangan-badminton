@@ -2,12 +2,10 @@
 
 namespace App\Http\Resources;
 
-use App\Traits\ChangeRentalStatus;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class HistoryBookingCollection extends ResourceCollection
 {
-    use ChangeRentalStatus;
     /**
      * Transform the resource collection into an array.
      *

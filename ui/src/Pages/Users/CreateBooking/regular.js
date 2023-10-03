@@ -168,36 +168,32 @@ const CreateBookingFormRegular = () => {
           </Col>
         </Row>
       </Form>
-      <hr className="my-4 text-dark"></hr>
-      <div className="row">
-          <div className="col-md-12 d-flex justify-content-center">
-            <div className="card card-barcode mt-2 mb-3 shadow text-white" style={{ background: "#dc3545" }}>
-              <img src={process.env.REACT_APP_BACKEND_URL + "/storage/qr-code-images/GOR34H05YUQEW7.svg"} alt="qr-code" />
-              <div className="card-body codeqr d-flex flex-column">
-                <div className="d-flex justify-content-between">
-                  <p>Booking Code : </p>
-                  <p className="fw-bold">{"5480958458490"}</p>
-                </div>
-                <div className="d-flex justify-content-between">
-                  <p>Phone number : </p>
-                  <p className="fw-bold">{"087856567878"}</p>
-                </div>
-                <div className="d-flex flex-column mt-4">
-                  <button onClick={sendBookingCode} className="btn btn-secondary btn-sm mt-2 ">
-                    Send Via Whatsapp
-                  </button>
+      {showSendBookingCode === true &&
+        <>
+          <hr className="my-4 text-dark"></hr>
+          <div className="row">
+            <div className="col-md-12 d-flex justify-content-center">
+              <div className="card card-barcode mt-2 mb-3 shadow text-white" style={{ background: "#dc3545" }}>
+              <img src={process.env.REACT_APP_BACKEND_URL + '/storage/' + transactionResponse.qr_code_image} alt="qr-code" />
+                <div className="card-body codeqr d-flex flex-column">
+                  <div className="d-flex justify-content-between">
+                    <p>Booking Code : </p>
+                  <p className="fw-bold">{transactionResponse.booking_code}</p>
+                  </div>
+                  <div className="d-flex justify-content-between">
+                    <p>Phone number : </p>
+                  <p className="fw-bold">{transactionResponse.phone_number}</p>
+                  </div>
+                  <div className="d-flex flex-column mt-4">
+                    <button onClick={sendBookingCode} className="btn btn-secondary btn-sm mt-2 ">
+                      Send Via Whatsapp
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      {/* {showSendBookingCode === true &&
-    <div>
-      <h1>{transactionResponse.booking_code}</h1>
-      <h2>Customer phone number : {transactionResponse.phone_number}</h2>
-      <div><img src={process.env.REACT_APP_BACKEND_URL + '/storage/' + transactionResponse.qr_code_image} alt="qr-code" /></div>
-      <button onClick={sendBookingCode}>Send Via Whatsapp</button>
-      </div>} */}
+        </>}
     </>
   );
 };
