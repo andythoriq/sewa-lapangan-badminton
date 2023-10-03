@@ -23,7 +23,7 @@ class HistoryBookingCollection extends ResourceCollection
                 'start' => $booking->start,
                 'finish' => $booking->finish,
                 'price' => $booking->price,
-                'status' => $this->getAndChangeRentalStatus($booking->start, $booking->finish, $booking),
+                'status' => $booking->status,
                 'transaction' => [
                     'total_hour' => $booking->transaction->total_hour,
                     'total_price' => $booking->transaction->total_price,

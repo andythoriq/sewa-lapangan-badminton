@@ -123,6 +123,7 @@ const HistoryBooking = () => {
                     <a href="#delete" onClick={() => handleShow(index, val.id)}>
                         <Trash3 className="material-icons" color="dark" title="Delete" />
                     </a>
+                    &nbsp;&nbsp;
                     <a href="#detail" onClick={() => handleShowDetail(val)}>
                           <EyeFill className="material-icons" color="dark" title="Detail" />
                     </a>
