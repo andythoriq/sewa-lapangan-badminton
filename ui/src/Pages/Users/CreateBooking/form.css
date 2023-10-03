@@ -7,3 +7,19 @@
     padding-left:5px;
     padding-right:5px;
 }
+.card-barcode {
+    max-width: 50em;
+    flex-direction: row;
+}
+.card-barcode img {
+    max-width: 34%;
+    margin: auto;
+    padding: 0.5em;
+}
+.codeqr {
+    display: flex;
+    justify-content: space-between;
+}
+.text-section {
+    max-width: 80%;
+}
