@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { namaApp, logoApp, dirIcon } from "./Services/config";
 import { Row, Col } from "react-bootstrap";
@@ -22,6 +22,8 @@ const Navbar = () => {
     dispatch(setToggle({ menuSidebar: !menuSidebar }));
     document.body.classList.toggle("sb-sidenav-toggled");
   };
+
+  let curLoc = useLocation();
 
   const handleLogout = async () => {
     try {
@@ -93,30 +95,31 @@ const Navbar = () => {
       <div className="menu" onClick={toggle}>
         {menuOpen ? <XMarkIcon /> : <FunnelIcon />}
       </div>
-      <div className={menuOpen ? "menu_filter active" : "menu_filter inactive"}>
-        <ul className={`filter text-white m-0${menuOpen ? " open" : ""}`}>
-          <li key="filter0">
-            <Row>
-              <Col>
-                Start Date:
-                <input className="form-control form-control-sm" type="date" placeholder=".form-control-sm" style={{ width: 116 }}></input>
-              </Col>
-              <Col>
-                End Date:
-                <input className="form-control form-control-sm" type="date" placeholder=".form-control-sm" style={{ width: 116 }}></input>
-              </Col>
-            </Row>
-          </li>
-          <li key="filter1">
-            Court:
-            <FormSelect className="form-select form-select-sm" style={{ width: 116, fontSize: 15 }} options={dataCourt} />
-          </li>
-          <li key="filter2">
-            Condition:
-            <FormSelect className="form-select form-select-sm" style={{ width: 116, fontSize: 15 }} options={dataCondition} />
-          </li>
-        </ul>
-      </div>
+        {(curLoc.pathname === '/dashboard' || curLoc.pathname === '/') &&
+          <div className={menuOpen ? "menu_filter active" : "menu_filter inactive"}>
+            <ul className={`filter text-white m-0${menuOpen ? " open" : ""}`}>
+              <li key="filter0">
+                <Row>
+                  <Col>
+                    Start Date:
+                    <input className="form-control form-control-sm" type="date" placeholder=".form-control-sm" style={{ width: 116 }}></input>
+                  </Col>
+                  <Col>
+                    End Date:
+                    <input className="form-control form-control-sm" type="date" placeholder=".form-control-sm" style={{ width: 116 }}></input>
+                  </Col>
+                </Row>
+              </li>
+              <li key="filter1">
+                Court:
+                <FormSelect className="form-select form-select-sm" style={{ width: 116, fontSize: 15 }} options={dataCourt} />
+              </li>
+              <li key="filter2">
+                Condition:
+                <FormSelect className="form-select form-select-sm" style={{ width: 116, fontSize: 15 }} options={dataCondition} />
+              </li>
+            </ul>
+          </div>}
       <ul className={`menu2 m-0`}>
         <li>
           <NavLink to="/" className="">
