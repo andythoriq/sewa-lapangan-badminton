@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
-import { useState } from "react";
 import FormInput from "../../../Components/Form/input";
-import { Form, Col, Button } from "react-bootstrap";
+import { Form, Col} from "react-bootstrap";
+import { Link } from "react-router-dom";
 const Scanner = () => {
 
   const [scanResult, setScanResult] = useState(null);
@@ -32,11 +32,11 @@ const Scanner = () => {
         <h1 style={{ fontSize: "30px"}} className="fw-bold mt-2 mb-3">QR Code Scanner</h1>
         <Col className="col-12 col-lg-6">
             <Form.Group className="mb-3">
-                <FormInput type="text" name="" label="Input Code QR"/>
+                <FormInput type="text" label="Input Code QR" />
             </Form.Group>
         </Col>
         { scanResult
-        ?   <div className="mt-2">success: <a href={scanResult}>{scanResult}</a></div>
+        ?   <div className="mt-2">success: <Link href={scanResult}>{scanResult}</Link></div>
         :   <div id="reader"></div>
         }
       </div>

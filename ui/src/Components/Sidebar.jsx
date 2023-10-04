@@ -85,7 +85,7 @@ const Sidebar = () => {
         <div onClick={handleToggle} className={`sidebar-heading border-bottom text-white menu_sidebar mb-5 ${menuOpen ? "open" : ""}`}>{menuOpen?<ArrowLeftCircleIcon/>:<ArrowRightCircleIcon />}</div>
         <div className="list-group list-group-flush list_menu_sidebar">
         {
-          filteredLinks.map((val, key) => (
+          Links.map((val, key) => (
             {...val.sub ? 
                 <div key={`submenu${key}`} title={val.name} className={`list-group-item list-group-item-action list-group-item-light dropdown_menu ${menuSubOpen===key ? "active":""}`}>
                     <img src={`${dirIcon}${val.icon}.png`} alt="" onClick={()=>handleToggle2(key, 'close')}/>

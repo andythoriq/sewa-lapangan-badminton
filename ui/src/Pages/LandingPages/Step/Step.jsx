@@ -11,6 +11,7 @@ const FormStep = () => {
   const [values, setValues] = useState({ fullname: "", phonenumber: "" });
   const [errors, setErrors] = useState({});
 
+  // eslint-disable-next-line no-unused-vars
   const inputs = [
     {
       id: 1,

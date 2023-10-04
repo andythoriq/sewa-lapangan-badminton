@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Card, Col, Container, Row, Form, Button } from "react-bootstrap";
 import { logoApp, namaApp } from "../../../Components/Services/config";
-import FormInput from "../../../Components/Form/input";
-import OTPInput, { ResendOTP } from "otp-input-react";
+import OTPInput from "otp-input-react";
 import Swal from "sweetalert2";
 import NavbarPublic from "../../../Components/NavbarPublic";
 import FooterPublic from "../../../Components/FooterPublic";
@@ -10,7 +9,7 @@ import "../nav.css";
 
 const Step2 = () => {
   const [OTP, setOTP] = useState("");
-  const [values, setValues] = useState({ verifikasi: "" });
+  const [values] = useState({ verifikasi: "" });
   const [errors, setErrors] = useState({});
 
   const inputs = [
@@ -41,11 +40,6 @@ const Step2 = () => {
     }
   };
 
-  const onChange = (e) => {
-    setErrors({});
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
   return (
     <>
     <NavbarPublic/>
@@ -73,7 +67,7 @@ const Step2 = () => {
               <b className="text-heading" style={{ fontSize: 25 }}>
                 Check your inbox!
               </b>
-              <p style={{fontSize:13}}>We are sending an phone<br/>numberverification code to WhatsApp<br/>please enter the code. - <b class="text-danger">BFB</b></p>
+              <p style={{fontSize:13}}>We are sending an phone<br/>numberverification code to WhatsApp please enter the code.</p>
               <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
                 {inputs.map((input) => (
                   <Form.Group className="mb-3">

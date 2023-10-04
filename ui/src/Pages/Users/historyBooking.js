@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { Form, Card, Row, Col } from "react-bootstrap";
-import { Trash3, Search, ChevronLeft, ChevronRight, EyeFill } from "react-bootstrap-icons";
+import { Trash3, Search, EyeFill } from "react-bootstrap-icons";
 import FormInput from "../../Components/Form/input";
 import ModalConfirmDelete from "../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
@@ -178,14 +178,13 @@ const HistoryBooking = () => {
                 <div className="clearfix">
                         <ReactPaginate
                             className="pagination"
-                            pageClassName="page-item"
                             pageLinkClassName="page-link"
                             breakLabel="..."
-                            nextLabel="next >"
+                            nextLabel=" >"
                             onPageChange={handlePageClick}
                             pageRangeDisplayed={5}
                             pageCount={pageCount}
-                            previousLabel="< previous"
+                            previousLabel="< "
                             renderOnZeroPageCount={null}
                         />
                 </div>

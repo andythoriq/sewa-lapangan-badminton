@@ -3,7 +3,7 @@ import { Outlet, useLocation, Navigate } from "react-router-dom"
 import Navbar from './Navbar'
 import { namaApp } from "./Services/config";
 import PermissionDenied from "../Pages/PermissionDenied";
-import Sidebar from './Sidebar';
+import Sidebar from "./Sidebar";
 import secureLocalStorage from "react-secure-storage"
 
 const Layout = () => {
