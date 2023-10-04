@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 import axios from "../api/axios";
 import Swal from "sweetalert2";
+import secureLocalStorage from "react-secure-storage";
 
 const UserContext = createContext();
 
@@ -13,7 +14,7 @@ function UserProvider({ children }) {
       await axios.get('/sanctum/csrf-cookie')
       const response = await axios.post('/api/me-admin', null, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
         }
       })
       setUser(response.data)

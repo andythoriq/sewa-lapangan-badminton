@@ -38,10 +38,10 @@ class RentalRequest extends FormRequest
         $validation = [
             'finish' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after:start'],
             // 'status' => ['required', 'string', 'in:B,O,F'],
-            'court_id' => ['required', 'integer', 'exists:tb_court,id'],
+            'court_id' => ['required', 'exists:tb_court,id'],
             // 'transaction_id' => ['required', 'integer', 'exists:tb_transaction,id'],
-            'customer_id' => ['required', 'string', 'exists:tb_customer,customer_code'],
-            'user_id' => ['nullable', 'integer', 'exists:users,id']
+            'customer_id' => ['required', 'exists:tb_customer,customer_code'],
+            'user_id' => ['nullable', 'exists:users,id']
         ];
 
         switch ($this->route()->getName()) {
@@ -55,13 +55,13 @@ class RentalRequest extends FormRequest
 
             case 'create-multiple-rental':
                 $validation = [
-                    'customer_id' => ['required', 'string', 'exists:tb_customer,customer_code'],
-                    'user_id' => ['nullable', 'integer', 'exists:users,id'],
+                    'customer_id' => ['required', 'exists:tb_customer,customer_code'],
+                    'user_id' => ['nullable', 'exists:users,id'],
                     'rentals' => ['required', 'array', 'min:1'],
                     'rentals.*.start' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after_or_equal:now'],
                     'rentals.*.finish' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after:rentals.*.start'],
                     // 'rentals.*.status' => ['required', 'string', 'in:B,O,F'],
-                    'rentals.*.court_id' => ['required', 'integer', 'exists:tb_court,id'],
+                    'rentals.*.court_id' => ['required', 'exists:tb_court,id'],
                     // 'rentals.*.transaction_id' => ['required', 'integer', 'exists:tb_transaction,id'],
                 ];
                 break;

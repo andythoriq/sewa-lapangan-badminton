@@ -75,6 +75,10 @@ class GetRoleMenusController extends Controller
                 'label' => 'Setting page',
                 'value' => '/setting'
             ],
+            [
+                'label' => 'Super admin',
+                'value' => 'super-admin'
+            ]
         ];
         return response()->json($menus);
     }

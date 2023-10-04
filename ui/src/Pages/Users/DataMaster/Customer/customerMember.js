@@ -7,6 +7,7 @@ import CurrencyInput from "react-currency-input-field";
 import PhoneInput from "react-phone-input-2";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
+import secureLocalStorage from "react-secure-storage";
 
 const CustomerMember = () => {
   const { id } = useParams();
@@ -37,7 +38,7 @@ const CustomerMember = () => {
     };
     const config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
       },
     };
     try {
@@ -80,7 +81,7 @@ const CustomerMember = () => {
       axios
         .get("/api/customer/member/" + id + "/edit", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
           },
         })
         .then(({ data }) => {

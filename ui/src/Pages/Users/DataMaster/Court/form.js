@@ -13,6 +13,7 @@ import axiosFormData from "../../../../api/axiosFormData";
 import MaskedInput from "react-text-mask";
 import createNumberMask from "text-mask-addons/dist/createNumberMask";
 import "./form.css";
+import secureLocalStorage from "react-secure-storage";
 
 const defaultMaskOptions = {
   prefix: "Rp",
@@ -89,7 +90,7 @@ const CourtForm = () => {
 
     const config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
       },
     };
     try {
@@ -132,7 +133,7 @@ const CourtForm = () => {
       axios
         .get("/api/court-edit/" + id, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
           },
         })
         .then(({ data }) => {

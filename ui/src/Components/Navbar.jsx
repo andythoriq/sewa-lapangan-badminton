@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { namaApp, logoApp, dirIcon } from "./Services/config";
 import { Row, Col } from "react-bootstrap";
@@ -9,6 +9,7 @@ import { setToggle } from "../Reducers/menuSlice";
 import FormSelect from "./Form/select";
 import axios from "../api/axios";
 import Swal from "sweetalert2";
+import secureLocalStorage from "react-secure-storage";
 
 const Navbar = () => {
   const navigate = useNavigate()
@@ -22,15 +23,17 @@ const Navbar = () => {
     document.body.classList.toggle("sb-sidenav-toggled");
   };
 
+  let curLoc = useLocation();
+
   const handleLogout = async () => {
     try {
       await axios.get("/sanctum/csrf-cookie");
       await axios.post("/api/logout-admin", null, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
         },
       });
-      localStorage.clear()
+      secureLocalStorage.clear()
       setTimeout(function () {
         navigate('/', {replace:true})
       }, 500);
@@ -40,11 +43,11 @@ const Navbar = () => {
           icon: "error", title: "Error!", html: e.response.data, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
         }).then((result) => {
           if (result.isConfirmed) {
-            localStorage.clear()
+            secureLocalStorage.clear()
           }
         });
       } else {
-        localStorage.clear()
+        secureLocalStorage.clear()
       }
     }
   };
@@ -92,30 +95,31 @@ const Navbar = () => {
       <div className="menu" onClick={toggle}>
         {menuOpen ? <XMarkIcon /> : <FunnelIcon />}
       </div>
-      <div className={menuOpen ? "menu_filter active" : "menu_filter inactive"}>
-        <ul className={`filter text-white m-0${menuOpen ? " open" : ""}`}>
-          <li key="filter0">
-            <Row>
-              <Col>
-                Start Date:
-                <input className="form-control form-control-sm" type="date" placeholder=".form-control-sm" style={{ width: 116 }}></input>
-              </Col>
-              <Col>
-                End Date:
-                <input className="form-control form-control-sm" type="date" placeholder=".form-control-sm" style={{ width: 116 }}></input>
-              </Col>
-            </Row>
-          </li>
-          <li key="filter1">
-            Court:
-            <FormSelect className="form-select form-select-sm" style={{ width: 116, fontSize: 15 }} options={dataCourt} />
-          </li>
-          <li key="filter2">
-            Condition:
-            <FormSelect className="form-select form-select-sm" style={{ width: 116, fontSize: 15 }} options={dataCondition} />
-          </li>
-        </ul>
-      </div>
+        {(curLoc.pathname === '/dashboard' || curLoc.pathname === '/') &&
+          <div className={menuOpen ? "menu_filter active" : "menu_filter inactive"}>
+            <ul className={`filter text-white m-0${menuOpen ? " open" : ""}`}>
+              <li key="filter0">
+                <Row>
+                  <Col>
+                    Start Date:
+                    <input className="form-control form-control-sm" type="date" placeholder=".form-control-sm" style={{ width: 116 }}></input>
+                  </Col>
+                  <Col>
+                    End Date:
+                    <input className="form-control form-control-sm" type="date" placeholder=".form-control-sm" style={{ width: 116 }}></input>
+                  </Col>
+                </Row>
+              </li>
+              <li key="filter1">
+                Court:
+                <FormSelect className="form-select form-select-sm" style={{ width: 116, fontSize: 15 }} options={dataCourt} />
+              </li>
+              <li key="filter2">
+                Condition:
+                <FormSelect className="form-select form-select-sm" style={{ width: 116, fontSize: 15 }} options={dataCondition} />
+              </li>
+            </ul>
+          </div>}
       <ul className={`menu2 m-0`}>
         <li>
           <NavLink to="/" className="">
@@ -125,7 +129,7 @@ const Navbar = () => {
         <li>
           <Dropdown>
             <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-              <div><img src={`${dirIcon}user-circle.png`} alt="" /> <span className="text-white localstorge">Hi,</span> <span className="localstorge">{localStorage.getItem('username')}</span></div>
+              <div><img src={`${dirIcon}user-circle.png`} alt="" /> <span className="text-white localstorge">Hi,</span> <span className="localstorge">{secureLocalStorage.getItem('username')}</span></div>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {/* <Dropdown.Item eventKey="1" href="/logout">Logout</Dropdown.Item> */}

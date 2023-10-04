@@ -74,7 +74,7 @@ class AuthCustomerRequest extends FormRequest
         $validated = $this->validated();
         $customer = CustomerModel::where('phone_number', $validated['phone_number']);
         if ($customer->exists()) {
-            if (Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->firstOrFail()->expiration))) {
+            if (Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->first()->expiration))) {
                 throw ValidationException::withMessages([
                     'phone_number' => ['Can\'t get OTP in less than 15 minutes.']
                 ]);

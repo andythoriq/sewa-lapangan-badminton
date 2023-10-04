@@ -59,7 +59,7 @@ export default class App extends Component {
             <Route path="/create-booking" element={<CreateBookingForm />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/scanner" element={<Scanner />} />
-            <Route path="/verification" element={<Verification/>} />
+            <Route path="/verification/:bookingCodeParam?" element={<Verification/>} />
             <Route path="/history-booking" element={<HistoryBooking />} />
             <Route path="/data-master/court" element={<Court />} />
             <Route path="/data-master/court/add" element={<CourtForm />} />

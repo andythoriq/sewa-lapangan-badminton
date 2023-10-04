@@ -4,11 +4,12 @@ import Navbar from './Navbar'
 import { namaApp } from "./Services/config";
 import PermissionDenied from "../Pages/PermissionDenied";
 import Sidebar from './Sidebar';
+import secureLocalStorage from "react-secure-storage"
 
 const Layout = () => {
 
-    const token = localStorage.getItem('token');
-    const isRole = localStorage.getItem('role');
+    const token = secureLocalStorage.getItem('token');
+    const isRole = secureLocalStorage.getItem('role');
     
     let curLoc = useLocation();
     useEffect(() => {
@@ -42,8 +43,6 @@ const Layout = () => {
                             <Sidebar/>
                             <div id="page-content-wrapper">
                                 <Navbar />
-                                {/* {(curLoc.pathname === '/dashboard' || curLoc.pathname === '/' ) &&
-                                    <Navbar />} */}
                                 <div className="container-fluid"><Outlet /></div>
                                 <footer>
                                 <p className="copyright"> &copy; Copyright 2023 PKL Cibione. All Rights Reserved</p>

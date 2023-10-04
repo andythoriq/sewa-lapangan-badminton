@@ -30,7 +30,7 @@ class RentalController extends Controller
         })
             ->select(['id', 'start', 'finish', 'price', 'status', 'transaction_id', 'customer_id', 'court_id'])
             ->with([
-                'transaction:id,total_price,total_hour',
+                'transaction:id,total_price,total_hour,booking_code',
                 'customer:customer_code,name,phone_number',
                 'court:id,label,initial_price'
             ])

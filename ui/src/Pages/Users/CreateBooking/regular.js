@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Form, Row, Col } from "react-bootstrap";
-import FormInput from "../../../Components/Form/input";
-import axios from "../../../api/axios";
-import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import FormInput from '../../../Components/Form/input';
+import axios from '../../../api/axios';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import secureLocalStorage from 'react-secure-storage';
 
 const CreateBookingFormRegular = () => {
   const navigate = useNavigate();
@@ -16,26 +17,24 @@ const CreateBookingFormRegular = () => {
   useEffect(() => {
     let config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-    axios
-      .get("/api/customer/regular", config)
-      .then(({ data }) => {
-        setDataCustomer(data.data);
-      })
-      .catch((e) => {
-        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
-      });
-    axios
-      .get("/api/court-select", config)
-      .then(({ data }) => {
-        setDataCourt(data);
-      })
-      .catch((e) => {
-        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
-      });
-  }, []);
+        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
+      }
+    }
+    axios.get('/api/customer/regular', config)
+    .then(({ data }) => {
+      setDataCustomer(data.data);
+    })
+    .catch((e) => {
+      Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+    });
+    axios.get('/api/court-select', config)
+    .then(({ data }) => {
+      setDataCourt(data);
+    })
+    .catch((e) => {
+      Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+    })
+  }, [])
 
   const [values, setValues] = useState({ court: "", customer_id: "", start_time: "", finish_time: "" });
   const onChange = (e) => {
@@ -48,22 +47,18 @@ const CreateBookingFormRegular = () => {
       Swal.fire({ icon: "warning", title: "Warning!", html: "you have made a booking!", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
     } else {
       try {
-        await axios.get("/sanctum/csrf-cookie");
-        const { data } = await axios.post(
-          "/api/rental",
-          {
-            court_id: values.court,
-            customer_id: values.customer_id,
-            start: values.start_time,
-            finish: values.finish_time,
-            user_id: localStorage.getItem("id") ?? "",
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
+        await axios.get('/sanctum/csrf-cookie')
+        const { data } = await axios.post('/api/rental', {
+          court_id: values.court,
+          customer_id: values.customer_id,
+          start: values.start_time,
+          finish: values.finish_time,
+          user_id: secureLocalStorage.getItem('id') ?? '',
+        }, {
+          headers: {
+            Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
           }
-        );
+        });
         setErrors("");
         Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
@@ -93,18 +88,14 @@ const CreateBookingFormRegular = () => {
   const sendBookingCode = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "/api/send-booking-code",
-        {
-          phone_number: transactionResponse.phone_number,
-          booking_code: transactionResponse.booking_code,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+      const { data } = await axios.post('/api/send-booking-code', {
+        phone_number: transactionResponse.phone_number,
+        booking_code: transactionResponse.booking_code
+      }, {
+        headers: {
+          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
         }
-      );
+      });
       if (data.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `Booking code has been sent to ${data.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
@@ -177,36 +168,32 @@ const CreateBookingFormRegular = () => {
           </Col>
         </Row>
       </Form>
-      <hr className="my-4 text-dark"></hr>
-      <div className="row">
-          <div className="col-md-12 d-flex justify-content-center">
-            <div className="card card-barcode mt-2 mb-3 shadow text-white" style={{ background: "#dc3545" }}>
-              <img src={process.env.REACT_APP_BACKEND_URL + "/storage/qr-code-images/GOR34H05YUQEW7.svg"} alt="qr-code" />
-              <div className="card-body codeqr d-flex flex-column">
-                <div className="d-flex justify-content-between">
-                  <p>Booking Code : </p>
-                  <p className="fw-bold">{"5480958458490"}</p>
-                </div>
-                <div className="d-flex justify-content-between">
-                  <p>Phone number : </p>
-                  <p className="fw-bold">{"087856567878"}</p>
-                </div>
-                <div className="d-flex flex-column mt-4">
-                  <button onClick={sendBookingCode} className="btn btn-secondary btn-sm mt-2 ">
-                    Send Via Whatsapp
-                  </button>
+      {showSendBookingCode === true &&
+        <>
+          <hr className="my-4 text-dark"></hr>
+          <div className="row">
+            <div className="col-md-12 d-flex justify-content-center">
+              <div className="card card-barcode mt-2 mb-3 shadow text-white" style={{ background: "#dc3545" }}>
+              <img src={process.env.REACT_APP_BACKEND_URL + '/storage/' + transactionResponse.qr_code_image} alt="qr-code" />
+                <div className="card-body codeqr d-flex flex-column">
+                  <div className="d-flex justify-content-between">
+                    <p>Booking Code : </p>
+                  <p className="fw-bold">{transactionResponse.booking_code}</p>
+                  </div>
+                  <div className="d-flex justify-content-between">
+                    <p>Phone number : </p>
+                  <p className="fw-bold">{transactionResponse.phone_number}</p>
+                  </div>
+                  <div className="d-flex flex-column mt-4">
+                    <button onClick={sendBookingCode} className="btn btn-secondary btn-sm mt-2 ">
+                      Send Via Whatsapp
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      {/* {showSendBookingCode === true &&
-    <div>
-      <h1>{transactionResponse.booking_code}</h1>
-      <h2>Customer phone number : {transactionResponse.phone_number}</h2>
-      <div><img src={process.env.REACT_APP_BACKEND_URL + '/storage/' + transactionResponse.qr_code_image} alt="qr-code" /></div>
-      <button onClick={sendBookingCode}>Send Via Whatsapp</button>
-      </div>} */}
+        </>}
     </>
   );
 };

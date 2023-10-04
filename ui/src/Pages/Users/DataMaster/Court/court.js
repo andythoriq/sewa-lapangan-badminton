@@ -7,6 +7,7 @@ import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmD
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import ReactPaginate from 'react-paginate';
+import secureLocalStorage from "react-secure-storage";
 
 const Court = () => {
 
@@ -28,7 +29,7 @@ const Court = () => {
             await axios.get('/sanctum/csrf-cookie')
             const { data } = await axios.delete('/api/court/' + item_id, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             })
             tableRowRemove(deleteId);
@@ -57,7 +58,7 @@ const Court = () => {
         try {
             const { data } = await axios.get('/api/court?keyword=' + values.search,{
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             });
             setCourts(data.data)
@@ -85,7 +86,7 @@ const Court = () => {
     useEffect(() => {
         axios.get('/api/court?page=' + currentPage, {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
             }
         })
         .then(({data}) => {

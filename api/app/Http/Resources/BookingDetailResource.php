@@ -16,12 +16,23 @@ class BookingDetailResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'total_price' => $this->total_price,
-            'total_hour' => $this->total_hour,
-            'isPaid' => $this->isPaid,
-            'customer_paid' => $this->customer_paid ?? '',
-            'isDebt' => $this->isDebt,
-            'customer_debt' => $this->customer_debt ?? '',
+            'transaction' => [
+                'total_price' => $this->total_price,
+                'total_hour' => $this->total_hour,
+                'booking_code' => $this->booking_code,
+                'customer' => $this->whenLoaded('rentals', function () {
+                    $firstRental = $this->rentals->first();
+
+                    if ($firstRental) {
+                        return [
+                            'name' => $firstRental->customer->name,
+                            'phone_number' => $firstRental->customer->phone_number,
+                            'deposit' => $firstRental->customer->deposit ?? 0
+                        ];
+                    }
+                    return '';
+                })
+            ],
             'rentals' => $this->whenLoaded('rentals', fn () => collect($this->rentals)->map(fn ($rental) => [
                 'id' => $rental->id,
                 'start' => $rental->start,
@@ -29,17 +40,10 @@ class BookingDetailResource extends JsonResource
                 'status' => $rental->status,
                 'price' => $rental->price,
                 'court' => [
-                    'label' => $rental->court->label
+                    'label' => $rental->court->label,
+                    'initial_price' => $rental->court->initial_price
                 ],
-                'admin' => [
-                    'name' => $rental->user->name,
-                    'username' => $rental->user->username
-                ],
-                'customer' => [
-                    'name' => $rental->customer->name,
-                    'phone_number' => $rental->customer->phone_number
-                ]
-            ])),
+            ]))
         ];
     }
 }

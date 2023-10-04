@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, StartRentalController, FinishRentalController, DashboardController, getUserTypeController};
+use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, StartRentalController, FinishRentalController, DashboardController};
 use App\Http\Controllers\Master\{HolidayController, ConfigController, OpenTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController, TransactionController};
 use Illuminate\Support\Facades\Route;
 
@@ -39,8 +39,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/me', 'me');
     });
 
-    Route::get('/type-of-user', getUserTypeController::class);
-
     /** Master Rental
      * policy/role: customer-handle, schedule-handle, rental-handle, admin */
     Route::controller(RentalController::class)->group(function () {
@@ -53,9 +51,10 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::post('/send-booking-code', SendBookingCodeController::class);
-    Route::post('/booking-verification/{booking_code}', [TransactionController::class, 'booking_verification'])->middleware('admin');
+    Route::post('/booking-verification', [TransactionController::class, 'booking_verification'])->middleware('admin');
     Route::post('/start-rental', StartRentalController::class)->middleware('admin');
     Route::post('/finish-rental', FinishRentalController::class)->middleware('admin');
+    Route::get('/booking-history', [TransactionController::class, 'booking_history'])->middleware('admin');
 
     Route::get('/admin-role-menu-list', GetRoleMenusController::class)->middleware('admin');
     Route::get('/dashboard', DashboardController::class)->middleware('admin');

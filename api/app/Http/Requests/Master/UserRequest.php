@@ -34,7 +34,7 @@ class UserRequest extends FormRequest
             'username' => ['required', 'alpha_dash', 'min:3', 'max:20', Rule::unique('users', 'username')->ignore($id)],
             'phone_number' => ['required', 'numeric', 'digits_between:10,20', Rule::unique('users', 'phone_number')->ignore($id)],
             'status' => ['required', 'string', 'in:Y,N'],
-            'role_id' => ['required', 'integer', 'exists:tb_role,id'],
+            'role_id' => ['required', 'exists:tb_role,id'],
             'password' => ['required', Password::defaults()],
         ];
     }

@@ -4,12 +4,13 @@ import { ChevronUpIcon, ChevronDownIcon,  ArrowLeftCircleIcon , ArrowRightCircle
 import { useDispatch } from 'react-redux';
 import { setToggle } from '../Reducers/menuSlice';
 import "./style.css";
+import secureLocalStorage from 'react-secure-storage';
 
 const Sidebar = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const dirIcon = "/assets/icon/";
-    const roleMenus = JSON.parse(localStorage.getItem('menus').replace(/'/g, "\""))
+    const roleMenus = JSON.parse(secureLocalStorage.getItem('menus').replace(/'/g, "\""))
     let subMaster = [
         {name:"Court", link:"/data-master/court"},
         {name:"Customer Regular", link:"/data-master/regular"},
@@ -59,21 +60,25 @@ const Sidebar = () => {
         }
     }
       
-    const filteredLinks = Links.filter((val, key) => {
-        if (val.sub) {
+    let filteredLinks
+    if (roleMenus.includes('super-admin') || roleMenus.includes('/super-admin')) {
+        filteredLinks = Links
+    } else {
+        filteredLinks = Links.filter((val, key) => {
+            if (val.sub) {
+                const filteredSubmenu = val.sub.filter((val2, key2) => {
+                    return roleMenus.includes(val2.link);
+                });
 
-            const filteredSubmenu = val.sub.filter((val2, key2) => {
-                return roleMenus.includes(val2.link);
-            });
+                val.sub = filteredSubmenu;
+                return filteredSubmenu.length > 0;
+            } else {
 
-            val.sub = filteredSubmenu;
-
-            return filteredSubmenu.length > 0;
-        } else {
-
-            return roleMenus.includes(val.link);
-        }
-    });
+                return roleMenus.includes(val.link);
+            }
+        });
+    }
+    
 
     return (
     <div className="border-end text-dark" id="sidebar-wrapper">
@@ -88,7 +93,7 @@ const Sidebar = () => {
                     <div className='subMenu' onClick={()=>handleToggle2(key, 'close')}>{(menuSubOpen===key) ? <ChevronUpIcon/>:<ChevronDownIcon/>}</div>
                     <div className={`dropdown_menu_item ${menuSubOpen===key ? "active":""}`}>
                         {val.sub.map((val2, key2) => (
-                            <NavLink key={`sub${key2}`} title="" to={val2.link} onClick={()=>handleToggle2(0)} className={`list-group-item list-group-item-action list-group-item-light ${(location.pathname === val2.link) ? "active" : ""}`}>
+                            <NavLink key={`sub${key2}`} title={val2.name} to={val2.link} onClick={()=>handleToggle2(0)} className={`list-group-item list-group-item-action list-group-item-light ${(location.pathname === val2.link) ? "active" : ""}`}>
                                 <span>{val2.name}</span>
                             </NavLink>))
                         }

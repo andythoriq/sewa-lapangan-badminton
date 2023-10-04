@@ -1,5 +1,6 @@
 // import React from "react";
 // import { Navigate, useLocation } from "react-router-dom"
+import secureLocalStorage from "react-secure-storage";
 import axios from "../../api/axios";
 
 const Logout = async () => {
@@ -8,11 +9,11 @@ const Logout = async () => {
     await axios.get('/sanctum/csrf-cookie')
     await axios.post('/api/logout-admin', null, {
         headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
         }
     })
-    localStorage.removeItem('token');
-    localStorage.removeItem('role')
+    secureLocalStorage.removeItem('token');
+    secureLocalStorage.removeItem('role')
     // return (<Navigate to="/" state={{ from: location }} replace />)
     setTimeout(function () { window.location.href = "/"; }, 500);
 }

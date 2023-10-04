@@ -7,6 +7,7 @@ import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmD
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import ReactPaginate from 'react-paginate';
+import secureLocalStorage from "react-secure-storage";
 
 const Member = () => {
     const [show, setShow] = useState(false);
@@ -27,7 +28,7 @@ const Member = () => {
             await axios.get('/sanctum/csrf-cookie')
             const { data } = await axios.delete('/api/customer/member/' + customerCode, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             })
             tableRowRemove(deleteId);
@@ -52,7 +53,7 @@ const Member = () => {
     useEffect(() => {
         axios.get('/api/customer/member?page=' + currentPage, {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
             }
         }).then(({ data }) => {
             setMembers(data.data)
@@ -74,7 +75,7 @@ const Member = () => {
         try {
             const { data } = await axios.get('/api/customer/member?keyword=' + values.search,{
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             });
             setMembers(data.data)

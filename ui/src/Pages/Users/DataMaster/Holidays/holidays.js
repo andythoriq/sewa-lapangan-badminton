@@ -7,6 +7,7 @@ import FormatDate from "../../../../Components/Services/formatDate";
 import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
+import secureLocalStorage from "react-secure-storage";
 
 const Holidays = () => {
     const [values, setValues] = useState({ search: "" });
@@ -20,7 +21,7 @@ const Holidays = () => {
     useEffect(() => {
         axios.get('/api/holiday', {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
             }
         })
         .then(({data}) => {
@@ -63,7 +64,7 @@ const Holidays = () => {
             await axios.get('/sanctum/csrf-cookie');
             const { data } = await axios.delete('/api/holiday/' + item_id, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             });
             tableRowRemove(deleteId);
@@ -89,7 +90,7 @@ const Holidays = () => {
         try {
             const { data } = await axios.get('/api/holiday?keyword=' + values.search,{
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
                 }
             });
             setHolidays(data)
