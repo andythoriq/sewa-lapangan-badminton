@@ -1,23 +1,23 @@
-// import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import format from "date-fns/format";
 import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
 import getDay from "date-fns/getDay";
-// import "react-big-calendar/lib/css/react-big-calendar.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import React, { useState } from "react";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-// const locales = {
-//   "en-US": require("date-fns/locale/en-US"),
-// };
-// const localizer = dateFnsLocalizer({
-//   format,
-//   parse,
-//   startOfWeek,
-//   getDay,
-//   locales,
-// });
+const locales = {
+  "en-US": require("date-fns/locale/en-US"),
+};
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales,
+});
 
 const events = [
   {
@@ -48,16 +48,16 @@ function Kalendar() {
             <input className="form-control" type="text" placeholder="add title" value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
         </div>
         <div className="col-12">
-            {/* <DatePicker className="form-control" placeholderText="Start Date" selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start: start })} /> */}
+            <DatePicker className="form-control" placeholderText="Start Date" selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start: start })} />
         </div>
         <div className="col-12 col-md-6 mb-3">
-            {/* <DatePicker className="form-control" placeholderText="End Date" selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} /> */}
+            <DatePicker className="form-control" placeholderText="End Date" selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} />
         </div>
       </div>
       <button onClick={handleAddEvent} className="btn btn-danger btn-sm text-right">
           Add event holiday
         </button>
-      {/* <Calendar selectable showMultiDayTimes localizer={localizer} events={allevents} startAccessor="start" endAccessor="end" style={{ height: 500, margin: "50px" }} /> */}
+      <Calendar selectable showMultiDayTimes localizer={localizer} events={allevents} startAccessor="start" endAccessor="end" style={{ height: 500, margin: "50px" }} />
     </div>
   );
 }

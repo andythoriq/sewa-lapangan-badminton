@@ -44,8 +44,11 @@ class SendBookingCodeController extends Controller
 
         // $response = $this->sendImage($data['phone_number'], $image_link, $caption);
 
-        $response = $this->sendWA($data['phone_number'], $message, env('ZENZIVA_USER_KEY'), env('ZENZIVA_API_KEY'));
+        // $response = $this->sendWA($data['phone_number'], $message, env('ZENZIVA_USER_KEY'), env('ZENZIVA_API_KEY'));
 
-        return response($response);
+        // return response($response);
+        return ([
+            'text' => 'Success'
+        ]);
     }
 }
