@@ -30,7 +30,7 @@ const Sidebar = () => {
         {name:"History Booking", link:"/history-booking", icon:"history"},
         {name:"Data Master", link:"/", icon:"master", sub:subMaster},
         {name:"User Management", link:"/", icon:"user", sub:subUser},
-        {name:"Profile", link:"/profile", icon:"adminprofile"},
+        // {name:"Profile", link:"/profile", icon:"adminprofile"},
         {name:"Setting", link:"/setting", icon:"setting"},
     ];
     const [menuOpen, setMenuOpen] = useState(true);
@@ -85,7 +85,7 @@ const Sidebar = () => {
         <div onClick={handleToggle} className={`sidebar-heading border-bottom text-white menu_sidebar mb-5 ${menuOpen ? "open" : ""}`}>{menuOpen?<ArrowLeftCircleIcon/>:<ArrowRightCircleIcon />}</div>
         <div className="list-group list-group-flush list_menu_sidebar">
         {
-          Links.map((val, key) => (
+          filteredLinks.map((val, key) => (
             {...val.sub ? 
                 <div key={`submenu${key}`} title={val.name} className={`list-group-item list-group-item-action list-group-item-light dropdown_menu ${menuSubOpen===key ? "active":""}`}>
                     <img src={`${dirIcon}${val.icon}.png`} alt="" onClick={()=>handleToggle2(key, 'close')}/>

@@ -34,59 +34,221 @@ import Profile from "./Pages/Users/Profile/profile";
 import FormProfile from "./Pages/Users/Profile/form";
 import Verification from "./Pages/Verifikasi/verifikasi";
 import Calendar from "./Pages/Users/DataMaster/Holidays/calendar";
+import secureLocalStorage from "react-secure-storage";
 
 
-export default class App extends Component {
-  render() {
-    return (
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          {/* Public Auth */}
-          <Route index element={<Public />} />
-          <Route path="/landing-page" element={<LandingPage />} />
-          <Route path="/userstep" element={<FormStep />} />
-          <Route path="/step2" element={<Step2 />} />
-          <Route path="/loginc" element={<LoginCustomer />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
-          {/* Protected */}
-          <Route path="/" element={<RequireAuth role="user" />}>
-            <Route path="/dashboard-user" element={<Landing2 />} />
-            <Route path="/landingbookuser" element={<LandingBookUser />} />
-          </Route>
-          <Route path="/" element={<RequireAuth role="admin" />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/create-booking" element={<CreateBookingForm />} />
-            <Route path="/schedule" element={<Schedule />} />
-            <Route path="/scanner" element={<Scanner />} />
-            <Route path="/verification/:bookingCodeParam?" element={<Verification/>} />
-            <Route path="/history-booking" element={<HistoryBooking />} />
-            <Route path="/data-master/court" element={<Court />} />
-            <Route path="/data-master/court/add" element={<CourtForm />} />
-            <Route path="/data-master/court/edit/:id" element={<CourtForm />} />
-            <Route path="/data-master/regular" element={<Regular />} />
-            <Route path="/data-master/customer-regular/add" element={<CustomerRegular />} />
-            <Route path="/data-master/customer-regular/edit/:id" element={<CustomerRegular />} />
-            <Route path="/data-master/member" element={<Member />} />
-            <Route path="/data-master/customer-member/add" element={<CustomerMember />} />
-            <Route path="/data-master/customer-member/edit/:id" element={<CustomerMember />} />
-            <Route path="/data-master/calendar" element={<Calendar />} />
-            <Route path="/data-master/peaktime" element={<PeakTime />} />
-            <Route path="/data-master/rush/add" element={<Rush />} />
-            <Route path="/data-master/rush/edit/:id" element={<Rush />} />
-            <Route path="/user-management/user-list" element={<UserList />} />
-            <Route path="/user-management/user-list/add" element={<UserListForm />} />
-            <Route path="/user-management/user-list/edit/:id" element={<UserListForm />} />
-            <Route path="/user-management/user-role" element={<UserRole />} />
-            <Route path="/user-management/user-role/add" element={<UserRoleForm />} />
-            <Route path="/user-management/user-role/edit/:id" element={<UserRoleForm />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/formprofile/add" element={<FormProfile />} />
-            <Route path="/setting" element={<Setting />} />
-          </Route>
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    );
+// export default class App extends Component {
+//   render() {
+//     return (
+//       <Routes>
+//         <Route path="/" element={<Layout />}>
+//           {/* Public Auth */}
+//           <Route index element={<Public />} />
+//           <Route path="/landing-page" element={<LandingPage />} />
+//           <Route path="/userstep" element={<FormStep />} />
+//           <Route path="/step2" element={<Step2 />} />
+//           <Route path="/loginc" element={<LoginCustomer />} />
+//           <Route path="/login" element={<Login />} />
+//           <Route path="/logout" element={<Logout />} />
+//           {/* Protected */}
+//           <Route path="/" element={<RequireAuth role="user" />}>
+//             <Route path="/dashboard-user" element={<Landing2 />} />
+//             <Route path="/landingbookuser" element={<LandingBookUser />} />
+//           </Route>
+//           <Route path="/" element={<RequireAuth role="admin" />}>
+//             <Route path="/dashboard" element={<Dashboard />} />
+//             <Route path="/create-booking" element={<CreateBookingForm />} />
+//             <Route path="/schedule" element={<Schedule />} />
+//             <Route path="/scanner" element={<Scanner />} />
+//             <Route path="/verification/:bookingCodeParam?" element={<Verification/>} />
+//             <Route path="/history-booking" element={<HistoryBooking />} />
+//             <Route path="/data-master/court" element={<Court />} />
+//             <Route path="/data-master/court/add" element={<CourtForm />} />
+//             <Route path="/data-master/court/edit/:id" element={<CourtForm />} />
+//             <Route path="/data-master/regular" element={<Regular />} />
+//             <Route path="/data-master/customer-regular/add" element={<CustomerRegular />} />
+//             <Route path="/data-master/customer-regular/edit/:id" element={<CustomerRegular />} />
+//             <Route path="/data-master/member" element={<Member />} />
+//             <Route path="/data-master/customer-member/add" element={<CustomerMember />} />
+//             <Route path="/data-master/customer-member/edit/:id" element={<CustomerMember />} />
+//             <Route path="/data-master/calendar" element={<Calendar />} />
+//             <Route path="/data-master/peaktime" element={<PeakTime />} />
+//             <Route path="/data-master/rush/add" element={<Rush />} />
+//             <Route path="/data-master/rush/edit/:id" element={<Rush />} />
+//             <Route path="/user-management/user-list" element={<UserList />} />
+//             <Route path="/user-management/user-list/add" element={<UserListForm />} />
+//             <Route path="/user-management/user-list/edit/:id" element={<UserListForm />} />
+//             <Route path="/user-management/user-role" element={<UserRole />} />
+//             <Route path="/user-management/user-role/add" element={<UserRoleForm />} />
+//             <Route path="/user-management/user-role/edit/:id" element={<UserRoleForm />} />
+//             <Route path="/profile" element={<Profile />} />
+//             <Route path="/formprofile/add" element={<FormProfile />} />
+//             <Route path="/setting" element={<Setting />} />
+//           </Route>
+//         </Route>
+//         <Route path="*" element={<NotFound />} />
+//       </Routes>
+//     );
+//   }
+// }
+export default function App() {
+
+  let roleMenus = []
+  if (secureLocalStorage.getItem('menus')) {
+    roleMenus = JSON.parse(secureLocalStorage.getItem('menus').replace(/'/g, "\""))
   }
+  const originalMenus = [
+    {
+      path: "/dashboard",
+      element: <Dashboard />
+    }, {
+      path: "/create-booking",
+      element: <CreateBookingForm />
+    }, {
+      path: "/schedule",
+      element: <Schedule />
+    }, {
+      path: "/scanner",
+      element: <Scanner />
+    }, {
+      path: "/verification/:bookingCodeParam?",
+      element: <Verification />
+    }, 
+    {
+      path: "/history-booking",
+      element: <HistoryBooking />,
+    },
+    {
+      path: "/data-master/court",
+      element: <Court />,
+    },
+    {
+      path: "/data-master/court/add",
+      element: <CourtForm />,
+    },
+    {
+      path: "/data-master/court/edit/:id",
+      element: <CourtForm />,
+    },
+    {
+      path: "/data-master/regular",
+      element: <Regular />,
+    },
+    {
+      path: "/data-master/customer-regular/add",
+      element: <CustomerRegular />,
+    },
+    {
+      path: "/data-master/customer-regular/edit/:id",
+      element: <CustomerRegular />,
+    },
+    {
+      path: "/data-master/member",
+      element: <Member />,
+    },
+    {
+      path: "/data-master/customer-member/add",
+      element: <CustomerMember />,
+    },
+    {
+      path: "/data-master/customer-member/edit/:id",
+      element: <CustomerMember />,
+    },
+    {
+      path: "/data-master/calendar",
+      element: <Calendar />,
+    },
+    {
+      path: "/data-master/peaktime",
+      element: <PeakTime />,
+    },
+    {
+      path: "/data-master/rush/add",
+      element: <Rush />,
+    },
+    {
+      path: "/data-master/rush/edit/:id",
+      element: <Rush />,
+    },
+    {
+      path: "/user-management/user-list",
+      element: <UserList />,
+    },
+    {
+      path: "/user-management/user-list/add",
+      element: <UserListForm />,
+    },
+    {
+      path: "/user-management/user-list/edit/:id",
+      element: <UserListForm />,
+    },
+    {
+      path: "/user-management/user-role",
+      element: <UserRole />,
+    },
+    {
+      path: "/user-management/user-role/add",
+      element: <UserRoleForm />,
+    },
+    {
+      path: "/user-management/user-role/edit/:id",
+      element: <UserRoleForm />,
+    },
+    {
+      path: "/setting",
+      element: <Setting />,
+    }
+  ]
+
+  function arrayIncludesPartial(arr, search) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[ i ].includes(search)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  let filteredMenus
+  if (roleMenus.includes('super-admin') || roleMenus.includes('/super-admin')) {
+    filteredMenus = originalMenus.map((val, key) => (
+      <Route path={val.path} element={val.element} key={key} />
+    ));
+  } else {
+    const filteredPaths = originalMenus
+      .filter((val) => arrayIncludesPartial(roleMenus, val.path))
+      .map((val) => val.path);
+
+    filteredMenus = originalMenus
+      .filter((val) => filteredPaths.includes(val.path))
+      .map((val, key) => (
+        <Route path={val.path} element={val.element} key={key} />
+      ));
+  }
+
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        {/* Public Auth */}
+        <Route index element={<Public />} />
+        <Route path="/landing-page" element={<LandingPage />} />
+        <Route path="/userstep" element={<FormStep />} />
+        <Route path="/step2" element={<Step2 />} />
+        <Route path="/loginc" element={<LoginCustomer />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
+        {/* Protected */}
+        <Route path="/" element={<RequireAuth role="user" />}>
+          <Route path="/dashboard-user" element={<Landing2 />} />
+          <Route path="/landingbookuser" element={<LandingBookUser />} />
+        </Route>
+        <Route path="/" element={<RequireAuth role="admin" />}>
+          {filteredMenus}
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/formprofile/add" element={<FormProfile />} />
+        </Route>
+      </Route>
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  )
 }
