@@ -47,7 +47,7 @@ class SendBookingCodeController extends Controller
         // $response = $this->sendWA($data['phone_number'], $message, env('ZENZIVA_USER_KEY'), env('ZENZIVA_API_KEY'));
 
         // return response($response);
-        return ([
+        return response([
             'text' => 'Success'
         ]);
     }

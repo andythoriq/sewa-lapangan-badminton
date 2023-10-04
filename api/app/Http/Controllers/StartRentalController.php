@@ -21,7 +21,7 @@ class StartRentalController extends Controller
 
         $id = $data['id'];
 
-        RentalModel::where('id', $id)->where('status', 'B')->updateOrFail([
+        RentalModel::where('id', $id)->where('status', 'B')->update([
             'status' => 'O'
         ]);
 

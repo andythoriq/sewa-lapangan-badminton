@@ -55,6 +55,18 @@ class CustomerController extends Controller
         return new RegularCollection($regulars);
     }
 
+    public function select_M()
+    {
+        $members = CustomerModel::where('membership_status', 'M')->select(['customer_code', 'name', 'phone_number', 'member_active_period'])->get();
+        return response()->json($members);
+    }
+
+    public function select_R()
+    {
+        $regulars = CustomerModel::where('membership_status', 'R')->select(['customer_code', 'name', 'phone_number'])->get();
+        return response()->json($regulars);
+    }
+
     public function show_M(CustomerModel $customer)
     {
         return new MemberResource($customer->loadMissing('rentals'));

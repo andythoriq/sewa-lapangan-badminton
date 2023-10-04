@@ -54,6 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/booking-verification', [TransactionController::class, 'booking_verification'])->middleware('admin');
     Route::post('/start-rental', StartRentalController::class)->middleware('admin');
     Route::post('/finish-rental', FinishRentalController::class)->middleware('admin');
+    Route::post('/pay', [TransactionController::class, 'pay'])->middleware('admin');
     Route::get('/booking-history', [TransactionController::class, 'booking_history'])->middleware('admin');
 
     Route::get('/admin-role-menu-list', GetRoleMenusController::class)->middleware('admin');
@@ -65,6 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
      * policy/role: user-handle, admin */
     Route::controller(RoleController::class)->middleware('admin')->group(function () {
         Route::get('/role', 'index');
+        Route::get('/role-select', 'select');
         Route::get('/role/{role}', 'show');
         Route::get('/role-edit/{role}', 'edit');
         Route::post('/role', 'create');
@@ -139,6 +141,7 @@ Route::middleware('auth:sanctum')->group(function () {
     /** Master Customer
      * policy/role: customer-handle, admin */
     Route::controller(CustomerController::class)->group(function () {
+        Route::get('/member-select', 'select_M');
         Route::prefix('/customer/member')->group(function () {
             Route::get('/', 'index_M');
             Route::get('/{customer}', 'show_M');
@@ -147,6 +150,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::delete('/{customer}', 'delete_M');
             Route::get('/{customer}/edit', 'edit_M');
         });
+        Route::get('/regular-select', 'select_R');
         Route::prefix('/customer/regular')->group(function () {
             Route::get('/', 'index_R');
             Route::get('/{customer}', 'show_R');

@@ -31,9 +31,9 @@ const CreateBookingFormMember = () => {
         Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
       }
     }
-    axios.get('/api/customer/member', config)
+    axios.get('/api/member-select', config)
       .then(({ data }) => {
-        setDataCustomer(data.data);
+        setDataCustomer(data);
       })
       .catch((e) => {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -211,7 +211,7 @@ const CreateBookingFormMember = () => {
             <option value="">-- Choose Customer --</option>
             {dataCustomer.map((customer, index) => (
               <option key={customer.customer_code} value={customer.customer_code}>
-                {customer.name}
+                {customer.name} ({customer.phone_number})
               </option>
             ))}
           </Form.Select>

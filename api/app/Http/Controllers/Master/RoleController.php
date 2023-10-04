@@ -22,6 +22,12 @@ class RoleController extends Controller
         return new RoleCollection($roles);
     }
 
+    public function select()
+    {
+        $roles = RoleModel::select(['id', 'label'])->get();
+        return response()->json($roles);
+    }
+
     public function edit(RoleModel $role)
     {
         return response()->json($role->only(['label', 'menu', 'status']));

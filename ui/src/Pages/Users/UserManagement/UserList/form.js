@@ -19,13 +19,13 @@ const UserListForm = () => {
   const [roles, setRoles] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/role', {
+        axios.get('/api/role-select', {
             headers: {
                 Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
             }
         })
         .then(({ data }) => {
-            setRoles(data.data);
+            setRoles(data);
         })
         .catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });

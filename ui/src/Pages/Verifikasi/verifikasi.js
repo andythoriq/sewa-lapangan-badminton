@@ -76,7 +76,35 @@ const Verification = () => {
         allowEscapeKey: false,
       }).then((result) => {
         if (result.isConfirmed) {
-          navigate("/schedule", { replace: true });
+          navigate('/schedule')
+        }
+      });
+    } catch (e) {
+      if (e?.response?.status === 404 || e?.response?.status === 403) {
+        Swal.fire({
+          icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+        });
+      } else {
+        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      }
+    }
+  }
+
+  const handleFinishGame = async (e, id) => {
+    try {
+      await axios.get('/sanctum/csrf-cookie')
+      const { data } = await axios.post('/api/finish-rental', {
+        id: id
+      }, {
+        headers: {
+          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
+        }
+      })
+      Swal.fire({
+        icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/schedule')
         }
       });
     } catch (e) {
@@ -109,13 +137,9 @@ const Verification = () => {
             {val.court.label} ({new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(val.court.initial_price)})
           </td>
           <td className=" d-md-flex justify-content-between">
-            <button className="btn btn-sm btn-success" onClick={(e) => handleStartGame(e, val.id)} disabled={val.status === "O"}>
-              Start Game
-            </button>
+            <button className="btn btn-sm btn-success" onClick={(e) => handleStartGame(e, val.id)} disabled={val.status === 'O' || val.status === 'F'}>Start Game</button>
             &nbsp;
-            <button className="btn btn-sm btn-danger" onClick={() => setShowPaymentForm(true)} disabled={val.status === "B"}>
-              End Game
-            </button>
+            <button className="btn btn-sm btn-danger" onClick={(e) => handleFinishGame(e, val.id)} disabled={val.status === 'B' || val.status === 'F' }>End Game</button>
           </td>
         </tr>
       );
@@ -195,6 +219,11 @@ const Verification = () => {
                           <TableRows rows={rentals} />
                         </tbody>
                       </table>
+                      <div>
+                        <h4>Show payment form</h4>
+                        <button onClick={() => setShowPaymentForm(true)} disabled={transaction.isPaid === 'Y'}>Show</button>
+                        <span>{transaction.isPaid === 'Y' ? 'Already paid' : 'not paid yet' }</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -217,7 +246,7 @@ const Verification = () => {
           </div>
         </div>
       </div>
-      <PaymentForm handleShow={showPaymentForm} handleClose={() => setShowPaymentForm(false)} deposit={transaction?.customer?.deposit} totalPrice={transaction.total_price} />
+      <PaymentForm handleShow={showPaymentForm} handleClose={() => setShowPaymentForm(false)} transaction={transaction} swal={Swal} />
     </>
   );
 };
