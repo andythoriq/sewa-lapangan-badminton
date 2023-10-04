@@ -6,70 +6,73 @@ import PhoneInput from "react-phone-input-2";
 import axios from "../../../api/axios";
 import NavbarPublic from "../../../Components/NavbarPublic";
 import FooterPublic from "../../../Components/FooterPublic";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const FormStep = () => {
-  const [values, setValues] = useState({ fullname: "", phonenumber: "" });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState([]);
 
-  // eslint-disable-next-line no-unused-vars
+  const navigate = useNavigate()
+
+  const [name, setName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+
   const inputs = [
     {
       id: 1,
       label: "Full name",
-      name: "fullname",
+      name: "name",
       type: "text",
       placeholder: "input full name",
-      errorMessage: errors.fullname,
+      errorMessage: errors.name,
     },
     {
       id: 2,
       label: "Phone number",
-      name: "phonenumber",
+      name: "phone_number",
       type: "text",
       placeholder: "input phone number",
-      errorMessage: errors.phonenumber,
+      errorMessage: errors.phone_number,
     },
   ];
 
+  if (errors.name) {
+    inputs[ 0 ].errorMessage = errors.name[ 0 ];
+  }
+
+  if (errors.phone_number) {
+    inputs[ 1 ].errorMessage = errors.phone_number[ 0 ];
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationErrors = {};
-    if (!values.fullname.trim()) validationErrors.fullname = "Full name required";
-    if (!values.phonenumber.trim()) validationErrors.phonenumber = "Phone number required";
-
-    console.log(validationErrors);
-    setErrors(validationErrors);
-    if (Object.keys(validationErrors).length === 0) {
-      try {
-        await axios.get("/sanctum/csrf-cookie");
-        await axios.post("/api/register", {
-          name: values.fullname,
-          phone_number: values.phonenumber,
+    try {
+      await axios.get("/sanctum/csrf-cookie");
+      const {data} = await axios.post("/api/send-opt", {
+        name: name,
+        phone_number: phoneNumber,
+      });
+      setErrors('')
+      if (data.text === "Success") {
+        Swal.fire({ icon: "success", title: "Success!", html: `OTP code has been sent to ${data.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+          if (result.isConfirmed) {
+            navigate('/step2', { replace: true })
+          }
         });
-        setValues({ phone_number: "", fullname: "" });
-        setTimeout(function () {
-          // window.location.href = "/";
-          window.location.href = "/step2";
-          // window.location.href = "/login";
-        }, 2000);
-      } catch (e) {
-        if (e?.response?.status === 422) {
-          // setErrors(e.response.data.errors)
-          console.log(e.response.data.errors);
-        }
+      } else {
+        Swal.fire({ icon: "error", title: "Error!", html: data.text, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
-      //  localStorage.setItem("token", "abcd12345");
-      //  localStorage.setItem("phonenumber", values.phonenumber);
-      //   setTimeout(function () {
-      //      window.location.href = "/";
-      //    }, 2000);
+    } catch (e) {
+      if (e?.response?.status === 422) {
+        setErrors(e.response.data.errors);
+      } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
+        Swal.fire({ icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false,});
+      } else {
+        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      }
     }
   };
 
-  const onChange = (e) => {
-    setErrors({});
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
 
   return (
     <>
@@ -105,18 +108,18 @@ const FormStep = () => {
                 <br />
                 <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
                   <Form.Group className="mb-2">
-                    <FormInput type="text" name="name" label="Full name" value={values.name} placeholder="input full name" onChange={onChange} />
+                    <FormInput type="text" name="name" label="Full name" value={name} placeholder="input full name" onChange={(e) => setName(e.target.value)} />
                   </Form.Group>
                   <Form.Group className="mb-2">
                     <label>Phone Number</label>
-                    <PhoneInput specialLabel={""} country={"id"} placeholder="input phone number"/>
+                    <PhoneInput placeholder="input phone number" specialLabel={""} country={"id"} value={(phoneNumber.substring(0, 1) === '0' ? "62" + phoneNumber.slice(1) : phoneNumber)} onChange={(phone) => setPhoneNumber(phone)} />
                   </Form.Group>
 
                   {/* <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded" href="/step2">
                   Next
                 </Button> */}
                   <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded">
-                    Register
+                    Send OTP
                   </Button>
                 </Form>
               </div>

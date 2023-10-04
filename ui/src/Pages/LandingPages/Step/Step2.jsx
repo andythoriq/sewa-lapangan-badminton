@@ -6,38 +6,54 @@ import Swal from "sweetalert2";
 import NavbarPublic from "../../../Components/NavbarPublic";
 import FooterPublic from "../../../Components/FooterPublic";
 import "../nav.css";
+import axios from "../../../api/axios";
+import { useNavigate } from "react-router-dom";
+import secureLocalStorage from "react-secure-storage";
 
 const Step2 = () => {
-  const [OTP, setOTP] = useState("");
-  const [values] = useState({ verifikasi: "" });
-  const [errors, setErrors] = useState({});
+  const [OTP, setOTP] = useState('');
+  const [errors, setErrors] = useState([])
+  const navigate = useNavigate()
 
   const inputs = [
     {
       id: 1,
       label: "Code OTP",
-      name: "verifikasi",
+      name: "otp_code",
       type: "text",
       errorMessage: errors.verifikasi,
     }
   ];
 
+  if (errors.otp_code) {
+    inputs[0].errorMessage = errors.otp_code[0]
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationErrors = {};
-    if (!values.verifikasi.trim()) validationErrors.verifikasi = "Code OTP required";
-
-    // console.log(validationErrors);
-    setErrors(validationErrors);
-    if (Object.keys(validationErrors).length === 0) {
-      localStorage.setItem("role", "user");
-      localStorage.setItem("token", "abcd12345");
-      localStorage.setItem("verifikasi", values.verifikasi);
-      Swal.fire({ icon: "success", title: "Success!", html: "successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
-      setTimeout(function () {
-        window.location.href = "/";
-      }, 2000);
-    }
+   try {
+     await axios.get("/sanctum/csrf-cookie")
+     const { data } = await axios.post("/api/send-opt", { otp_code: OTP })
+     setErrors('')
+     secureLocalStorage.setItem('token', data.token)
+     secureLocalStorage.setItem('phone_number', data.customer.phone_number)
+     secureLocalStorage.setItem('id', data.customer.customer_code)
+     secureLocalStorage.setItem('customer_code', data.customer.customer_code)
+     secureLocalStorage.setItem('name',data.customer.name)
+     secureLocalStorage.setItem('role', 'user')
+     Swal.fire({ icon: "success", title: "Success!", html: "OTP verified successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
+     setTimeout(function () {
+       navigate('/dashboard-user', { replace: true })
+     }, 2000);
+   } catch (e) {
+     if (e?.response?.status === 422) {
+       setErrors(e.response.data.errors);
+     } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
+       Swal.fire({ icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false, });
+     } else {
+       Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+     }
+   }
   };
 
   return (
@@ -69,8 +85,8 @@ const Step2 = () => {
               </b>
               <p style={{fontSize:13}}>We are sending an phone<br/>numberverification code to WhatsApp please enter the code.</p>
               <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
-                {inputs.map((input) => (
-                  <Form.Group className="mb-3">
+                {inputs.map((input, index) => (
+                  <Form.Group className="mb-3" key={index}>
                     <OTPInput value={OTP} onChange={setOTP}  OTPLength={6} otpType="number" />
                   </Form.Group>
                 ))}
