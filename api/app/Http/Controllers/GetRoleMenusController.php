@@ -67,10 +67,10 @@ class GetRoleMenusController extends Controller
                 'label' => 'Master - User role',
                 'value' => '/user-management/user-role'
             ],
-            [
-                'label' => 'Profile page',
-                'value' => '/profile'
-            ],
+            // [
+            //     'label' => 'Profile page',
+            //     'value' => '/profile'
+            // ],
             [
                 'label' => 'Setting page',
                 'value' => '/setting'

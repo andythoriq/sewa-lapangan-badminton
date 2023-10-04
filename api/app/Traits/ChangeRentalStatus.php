@@ -23,7 +23,7 @@ trait ChangeRentalStatus
         else if ($current->gt($finish)) {
             $status = 'F'; // finished, turn off the lamp
         }
-        $rental->updateOrFail(['status' => $status]);
+        $rental->update(['status' => $status]);
         return $status;
     }
 }

@@ -16,12 +16,10 @@ class FinishRentalController extends Controller
     public function __invoke(Request $request)
     {
         $data = $request->validate([
-            'customer_paid' => ['numeric'],
-            'deposit' => ['numeric']
+            'id' => ['required', 'exists:tb_rental,id']
         ]);
 
-
-        RentalModel::where('id', $data['id'])->where('status', 'O')->updateOrFail([
+        RentalModel::where('id', $data['id'])->where('status', 'O')->update([
             'status' => 'F'
         ]);
 

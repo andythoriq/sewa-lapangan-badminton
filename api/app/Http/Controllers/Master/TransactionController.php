@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\Models\RentalModel;
+use Illuminate\Http\Request;
+use App\Models\CustomerModel;
+use App\Models\TransactionModel;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookingDetailResource;
 use App\Http\Resources\HistoryBookingCollection;
-use App\Http\Resources\Master\TransactionCollection;
 use App\Http\Resources\Master\TransactionResource;
-use App\Models\RentalModel;
-use App\Models\TransactionModel;
-use Illuminate\Http\Request;
+use App\Http\Resources\Master\TransactionCollection;
 
 class TransactionController extends Controller
 {
@@ -63,9 +64,6 @@ class TransactionController extends Controller
         ]);
 
         $transactions = TransactionModel::with([
-            'rentals' => function ($query) {
-                $query->where('status', '!=', 'F');
-            },
             'rentals.customer:customer_code,name,phone_number,deposit',
             'rentals.user:id,name,username',
             'rentals.court:id,label,initial_price'
@@ -73,5 +71,47 @@ class TransactionController extends Controller
         ->where('booking_code', $data['booking_code'])->firstOrFail();
 
         return new BookingDetailResource($transactions);
+    }
+
+    public function pay(Request $request)
+    {
+        $data = $request->validate([
+            'customer_deposit' => ['nullable', 'numeric'],
+            'input_deposit' => ['nullable', 'numeric'],
+            'customer_paid' => ['required', 'numeric'],
+            'total_price' => ['required', 'numeric'],
+            'phone_number' => ['required', 'exists:tb_customer,phone_number'],
+            'booking_code' => ['required', 'exists:tb_transaction,booking_code'],
+        ]);
+
+        $customer = CustomerModel::where('phone_number', $data['phone_number'])->firstOrFail();
+        $transaction = TransactionModel::where('booking_code', $data['booking_code'])->where('isPaid', 'N')->firstOrFail();
+
+        $total_paid = (float) $data['customer_paid'] + (float) $data['input_deposit'];
+
+        if ($total_paid < $data['total_price']) { // jika bayar kurang dari biaya, dijadikan hutang
+            $debt = (float) $data['total_price'] - (float) $total_paid;
+            $customer->debt += $debt;
+            $transaction->fill([
+                'isDebt' => 'Y',
+                'customer_debt' => $debt
+            ]);
+        }
+
+        if (isset($data['customer_deposit']) || $data['customer_deposit'] > 0) { // jika menambah deposit
+            $customer->deposit += (float) $data['customer_deposit'];
+        }
+
+        if (isset($data['input_deposit']) || $data['input_deposit'] > 0) { // jika depositnya dipakai
+            $customer->deposit -= (float) $data['input_deposit'];
+        }
+
+        $transaction->fill([
+            'isPaid' => 'Y',
+            'customer_paid' => $total_paid
+        ])->save();
+        $customer->save();
+
+        return response()->json(['message' => 'Transaction done.'], 202, ['success' => 'Paid Successfully']);
     }
 }
