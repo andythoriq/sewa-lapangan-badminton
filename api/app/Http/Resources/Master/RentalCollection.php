@@ -24,11 +24,12 @@ class RentalCollection extends ResourceCollection
                 'start' => $rental->start,
                 'finish' => $rental->finish,
                 'price' => $rental->price,
-                'status' => $this->getAndChangeRentalStatus($rental->start, $rental->finish, $rental),
+                'status' => $rental->status,
                 'transaction' => [
                     // 'id' => $rental->transaction->id,
                     'total_hour' => $rental->transaction->total_hour,
-                    'total_price' => $rental->transaction->total_price
+                    'total_price' => $rental->transaction->total_price,
+                    'booking_code' => $rental->transaction->booking_code
                 ],
                 'customer' => [
                     // 'customer_code' => $rental->customer->customer_code,

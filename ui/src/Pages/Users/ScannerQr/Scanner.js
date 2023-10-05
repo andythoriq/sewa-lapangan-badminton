@@ -28,15 +28,15 @@ const Scanner = ({ openModal }) => {
   return (
     <>
       <div>
-        <h1 style={{ fontSize: "30px" }} className="fw-bold">
+        <h3 style={{ fontSize: "21px" }} className="fw-bold">
           QR Code Scanner
-        </h1>
+        </h3>
         {scanResult ? (
           <div className="mt-2">
             success: <Link href={scanResult}>{scanResult}</Link>
           </div>
         ) : (
-          <div id="reader" heigh="100"></div>
+          <div id="reader" className="mt-4" heigh="100"></div>
         )}
       </div>
     </>
