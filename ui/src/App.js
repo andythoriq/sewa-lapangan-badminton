@@ -210,9 +210,7 @@ export default function App() {
 
   let filteredMenus
   if (roleMenus.includes('super-admin') || roleMenus.includes('/super-admin')) {
-    filteredMenus = originalMenus.map((val, key) => (
-      <Route path={val.path} element={val.element} key={key} />
-    ));
+    filteredMenus = originalMenus.map((val, key) => <Route path={val.path} element={val.element} key={key} />);
   } else {
     const filteredPaths = originalMenus
       .filter((val) => arrayIncludesPartial(roleMenus, val.path))

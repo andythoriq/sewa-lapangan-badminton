@@ -83,6 +83,7 @@ class AuthCustomerRequest extends FormRequest
                     'otp_code' => $otp,
                     'expiration' => Carbon::now('Asia/Jakarta')->addMinutes(15)
                 ]);
+                $customer->first();
                 OTPModel::create([
                     'customer_id' => $customer->customer_code,
                     'otp_code' => $otp

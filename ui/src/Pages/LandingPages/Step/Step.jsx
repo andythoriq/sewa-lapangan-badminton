@@ -36,13 +36,13 @@ const FormStep = () => {
     },
   ];
 
-  if (errors.name) {
-    inputs[ 0 ].errorMessage = errors.name[ 0 ];
-  }
+  // if (errors.name) {
+  //   inputs[ 0 ].errorMessage = errors.name[ 0 ];
+  // }
 
-  if (errors.phone_number) {
-    inputs[ 1 ].errorMessage = errors.phone_number[ 0 ];
-  }
+  // if (errors.phone_number) {
+  //   inputs[ 1 ].errorMessage = errors.phone_number[ 0 ];
+  // }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -109,10 +109,12 @@ const FormStep = () => {
                 <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
                   <Form.Group className="mb-2">
                     <FormInput type="text" name="name" label="Full name" value={name} placeholder="input full name" onChange={(e) => setName(e.target.value)} />
+                    {errors.name && <span className="text-danger">{errors.name[ 0 ]}</span>}
                   </Form.Group>
                   <Form.Group className="mb-2">
                     <label>Phone Number</label>
                     <PhoneInput placeholder="input phone number" specialLabel={""} country={"id"} value={(phoneNumber.substring(0, 1) === '0' ? "62" + phoneNumber.slice(1) : phoneNumber)} onChange={(phone) => setPhoneNumber(phone)} />
+                    {errors.phone_number && <span className="text-danger">{errors.phone_number[0]}</span>}
                   </Form.Group>
 
                   {/* <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded" href="/step2">

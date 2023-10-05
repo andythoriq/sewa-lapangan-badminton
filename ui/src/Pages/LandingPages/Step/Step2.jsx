@@ -21,13 +21,13 @@ const Step2 = () => {
       label: "Code OTP",
       name: "otp_code",
       type: "text",
-      errorMessage: errors.verifikasi,
+      errorMessage: errors.otp_code,
     }
   ];
 
-  if (errors.otp_code) {
-    inputs[0].errorMessage = errors.otp_code[0]
-  }
+  // if (errors.otp_code) {
+  //   inputs[0].errorMessage = errors.otp_code[0]
+  // }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -90,6 +90,7 @@ const Step2 = () => {
                     <OTPInput value={OTP} onChange={setOTP}  OTPLength={6} otpType="number" />
                   </Form.Group>
                 ))}
+                {errors.otp_code && <span className="text-danger">{errors.otp_code[0]}</span>}
                 <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded m-2" >
                   Submit
                 </Button>
