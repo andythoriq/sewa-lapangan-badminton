@@ -69,7 +69,7 @@ const CreateBookingFormRegular = () => {
       } catch (e) {
         if (e?.response?.status === 422) {
           setErrors(e.response.data.errors);
-        } else if (e?.response?.status === 404 || e?.response?.status === 403) {
+        } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
           Swal.fire({
             icon: "error",
             title: "Error!",
