@@ -28,12 +28,14 @@ class RentalController extends Controller
                 });
 
         })
-            ->select(['id', 'start', 'finish', 'price', 'status', 'transaction_id', 'customer_id', 'court_id'])
+            ->select(['id', 'start', 'finish', 'price', 'status',  'transaction_id', 'customer_id', 'court_id'])
+            ->where("status", "!=", "F")
             ->with([
                 'transaction:id,total_price,total_hour,booking_code',
                 'customer:customer_code,name,phone_number',
                 'court:id,label,initial_price'
             ])
+            ->orderBy("updated_at", "desc")
             ->paginate(10);
         return new RentalCollection($rentals);
     }
