@@ -17,6 +17,7 @@
 		"bootstrap-icons": "^1.11.1",
 		"html5-qrcode": "^2.3.8",
 		"otp-input-react": "^0.3.0",
+		"qrcode": "^1.5.3",
 		"react": "^18.2.0",
 		"react-bootstrap": "^2.8.0",
 		"react-bootstrap-icons": "^1.10.3",

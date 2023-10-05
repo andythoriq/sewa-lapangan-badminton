@@ -4,6 +4,8 @@ import axios from "../../api/axios";
 import secureLocalStorage from "react-secure-storage";
 import { useNavigate, useParams } from "react-router-dom";
 import PaymentForm from "../../Components/ModalDialog/showPaymentForm";
+import Scanner from "../Users/ScannerQr/Scanner";
+import Modal from "react-bootstrap/Modal";
 
 const Verification = () => {
   // let listData = [{ start: "10-00", finish: "12-00", status: "on progress", price: "Rp150.000", court: "Court A", customer: "Budi - (0892347826382)" }];
@@ -16,14 +18,31 @@ const Verification = () => {
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const navigate = useNavigate();
 
-  const handleCheck = async (e) => {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const openModalTrx = (e) => {
+    // console.log(e.substring(30));
+    const bookingCodeNew = e.substring(35);
+    console.log(bookingCodeNew);
+
+    setBookingCode(bookingCodeNew);
+    handleCheck(bookingCodeNew);
+  };
+
+  const submitCheck = (e) => {
     e.preventDefault();
+    handleCheck(bookingCode);
+  };
+
+  const handleCheck = async (booking) => {
     try {
       await axios.get("/sanctum/csrf-cookie");
       const { data } = await axios.post(
         "/api/booking-verification",
         {
-          booking_code: bookingCode,
+          booking_code: booking,
         },
         {
           headers: {
@@ -34,6 +53,7 @@ const Verification = () => {
       setErrors("");
       setTransaction(data.transaction);
       setRentals(data.rentals);
+      handleShow();
     } catch (e) {
       if (e?.response?.status === 422) {
         setErrors(e.response.data.errors);
@@ -76,35 +96,49 @@ const Verification = () => {
         allowEscapeKey: false,
       }).then((result) => {
         if (result.isConfirmed) {
-          navigate('/schedule')
+          navigate("/schedule");
         }
       });
     } catch (e) {
       if (e?.response?.status === 404 || e?.response?.status === 403) {
         Swal.fire({
-          icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+          icon: "error",
+          title: "Error!",
+          html: e.response.data.message,
+          showConfirmButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
       } else {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
     }
-  }
+  };
 
   const handleFinishGame = async (e, id) => {
     try {
-      await axios.get('/sanctum/csrf-cookie')
-      const { data } = await axios.post('/api/finish-rental', {
-        id: id
-      }, {
-        headers: {
-          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
+      await axios.get("/sanctum/csrf-cookie");
+      const { data } = await axios.post(
+        "/api/finish-rental",
+        {
+          id: id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
+          },
         }
-      })
+      );
       Swal.fire({
-        icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+        icon: "success",
+        title: "Success!",
+        html: data.message,
+        showConfirmButton: true,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       }).then((result) => {
         if (result.isConfirmed) {
-          navigate('/schedule')
+          navigate("/schedule");
         }
       });
     } catch (e) {
@@ -136,10 +170,19 @@ const Verification = () => {
           <td>
             {val.court.label} ({new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(val.court.initial_price)})
           </td>
+
           <td className=" d-md-flex justify-content-between">
-            <button className="btn btn-sm btn-success" onClick={(e) => handleStartGame(e, val.id)} disabled={val.status === 'O' || val.status === 'F'}>Start Game</button>
+            {val.status === "O" || val.status === "F" ? null : (
+              <button className="btn btn-sm btn-success" onClick={(e) => handleStartGame(e, val.id)}>
+                Start Game
+              </button>
+            )}
             &nbsp;
-            <button className="btn btn-sm btn-danger" onClick={(e) => handleFinishGame(e, val.id)} disabled={val.status === 'B' || val.status === 'F' }>End Game</button>
+            {val.status === "B" || val.status === "F" ? null : (
+              <button className="btn btn-sm btn-danger" onClick={(e) => handleFinishGame(e, val.id)}>
+                End Game
+              </button>
+            )}
           </td>
         </tr>
       );
@@ -167,7 +210,7 @@ const Verification = () => {
                       {errors.booking_code && <span className="text-danger">{errors.booking_code[0]}</span>}
                     </div>
                   </div>
-                  <button className="btn btn-danger btn-sm w-100 mt-2" onClick={handleCheck}>
+                  <button className="btn btn-danger btn-sm w-100 mt-2" onClick={submitCheck}>
                     Check Order
                   </button>
                 </div>
@@ -176,57 +219,88 @@ const Verification = () => {
           </div>
         </div>
 
-        {/* right */}
         <div className="col-lg-9">
-          <div className="card position-sticky">
-            {rentals.length > 0 ? (
-              <>
-                <div className="p-3 bg-light bg-opacity-10 d-md-flex justify-content-between">
-                  <div className="px-3 my-3 text-center">
-                    <div className="cart-item-label">Booking Code</div>
-                    <span className="text-xl font-weight-medium">{transaction.booking_code ? transaction.booking_code : "...."}</span>
-                  </div>
-                  <div className="px-3 my-3 text-center">
-                    <div className="cart-item-label">Total Hour</div>
-                    <span className="text-xl font-weight-medium">{transaction.total_hour ? transaction.total_hour : "...."}</span>
-                  </div>
-                  <div className="px-3 my-3 text-center">
-                    <div className="cart-item-label">Total Price</div>
-                    <span className="text-xl font-weight-medium">{transaction.total_price ? transaction.total_price : "...."}</span>
-                  </div>
-                  <div className="px-3 my-3 text-center">
-                    <div className="cart-item-label">Customer</div>
-                    <span className="text-xl font-weight-medium">{transaction.customer ? transaction.customer.name + ` (${transaction.customer.phone_number})` : "...."}</span>
-                  </div>
+          <div className="accordion" id="accordionPayment">
+            <div className="accordion-item mb-3">
+              <h2 className="h5 px-3 py-3 accordion-header d-flex">
+                <div className="form w-100 collapsed">
+                  <label className="fw-bold"></label>
                 </div>
-                <div className="row">
-                  <div className="col-lg-12">
-                    <div className="table-responsive p-3">
-                      <table className="table table-hover mt-2" border={1}>
-                        <thead>
-                          <tr className="text-center">
-                            <th width={"1%"}>Id</th>
-                            <th width={"40%"}>Start - Finish</th>
-                            <th width={"5%"}>Status</th>
-                            <th width={"15%"}>Price</th>
-                            <th width={"20%"}>Court</th>
-                            <th width={"9%"} className="text-center">
-                              Action
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <TableRows rows={rentals} />
-                        </tbody>
-                      </table>
-                      <div>
-                        <h4>Show payment form</h4>
-                        <button onClick={() => setShowPaymentForm(true)} disabled={transaction.isPaid === 'Y'}>Show</button>
-                        <span>{transaction.isPaid === 'Y' ? 'Already paid' : 'not paid yet' }</span>
-                      </div>
+              </h2>
+              <div id="collapseCC" className="accordion-collapse collapse show" data-bs-parent="#accordionPayment">
+                <div className="accordion-body">
+                  <div className="col">
+                    <div className="mb-3">
+                      <Scanner openModal={openModalTrx} />
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <Modal show={show} onHide={handleClose} size="lg" width="90%">
+            <Modal.Header closeButton>
+              <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="p-3 bg-light bg-opacity-10 d-md-flex justify-content-between">
+                <div className="px-3 my-3 text-center">
+                  <div className="cart-item-label">Booking Code</div>
+                  <span className="text-xl font-weight-medium">{transaction.booking_code ? transaction.booking_code : "...."}</span>
+                </div>
+                <div className="px-3 my-3 text-center">
+                  <div className="cart-item-label">Total Hour</div>
+                  <span className="text-xl font-weight-medium">{transaction.total_hour ? transaction.total_hour : "...."}</span>
+                </div>
+                <div className="px-3 my-3 text-center">
+                  <div className="cart-item-label">Total Price</div>
+                  <span className="text-xl font-weight-medium">{transaction.total_price ? transaction.total_price : "...."}</span>
+                </div>
+                <div className="px-3 my-3 text-center">
+                  <div className="cart-item-label">Customer</div>
+                  <span className="text-xl font-weight-medium">{transaction.customer ? transaction.customer.name + ` (${transaction.customer.phone_number})` : "...."}</span>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-12">
+                  <div className="table-responsive p-3">
+                    <table className="table table-hover mt-2" border={1}>
+                      <thead>
+                        <tr className="text-center">
+                          <th width={"1%"}>Id</th>
+                          <th width={"40%"}>Start - Finish</th>
+                          <th width={"5%"}>Status</th>
+                          <th width={"15%"}>Price</th>
+                          <th width={"20%"}>Court</th>
+                          <th width={"9%"} className="text-center">
+                            Action
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <TableRows rows={rentals} />
+                      </tbody>
+                    </table>
+                    <div>
+                      <h4>Show payment form</h4>
+                      <button onClick={() => setShowPaymentForm(true)} disabled={transaction.isPaid === "Y"}>
+                        Show
+                      </button>
+                      <span>{transaction.isPaid === "Y" ? "Already paid" : "not paid yet"}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Modal.Body>
+          </Modal>
+        </div>
+        {/* right */}
+        {/* <div className="col-lg-9">
+          <div className="card position-sticky">
+            {rentals.length > 0 ? (
+              <>
+                
               </>
             ) : (
               <>
@@ -235,7 +309,9 @@ const Verification = () => {
                     <div className="col-lg-12 col-sm-offset-1 text-center mt-3">
                       <img src={process.env.REACT_APP_BACKEND_URL + "/storage/images/undraw_empty_re_opql.svg"} alt="not-found" style={{ width: "400px" }} />
                       <div className="contant_box_404 mt-4">
-                        <h2 className="fw-bold" style={{ fontSize: 21 }}>Check orders easily</h2>
+                        <h2 className="fw-bold" style={{ fontSize: 21 }}>
+                          Check orders easily
+                        </h2>
                         <p style={{ color: "#B1B1B1", fontSize: 17 }}>Input booking code in order check form</p>
                       </div>
                     </div>
@@ -244,7 +320,7 @@ const Verification = () => {
               </>
             )}
           </div>
-        </div>
+        </div> */}
       </div>
       <PaymentForm handleShow={showPaymentForm} handleClose={() => setShowPaymentForm(false)} transaction={transaction} swal={Swal} />
     </>

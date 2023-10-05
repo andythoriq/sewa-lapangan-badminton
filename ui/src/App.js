@@ -28,12 +28,12 @@ import LoginCustomer from "./Pages/LandingPages/Step/LoginC";
 import Regular from "./Pages/Users/DataMaster/Customer/Regular";
 import Member from "./Pages/Users/DataMaster/Customer/Member";
 import LandingBookUser from "./Pages/LandingPages/Booking/LandingBooking";
-import Scanner from "./Pages/Users/ScannerQr/Scanner";
 import PeakTime from "./Pages/Users/DataMaster/Rush Hour/PeakTime";
 import Profile from "./Pages/Users/Profile/profile";
 import FormProfile from "./Pages/Users/Profile/form";
 import Verification from "./Pages/Verifikasi/verifikasi";
 import Calendar from "./Pages/Users/DataMaster/Holidays/calendar";
+import Scanner from "./Pages/Users/ScannerQr/Scanner";
 
 
 export default class App extends Component {
@@ -58,7 +58,6 @@ export default class App extends Component {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/create-booking" element={<CreateBookingForm />} />
             <Route path="/schedule" element={<Schedule />} />
-            <Route path="/scanner" element={<Scanner />} />
             <Route path="/verification/:bookingCodeParam?" element={<Verification/>} />
             <Route path="/history-booking" element={<HistoryBooking />} />
             <Route path="/data-master/court" element={<Court />} />
@@ -83,6 +82,7 @@ export default class App extends Component {
             <Route path="/profile" element={<Profile />} />
             <Route path="/formprofile/add" element={<FormProfile />} />
             <Route path="/setting" element={<Setting />} />
+            <Route path="/scanner" element={<Scanner />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound />} />
