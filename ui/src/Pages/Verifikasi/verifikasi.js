@@ -57,11 +57,11 @@ const Verification = () => {
     } catch (e) {
       if (e?.response?.status === 422) {
         setErrors(e.response.data.errors);
-      } else if (e?.response?.status === 404 || e?.response?.status === 403) {
+      } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
         Swal.fire({
           icon: "error",
           title: "Error!",
-          html: e.response.data,
+          html: e.response.data.message,
           showConfirmButton: true,
           allowOutsideClick: false,
           allowEscapeKey: false,
@@ -100,7 +100,7 @@ const Verification = () => {
         }
       });
     } catch (e) {
-      if (e?.response?.status === 404 || e?.response?.status === 403) {
+      if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
         Swal.fire({
           icon: "error",
           title: "Error!",
@@ -142,7 +142,7 @@ const Verification = () => {
         }
       });
     } catch (e) {
-      if (e?.response?.status === 404 || e?.response?.status === 403) {
+      if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
         Swal.fire({
           icon: "error",
           title: "Error!",

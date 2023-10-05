@@ -21,6 +21,9 @@ const CreateBookingFormMember = () => {
   const [transactionResponse, setTransactionResponse] = useState({});
   const [customerCode, setCustomerCode] = useState("");
 
+  const [totallyHour, setTotallyHour] = useState(0)
+  const [totallyPrice, setTotallyPrice] = useState(0)
+
   const onChangeSelectCustomer = (e) => {
     setCustomerCode(e.target.value);
   };
@@ -52,7 +55,6 @@ const CreateBookingFormMember = () => {
 
   const BoxRow = ({ row, onRemove, onUpdate, index }) => {
     const { court, start_time, finish_time } = row;
-
     const handleChange = (event) => {
       const { name, value } = event.target;
       onUpdate(name, value);
@@ -64,20 +66,27 @@ const CreateBookingFormMember = () => {
             <Row>
               <Col className="col-12 col-md-4">
                 <FormSelect plugin={pluginSelect} name="court" label="Court" menuPlacement="top" options={dataCourt} selected={court} onChange={(value) => onUpdate("court", value)} isDisabled={showSendBookingCode} />
+                {errors[`rentals.${index}.court_id`] && <span className="text-danger">{errors[`rentals.${index}.court_id`][ 0 ]}</span>}
               </Col>
               <Col className="col-12 col-md-4">
                 <FormInput type="datetime-local" name="start_time" label="Start" value={start_time} onChange={handleChange} disabled={showSendBookingCode} />
+                {errors[`rentals.${index}.start`] && <span className="text-danger">{errors[`rentals.${index}.start`][ 0 ]}</span>}
               </Col>
               <Col className="col-12 col-md-4">
                 <FormInput type="datetime-local" name="finish_time" label="Finish" value={finish_time} onChange={handleChange} disabled={showSendBookingCode} />
+                {errors[`rentals.${index}.finish`] && <span className="text-danger">{errors[`rentals.${index}.finish`][ 0 ]}</span>}
               </Col>
               <Col className="col-12 mt-3 text-right">
-                <button type="button" className="btn btn-danger btn-sm me-md-2 text-white" onClick={onRemove} disabled={showSendBookingCode}>
-                  <Trash3 className="text-white" style={{ marginTop: -5 }} />
-                </button>
-                <button type="button" className="btn btn-danger btn-sm me-md-2" onClick={addRowBox} disabled={showSendBookingCode}>
-                  + Add
-                </button>
+                {index === rows.length - 1 &&
+                  <>
+                  <button type="button" className="btn btn-danger btn-sm me-md-2 text-white" onClick={onRemove} disabled={showSendBookingCode}>
+                    <Trash3 className="text-white" style={{ marginTop: -5 }} />
+                  </button>
+                  <button type="button" className="btn btn-danger btn-sm me-md-2" onClick={addRowBox} disabled={showSendBookingCode}>
+                    + Add
+                  </button>
+                  </>
+                }
               </Col>
             </Row>
           </Col>
@@ -104,26 +113,29 @@ const CreateBookingFormMember = () => {
     newRowData[index][name] = value;
     setRows(newRowData);
   };
-  // const onValUpdate = (i, event, valueSel = []) => {
-  //   if (valueSel.value) {
-  //     const name = event.name;
-  //     const value = valueSel;
-  //     const data = [...rows];
-  //     data[i][name] = value;
-  //     initRow(data);
-  //   } else {
-  //     const { name, value } = event.target;
-  //     const data = [...rows];
-  //     data[i][name] = value;
-  //     // initRow(data);
-  //   }
-  // };
+  
+  useEffect(() => {
+    let totalHour = 0
+    let totalPrice = 0
+    rows.forEach(row => {
+      if (row.start_time && row.finish_time && row.court) {
+        const start = new Date(row.start_time).getTime()
+        const finish = new Date(row.finish_time).getTime()
+        const diffInSeconds = (finish - start) / 1000
+        const diffInHours = diffInSeconds / (60 * 60)
+        totalHour += Math.round(diffInHours * 100) / 100
+        totalPrice += (Math.round(diffInHours * 100) / 100) * row.court.initial_price
+        setTotallyHour(totalHour)
+        setTotallyPrice(totalPrice)
+      }
+    })
+  }, [ rows ])
 
   const BoxRows = ({ rows, onRemove, onUpdate }) => {
     return (
       <>
         {rows.map((row, index) => (
-          <BoxRow key={index} row={row} onRemove={() => onRemove(index)} onUpdate={(name, value) => onUpdate(index, name, value)} />
+          <BoxRow key={index} row={row} onRemove={() => onRemove(index)} onUpdate={(name, value) => onUpdate(index, name, value)} index={index} />
         ))}
       </>
     );
@@ -158,10 +170,7 @@ const CreateBookingFormMember = () => {
       } catch (e) {
         if (e?.response?.status === 422) {
           setErrors(e.response.data.errors);
-          if (!e.response.data.errors.customer_id || !e.response.data.errors.user_id) {
-            Swal.fire({ icon: "error", title: "Error!", html: "there is an error on the court or start or finish", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
-          }
-        } else if (e?.response?.status === 404 || e?.response?.status === 403) {
+        } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
           Swal.fire({
             icon: "error",
             title: "Error!",
@@ -216,6 +225,9 @@ const CreateBookingFormMember = () => {
             ))}
           </Form.Select>
           {errors.customer_id && <span className="text-danger">{errors.customer_id[0]}</span>}
+          {errors.court_id && <span className="text-danger">{errors.court_id[ 0 ]}</span>}
+          {errors.start && <span className="text-danger">{errors.start[ 0 ]}</span>}
+          {errors.finish && <span className="text-danger">{errors.finish[ 0 ]}</span>}
         </Col>
         <BoxRows rows={rows} onRemove={removeRowBox} onUpdate={updateRow} />
         <Row>
@@ -225,14 +237,16 @@ const CreateBookingFormMember = () => {
             <br />
             <br />
             <br />
-            {transactionResponse.total_hour ? <span>{transactionResponse.total_hour}</span> : <span>...</span>}
+            {transactionResponse.total_hour ? <span>{transactionResponse.total_hour <= 1 ? transactionResponse.total_hour + ' hour' : transactionResponse.total_hour + ' hours'}</span> : <span>{totallyHour ? (totallyHour <= 1 ? totallyHour + ' hour' : totallyHour + ' hours') : '...'}</span>}
           </Col>
           <Col className="col-12 col-md-3 mt-3 text-center">
             <b>Totally price:</b>
             <br />
             <br />
-            <br />
-            {transactionResponse.total_price ? <span>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transactionResponse.total_price)}</span> : <span>...</span>}
+            {transactionResponse.total_price ? 
+            <div><del>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(totallyPrice)}</del></div>
+            : <br /> }
+            {transactionResponse.total_price ? <span>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transactionResponse.total_price)}</span> : <span>{totallyPrice ? 'starting price: ' + new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(totallyPrice) : '...'}</span>}
           </Col>
           <Col className="col-12 text-right mt-4">
             <button type="button" className="btn btn-danger btn-sm me-md-4" onClick={onSubmit} disabled={showSendBookingCode}>
@@ -258,7 +272,7 @@ const CreateBookingFormMember = () => {
                       <p className="fw-bold">{transactionResponse.phone_number}</p>
                     </div>
                     <div className="d-flex flex-column mt-4">
-                      <button onClick={sendBookingCode} className="btn btn-secondary btn-sm mt-2 ">
+                      <button onClick={sendBookingCode} className="btn btn-warning btn-sm mt-2 ">
                         Send Via Whatsapp
                       </button>
                     </div>

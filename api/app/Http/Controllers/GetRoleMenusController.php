@@ -36,6 +36,10 @@ class GetRoleMenusController extends Controller
                 'value' => '/scanner'
             ],
             [
+                'label' => 'Verification',
+                'value' => '/verification'
+            ],
+            [
                 'label' => 'Master - Court',
                 'value' => '/data-master/court'
             ],

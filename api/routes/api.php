@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, StartRentalController, FinishRentalController, DashboardController};
+use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, StartRentalController, FinishRentalController, DashboardController, ScheduleController};
 use App\Http\Controllers\Master\{HolidayController, ConfigController, OpenTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController, TransactionController};
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/rental/{rental}', 'update')->name('update-rental');
         Route::delete('/rental/{rental}', 'delete');
     });
+
+    Route::get('/schedule', ScheduleController::class);
 
     Route::post('/send-booking-code', SendBookingCodeController::class);
     Route::post('/booking-verification', [TransactionController::class, 'booking_verification'])->middleware('admin');

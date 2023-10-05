@@ -13,6 +13,9 @@ const CreateBookingFormRegular = () => {
   const [showSendBookingCode, setShowSendBookingCode] = useState(false);
   const [transactionResponse, setTransactionResponse] = useState({});
   const [errors, setErrors] = useState([]);
+  const [totallyHour, setTotallyHour] = useState(0)
+  const [totallyPrice, setTotallyPrice] = useState(0)
+  const [initialPrice, setInitialPrice] = useState(0)
 
   useEffect(() => {
     let config = {
@@ -41,6 +44,30 @@ const CreateBookingFormRegular = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
+  useEffect(() => {
+    if (values.start_time && values.finish_time) {
+      const start = new Date(values.start_time).getTime()
+      const finish = new Date(values.finish_time).getTime()
+      const diffInSeconds = (finish - start) / 1000
+      const diffInHours = diffInSeconds / (60 * 60)
+      setTotallyHour(Math.round(diffInHours * 100) / 100)
+    }
+  }, [values.start_time, values.finish_time])
+
+  useEffect(() => {
+    const court = dataCourt.find(court => court.value == values.court)
+    if (court) {
+      setInitialPrice(court.initial_price)
+    }
+  }, [values.court])
+
+  useEffect(() => {
+    if (totallyHour && initialPrice) {
+      const totallyPrice = initialPrice *  totallyHour
+      setTotallyPrice(totallyPrice)
+    }
+  }, [initialPrice, totallyHour])
+
   const onSubmit = async (e) => {
     e.preventDefault();
     if (showSendBookingCode) {
@@ -49,7 +76,7 @@ const CreateBookingFormRegular = () => {
       try {
         await axios.get('/sanctum/csrf-cookie')
         const { data } = await axios.post('/api/rental', {
-          court_id: values.court,
+          court_id: values.court.value,
           customer_id: values.customer_id,
           start: values.start_time,
           finish: values.finish_time,
@@ -69,7 +96,7 @@ const CreateBookingFormRegular = () => {
       } catch (e) {
         if (e?.response?.status === 422) {
           setErrors(e.response.data.errors);
-        } else if (e?.response?.status === 404 || e?.response?.status === 403) {
+        } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
           Swal.fire({
             icon: "error",
             title: "Error!",
@@ -152,14 +179,14 @@ const CreateBookingFormRegular = () => {
             <br />
             <br />
             <br />
-            {transactionResponse.total_hour ? <span>{transactionResponse.total_hour}</span> : <span>...</span>}
+            {transactionResponse.total_hour ? <span>{transactionResponse.total_hour <= 1 ? transactionResponse.total_hour + ' hour' : transactionResponse.total_hour + ' hours'}</span> : <span>{totallyHour ? (totallyHour <= 1 ? totallyHour + ' hour' : totallyHour + ' hours' ) : '...'}</span>}
           </Col>
           <Col className="col-12 col-md-6 mt-3 text-center">
             <b>Totally price:</b>
             <br />
             <br />
             <br />
-            {transactionResponse.total_price ? <span>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transactionResponse.total_price)}</span> : <span>...</span>}
+            {transactionResponse.total_price ? <span>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transactionResponse.total_price)}</span> : <span>{totallyPrice ? new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(totallyPrice) : '...'}</span>}
           </Col>
           <Col className="col-12 text-right mt-4">
             <button type="button" className="btn btn-danger btn-sm me-md-4" onClick={onSubmit} disabled={showSendBookingCode}>

@@ -70,6 +70,26 @@ class RentalRequest extends FormRequest
         return $validation;
     }
 
+    public function messages()
+    {
+        $messages = [];
+        foreach ($this->request->get('rentals') as $key => $val) {
+            $messages['rentals.' . $key . '.court_id.required'] = 'Court field is required.';
+            $messages['rentals.' . $key . '.court_id.exists'] = 'Court field is invalid.';
+
+            $messages['rentals.' . $key . '.start.required'] = 'Start field is required.';
+            $messages['rentals.' . $key . '.start.date'] = 'The Start is not a valid date.';
+            $messages['rentals.' . $key . '.start.date_format'] = 'The Start does not match the Y-m-d\TH:i format.';
+            $messages['rentals.' . $key . '.start.after_or_equal'] = 'The Start must be a date after or equal to now.';
+
+            $messages['rentals.' . $key . '.finish.required'] = 'Finish field is required.';
+            $messages['rentals.' . $key . '.finish.date'] = 'The Finish is not a valid date.';
+            $messages['rentals.' . $key . '.finish.date_format'] = 'The Finish does not match the Y-m-d\TH:i format.';
+            $messages['rentals.' . $key . '.finish.after'] = 'The Finish must be a date after Start.';
+        }
+        return $messages;
+    }
+
     public function createRental()
     {
         // $this->regularRentalsCheck($this->customer_id);
@@ -137,11 +157,11 @@ class RentalRequest extends FormRequest
 
         $data = $this->validated();
 
-        if (strtolower($data['customer_id'][0]) == 'r') {
-            throw \Illuminate\Validation\ValidationException::withMessages([
-                'customer_id' => ['Regular can\'t make multiple rentals.']
-            ]);
-        }
+        // if (strtolower($data['customer_id'][0]) == 'r') {
+        //     throw \Illuminate\Validation\ValidationException::withMessages([
+        //         'customer_id' => ['Regular can\'t make multiple rentals.']
+        //     ]);
+        // }
 
         $booking_code = $this->getBookingCode();
         $qr_code = $this->createQrCode($booking_code, env('FRONTEND_URL', 'http://localhost:3000'));

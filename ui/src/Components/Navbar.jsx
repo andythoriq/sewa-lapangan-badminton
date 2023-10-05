@@ -38,9 +38,9 @@ const Navbar = () => {
         navigate('/', {replace:true})
       }, 500);
     } catch(e) {
-      if (e?.response?.status === 404 || e?.response?.status === 403) {
+      if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
         Swal.fire({
-          icon: "error", title: "Error!", html: e.response.data, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+          icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
         }).then((result) => {
           if (result.isConfirmed) {
             secureLocalStorage.clear()

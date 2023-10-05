@@ -83,6 +83,7 @@ class AuthCustomerRequest extends FormRequest
                     'otp_code' => $otp,
                     'expiration' => Carbon::now('Asia/Jakarta')->addMinutes(15)
                 ]);
+                $customer->first();
                 OTPModel::create([
                     'customer_id' => $customer->customer_code,
                     'otp_code' => $otp
@@ -118,15 +119,19 @@ class AuthCustomerRequest extends FormRequest
         // $response = $this->sendWA($validated['phone_number'], $message, env('ZENZIVA_USER_KEY') ,env('ZENZIVA_API_KEY'));
         // return $response;
         return [
-            'text' => 'Success'
+            'text' => 'Success',
+            'to' => $this->phone_number
         ];
     }
 
     public function verify_otp()
     {
-        $customer = CustomerModel::select(['otp_code', 'phone_number', 'customer_code', 'expiration'])->where('otp_code', $this->otp_code)->firstOrFail();
+        $customer = CustomerModel::select(['otp_code', 'phone_number', 'name', 'customer_code', 'expiration'])->where('otp_code', $this->otp_code)->firstOrFail();
         if (Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->expiration))) {
-            return $customer->createToken(str_replace(' ', '', $customer->phone_number) . '-token')->plainTextToken; // token, id, name, phone_number
+            return [
+                'token' => $customer->createToken(str_replace(' ', '', $customer->phone_number) . '-token')->plainTextToken,
+                'customer' => $customer
+            ];
         }
         throw ValidationException::withMessages([
             'otp_code' => ['The code has expired.']
