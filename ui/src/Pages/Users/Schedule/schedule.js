@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import ScheduleModal from "./modal";
@@ -51,6 +51,8 @@ const Schedule = ({ aksi = "" }) => {
     },
   ];
 
+  const [booking, setBooking] = useState()
+
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
   const [court, setCourt] = useState("");
@@ -65,6 +67,14 @@ const Schedule = ({ aksi = "" }) => {
     setCourt(data.court);
     handleShow();
   };
+
+  useEffect(() => {
+    try {
+      
+    } catch (e) {
+      
+    }
+  }, [])
 
   return (
     <>

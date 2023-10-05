@@ -34,7 +34,7 @@ class RentalController extends Controller
                 'customer:customer_code,name,phone_number',
                 'court:id,label,initial_price'
             ])
-            ->get();
+            ->paginate(10);
         return new RentalCollection($rentals);
     }
 

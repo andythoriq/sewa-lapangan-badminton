@@ -2,12 +2,12 @@
 
 namespace App\Http\Resources\Master;
 
-use App\Traits\ChangeRentalStatus;
+// use App\Traits\ChangeRentalStatus;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class RentalCollection extends ResourceCollection
 {
-    use ChangeRentalStatus;
+    // use ChangeRentalStatus;
     /**
      * Transform the resource collection into an array.
      *
@@ -24,7 +24,7 @@ class RentalCollection extends ResourceCollection
                 'start' => $rental->start,
                 'finish' => $rental->finish,
                 'price' => $rental->price,
-                'status' => $this->getAndChangeRentalStatus($rental->start, $rental->finish, $rental),
+                'status' => $rental->status,
                 'transaction' => [
                     // 'id' => $rental->transaction->id,
                     'total_hour' => $rental->transaction->total_hour,

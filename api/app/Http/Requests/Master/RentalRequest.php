@@ -73,19 +73,21 @@ class RentalRequest extends FormRequest
     public function messages()
     {
         $messages = [];
-        foreach ($this->request->get('rentals') as $key => $val) {
-            $messages['rentals.' . $key . '.court_id.required'] = 'Court field is required.';
-            $messages['rentals.' . $key . '.court_id.exists'] = 'Court field is invalid.';
+       if ($this->route()->getName() === 'create-multiple-rental') {
+            foreach ($this->request->get('rentals') as $key => $val) {
+                $messages['rentals.' . $key . '.court_id.required'] = 'Court field is required.';
+                $messages['rentals.' . $key . '.court_id.exists'] = 'Court field is invalid.';
 
-            $messages['rentals.' . $key . '.start.required'] = 'Start field is required.';
-            $messages['rentals.' . $key . '.start.date'] = 'The Start is not a valid date.';
-            $messages['rentals.' . $key . '.start.date_format'] = 'The Start does not match the Y-m-d\TH:i format.';
-            $messages['rentals.' . $key . '.start.after_or_equal'] = 'The Start must be a date after or equal to now.';
+                $messages['rentals.' . $key . '.start.required'] = 'Start field is required.';
+                $messages['rentals.' . $key . '.start.date'] = 'The Start is not a valid date.';
+                $messages['rentals.' . $key . '.start.date_format'] = 'The Start does not match the Y-m-d\TH:i format.';
+                $messages['rentals.' . $key . '.start.after_or_equal'] = 'The Start must be a date after or equal to now.';
 
-            $messages['rentals.' . $key . '.finish.required'] = 'Finish field is required.';
-            $messages['rentals.' . $key . '.finish.date'] = 'The Finish is not a valid date.';
-            $messages['rentals.' . $key . '.finish.date_format'] = 'The Finish does not match the Y-m-d\TH:i format.';
-            $messages['rentals.' . $key . '.finish.after'] = 'The Finish must be a date after Start.';
+                $messages['rentals.' . $key . '.finish.required'] = 'Finish field is required.';
+                $messages['rentals.' . $key . '.finish.date'] = 'The Finish is not a valid date.';
+                $messages['rentals.' . $key . '.finish.date_format'] = 'The Finish does not match the Y-m-d\TH:i format.';
+                $messages['rentals.' . $key . '.finish.after'] = 'The Finish must be a date after Start.';
+            }
         }
         return $messages;
     }
@@ -102,9 +104,9 @@ class RentalRequest extends FormRequest
 
         $court_initial_price = CourtModel::select('initial_price')->where('id', $this->court_id)->firstOrFail()->initial_price;
 
-        if (strtolower($data['customer_id'][0]) == 'm') {
-            $court_initial_price = ceil($court_initial_price / 1.25);
-        }
+        // if (strtolower($data['customer_id'][0]) == 'm') {
+        //     $court_initial_price = ceil($court_initial_price / 1.25);
+        // }
 
         $data['price'] = $this->getCost($this->start, $this->finish, $court_initial_price);
 

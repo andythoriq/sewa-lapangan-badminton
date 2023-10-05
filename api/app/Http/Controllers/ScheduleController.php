@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ScheduleResource;
 use App\Models\ConfigModel;
+use App\Models\RentalModel;
 use Illuminate\Http\Request;
-use App\Http\Resources\ScheduleCollection;
 
 class ScheduleController extends Controller
 {
@@ -12,13 +13,11 @@ class ScheduleController extends Controller
     {
         $config_open_time = ConfigModel::where('slug', 'open-time')->first();
 
-        return $config_open_time->value;
-
         $filtered_open_time = [];
 
         $today = strtolower(date("l"));
 
-        $string_to_array = $config_open_time->value;
+        $string_to_array = json_decode($config_open_time->value, true);
 
         foreach ($string_to_array as $value) {
             if ($value['day'] === $today) {
@@ -26,11 +25,21 @@ class ScheduleController extends Controller
             }
         }
 
-        return $filtered_open_time;
+        $booking = RentalModel::whereDate('start', now('Asia/Jakarta')->format('Y-m-d'))
+                ->select(['id', 'start', 'finish', 'price', 'status', 'transaction_id', 'customer_id', 'court_id', 'user_id'])
+                ->with([
+                    'transaction:id,booking_code,isPaid',
+                    'customer:customer_code,name,phone_number',
+                    'court:id,label,initial_price',
+                    'user:id,name,username,role_id',
+                    'user.role:id,label'
+                ])
+                ->get();
 
-        $booking = RentalModel::where('')->get();
 
-
-        return new ScheduleCollection($booking);
+        return new ScheduleResource([
+            'booking' => $booking,
+            'schedule' => $filtered_open_time
+        ]);
     }
 }

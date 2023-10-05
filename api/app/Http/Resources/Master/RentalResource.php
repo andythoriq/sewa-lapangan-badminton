@@ -2,12 +2,12 @@
 
 namespace App\Http\Resources\Master;
 
-use App\Traits\ChangeRentalStatus;
+// use App\Traits\ChangeRentalStatus;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class RentalResource extends JsonResource
 {
-    use ChangeRentalStatus;
+    // use ChangeRentalStatus;
     /**
      * Transform the resource into an array.
      *
@@ -22,7 +22,7 @@ class RentalResource extends JsonResource
         return [
             'start' => $this->start,
             'finish' => $this->finish,
-            'status' => $this->getAndChangeRentalStatus($this->start, $this->finish, $this->resource),
+            'status' => $this->status,
             'price' => $this->price,
             'court' => [
                 'label' => $this->court->label,
