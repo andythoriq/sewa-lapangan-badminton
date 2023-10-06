@@ -228,7 +228,7 @@ export default function App() {
         {/* Protected */}
         <Route path="/" element={<RequireAuth role="user" />}>
           <Route path="/dashboard-user" element={<Landing2 />} />
-          <Route path="/landingbookuser" element={<LandingBookUser />} />
+          <Route path="/landingbookuser/:court_id" element={<LandingBookUser />} />
         </Route>
         <Route path="/" element={<RequireAuth role="admin" />}>
           {filteredMenus}

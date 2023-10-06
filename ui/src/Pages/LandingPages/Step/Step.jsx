@@ -50,7 +50,7 @@ const FormStep = () => {
       await axios.get("/sanctum/csrf-cookie");
       const {data} = await axios.post("/api/send-opt", {
         name: name,
-        phone_number: phoneNumber,
+        phone_number: (phoneNumber.substring(0, 2) === '62' ? "0" + phoneNumber.slice(2) : phoneNumber),
       });
       setErrors('')
       if (data.text === "Success") {
@@ -108,7 +108,7 @@ const FormStep = () => {
                 <br />
                 <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
                   <Form.Group className="mb-2">
-                    <FormInput type="text" name="name" label="Full name" value={name} placeholder="input full name" onChange={(e) => setName(e.target.value)} />
+                    <FormInput type="text" name="name" label="Full name" value={name} placeholder="input full name (not required)" onChange={(e) => setName(e.target.value)} />
                     {errors.name && <span className="text-danger">{errors.name[ 0 ]}</span>}
                   </Form.Group>
                   <Form.Group className="mb-2">

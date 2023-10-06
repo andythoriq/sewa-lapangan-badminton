@@ -3,21 +3,25 @@ import Container from "react-bootstrap/Container";
 import { Nav, Navbar } from "react-bootstrap";
 import "./nav.css";
 import Loader from "../../Components/Loader/Loading.js";
+import Court from "../../Components/Court";
+import axios from "../../api/axios";
+import Swal from "sweetalert2";
+import secureLocalStorage from "react-secure-storage";
 
 const Landing = () => {
   // loader state
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   // create sync method to fetch
-  useEffect(() => {
-    const DataFetch = () => {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 900);
-    };
+  // useEffect(() => {
+  //   const DataFetch = () => {
+  //     setTimeout(() => {
+  //       setIsLoading(false);
+  //     }, 900);
+  //   };
 
-    DataFetch();
-  }, []);
+  //   DataFetch();
+  // }, []);
   const [color, setColor] = useState(false);
   const changeColor = () => {
     if (window.scrollY >= 90) {
@@ -27,9 +31,21 @@ const Landing = () => {
     }
   };
 
+  const [courts, setCourts] = useState([])
+
+  useEffect(() => {
+    axios.get('/api/court')
+      .then(({ data }) => {
+        setCourts(data);
+      })
+      .catch((e) => {
+        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      });
+  }, [])
+
   window.addEventListener("scroll", changeColor);
 
-  return isLoading? (
+  return courts.length < 0 ? (
     <Loader />
       )  : (
    <>
@@ -55,9 +71,11 @@ const Landing = () => {
                 Services
               </Nav.Link>
             </Nav>
-            <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} href="userstep">
-              Register
-            </a>
+            {secureLocalStorage.getItem('phone_number') ?
+                <div className="text-white">{secureLocalStorage.getItem('phone_number')}</div>
+            : <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} href="userstep">
+                  Register
+                </a>}
           </Navbar.Collapse>
         </Container>
       </Navbar>
@@ -114,47 +132,12 @@ const Landing = () => {
 
           {/* card */}
           <div className="row row-cols-1 row-cols-md-3 g-4 py-5">
-            <div className="col">
-              <div className="card card-court">
-                <img src="./assets/img/court/1.jpg" className="card-img-top" alt="..." />
-                <div className="card-body">
-                  <div className="rental-prince">
-                    <h5 className="card-title fw-bold">Court A</h5>
-                    <div className="text">
-                      Rental price
-                      <h5 className="fw-bold" style={{ color: "#d93221" }}>
-                        Rp 25,000/hour
-                      </h5>
-                    </div>
-                  </div>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" className="bi bi-check-circle-fill" viewBox="0 0 16 16" style={{ color: "red" }}>
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                  </svg>{" "}
-                  <span> Prayer rooms</span>
-                  <br />
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-circle-fill" viewBox="0 0 16 16" style={{ color: "red" }}>
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                  </svg>{" "}
-                  <span> Toilets</span>
-                  <br />
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-circle-fill" viewBox="0 0 16 16" style={{ color: "red" }}>
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                  </svg>{" "}
-                  <span> Canteens</span>
-                  <br />
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-circle-fill" viewBox="0 0 16 16" style={{ color: "red" }}>
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                  </svg>{" "}
-                  <span className="mb-3"> Carpeted court</span>
-                  <br />
-                </div>
-                <a className="btn btn-booking text-center border border-dark" type="button" href="userstep" style={{ fontSize: "24px", width: "100%", padding: "15px" }}>
-                  Booking
-                </a>
-              </div>
-            </div>
-
-            <div className="col">
+            {courts.map((court, index) => {
+              return (
+                <Court key={court.id} id={court.id} label={court.label} image_path={court.image_path} description={court.description} initial_price={court.initial_price} index={index} />
+              )
+            })}
+            {/* <div className="col">
               <div className="card card-court">
                 <img src="./assets/img/court/6.jpg" className="card-img-top" alt="..." />
                 <div className="card-body">
@@ -232,7 +215,7 @@ const Landing = () => {
                   Booking
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

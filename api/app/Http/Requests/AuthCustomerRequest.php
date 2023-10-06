@@ -43,7 +43,7 @@ class AuthCustomerRequest extends FormRequest
                 break;
             case 'send-otp':
                 $rules = [
-                    'name' => ['required', 'regex:/^[A-Za-z\s]+$/', 'min:3', 'max:60',],
+                    'name' => ['nullable', 'regex:/^[A-Za-z\s]+$/', 'min:3', 'max:60'],
                     'phone_number' => ['required', 'numeric', 'digits_between:10,20'],
                     // 'status' => ['required', 'string', 'in:Y,N'],
                     // 'password' => ['required', Password::defaults()]
@@ -74,19 +74,18 @@ class AuthCustomerRequest extends FormRequest
         $validated = $this->validated();
         $customer = CustomerModel::where('phone_number', $validated['phone_number']);
         if ($customer->exists()) {
-            if (Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->first()->expiration))) {
+            if (isset($customer->first()->expiration) && Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->first()->expiration))) {
                 throw ValidationException::withMessages([
                     'phone_number' => ['Can\'t get OTP in less than 15 minutes.']
                 ]);
             } else {
+                OTPModel::create([
+                    'customer_id' => $customer->first()->customer_code,
+                    'otp_code' => $otp
+                ]);
                 $customer->update([
                     'otp_code' => $otp,
                     'expiration' => Carbon::now('Asia/Jakarta')->addMinutes(15)
-                ]);
-                $customer->first();
-                OTPModel::create([
-                    'customer_id' => $customer->customer_code,
-                    'otp_code' => $otp
                 ]);
             }
         } else {
@@ -126,7 +125,7 @@ class AuthCustomerRequest extends FormRequest
 
     public function verify_otp()
     {
-        $customer = CustomerModel::select(['otp_code', 'phone_number', 'name', 'customer_code', 'expiration'])->where('otp_code', $this->otp_code)->firstOrFail();
+        $customer = CustomerModel::select(['otp_code', 'phone_number', 'name', 'customer_code', 'expiration', 'membership_status'])->where('otp_code', $this->otp_code)->firstOrFail();
         if (Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->expiration))) {
             return [
                 'token' => $customer->createToken(str_replace(' ', '', $customer->phone_number) . '-token')->plainTextToken,

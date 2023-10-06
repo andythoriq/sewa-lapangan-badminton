@@ -22,27 +22,9 @@ const Verification = () => {
   const navigate = useNavigate();
 
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-
-  const [deleteId, setDeleteId] = useState("");
-  const [item_id, set_item_id] = useState("");
 
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
-
-  const [detailData, setDetailData] = useState({});
-  const [showDetail, setShowDetail] = useState(false);
-
-  const handleShowDetail = ({ transaction }) => {
-    setDetailData(transaction);
-    setShowDetail(true);
-  };
-
-  const handleShow = (index, id) => {
-    set_item_id(id);
-    setDeleteId(index);
-    setShow(true);
-  };
 
   const [originalRentals, setOriginalRentals] = useState([]);
 
@@ -107,12 +89,6 @@ const Verification = () => {
     });
   };
 
-  // const tableRowRemove = (index) => {
-  //   const dataRow = [...rentals];
-  //   dataRow.splice(index, 1);
-  //   setRentals(dataRow);
-  // };
-
   const submitCheck = (e) => {
     e.preventDefault();
     handleCheck(bookingCode);
@@ -135,7 +111,7 @@ const Verification = () => {
       setErrors("");
       setTransaction(data.transaction);
       setRentals(data.rentals);
-      handleShow();
+      setShow(true)
     } catch (e) {
       if (e?.response?.status === 422) {
         setErrors(e.response.data.errors);
@@ -154,8 +130,21 @@ const Verification = () => {
     }
   };
 
-  const handleStartGame = async (e, id) => {
-    e.preventDefault();
+  const handleConfirmStartOrFinish = (e, id, message) => {
+    e.preventDefault()
+    Swal.fire({
+      icon: "warning",
+      title: "Are you sure?",
+      html: message,
+      showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setChangeStatus(!changeStatus);
+      }
+    });
+  }
+
+  const handleStartGame = async (id) => {
     try {
       await axios.get("/sanctum/csrf-cookie");
       const { data } = await axios.post(
@@ -197,8 +186,7 @@ const Verification = () => {
     }
   };
 
-  const handleFinishGame = async (e, id) => {
-    e.preventDefault();
+  const handleFinishGame = async (id) => {
     try {
       await axios.get("/sanctum/csrf-cookie");
       const { data } = await axios.post(
@@ -322,7 +310,7 @@ const Verification = () => {
             </div>
           </div>
 
-          <Modal show={show} onHide={handleClose} size="lg" width="90%">
+          <Modal show={show} onHide={() => setShow(false)} size="lg" width="90%">
             <Modal.Header closeButton>
               <Modal.Title>Modal heading</Modal.Title>
             </Modal.Header>

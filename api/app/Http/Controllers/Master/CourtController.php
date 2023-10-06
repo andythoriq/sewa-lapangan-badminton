@@ -21,8 +21,14 @@ class CourtController extends Controller
                 ->orWhere('description', 'like', '%' . $keyword . '%')
                 ->orWhere('initial_price', 'like', '%' . $keyword . '%');
         })
-            ->select(['id', 'label', 'initial_price', 'image_path', 'description'])
-            ->paginate(3);
+            ->select(['id', 'label', 'initial_price', 'image_path', 'description']);
+
+
+        if (!$request->input('keyword') && !$request->input('page')) {
+            $courts = $courts->get();
+        } else {
+            $courts = $courts->paginate(3);
+        }
 
         return new CourtCollection($courts);
     }

@@ -55,7 +55,7 @@ const CreateBookingFormRegular = () => {
   }, [values.start_time, values.finish_time])
 
   useEffect(() => {
-    const court = dataCourt.find(court => court.value == values.court)
+    const court = dataCourt.find(court => parseInt(court.value) === parseInt(values.court))
     if (court) {
       setInitialPrice(court.initial_price)
     }
