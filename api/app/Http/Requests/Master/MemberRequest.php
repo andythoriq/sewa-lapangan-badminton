@@ -32,8 +32,8 @@ class MemberRequest extends FormRequest
         $rule = [
             'name' => ['required', 'regex:/^[A-Za-z\s]+$/', 'min:3', 'max:60'],
             'phone_number' => ['required', 'numeric', 'digits_between:10,20', Rule::unique('tb_customer', 'phone_number')->ignore($customer_code, 'customer_code')],
-            'deposit' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
-            'debt' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
+            'deposit' => ['nullable', 'numeric', 'max:1000000.00'],
+            'debt' => ['nullable', 'numeric', 'max:1000000.00'],
             'status' => ['required', 'string', 'in:Y,N'],
             'member_active_period' => ['required', 'date', 'date_format:Y-m-d', 'after_or_equal:now'],
         ];
@@ -42,8 +42,8 @@ class MemberRequest extends FormRequest
             $rule = [
                 'name' => ['required', 'regex:/^[A-Za-z\s]+$/', 'min:3', 'max:60'],
                 'phone_number' => ['required', 'numeric', 'digits_between:10,20', Rule::unique('tb_customer', 'phone_number')->ignore($customer_code, 'customer_code')],
-                'deposit' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
-                'debt' => ['nullable', 'numeric', 'min:0.01', 'max:1000000.00'],
+                'deposit' => ['nullable', 'numeric', 'max:1000000.00'],
+                'debt' => ['nullable', 'numeric', 'max:1000000.00'],
                 'status' => ['required', 'string', 'in:Y,N'],
                 'isChangeToRegular' => ['nullable', 'boolean'],
                 'member_active_period' => [($this->isChangeToRegular == true ? 'nullable' : 'required'), 'date', 'date_format:Y-m-d', 'after_or_equal:now'],

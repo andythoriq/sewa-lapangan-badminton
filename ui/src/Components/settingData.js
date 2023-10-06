@@ -12,10 +12,10 @@ export let dayData = [
 export let settingData = 
 {
     "data":{
-        "name": "Gor ABC",
+        "name": "Gor BFB",
         "whatsapp_number": "08952376327",
         "email": "gorabc@email.com",
-        "address": "Alamat ini terletak di daerah tangerang, dekat dengan wilayah sekolah. nyatanya memang lapangan badminton sekolah cuy."
+        "address": "Alamat ini terletak..."
     },
     "open_days": [
         {

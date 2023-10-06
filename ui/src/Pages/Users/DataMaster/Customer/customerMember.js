@@ -21,15 +21,15 @@ const CustomerMember = () => {
 
   const [errors, setErrors] = useState([]);
 
-   const [debt, setDebt] = useState('')
-   const [deposit, setDeposit] = useState('')
-   const [phoneNumber, setPhoneNumber] = useState('')
+  const [debt, setDebt] = useState("");
+  const [deposit, setDeposit] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleSubmitClick = async (e) => {
     e.preventDefault();
     const data = {
       name: values.name,
-      phone_number: (phoneNumber.substring(0, 2) === '62' ? "0" + phoneNumber.slice(2) : phoneNumber),
+      phone_number: phoneNumber.substring(0, 2) === "62" ? "0" + phoneNumber.slice(2) : phoneNumber,
       deposit: deposit,
       debt: debt,
       status: selectedStatus,
@@ -38,7 +38,7 @@ const CustomerMember = () => {
     };
     const config = {
       headers: {
-        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
+        Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
       },
     };
     try {
@@ -52,12 +52,11 @@ const CustomerMember = () => {
       setErrors("");
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
-        navigate('/data-master/member', { replace: true })
-        
+        navigate("/data-master/member", { replace: true });
       }, 2000);
     } catch (e) {
       if (e?.response?.status === 422) {
-        setErrors(e.response.data.errors)
+        setErrors(e.response.data.errors);
       } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
         Swal.fire({
           icon: "error",
@@ -65,10 +64,15 @@ const CustomerMember = () => {
           html: e.response.data.message,
           showConfirmButton: true,
           allowOutsideClick: false,
-          allowEscapeKey: false
+          allowEscapeKey: false,
         });
         Swal.fire({
-          icon: "error", title: "Error!", html: e.response.data, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+          icon: "error",
+          title: "Error!",
+          html: e.response.data,
+          showConfirmButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
       } else {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -81,15 +85,15 @@ const CustomerMember = () => {
       axios
         .get("/api/customer/member/" + id + "/edit", {
           headers: {
-            Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
+            Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
           },
         })
         .then(({ data }) => {
           setValues({ ...values, name: data.name, member_active_period: data.member_active_period.substring(0, 10) });
-          setPhoneNumber(data.phone_number)
-          setDebt(data.debt)
-          setDeposit(data.deposit)
-          setSelectedStatus(data.status)
+          setPhoneNumber(data.phone_number);
+          setDebt(data.debt);
+          setDeposit(data.deposit);
+          setSelectedStatus(data.status);
         })
         .catch((e) => {
           Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -121,21 +125,21 @@ const CustomerMember = () => {
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
                     <label>Phone Number</label>
-                    <PhoneInput specialLabel={""} country={"id"} value={(phoneNumber.substring(0, 1) === '0' ? "62" + phoneNumber.slice(1) : phoneNumber)} onChange={(phone) => setPhoneNumber( phone )} />
+                    <PhoneInput specialLabel={""} country={"id"} value={phoneNumber.substring(0, 1) === "0" ? "62" + phoneNumber.slice(1) : phoneNumber} onChange={(phone) => setPhoneNumber(phone)} />
                     {errors.phone_number && <span className="text-danger">{errors.phone_number[0]}</span>}
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
                     <label>Deposit</label>
-                    <CurrencyInput className="form-control" prefix="Rp" value={deposit} id="deposit" name="deposit" decimalsLimit={2} onValueChange={(value) => setDeposit(value)} />
+                    <CurrencyInput className="form-control" prefix="Rp" value={deposit} id="deposit" name="deposit" onValueChange={(value) => setDeposit(value)} />
                     {errors.deposit && <span className="text-danger">{errors.deposit[0]}</span>}
                   </Form.Group>
                 </Col>
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
                   <Form.Group>
                     <label>Debt</label>
-                    <CurrencyInput className="form-control" prefix="Rp" value={debt} id="debt" name="debt" decimalsLimit={2} onValueChange={(value) => setDebt(value)} />
+                    <CurrencyInput className="form-control" prefix="Rp" value={debt} id="debt" name="debt" onValueChange={(value) => setDebt(value)} />
                     {errors.debt && <span className="text-danger">{errors.debt[0]}</span>}
                   </Form.Group>
                 </Col>
@@ -151,23 +155,24 @@ const CustomerMember = () => {
                     </div>
                   </Col>
                 )}
-                { isChange === false &&
+                {isChange === false && (
                   <Col className="col-12 col-sm-8 m-auto">
-                  <Form.Group>
-                    <FormInput type="date" name="member_active_period" label="Active Period" value={values.member_active_period} onChange={onChange} />
-                    {errors.member_active_period && <span className="text-danger">{errors.member_active_period[0]}</span>}
-                  </Form.Group>
-                </Col>}
+                    <Form.Group>
+                      <FormInput type="date" name="member_active_period" label="Active Period" value={values.member_active_period} onChange={onChange} />
+                      {errors.member_active_period && <span className="text-danger">{errors.member_active_period[0]}</span>}
+                    </Form.Group>
+                  </Col>
+                )}
                 <Col className="col-12 col-sm-8 m-auto">
                   <label>Status</label>
                   <div className="d-flex">
                     <div className="form-check">
-                      <input id="activeId" type="radio" className="form-check-input" name="status" value={selectedStatus} onChange={() => setSelectedStatus('Y')} checked={selectedStatus === 'Y'} />
+                      <input id="activeId" type="radio" className="form-check-input" name="status" value={selectedStatus} onChange={() => setSelectedStatus("Y")} checked={selectedStatus === "Y"} />
                       <label htmlFor="activeId">Active</label>
                     </div>
                     &nbsp;&nbsp;&nbsp;
                     <div className="form-check form-check-inline">
-                      <input id="inActiveId" type="radio" className="form-check-input" name="status" value={selectedStatus} onChange={() => setSelectedStatus('N')} checked={selectedStatus === 'N'} />
+                      <input id="inActiveId" type="radio" className="form-check-input" name="status" value={selectedStatus} onChange={() => setSelectedStatus("N")} checked={selectedStatus === "N"} />
                       <label htmlFor="inActiveId">In active</label>
                     </div>
                   </div>

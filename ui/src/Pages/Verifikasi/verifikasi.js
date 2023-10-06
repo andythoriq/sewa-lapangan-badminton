@@ -7,6 +7,7 @@ import PaymentForm from "../../Components/ModalDialog/showPaymentForm";
 import Scanner from "../Users/ScannerQr/Scanner";
 import Modal from "react-bootstrap/Modal";
 import { Card } from "react-bootstrap";
+import Moment from "react-moment";
 
 const Verification = () => {
   // let listData = [{ start: "10-00", finish: "12-00", status: "on progress", price: "Rp150.000", court: "Court A", customer: "Budi - (0892347826382)" }];
@@ -42,6 +43,7 @@ const Verification = () => {
     set_item_id(id);
     setDeleteId(index);
     setShow(true);
+    console.log("OK");
   };
 
   const [originalRentals, setOriginalRentals] = useState([]);
@@ -73,6 +75,15 @@ const Verification = () => {
     handleCheck(bookingCodeNew);
   };
 
+  const doOpenModalPayment = () => {
+    setShowPaymentForm(true);
+    handleClose();
+  };
+  const doClosePaymentForm = () => {
+    setShowPaymentForm(false);
+    handleShow();
+  };
+
   const TableRowsAll = ({ rows }) => {
     return rows.map((val, index) => {
       return (
@@ -86,10 +97,16 @@ const Verification = () => {
             {val.court.label} ({new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(val.court.initial_price)}){" "}
           </td>
           <td>
-            <span>{val.start}</span> - <span>{val.finish}</span>
+            <span>
+              <Moment format="dddd, Do MMM YYYY h:mm">{val.start}</Moment>
+            </span>{" "}
+            -{" "}
+            <span>
+              <Moment format="dddd, Do MMM YYYY h:mm">{val.finish}</Moment>
+            </span>
           </td>
           <td className="text-center">{val.status === "B" ? "Booked" : val.status === "O" ? "On progress" : "Finished"}</td>
-          <td className=" d-md-flex justify-content-between">
+          <td className=" d-md-flex justify-content-center align-items-center">
             {val.status === "O" || val.status === "F" ? null : (
               <button className="btn btn-sm btn-success" onClick={(e) => handleStartGame(e, val.id)}>
                 Start Game
@@ -117,6 +134,10 @@ const Verification = () => {
     e.preventDefault();
     handleCheck(bookingCode);
   };
+
+  useEffect( () =>{
+    
+  }, [])
 
   const handleCheck = async (booking) => {
     try {
@@ -285,8 +306,9 @@ const Verification = () => {
               <h2 className="h5 px-3 py-3 accordion-header d-flex">
                 <div className="form w-100 collapsed">
                   <label className="fw-bold">Check Order</label>
-                  <p style={{ fontSize: "15px" }} className="mt-2">enter the relevant booking code. 
-                    to view detailed information. -BFB</p>
+                  <p style={{ fontSize: "15px" }} className="mt-2">
+                    enter the relevant booking code. to view detailed information. -BFB
+                  </p>
                 </div>
               </h2>
               <div className=" collapse show">
@@ -298,7 +320,7 @@ const Verification = () => {
                       {errors.booking_code && <span className="text-danger">{errors.booking_code[0]}</span>}
                     </div>
                   </div>
-                  <button className="btn btn-danger btn-sm w-100 mt-2"  onClick={submitCheck}>
+                  <button className="btn btn-danger btn-sm w-100 mt-2" onClick={submitCheck}>
                     Check Order
                   </button>
                 </div>
@@ -324,25 +346,25 @@ const Verification = () => {
 
           <Modal show={show} onHide={handleClose} size="lg" width="90%">
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>Detail Rental</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <div className="p-3 bg-light bg-opacity-10 d-md-flex justify-content-between">
                 <div className="px-3 my-3 text-center">
                   <div className="cart-item-label">Booking Code</div>
-                  <span className="text-xl font-weight-medium">{transaction.booking_code ? transaction.booking_code : "...."}</span>
+                  <span className="text-xl fw-bolder">{transaction.booking_code ? transaction.booking_code : "...."}</span>
                 </div>
                 <div className="px-3 my-3 text-center">
                   <div className="cart-item-label">Total Hour</div>
-                  <span className="text-xl font-weight-medium">{transaction.total_hour ? transaction.total_hour : "...."}</span>
+                  <span className="text-xl fw-bolder">{transaction.total_hour ? transaction.total_hour : "...."}</span>
                 </div>
                 <div className="px-3 my-3 text-center">
                   <div className="cart-item-label">Total Price</div>
-                  <span className="text-xl font-weight-medium">{transaction.total_price ? transaction.total_price : "...."}</span>
+                  <span className="text-xl fw-bolder">{transaction.total_price ? transaction.total_price : "...."}</span>
                 </div>
                 <div className="px-3 my-3 text-center">
                   <div className="cart-item-label">Customer</div>
-                  <span className="text-xl font-weight-medium">{transaction.customer ? transaction.customer.name + ` (${transaction.customer.phone_number})` : "...."}</span>
+                  <span className="text-xl fw-bolder">{transaction.customer ? transaction.customer.name + ` (${transaction.customer.phone_number})` : "...."}</span>
                 </div>
               </div>
               <div className="row">
@@ -365,12 +387,11 @@ const Verification = () => {
                         <TableRows rows={rentals} />
                       </tbody>
                     </table>
-                    <div>
-                      <h4>Show payment form</h4>
-                      <button onClick={() => setShowPaymentForm(true)} disabled={transaction.isPaid === "Y"}>
-                        Show
+                    <div className="d-flex justify-content-between align-items-center">
+                      <span className={transaction.isPaid === "Y" ? "text-success" : "text-danger"}>{transaction.isPaid === "Y" ? " Already paid" : " Not paid yet"}</span>
+                      <button className="btn btn-primary" onClick={doOpenModalPayment} disabled={transaction.isPaid === "Y"}>
+                        Pay Now
                       </button>
-                      <span>{transaction.isPaid === "Y" ? "Already paid" : "not paid yet"}</span>
                     </div>
                   </div>
                 </div>
@@ -387,10 +408,10 @@ const Verification = () => {
                 <thead>
                   <tr>
                     <th width={"1%"}>No</th>
-                    <th width={"20%"}>Booking Code</th>
+                    <th width={"15%"}>Booking Code</th>
                     <th width={"20%"}>Name Customer</th>
-                    <th width={"25%"}>Court</th>
-                    <th width={"40%"}>Start - Finish</th>
+                    <th width={"15%"}>Court</th>
+                    <th width={"22%"}>Start - Finish</th>
                     <th width={"10%"} className="text-center">
                       Status
                     </th>
@@ -407,7 +428,7 @@ const Verification = () => {
           </Card>
         </div>
       </div>
-      <PaymentForm handleShow={showPaymentForm} handleClose={() => setShowPaymentForm(false)} transaction={transaction} swal={Swal} />
+      <PaymentForm handleShow={showPaymentForm} handleClose={doClosePaymentForm} handleShowDetail={handleCheck} transaction={transaction} swal={Swal}  />
     </>
   );
 };
