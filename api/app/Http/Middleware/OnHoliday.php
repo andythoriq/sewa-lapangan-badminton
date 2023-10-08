@@ -17,13 +17,13 @@ class OnHoliday
      */
     public function handle(Request $request, Closure $next)
     {
-        // $currentDate = now('Asia/Jakarta')->format('Y-m-d'); // m-d
+        $currentDate = now('Asia/Jakarta')->format('Y-m-d'); // m-d
 
-        // $isHoliday = HolidayModel::where('date', $currentDate)->exists();
+        $isHoliday = HolidayModel::where('date', $currentDate)->exists();
 
-        // if ($isHoliday) {
-        //     abort(403, 'Access Restricted on Holiday.');
-        // }
+        if ($isHoliday) {
+            abort(403, 'Access Restricted on Holiday.');
+        }
         return $next($request);
     }
 }
