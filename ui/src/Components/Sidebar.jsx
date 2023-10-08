@@ -25,7 +25,7 @@ const Sidebar = () => {
     let Links =[
         {name:"Dashboard", link:"/dashboard", icon:"dashboard"},
         {name:"Schedule", link:"/schedule", icon:"schedule"},
-        {name:"Qr Code", link:"/scanner", icon:"code qr"},
+        // {name:"Qr Code", link:"/scanner", icon:"code qr"},
         {name:"Check Order", link:"/verification", icon:"order"},
         {name:"History Booking", link:"/history-booking", icon:"history"},
         {name:"Data Master", link:"/", icon:"master", sub:subMaster},
