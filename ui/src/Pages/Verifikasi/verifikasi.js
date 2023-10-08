@@ -137,6 +137,7 @@ const Verification = () => {
         "/api/start-rental",
         {
           id: id,
+          booking_code: bookingCode
         },
         {
           headers: {
@@ -179,6 +180,7 @@ const Verification = () => {
         "/api/finish-rental",
         {
           id: id,
+          booking_code: bookingCode
         },
         {
           headers: {
@@ -233,13 +235,13 @@ const Verification = () => {
 
           <td className=" d-md-flex justify-content-between">
             {val.status === "O" || val.status === "F" ? null : (
-              <button className="btn btn-sm btn-success" onClick={(e) => handleStartGame(e, val.id)}>
+              <button className="btn btn-sm btn-success" onClick={() => handleStartGame(val.id)}>
                 Start Game
               </button>
             )}
             &nbsp;
             {val.status === "B" || val.status === "F" ? null : (
-              <button className="btn btn-sm btn-danger" onClick={(e) => handleFinishGame(e, val.id)}>
+              <button className="btn btn-sm btn-danger" onClick={() => handleFinishGame(val.id)}>
                 End Game
               </button>
             )}
@@ -248,6 +250,12 @@ const Verification = () => {
       );
     });
   };
+
+  const updateTransaction = (newTransaction) => {
+    if (newTransaction) {
+      setTransaction(newTransaction)
+    }
+  }
 
   return (
     <>
@@ -342,7 +350,10 @@ const Verification = () => {
                     </table>
                     <div className="d-flex justify-content-between align-items-center">
                       <span className={transaction.isPaid === "Y" ? "text-success" : "text-danger"}>{transaction.isPaid === "Y" ? " Already paid" : " Not paid yet"}</span>
-                      <button className="btn btn-primary" onClick={() => setShowPaymentForm(true)} disabled={transaction.isPaid === "Y"}>
+                      <button className="btn btn-primary" onClick={() => {
+                        setShowPaymentForm(true)
+                        setShowDetail(false)
+                      }} disabled={transaction.isPaid === "Y"}>
                         Pay Now
                       </button>
                     </div>
@@ -381,7 +392,14 @@ const Verification = () => {
           </Card>
         </div>
       </div>
-      <PaymentForm isShow={showPaymentForm} handleClose={setShowPaymentForm(false)} transaction={transaction} swal={Swal}  />
+      <PaymentForm 
+        isShow={showPaymentForm} 
+        handleClose={() => setShowPaymentForm(false)} 
+        transaction={transaction} 
+        swal={Swal} 
+        updateTransaction={updateTransaction} 
+        setShowDetail={setShowDetail}
+      />
     </>
   );
 };

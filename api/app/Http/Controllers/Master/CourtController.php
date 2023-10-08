@@ -24,10 +24,10 @@ class CourtController extends Controller
             ->select(['id', 'label', 'initial_price', 'image_path', 'description']);
 
 
-        if (!$request->input('keyword') && !$request->input('page')) {
-            $courts = $courts->get();
-        } else {
+        if ($request->has('keyword') || $request->has('page')) {
             $courts = $courts->paginate(3);
+        } else {
+            $courts = $courts->get();
         }
 
         return new CourtCollection($courts);
