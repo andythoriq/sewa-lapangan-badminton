@@ -136,8 +136,7 @@ const Verification = () => {
       const { data } = await axios.post(
         "/api/start-rental",
         {
-          id: id,
-          booking_code: bookingCode
+          id: id
         },
         {
           headers: {
@@ -155,6 +154,7 @@ const Verification = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           setChangeStatus(!changeStatus);
+          handleCheckDetail(bookingCode)
         }
       });
     } catch (e) {
@@ -179,8 +179,7 @@ const Verification = () => {
       const { data } = await axios.post(
         "/api/finish-rental",
         {
-          id: id,
-          booking_code: bookingCode
+          id: id
         },
         {
           headers: {
@@ -198,6 +197,7 @@ const Verification = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           setChangeStatus(!changeStatus);
+          handleCheckDetail(bookingCode)
         }
       });
     } catch (e) {
