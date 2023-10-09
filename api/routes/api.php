@@ -59,7 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/start-rental', StartRentalController::class)->middleware('admin');
     Route::post('/finish-rental', FinishRentalController::class)->middleware('admin');
     Route::post('/pay', [TransactionController::class, 'pay'])->middleware('admin');
-    Route::get('/booking-history', [TransactionController::class, 'booking_history'])->middleware('admin');
+    Route::get('/booking-history', [TransactionController::class, 'booking_history']);
 
     Route::get('/admin-role-menu-list', GetRoleMenusController::class)->middleware('admin');
     Route::get('/dashboard', DashboardController::class)->middleware('admin');

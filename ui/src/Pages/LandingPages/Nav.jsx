@@ -7,11 +7,12 @@ import Court from "../../Components/Court";
 import axios from "../../api/axios";
 import Swal from "sweetalert2";
 import secureLocalStorage from "react-secure-storage";
+import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
   // loader state
   // const [isLoading, setIsLoading] = useState(true);
-
+  const navigate = useNavigate()
   // create sync method to fetch
   // useEffect(() => {
   //   const DataFetch = () => {
@@ -70,12 +71,19 @@ const Landing = () => {
               <Nav.Link href="#servis" style={{ marginRight: "30px", color: "white" }}>
                 Services
               </Nav.Link>
-            </Nav>
-            {secureLocalStorage.getItem('phone_number') ?
+            {secureLocalStorage.getItem('phone_number') ? <>
+              <Nav.Link style={{ marginRight: "30px", color: "white" }}>
+                <div onClick={() => {
+                  navigate('/dashboard-user')
+                }}>Dashboard</div>
+              </Nav.Link>
+              <Nav.Link>
                 <div className="text-white">{secureLocalStorage.getItem('phone_number')}</div>
-            : <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} href="userstep">
+              </Nav.Link>
+            </> : <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} href="userstep">
                   Register
                 </a>}
+            </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>

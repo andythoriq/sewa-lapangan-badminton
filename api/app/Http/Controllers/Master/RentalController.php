@@ -16,22 +16,26 @@ class RentalController extends Controller
         $keyword = $request->input('keyword');
 
         $rentals = RentalModel::when($keyword, function ($query) use ($keyword) {
-            $query->where('start', 'like', '%' . $keyword . '%')
-                ->orWhere('finish', 'like', '%' . $keyword . '%')
-                ->orWhereHas('customer', function($customer) use ($keyword){
-                    $customer->where('name', 'like', '%' . $keyword . '%')
-                        ->orWhere('phone_number', 'like', '%' . $keyword . '%');
-                })
-                ->orWhereHas('court', function($court) use ($keyword){
-                    $court->where('label', 'like', '%' . $keyword . '%')
-                        ->orWhere('initial_price', 'like', '%' . $keyword . '%');
-                });
-
+            $query->where(function ($q) use ($keyword) {
+                return $q->where('start', 'like', '%' . $keyword . '%')
+                    ->orWhere('finish', 'like', '%' . $keyword . '%')
+                    ->orWhereHas('customer', function ($customer) use ($keyword) {
+                        $customer->where('name', 'like', '%' . $keyword . '%')
+                            ->orWhere('phone_number', 'like', '%' . $keyword . '%');
+                    })
+                    ->orWhereHas('court', function ($court) use ($keyword) {
+                        $court->where('label', 'like', '%' . $keyword . '%')
+                            ->orWhere('initial_price', 'like', '%' . $keyword . '%');
+                    })
+                    ->orWhereHas('transaction', function ($transaction) use ($keyword) {
+                        $transaction->where('booking_code', 'like', '%' . $keyword . '%');
+                    });
+            });
         })
-            ->select(['id', 'start', 'finish', 'price', 'status',  'transaction_id', 'customer_id', 'court_id'])
-            ->where("status", "!=", "F")
+            ->where('status', '!=', 'F')
+            ->select(['id', 'start', 'finish', 'price', 'status', 'transaction_id', 'customer_id', 'court_id'])
             ->with([
-                'transaction:id,total_price,total_hour,booking_code',
+                'transaction:id,total_price,total_hour,booking_code,isPaid',
                 'customer:customer_code,name,phone_number',
                 'court:id,label,initial_price'
             ])
