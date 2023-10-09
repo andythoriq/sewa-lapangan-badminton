@@ -20,7 +20,7 @@ trait PeakTimeCheck
             return $court->initial_price;
         }
 
-        if (Carbon::now('Asia/Jakarta')->between(Carbon::parse($peak_time->start), Carbon::parse($peak_time->finish))) {
+        if (Carbon::now('Asia/Jakarta')->between(Carbon::parse($peak_time->start, 'Asia/Jakarta'), Carbon::parse($peak_time->finish, 'Asia/Jakarta'))) {
             return $peak_time->price_increase;
         } else {
             return $court->initial_price;

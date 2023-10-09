@@ -9,13 +9,13 @@ trait CollideCheck
 {
     public function collideCheck(string $start, string $finish, iterable $schedules)
     {
-        $newStart = Carbon::parse($start);
-        $newFinish = Carbon::parse($finish);
+        $newStart = Carbon::parse($start, 'Asia/Jakarta');
+        $newFinish = Carbon::parse($finish, 'Asia/Jakarta');
 
         foreach($schedules as $schedule)
         {
-            $existingStart = Carbon::parse($schedule->start);
-            $existingFinish = Carbon::parse($schedule->finish);
+            $existingStart = Carbon::parse($schedule->start, 'Asia/Jakarta');
+            $existingFinish = Carbon::parse($schedule->finish, 'Asia/Jakarta');
 
             if (
                 ($newStart->between($existingStart, $existingFinish) || $newFinish->between($existingStart, $existingFinish)) ||

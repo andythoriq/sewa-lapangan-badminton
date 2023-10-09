@@ -9,7 +9,7 @@ trait RentalPriceCalculation
     public function getCost(string $start, string $finish, float $court_initial_price = 10_000.00)
     {
 
-        $duration = Carbon::parse($start)->diffInMinutes(Carbon::parse($finish));
+        $duration = Carbon::parse($start, 'Asia/Jakarta')->diffInMinutes(Carbon::parse($finish, 'Asia/Jakarta'));
 
         $price_per_30_mnt = $court_initial_price / 2;
 
