@@ -10,27 +10,9 @@ import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import axiosFormData from "../../../../api/axiosFormData";
 // import NumberInput from "react-text-mask";
-import MaskedInput from "react-text-mask";
-import createNumberMask from "text-mask-addons/dist/createNumberMask";
+import CurrencyInput from "react-currency-input-field";
 import "./form.css";
 import secureLocalStorage from "react-secure-storage";
-
-const defaultMaskOptions = {
-  prefix: "Rp",
-  suffix: "",
-  includeThousandsSeparator: true,
-  thousandsSeparatorSymbol: ",",
-  allowDecimal: true,
-  decimalSymbol: ".",
-  decimalLimit: 2, // how many digits allowed after the decimal
-  integerLimit: 7, // limit length of integer numbers
-  allowNegative: false,
-  allowLeadingZeroes: false,
-};
-
-const currencyMask = createNumberMask({
-  ...defaultMaskOptions,
-});
 
 const CourtForm = () => {
   const { id } = useParams();
@@ -78,7 +60,7 @@ const CourtForm = () => {
     e.preventDefault();
     const data = {
       label: values.label,
-      initial_price: values.price.replace(/[^0-9]+/g, ""),
+      initial_price: values.price,
       description: values.description,
       image_path: image[0]?.file ?? "",
     };
@@ -166,7 +148,7 @@ const CourtForm = () => {
               <Form.Group>
                 {/* <FormInput type="text" name="price" label="Price" value={values.price} onChange={onChange} placeholder="Rp "/> */}
                 <label>Price</label>
-                <MaskedInput mask={currencyMask} className="form-control" name="price" value={values.price} onChange={onChange} />
+                <CurrencyInput className="form-control" id="price" prefix="Rp"  name="price" value={values.price} decimalsLimit={2} onChange={onChange} />
                 {errors.initial_price && <span className="text-danger">{errors.initial_price[0]}</span>}
               </Form.Group>
             </Col>

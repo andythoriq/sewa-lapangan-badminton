@@ -162,7 +162,7 @@ const HistoryBooking = () => {
   };
 
   const handlePageClick = (e) => {
-    const number = e.selected + 1;
+    const number = e.selected + 10;
     setCurrentPage(number);
   };
 
@@ -206,12 +206,12 @@ const HistoryBooking = () => {
             className="pagination" 
             pageLinkClassName="page-link" 
             breakLabel="..."
-            nextLinkClassName="page-link next" 
+            nextClassName="page-link next" 
             nextLabel=" >" 
             onPageChange={handlePageClick} 
             pageRangeDisplayed={5} 
             pageCount={pageCount} 
-            previousLinkClassName="page-link prev"
+            previousClassName="page-link prev"
             previousLabel="< " 
             renderOnZeroPageCount={null} />
           </div>
