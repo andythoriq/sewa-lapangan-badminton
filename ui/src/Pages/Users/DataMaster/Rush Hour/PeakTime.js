@@ -145,7 +145,7 @@ const PeakTime = () => {
                 </Col>
             </Row>
             <div className="table-responsive">
-                <table className="table table-hover mt-2" border={1}>
+                <table className="table table-hover mt-4" border={1}>
                     <thead>
                         <tr>
                             <th width={'1%'}>No</th>
@@ -167,10 +167,12 @@ const PeakTime = () => {
                             className="pagination"
                             pageLinkClassName="page-link"
                             breakLabel="..."
+                            nextLinkClassName="page-link next"
                             nextLabel=" >"
                             onPageChange={handlePageClick}
                             pageRangeDisplayed={5}
                             pageCount={pageCount}
+                            previousLinkClassName="page-link prev"
                             previousLabel="< "
                             renderOnZeroPageCount={null}
                         />
