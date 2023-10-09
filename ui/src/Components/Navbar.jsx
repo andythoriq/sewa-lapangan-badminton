@@ -129,15 +129,16 @@ const Navbar = () => {
         <li>
           <Dropdown>
             <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-              <div><img src={`${dirIcon}user-circle.png`} alt="" /> <span className="text-white localstorge">Hi,</span> <span className="localstorge">{secureLocalStorage.getItem('username')}</span></div>
+              <div><img src={`${dirIcon}owl.png`} alt="" /> <span className="text-white localstorge">Hi,</span> <span className="localstorge">{secureLocalStorage.getItem('username')}</span></div>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {/* <Dropdown.Item eventKey="1" href="/logout">Logout</Dropdown.Item> */}
-              <Dropdown.Item eventKey="1" to={'./profile'}>
+              {/* <Dropdown.Item eventKey="1" to={'./profile'}>
                 My Profile
-              </Dropdown.Item>
+              </Dropdown.Item> */}
               <Dropdown.Item eventKey="2" onClick={handleLogout}>
-                Logout
+              <img src={`${dirIcon}logout.png`} alt="" />
+                <span className="mt-2">  Logout</span>
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
