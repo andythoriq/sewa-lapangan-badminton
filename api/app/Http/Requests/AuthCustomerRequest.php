@@ -76,7 +76,7 @@ class AuthCustomerRequest extends FormRequest
         if ($customer->exists()) {
             if (isset($customer->first()->expiration) && Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->first()->expiration))) {
                 throw ValidationException::withMessages([
-                    'phone_number' => ['Can\'t get OTP in less than 15 minutes.']
+                    'phone_number' => ['Can\'t get OTP in less than 9 minutes.']
                 ]);
             } else {
                 OTPModel::create([
@@ -85,7 +85,7 @@ class AuthCustomerRequest extends FormRequest
                 ]);
                 $customer->update([
                     'otp_code' => $otp,
-                    'expiration' => Carbon::now('Asia/Jakarta')->addMinutes(15)
+                    'expiration' => Carbon::now('Asia/Jakarta')->addMinutes(9)
                 ]);
             }
         } else {

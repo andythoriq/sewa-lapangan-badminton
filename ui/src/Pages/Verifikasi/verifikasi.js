@@ -78,13 +78,13 @@ const Verification = () => {
           <td className="text-center">{val.status === "B" ? "Booked" : val.status === "O" ? "On progress" : "Finished"}</td>
           <td className=" d-md-flex justify-content-center align-items-center">
             {val.status === "O" || val.status === "F" ? null : (
-              <button className="btn btn-sm btn-success" onClick={(e) => handleStartGame(e, val.id)}>
+              <button className="btn btn-sm btn-success" onClick={(e) => handleStartGame(val.id)}>
                 Start Game
               </button>
             )}
             &nbsp;
             {val.status === "B" || val.status === "F" ? null : (
-              <button className="btn btn-sm btn-danger" onClick={(e) => handleFinishGame(e, val.id)}>
+              <button className="btn btn-sm btn-danger" onClick={(e) => handleFinishGame(val.id)}>
                 End Game
               </button>
             )}
@@ -130,7 +130,7 @@ const Verification = () => {
     }
   };
 
-  const handleStartGame = async (id) => {
+  const handleStartGame = async (id, isCheckDetail = false) => {
     try {
       await axios.get("/sanctum/csrf-cookie");
       const { data } = await axios.post(
@@ -154,7 +154,9 @@ const Verification = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           setChangeStatus(!changeStatus);
-          handleCheckDetail(bookingCode)
+          if (isCheckDetail) {
+            handleCheckDetail(bookingCode)
+          }
         }
       });
     } catch (e) {
@@ -173,7 +175,7 @@ const Verification = () => {
     }
   };
 
-  const handleFinishGame = async (id) => {
+  const handleFinishGame = async (id, isCheckDetail = false) => {
     try {
       await axios.get("/sanctum/csrf-cookie");
       const { data } = await axios.post(
@@ -197,7 +199,9 @@ const Verification = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           setChangeStatus(!changeStatus);
-          handleCheckDetail(bookingCode)
+          if (isCheckDetail) {
+            handleCheckDetail(bookingCode)
+          }
         }
       });
     } catch (e) {
@@ -235,13 +239,13 @@ const Verification = () => {
 
           <td className=" d-md-flex justify-content-between">
             {val.status === "O" || val.status === "F" ? null : (
-              <button className="btn btn-sm btn-success" onClick={() => handleStartGame(val.id)}>
+              <button className="btn btn-sm btn-success" onClick={() => handleStartGame(val.id, true)}>
                 Start Game
               </button>
             )}
             &nbsp;
             {val.status === "B" || val.status === "F" ? null : (
-              <button className="btn btn-sm btn-danger" onClick={() => handleFinishGame(val.id)}>
+              <button className="btn btn-sm btn-danger" onClick={() => handleFinishGame(val.id, true)}>
                 End Game
               </button>
             )}

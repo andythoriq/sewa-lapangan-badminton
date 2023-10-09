@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import FormRegularBooking from './ModalDialog/FormRegularBooking'
 import secureLocalStorage from 'react-secure-storage'
 import { useNavigate } from 'react-router-dom'
+import FormMemberBooking from './ModalDialog/FormMemberBooking'
 
 function Court({ id, label, image_path, description, initial_price, index }) {
   const [show, setShow] = useState(false)
@@ -41,7 +42,7 @@ function Court({ id, label, image_path, description, initial_price, index }) {
     {secureLocalStorage.getItem('membership_status') === 'R' &&
       <FormRegularBooking handleClose={() => setShow(false)} isShow={show} court_id={id} initialPrice={initial_price} />}
     {secureLocalStorage.getItem('membership_status') === 'M' &&
-      <div>FormMemberBooking</div>}
+      <FormMemberBooking handleClose={() => setShow(false)} isShow={show} courtProp={{ value: id, label: label, initial_price: initial_price }} />}
   </>)
 }
 
