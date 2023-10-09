@@ -120,18 +120,6 @@ const Landing = () => {
               <Nav.Link href="#servis" style={{ marginRight: "30px", color: "white" }}>
                 Services
               </Nav.Link>
-            {secureLocalStorage.getItem('phone_number') ? <>
-              <Nav.Link style={{ marginRight: "30px", color: "white" }}>
-                <div onClick={() => {
-                  navigate('/dashboard-user')
-                }}>Dashboard</div>
-              </Nav.Link>
-              <Nav.Link>
-                <div className="text-white">{secureLocalStorage.getItem('phone_number')}</div>
-              </Nav.Link>
-            </> : <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} href="userstep">
-                  Register
-                </a>}
             </Nav>
             {secureLocalStorage.getItem("name") ? (
               <div className="text-white">
@@ -140,6 +128,13 @@ const Landing = () => {
                     <Dropdown.Item eventKey="2" onClick={handleLogout}>
                       <img src={`${dirIcon}logout.png`} alt=""  style={{ width: "25px" }}/>
                       <span className="mt-3 text-sm"> Logout</span>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                        <Nav.Link style={{ marginRight: "30px", color: "white" }}>
+                          <div onClick={() => {
+                            navigate('/dashboard-user')
+                          }}>Dashboard</div>
+                        </Nav.Link>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                   <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
@@ -150,7 +145,7 @@ const Landing = () => {
                 </Dropdown>
                 </div>
             ) : (
-              <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} href="userstep">
+              <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} onClick={() => navigate('/userstep')}>
                 Register
               </a>
             )}
