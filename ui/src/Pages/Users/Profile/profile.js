@@ -43,7 +43,7 @@ const Profile = () => {
           <div className="col-lg-4">
             <div className="card card-profile text-center p-5">
               <div className="card-body">
-                <img src="./assets/icon/user-circle.png" alt="user" className="img img-thumbnail rounded-circle w-50" />
+                <img src="./assets/icon/owl.png" alt="user" className="img img-thumbnail rounded-circle w-50" />
                 <h2>{admin.name}</h2>
                 <Link to={'/formprofile/edit'} className="btn btn-danger btn-sm add">
                        Edit Profile
