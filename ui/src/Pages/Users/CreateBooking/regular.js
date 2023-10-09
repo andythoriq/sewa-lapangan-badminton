@@ -55,7 +55,7 @@ const CreateBookingFormRegular = () => {
   }, [values.start_time, values.finish_time])
 
   useEffect(() => {
-    const court = dataCourt.find(court => court.value == values.court)
+    const court = dataCourt.find(court => parseInt(court.value) === parseInt(values.court))
     if (court) {
       setInitialPrice(court.initial_price)
     }
@@ -76,7 +76,7 @@ const CreateBookingFormRegular = () => {
       try {
         await axios.get('/sanctum/csrf-cookie')
         const { data } = await axios.post('/api/rental', {
-          court_id: values.court.value,
+          court_id: values.court,
           customer_id: values.customer_id,
           start: values.start_time,
           finish: values.finish_time,
@@ -145,7 +145,7 @@ const CreateBookingFormRegular = () => {
             <Form.Label>Customer</Form.Label>
             <Form.Select name="customer_id" className="form-select form-select-sm" onChange={onChange} disabled={showSendBookingCode}>
               <option value="">-- Choose Customer --</option>
-              {dataCustomer.map((customer, index) => (
+              {dataCustomer.map((customer) => (
                 <option key={customer.customer_code} value={customer.customer_code}>
                   {customer.name} ({customer.phone_number})
                 </option>

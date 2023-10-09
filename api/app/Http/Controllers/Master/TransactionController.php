@@ -85,7 +85,7 @@ class TransactionController extends Controller
         ]);
 
         $customer = CustomerModel::where('phone_number', $data['phone_number'])->firstOrFail();
-        $transaction = TransactionModel::where('booking_code', $data['booking_code'])->where('isPaid', 'N')->firstOrFail();
+        $transaction = TransactionModel::where('booking_code', $data['booking_code'])->where('isPaid', 'N')->with('rentals.customer')->firstOrFail();
 
         $total_paid = (float) $data['customer_paid'] + (float) $data['input_deposit'];
 
@@ -112,6 +112,21 @@ class TransactionController extends Controller
         ])->save();
         $customer->save();
 
-        return response()->json(['message' => 'Transaction done.'], 202, ['success' => 'Paid Successfully']);
+        return response()->json([
+            'message' => 'Transaction done.',
+            'transaction' => [
+                'total_price' => $transaction->total_price,
+                'total_hour' => $transaction->total_hour,
+                'booking_code' => $transaction->booking_code,
+                'isPaid' => $transaction->isPaid,
+                'customer' => $transaction->relationLoaded('rentals') ?
+                    [
+                        'name' => $transaction->rentals->first()->customer->name,
+                        'phone_number' => $transaction->rentals->first()->customer->phone_number,
+                        'deposit' => $transaction->rentals->first()->customer->deposit ?? 0
+                    ] :
+                    null
+            ]
+        ], 202, ['success' => 'Paid Successfully']);
     }
 }

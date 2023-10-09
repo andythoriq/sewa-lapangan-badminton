@@ -33,11 +33,11 @@ const Step2 = () => {
     e.preventDefault();
    try {
      await axios.get("/sanctum/csrf-cookie")
-     const { data } = await axios.post("/api/send-opt", { otp_code: OTP })
+     const { data } = await axios.post("/api/verify-otp", { otp_code: OTP })
      setErrors('')
      secureLocalStorage.setItem('token', data.token)
      secureLocalStorage.setItem('phone_number', data.customer.phone_number)
-     secureLocalStorage.setItem('id', data.customer.customer_code)
+     secureLocalStorage.setItem('membership_status', data.customer.membership_status)
      secureLocalStorage.setItem('customer_code', data.customer.customer_code)
      secureLocalStorage.setItem('name',data.customer.name)
      secureLocalStorage.setItem('role', 'user')

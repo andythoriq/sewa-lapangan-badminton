@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import axios from "../../api/axios";
 import secureLocalStorage from "react-secure-storage";
-import { useNavigate } from "react-router-dom";
 
-const PaymentForm = ({ handleShow, handleClose, transaction, swal, handleShowDetail }) => {
-  const navigate = useNavigate();
+const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction, setShowDetail }) => {
 
   const transaction_customer_deposit = transaction.customer?.deposit;
   const transaction_total_price = transaction.total_price;
@@ -28,7 +26,7 @@ const PaymentForm = ({ handleShow, handleClose, transaction, swal, handleShowDet
     setDepositInput(input);
   };
 
-  const handleFinishGame = async (e) => {
+  const handlePay = async (e) => {
     e.preventDefault();
     try {
       await axios.get("/sanctum/csrf-cookie");
@@ -64,11 +62,11 @@ const PaymentForm = ({ handleShow, handleClose, transaction, swal, handleShowDet
               dataRequest.customer_deposit = rest;
               dataRequest.customer_paid = dataRequest.customer_paid - rest;
               axios.post("/api/pay", dataRequest, configRequest).then(({ data }) => {
-                handleShowDetail()
                 swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
                   if (result.isConfirmed) {
-                    // navigate("/history-booking");
-                    handleClose();
+                    handleClose()
+                    updateTransaction(data.transaction)
+                    setShowDetail(true)
                   }
                 });
               });
@@ -78,7 +76,9 @@ const PaymentForm = ({ handleShow, handleClose, transaction, swal, handleShowDet
         const { data } = await axios.post("/api/pay", dataRequest, configRequest);
         swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
-            // navigate("/history-booking");
+            handleClose()
+            updateTransaction(data.transaction)
+            setShowDetail(true)
           }
         });
       }
@@ -94,7 +94,7 @@ const PaymentForm = ({ handleShow, handleClose, transaction, swal, handleShowDet
   };
 
   return (
-    <Modal show={handleShow} onHide={handleClose}>
+    <Modal show={isShow} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>Payment Form</Modal.Title>
       </Modal.Header>
@@ -104,12 +104,17 @@ const PaymentForm = ({ handleShow, handleClose, transaction, swal, handleShowDet
           <p>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transaction_total_price)}</p>
         </div>
         <hr />
-        <form onSubmit={handleFinishGame}>
+        <form onSubmit={handlePay}>
           <div className="form-group">
             <label htmlFor="customer_paid">Payment Money</label>
             <br />
-            <input className="form-control" type="number" min={500} id="customer_paid" value={customerPaid} onChange={(e) => setCustomerPaid(e.target.value)} aria-describedby="validationServer03Feedback" required />
-            <div id="validationServer03Feedback" class="invalid-feedback">
+            <input className="form-control" type="number" min={500} id="customer_paid" value={customerPaid} onChange={(e) => {
+              setCustomerPaid(e.target.value)
+              if (customerPaid > transaction_total_price && transaction_customer_deposit > 0) {
+                setDepositInput('')
+              }
+            }} aria-describedby="validationServer03Feedback" required />
+            <div id="validationServer03Feedback" className="invalid-feedback">
               Please provide a valid city.
             </div>
           </div>

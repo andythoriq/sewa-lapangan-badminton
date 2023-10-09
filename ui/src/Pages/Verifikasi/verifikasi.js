@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
 import secureLocalStorage from "react-secure-storage";
-import { useNavigate, useParams } from "react-router-dom";
 import PaymentForm from "../../Components/ModalDialog/showPaymentForm";
 import Scanner from "../Users/ScannerQr/Scanner";
 import Modal from "react-bootstrap/Modal";
 import { Card } from "react-bootstrap";
 import Moment from "react-moment";
+import { useParams } from "react-router-dom";
 
 const Verification = () => {
   // let listData = [{ start: "10-00", finish: "12-00", status: "on progress", price: "Rp150.000", court: "Court A", customer: "Budi - (0892347826382)" }];
@@ -20,33 +20,12 @@ const Verification = () => {
   const [transaction, setTransaction] = useState({});
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [changeStatus, setChangeStatus] = useState(false);
-  const navigate = useNavigate();
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-
-  const [deleteId, setDeleteId] = useState("");
-  const [item_id, set_item_id] = useState("");
-
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pageCount, setPageCount] = useState(0);
-
-  const [detailData, setDetailData] = useState({});
   const [showDetail, setShowDetail] = useState(false);
 
-  const handleShowDetail = ({ transaction }) => {
-    setDetailData(transaction);
-    setShowDetail(true);
-  };
-
-  const handleShow = (index, id) => {
-    set_item_id(id);
-    setDeleteId(index);
-    setShow(true);
-    console.log("OK");
-  };
-
-  const [originalRentals, setOriginalRentals] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0); // buat paginasi
+  const [pageCount, setPageCount] = useState(0); // buat paginasi
+  const [originalRentals, setOriginalRentals] = useState([]); // buat pencarian like query
 
   useEffect(() => {
     axios
@@ -69,19 +48,10 @@ const Verification = () => {
   const openModalTrx = (e) => {
     // console.log(e.substring(30));
     const bookingCodeNew = e.substring(35);
-    console.log(bookingCodeNew);
+    // console.log(bookingCodeNew);
 
     setBookingCode(bookingCodeNew);
-    handleCheck(bookingCodeNew);
-  };
-
-  const doOpenModalPayment = () => {
-    setShowPaymentForm(true);
-    handleClose();
-  };
-  const doClosePaymentForm = () => {
-    setShowPaymentForm(false);
-    handleShow();
+    handleCheckDetail(bookingCodeNew);
   };
 
   const TableRowsAll = ({ rows }) => {
@@ -124,22 +94,7 @@ const Verification = () => {
     });
   };
 
-  // const tableRowRemove = (index) => {
-  //   const dataRow = [...rentals];
-  //   dataRow.splice(index, 1);
-  //   setRentals(dataRow);
-  // };
-
-  const submitCheck = (e) => {
-    e.preventDefault();
-    handleCheck(bookingCode);
-  };
-
-  useEffect( () =>{
-    
-  }, [])
-
-  const handleCheck = async (booking) => {
+  const handleCheckDetail = async (booking) => {
     try {
       await axios.get("/sanctum/csrf-cookie");
       const { data } = await axios.post(
@@ -156,7 +111,7 @@ const Verification = () => {
       setErrors("");
       setTransaction(data.transaction);
       setRentals(data.rentals);
-      handleShow();
+      setShowDetail(true)
     } catch (e) {
       if (e?.response?.status === 422) {
         setErrors(e.response.data.errors);
@@ -175,14 +130,13 @@ const Verification = () => {
     }
   };
 
-  const handleStartGame = async (e, id) => {
-    e.preventDefault();
+  const handleStartGame = async (id) => {
     try {
       await axios.get("/sanctum/csrf-cookie");
       const { data } = await axios.post(
         "/api/start-rental",
         {
-          id: id,
+          id: id
         },
         {
           headers: {
@@ -200,6 +154,7 @@ const Verification = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           setChangeStatus(!changeStatus);
+          handleCheckDetail(bookingCode)
         }
       });
     } catch (e) {
@@ -218,14 +173,13 @@ const Verification = () => {
     }
   };
 
-  const handleFinishGame = async (e, id) => {
-    e.preventDefault();
+  const handleFinishGame = async (id) => {
     try {
       await axios.get("/sanctum/csrf-cookie");
       const { data } = await axios.post(
         "/api/finish-rental",
         {
-          id: id,
+          id: id
         },
         {
           headers: {
@@ -243,6 +197,7 @@ const Verification = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           setChangeStatus(!changeStatus);
+          handleCheckDetail(bookingCode)
         }
       });
     } catch (e) {
@@ -280,13 +235,13 @@ const Verification = () => {
 
           <td className=" d-md-flex justify-content-between">
             {val.status === "O" || val.status === "F" ? null : (
-              <button className="btn btn-sm btn-success" onClick={(e) => handleStartGame(e, val.id)}>
+              <button className="btn btn-sm btn-success" onClick={() => handleStartGame(val.id)}>
                 Start Game
               </button>
             )}
             &nbsp;
             {val.status === "B" || val.status === "F" ? null : (
-              <button className="btn btn-sm btn-danger" onClick={(e) => handleFinishGame(e, val.id)}>
+              <button className="btn btn-sm btn-danger" onClick={() => handleFinishGame(val.id)}>
                 End Game
               </button>
             )}
@@ -295,6 +250,12 @@ const Verification = () => {
       );
     });
   };
+
+  const updateTransaction = (newTransaction) => {
+    if (newTransaction) {
+      setTransaction(newTransaction)
+    }
+  }
 
   return (
     <>
@@ -320,7 +281,7 @@ const Verification = () => {
                       {errors.booking_code && <span className="text-danger">{errors.booking_code[0]}</span>}
                     </div>
                   </div>
-                  <button className="btn btn-danger btn-sm w-100 mt-2" onClick={submitCheck}>
+                  <button className="btn btn-danger btn-sm w-100 mt-2" onClick={() => handleCheckDetail(bookingCode)}>
                     Check Order
                   </button>
                 </div>
@@ -344,7 +305,7 @@ const Verification = () => {
             </div>
           </div>
 
-          <Modal show={show} onHide={handleClose} size="lg" width="90%">
+          <Modal show={showDetail} onHide={() => setShowDetail(false)} size="lg" width="90%">
             <Modal.Header closeButton>
               <Modal.Title>Detail Rental</Modal.Title>
             </Modal.Header>
@@ -389,7 +350,10 @@ const Verification = () => {
                     </table>
                     <div className="d-flex justify-content-between align-items-center">
                       <span className={transaction.isPaid === "Y" ? "text-success" : "text-danger"}>{transaction.isPaid === "Y" ? " Already paid" : " Not paid yet"}</span>
-                      <button className="btn btn-primary" onClick={doOpenModalPayment} disabled={transaction.isPaid === "Y"}>
+                      <button className="btn btn-primary" onClick={() => {
+                        setShowPaymentForm(true)
+                        setShowDetail(false)
+                      }} disabled={transaction.isPaid === "Y"}>
                         Pay Now
                       </button>
                     </div>
@@ -428,7 +392,14 @@ const Verification = () => {
           </Card>
         </div>
       </div>
-      <PaymentForm handleShow={showPaymentForm} handleClose={doClosePaymentForm} handleShowDetail={handleCheck} transaction={transaction} swal={Swal}  />
+      <PaymentForm 
+        isShow={showPaymentForm} 
+        handleClose={() => setShowPaymentForm(false)} 
+        transaction={transaction} 
+        swal={Swal} 
+        updateTransaction={updateTransaction} 
+        setShowDetail={setShowDetail}
+      />
     </>
   );
 };

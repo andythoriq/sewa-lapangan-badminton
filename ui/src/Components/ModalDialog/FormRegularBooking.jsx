@@ -1,16 +1,21 @@
 import React, { useState } from "react";
-import { Form, Row, Col } from "react-bootstrap";
-import FormInput from "../../../Components/Form/input";
+import { Col, Form, Row } from "react-bootstrap";
+import Modal from "react-bootstrap/Modal";
+import FormInput from "../Form/input";
 
-const CreateBookingFormRegular = ({court_id}) => {
-  const [values, setValues] = useState({ customer: "", court: "", start_time: "", end_time: "" });
+const FormRegularBooking = ({ isShow, handleClose, court_id }) => {
+  const [ values, setValues ] = useState({ start: "", finish: "" });
   const onChange = (e) => {
-    // console.log(e.target.value);
-    setValues({ ...values, [e.target.name]: e.target.value });
+    setValues({ ...values, [ e.target.name ]: e.target.value });
   };
 
-  return (
-    <>
+
+
+  return (<Modal show={isShow} onHide={handleClose}>
+    <Modal.Header closeButton>
+      <Modal.Title>Booking</Modal.Title>
+    </Modal.Header>
+    <Modal.Body className="text-center">
       <Form className="mt-3" style={{ marginBottom: "10%" }}>
         <Row>
           <Col className="col-12 col-md-3 col-lg-3"></Col>
@@ -30,10 +35,10 @@ const CreateBookingFormRegular = ({court_id}) => {
           <Col className="col-12"></Col>
           <Col className="col-12 col-md-1 col-lg-1"></Col>
           <Col className="col-6 col-md-2">
-            <FormInput type="time" name="start_time" label="Start" value={values.start_time} onChange={onChange} />
+            <FormInput type="datetime-local" name="start" label="Start" value={values.start} onChange={onChange} />
           </Col>
           <Col className="col-6 col-md-2">
-            <FormInput type="time" name="end_time" label="End" value={values.end_time} onChange={onChange} />
+            <FormInput type="datetime-local" name="finish" label="Finish" value={values.finish} onChange={onChange} />
           </Col>
           <Col className="col-12 col-md-3 mt-3 text-center">
             <b>Totally hour:</b>
@@ -54,8 +59,8 @@ const CreateBookingFormRegular = ({court_id}) => {
           </Col>
         </Row>
       </Form>
-    </>
-  );
-};
+    </Modal.Body>
+  </Modal>)
+}
 
-export default CreateBookingFormRegular;
+export default FormRegularBooking;

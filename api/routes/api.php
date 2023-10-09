@@ -44,8 +44,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(RentalController::class)->group(function () {
         Route::get('/rental', 'index');
         Route::get('/rental/{rental}', 'show');
-        Route::post('/rental', 'create')->name('create-rental')->middleware('holiday');
-        Route::post('/create-multiple-rental', 'create_multiple')->name('create-multiple-rental')->middleware('holiday');
+        Route::post('/rental', 'create')->name('create-rental');
+        // ->middleware(['holiday', 'operational']);
+        Route::post('/create-multiple-rental', 'create_multiple')->name('create-multiple-rental');
+        // ->middleware(['holiday', 'operational']);
         Route::put('/rental/{rental}', 'update')->name('update-rental');
         Route::delete('/rental/{rental}', 'delete');
     });
@@ -131,7 +133,7 @@ Route::middleware('auth:sanctum')->group(function () {
     /** Master Court
      * policy/role: court-handle, admin */
     Route::controller(CourtController::class)->middleware('admin')->group(function () {
-        Route::get('/court', 'index');
+        Route::get('/court', 'index')->withoutMiddleware(['auth:sanctum', 'admin']);
         Route::get('/court/{court}', 'show');
         Route::get('/court-select', 'court_select');
         Route::get('/court-edit/{court}', 'edit');

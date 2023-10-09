@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests\Master;
 
-use App\Models\CourtModel;
 use App\Models\CustomerModel;
 use App\Models\RentalModel;
 use App\Traits\CollideCheck;
 use App\Traits\CreateQrCode;
+use App\Traits\PeakTimeCheck;
 use Illuminate\Support\Carbon;
 use App\Models\TransactionModel;
 use App\Traits\BookingCodePattern;
@@ -17,7 +17,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RentalRequest extends FormRequest
 {
-    use CollideCheck, RentalPriceCalculation, RegularRentalsCheck, BookingCodePattern, RentalDurationRule, CreateQrCode;
+    use CollideCheck, RentalPriceCalculation, RegularRentalsCheck, BookingCodePattern, RentalDurationRule, CreateQrCode, PeakTimeCheck;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -102,13 +102,13 @@ class RentalRequest extends FormRequest
 
         $data = $this->validated();
 
-        $court_initial_price = CourtModel::select('initial_price')->where('id', $this->court_id)->firstOrFail()->initial_price;
+        $validated_price = $this->getPeakTimePrice($this->court_id, date('l'));
 
         // if (strtolower($data['customer_id'][0]) == 'm') {
         //     $court_initial_price = ceil($court_initial_price / 1.25);
         // }
 
-        $data['price'] = $this->getCost($this->start, $this->finish, $court_initial_price);
+        $data['price'] = $this->getCost($this->start, $this->finish, $validated_price);
 
         $data['status'] = 'B';
 
@@ -180,9 +180,9 @@ class RentalRequest extends FormRequest
 
             $this->validateDuration($rental['start'], $rental['finish']);
 
-            $court_initial_price = CourtModel::select('initial_price')->where('id', $rental['court_id'])->firstOrFail()->initial_price;
+            $validated_price = $this->getPeakTimePrice($rental['court_id'], date('l'));
 
-            $ceiled = ceil($court_initial_price / 1.25);
+            $ceiled = ceil($validated_price / 1.25);
 
             $rental['price'] = $this->getCost($rental['start'], $rental['finish'], $ceiled);
 
