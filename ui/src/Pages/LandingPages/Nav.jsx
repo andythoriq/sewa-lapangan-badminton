@@ -8,6 +8,8 @@ import axios from "../../api/axios";
 import Swal from "sweetalert2";
 import secureLocalStorage from "react-secure-storage";
 import { useNavigate } from "react-router-dom";
+import Dropdown from "react-bootstrap/Dropdown";
+import { dirIcon } from "../../Components/Services/config";
 
 const Landing = () => {
   // loader state
@@ -23,6 +25,52 @@ const Landing = () => {
 
   //   DataFetch();
   // }, []);
+
+  const handleLogout = async () => {
+    // try {
+    //   await axios.get("/sanctum/csrf-cookie");
+    //   await axios.post("/api/logout", null, {
+    //     headers: {
+    //       Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
+    //     },
+    //   });
+    //   secureLocalStorage.clear();
+    //   // setTimeout(function () {
+    //   //   navigate('/', {replace:true})
+    //   // }, 500);
+    // } catch (e) {
+    //   if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "Error!",
+    //       html: e.response.data.message,
+    //       showConfirmButton: true,
+    //       allowOutsideClick: false,
+    //       allowEscapeKey: false,
+    //     }).then((result) => {
+    //       if (result.isConfirmed) {
+    //         secureLocalStorage.clear();
+    //       }
+    //     });
+    //   } else {
+    //     secureLocalStorage.clear();
+    //   }
+    // }
+  };
+
+  const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+    <a
+      href="/#"
+      ref={ref}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick(e);
+      }}
+    >
+      {children}
+    </a>
+  ));
+
   const [color, setColor] = useState(false);
   const changeColor = () => {
     if (window.scrollY >= 90) {
@@ -32,24 +80,25 @@ const Landing = () => {
     }
   };
 
-  const [courts, setCourts] = useState([])
+  const [courts, setCourts] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/court')
+    axios
+      .get("/api/court")
       .then(({ data }) => {
         setCourts(data);
       })
       .catch((e) => {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       });
-  }, [])
+  }, []);
 
   window.addEventListener("scroll", changeColor);
 
   return courts.length < 0 ? (
     <Loader />
-      )  : (
-   <>
+  ) : (
+    <>
       {/* navbar */}
       <Navbar expand="lg" className={color ? "nav nav-bg" : "nav"}>
         <Container>
@@ -84,6 +133,27 @@ const Landing = () => {
                   Register
                 </a>}
             </Nav>
+            {secureLocalStorage.getItem("name") ? (
+              <div className="text-white">
+                <Dropdown>
+                <Dropdown.Menu>
+                    <Dropdown.Item eventKey="2" onClick={handleLogout}>
+                      <img src={`${dirIcon}logout.png`} alt=""  style={{ width: "25px" }}/>
+                      <span className="mt-3 text-sm"> Logout</span>
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                  <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                    <div>
+                      <img src={`${dirIcon}user-circle.png`} alt="" style={{ width:"35px" }}/>  <span className="localstorge m-auto">{secureLocalStorage.getItem("name")}</span>
+                    </div>
+                  </Dropdown.Toggle>
+                </Dropdown>
+                </div>
+            ) : (
+              <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} href="userstep">
+                Register
+              </a>
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>
@@ -141,9 +211,7 @@ const Landing = () => {
           {/* card */}
           <div className="row row-cols-1 row-cols-md-3 g-4 py-5">
             {courts.map((court, index) => {
-              return (
-                <Court key={court.id} id={court.id} label={court.label} image_path={court.image_path} description={court.description} initial_price={court.initial_price} index={index} />
-              )
+              return <Court key={court.id} id={court.id} label={court.label} image_path={court.image_path} description={court.description} initial_price={court.initial_price} index={index} />;
             })}
             {/* <div className="col">
               <div className="card card-court">
@@ -286,7 +354,7 @@ const Landing = () => {
         </div>
       </div>
     </>
-    );
+  );
 };
 
 export default Landing;
