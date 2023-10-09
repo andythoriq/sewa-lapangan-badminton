@@ -89,6 +89,9 @@ class AuthCustomerRequest extends FormRequest
                 ]);
             }
         } else {
+            if (empty($this->name)) {
+                throw ValidationException::withMessages([ 'name' => ['The name field is required when creating a new account.'] ]);
+            }
             $validated['membership_status'] = 'R';
             $validated['status'] = 'Y';
             $validated['otp_code'] = $otp;

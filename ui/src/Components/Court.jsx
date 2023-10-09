@@ -1,8 +1,18 @@
 import React, { useState } from 'react'
 import FormRegularBooking from './ModalDialog/FormRegularBooking'
+import secureLocalStorage from 'react-secure-storage'
+import { useNavigate } from 'react-router-dom'
 
 function Court({ id, label, image_path, description, initial_price, index }) {
   const [show, setShow] = useState(false)
+  const navigate = useNavigate()
+  const handleShowBooking = () => {
+    if (secureLocalStorage.getItem('customer_code')) {
+      setShow(true)
+    } else {
+      navigate('/userstep')
+    }
+  }
   return (<>
     <div className="col">
       <div className="card card-court">
@@ -23,12 +33,15 @@ function Court({ id, label, image_path, description, initial_price, index }) {
             <p>{description.substring(0, 200) + '.....'}</p>
           </div>
         </div>
-        <button className="btn btn-booking text-center border border-dark" onClick={() => setShow(true)} style={{ fontSize: "24px", width: "100%", padding: "15px" }}>
+        <button className="btn btn-booking text-center border border-dark" onClick={handleShowBooking} style={{ fontSize: "24px", width: "100%", padding: "15px" }}>
           Booking
         </button>
       </div>
     </div>
-    <FormRegularBooking handleClose={() => setShow(false)} isShow={show} court_id={id} />
+    {secureLocalStorage.getItem('membership_status') === 'R' &&
+      <FormRegularBooking handleClose={() => setShow(false)} isShow={show} court_id={id} initialPrice={initial_price} />}
+    {secureLocalStorage.getItem('membership_status') === 'M' &&
+      <div>FormMemberBooking</div>}
   </>)
 }
 

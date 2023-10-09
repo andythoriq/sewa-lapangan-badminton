@@ -147,6 +147,7 @@ const CreateBookingFormMember = () => {
       Swal.fire({ icon: "warning", title: "Warning!", html: "you have made a booking!", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
     } else {
       try {
+        await axios.get('/sanctum/csrf-cookie')
         const { data } = await axios.post('/api/create-multiple-rental', {
           customer_id: customerCode,
           user_id: secureLocalStorage.getItem('id') ?? '',
@@ -189,6 +190,7 @@ const CreateBookingFormMember = () => {
   const sendBookingCode = async (e) => {
     e.preventDefault();
     try {
+      await axios.get('/sanctum/csrf-cookie')
       const { data } = await axios.post('/api/send-booking-code', {
         phone_number: transactionResponse.phone_number,
         booking_code: transactionResponse.booking_code

@@ -43,7 +43,7 @@ const Step2 = () => {
      secureLocalStorage.setItem('role', 'user')
      Swal.fire({ icon: "success", title: "Success!", html: "OTP verified successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
      setTimeout(function () {
-       navigate('/dashboard-user', { replace: true })
+       navigate('/landing-page', { replace: true })
      }, 2000);
    } catch (e) {
      if (e?.response?.status === 422) {

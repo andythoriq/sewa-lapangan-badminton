@@ -115,6 +115,7 @@ const CreateBookingFormRegular = () => {
   const sendBookingCode = async (e) => {
     e.preventDefault();
     try {
+      await axios.get('/sanctum/csrf-cookie')
       const { data } = await axios.post('/api/send-booking-code', {
         phone_number: transactionResponse.phone_number,
         booking_code: transactionResponse.booking_code
