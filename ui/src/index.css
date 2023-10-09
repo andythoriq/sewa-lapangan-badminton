@@ -283,7 +283,6 @@ input:invalid[focused="true"] ~ #validError {
   min-width: 100vw;
   background: #f1f1f1;
 }
-
 .list-group-item img {
   width: 24px;
   margin-top: -7px;
@@ -809,14 +808,14 @@ footer .footer .text {
   color: black;
   padding-left: 5px !important;
   padding-right: 5px !important;
-  background-color: transparent;
+  background-color: rgb(183, 183, 185);
   font-weight: bold !important;
 }
 
 .pagination .page-link.prev:hover,
 .pagination .page-link.next:hover {
-  background: var(--color-merah);
-  color: white;
+  background: rgba(133, 133, 133, 0.6);
+  color: black;
 }
 
 .pagination .page-link.prev svg,

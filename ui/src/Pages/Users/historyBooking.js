@@ -202,7 +202,18 @@ const HistoryBooking = () => {
             </tbody>
           </table>
           <div className="clearfix">
-            <ReactPaginate className="pagination" pageLinkClassName="page-link" breakLabel="..." nextLabel=" >" onPageChange={handlePageClick} pageRangeDisplayed={5} pageCount={pageCount} previousLabel="< " renderOnZeroPageCount={null} />
+            <ReactPaginate 
+            className="pagination" 
+            pageLinkClassName="page-link" 
+            breakLabel="..."
+            nextLinkClassName="page-link next" 
+            nextLabel=" >" 
+            onPageChange={handlePageClick} 
+            pageRangeDisplayed={5} 
+            pageCount={pageCount} 
+            previousLinkClassName="page-link prev"
+            previousLabel="< " 
+            renderOnZeroPageCount={null} />
           </div>
         </div>
       </Card>
