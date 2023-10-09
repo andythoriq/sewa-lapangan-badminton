@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/login-admin/{admin}', 'login_for_other');
         // Route::post('/register-admin', 'register')->name('register-admin')->withoutMiddleware(['auth:sanctum', 'admin']);
         Route::post('/logout-admin', 'logout');
-        Route::post('/me-admin', 'me');
+        Route::get('/me-admin', 'me');
         Route::get('/role-menus', 'get_role_menus');
     });
 

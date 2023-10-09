@@ -233,7 +233,7 @@ export default function App() {
         <Route path="/" element={<RequireAuth role="admin" />}>
           {filteredMenus}
           <Route path="/profile" element={<Profile />} />
-          <Route path="/formprofile/add" element={<FormProfile />} />
+          <Route path="/formprofile/edit" element={<FormProfile />} />
         </Route>
       </Route>
       <Route path="*" element={<NotFound />} />

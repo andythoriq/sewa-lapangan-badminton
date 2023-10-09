@@ -78,7 +78,7 @@ const CourtForm = () => {
     e.preventDefault();
     const data = {
       label: values.label,
-      initial_price: values.price.replace(/[^0-9]+/g, ""),
+      initial_price: values.price,
       description: values.description,
       image_path: image[0]?.file ?? "",
     };
