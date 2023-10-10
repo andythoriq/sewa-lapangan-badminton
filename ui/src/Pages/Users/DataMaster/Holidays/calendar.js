@@ -23,7 +23,9 @@ export default function Calendar() {
       }
     }).then(({ data }) => {
       setHolidays(data)
-    }).catch((e) => {
+    })
+    .then(()=>{console.log(holidays)})
+    .catch((e) => {
       Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
     })
   },[])
@@ -178,7 +180,13 @@ export default function Calendar() {
             right: 'today next'
           }}
           initialView='multiMonthYear'
-          initialEvents={holidays} // alternatively, use the `events` setting to fetch from a feed
+          initialEvents={holidays ? holidays : []} // alternatively, use the `events` setting to fetch from a feed
+          // initialEvents={[
+          //   {
+          //   id: 1,
+          //   title: '1 event',
+          //   start: "2023-01-01"
+          // }]} // alternatively, use the `events` setting to fetch from a feed
           selectable={true}
           droppable={true}
           editable={true} // aktifkan eventDrop
