@@ -148,9 +148,9 @@ const Landing = () => {
                 </Dropdown>
                 </div>
             ) : (
-              <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} onClick={() => navigate('/userstep')}>
+              <button onClick={() => navigate('/userstep')} className="btn btn-danger ms-2" style={{ borderRadius: 13 }}>
                 Register
-              </a>
+              </button>
             )}
           </Navbar.Collapse>
         </Container>
