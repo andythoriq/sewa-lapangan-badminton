@@ -34,20 +34,20 @@ class HolidayController extends Controller
 
     public function create(HolidayRequest $request)
     {
-        $request->createHoliday();
-        return response()->json(['message' => 'Success create holiday.'], 201, ['success' => 'Created holiday schedule.']);
+        $id = $request->createHoliday();
+        return response()->json(['message' => 'Holiday data is successfully inserted', 'id' => $id], 201, ['success' => 'Created holiday schedule.']);
     }
 
     public function update(HolidayRequest $request, HolidayModel $holiday)
     {
         $request->updateHoliday($holiday);
-        return response()->json(['message' => 'Success update holiday.'], 202, ['success' => 'Updated holiday schedule.']);
+        return response()->json(['message' => 'Holiday data is successfully updated'], 202, ['success' => 'Updated holiday schedule.']);
     }
 
     public function delete(HolidayModel $holiday)
     {
         $holiday->deleteOrFail();
-        return response()->json(['message' => 'Success delete holiday.'], 202, ['success' => 'Deleted holiday schedule.']);
+        return response()->json(['message' => 'Holiday data is successfully deleted.'], 202, ['success' => 'Deleted holiday schedule.']);
     }
 
     public function create_multiple(HolidayRequest $request)

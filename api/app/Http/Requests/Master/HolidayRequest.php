@@ -48,7 +48,8 @@ class HolidayRequest extends FormRequest
     public function createHoliday()
     {
         // $this->collideCheck($this->start, $this->finish, $this->getSchedules());
-        HolidayModel::create($this->validated());
+        $holiday = HolidayModel::create($this->validated());
+        return $holiday->id;
     }
 
     public function updateHoliday(HolidayModel $holiday)
