@@ -59,7 +59,7 @@ const Profile = () => {
                 <b className="mt-3">Full Name:</b> {admin.name}<br />
                 <b className="mt-3">Username:</b> {admin.username}<br />
                 <b className="mt-3">Phone number:</b> {admin.phone_number}<br />
-                <b className="mt-3">Status:</b> {admin.status}<br />
+                <b className="mt-3">Status:</b> {admin.status === 'Y' ? 'active' : 'in active'}<br />
                 <b className="mt-3">Role:</b> {admin.role?.label}<br />
               </div>
             </div>

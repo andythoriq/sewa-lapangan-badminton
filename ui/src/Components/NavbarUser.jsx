@@ -1,10 +1,9 @@
 import React from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Navbar, Container } from "react-bootstrap";
 import secureLocalStorage from "react-secure-storage";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { dirIcon } from "./Services/config";
-import { Link } from "react-router-dom";
 
 const NavbarUser = () => {
   const navigate = useNavigate();
@@ -31,7 +30,7 @@ const NavbarUser = () => {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbartoggler" type="button" data-bs-toggle="offcanvas" data-bs-target="offcanvasNavbar" ria-controls="offcanvasNavbar" className="navbar-toogler shadow-none border-0 bg-white" />
           <Navbar.Collapse id="navbarScroll">
-            <Nav className="ms-auto" style={{ maxHeight: "100px" }} navbarScroll>
+            {/* <Nav className="ms-auto" style={{ maxHeight: "100px" }} navbarScroll>
               <Nav.Link href="/landing-page" style={{ marginRight: "30px", color: "white" }}>
                 Home
               </Nav.Link>
@@ -41,18 +40,20 @@ const NavbarUser = () => {
               <Nav.Link href="#bookinghistory" style={{ marginRight: "30px", color: "white" }}>
                 History Booking
               </Nav.Link>
-            </Nav>
+            </Nav> */}
             {secureLocalStorage.getItem("name") ? (
-              <div className="text-white">
+              <div className="text-white ms-auto" style={{ maxHeight: "100px" }}>
                 <Dropdown>
                 <Dropdown.Menu>
-                  ` <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }}>
-                    <Link to={'/profile-user'} className="">
-                          Profile
-                    </Link>
+                  ` <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }} onClick={() => navigate('/profile-user')}>
+                      <span>Profile</span>
                     </Dropdown.Item>
-                    <Dropdown.Item eventKey="2">
-                      <span>Logout</span>
+                    <Dropdown.Item>
+                      <div style={{ marginRight: "30px", color: "black" }}>
+                          <div onClick={() => {
+                            navigate('/landing-page')
+                          }}><span>Home</span></div>
+                        </div>
                     </Dropdown.Item>
                     <Dropdown.Item>
                         <div style={{ marginRight: "30px", color: "black" }}>
@@ -70,9 +71,9 @@ const NavbarUser = () => {
                 </Dropdown>
                 </div>
             ) : (
-              <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} onClick={() => navigate('/userstep')}>
+              <button onClick={() => navigate('/userstep')} className="btn btn-danger ms-2" style={{ borderRadius: 13 }}>
                 Register
-              </a>
+              </button>
             )}
           </Navbar.Collapse>
         </Container>

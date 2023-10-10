@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Navbar, Container } from "react-bootstrap";
 import secureLocalStorage from "react-secure-storage";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -31,7 +31,7 @@ const NavbarPublic = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbartoggler" type="button" data-bs-toggle="offcanvas" data-bs-target="offcanvasNavbar" ria-controls="offcanvasNavbar" className="navbar-toogler bg-white"/>
         <Navbar.Collapse id="navbarScroll">
-          <Nav className="ms-auto" style={{ maxHeight: "100px" }} navbarScroll>
+          {/* <Nav className="ms-auto" style={{ maxHeight: "100px" }} navbarScroll>
             <Nav.Link href="/landing-page" style={{ marginRight: "30px", color: "white" }}>
               About
             </Nav.Link>
@@ -41,43 +41,45 @@ const NavbarPublic = () => {
             <Nav.Link href="/landing-page" style={{ marginRight: "30px", color: "white" }}>
               Services
             </Nav.Link>
-          </Nav>
+            <Nav.Link href="/landing-page" style={{ marginRight: "30px", color: "white" }}>
+              Home
+            </Nav.Link>
+          </Nav> */}
           {secureLocalStorage.getItem("name") ? (
-              <div className="text-white">
+            <div className="text-white ms-auto" style={{ maxHeight: "100px" }} >
                 <Dropdown>
-                <Dropdown.Menu>
-                  ` <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }}>
-                    <Link to={'/profile-user'} className="">
+                  <Dropdown.Menu>
+                    ` <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }}>
+                        <Link to={'/profile-user'} className="">
                           Profile
-                    </Link>
-                    </Dropdown.Item>
-                    <Dropdown.Item eventKey="2">
-                      <span>Logout</span>
-                    </Dropdown.Item>
-                    <Dropdown.Item eventKey="3">
-                    <Link to={'/landing-page'} className="">
-                          Home
-                    </Link>
-                    </Dropdown.Item>
-                    <Dropdown.Item>
+                        </Link>
+                      </Dropdown.Item>
+                      <Dropdown.Item>
                         <div style={{ marginRight: "30px", color: "black" }}>
-                          <div onClick={() => {
-                            navigate('/dashboard-user')
-                          }}><span>Dashboard User</span></div>
-                        </div>
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                  <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                    <div>
-                      <img src={`${dirIcon}user-circle.png`} alt="" style={{ width:"35px" }}/>  <span className="localstorge m-auto">{secureLocalStorage.getItem("name")}</span>
-                    </div>
-                  </Dropdown.Toggle>
-                </Dropdown>
+                            <div onClick={() => {
+                              navigate('/landing-page')
+                            }}><span>Home</span></div>
+                          </div>
+                      </Dropdown.Item>
+                      <Dropdown.Item>
+                          <div style={{ marginRight: "30px", color: "black" }}>
+                            <div onClick={() => {
+                              navigate('/dashboard-user')
+                            }}><span>Dashboard User</span></div>
+                          </div>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                    <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                      <div>
+                        <img src={`${dirIcon}user-circle.png`} alt="" style={{ width:"35px" }}/>  <span className="localstorge m-auto">{secureLocalStorage.getItem("name")}</span>
+                      </div>
+                    </Dropdown.Toggle>
+                  </Dropdown>
                 </div>
             ) : (
-              <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} onClick={() => navigate('/userstep')}>
+              <button onClick={() => navigate('/userstep')} className="btn btn-danger ms-2" style={{ borderRadius: 13 }}>
                 Register
-              </a>
+              </button>
             )}
         </Navbar.Collapse>
       </Container>

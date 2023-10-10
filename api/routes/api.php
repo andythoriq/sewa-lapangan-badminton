@@ -164,6 +164,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::delete('/{customer}', 'delete_R');
             Route::get('/{customer}/edit', 'edit_R');
         });
+        Route::post('/update-customer-name', 'update_name');
     });
 
     /** Transaction

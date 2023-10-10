@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import FullCalendar from '@fullcalendar/react'
 import interactionPlugin from '@fullcalendar/interaction'; // for selectable
 import multiMonthPlugin from '@fullcalendar/multimonth'
-import { INITIAL_EVENTS, createEventId } from './calendar_data'
 import './calendar.css';
 import Swal from "sweetalert2";
 import Button from 'react-bootstrap/Button';
@@ -10,11 +9,14 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import axios from "../../../../api/axios";
 import secureLocalStorage from "react-secure-storage";
+import Loader from "../../../../Components/Loader/Loading";
+import AlertNewYear from "../../../../Components/AlertNewYear";
 
 export default function Calendar() {
 
   const [holidays, setHolidays] = useState([])
   const [ currentEvents, setCurrentEvents ] = useState([]);
+  const [ isShowAlert, setIsShowAlert ] = useState(false)
 
   useEffect(() => {
     axios.get('/api/calendar', {
@@ -24,9 +26,15 @@ export default function Calendar() {
     }).then(({ data }) => {
       setHolidays(data)
     })
-    .then(()=>{console.log(holidays)})
     .catch((e) => {
       Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+    })
+    .finally(() => {
+      if (new Date().getMonth() === 11) {
+        setTimeout(() => {
+          setIsShowAlert(true)
+        }, 2000);
+      }
     })
   },[])
 
@@ -109,40 +117,34 @@ export default function Calendar() {
         if (!value) {
           return 'You need to write something!'
         }
-        var newEvent={};
+        // var newEvent={};
         let calendarApi = selectInfo.view.calendar
         calendarApi.unselect() // clear date selection
         if (ifEdit) {
           // Start API Proses Edit
           selectInfo.event.remove();
-          newEvent = {
+          updateHolidayAsync(calendarApi, {
+            label: value,
+            date: selectInfo.event.startStr
+          }, {
             id: selectInfo.event.id,
-            title:value,
+            title: value,
             start: selectInfo.event.startStr,
             end: selectInfo.event.endStr,
             allDay: selectInfo.event.allDay
-          }
-          // Update Event
-          calendarApi.addEvent(newEvent)
-          setTimeout(function() {
-            Swal.fire({ icon: "success", title: "Success!", html: "saved successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
-          }, 100)
+          })
           // End API Proses Edit
         }else{
-          // Start API Proses Add
-          newEvent = {
-            id: createEventId(),
-            title:value,
+          addHolidayAsync(calendarApi, {
+            label: value,
+            date: selectInfo.startStr
+          },{
+            id: null,
+            title: value,
             start: selectInfo.startStr,
             end: selectInfo.endStr,
             allDay: selectInfo.allDay
-          }
-          // Add Event
-          calendarApi.addEvent(newEvent)
-          setTimeout(function() {
-            Swal.fire({ icon: "success", title: "Success!", html: "saved successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
-          }, 100)
-          // End API Proses Add
+          })
         }
       }
     })
@@ -154,22 +156,80 @@ export default function Calendar() {
       html: `Permanent delete '<b>${clickInfo.event.title}</b>'`,
       icon: 'info',
       showCancelButton: true,
-      cancelButtonColor: '#d33',
       confirmButtonText: `Yes`,
       cancelButtonText: `No`,
     }).then((result) => {
       if (result.isConfirmed) {
         clickInfo.event.remove()
         // Start API Proses Delete
-        setTimeout(function() {
-          Swal.fire({ icon: "success", title: "Success!", html: "deleted successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
-        }, 100)
+        deleteHolidayAsync(clickInfo.event.id)
         // End API Proses Delete
       }
     });
   }
 
-  return (
+  const addHolidayAsync = async (calendarApi, data, newEvent) => {
+    // Start API Proses Add
+    try {
+      await axios.get('/sanctum/csrf-cookie')
+      const response  = await axios.post('/api/holiday', data, {headers: {Authorization: `Bearer ${secureLocalStorage.getItem('token')}`}})
+      newEvent.id = response.data.id
+      calendarApi.addEvent(newEvent)
+      Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500 });
+    } catch (e) {
+      if (e?.response?.status === 422) {
+        const errors = e.response.data?.errors;
+        Swal.fire({
+          icon: "error", title: "Error!", html: (errors.label ? errors.label[0] : '') + "<br/>" + (errors.date ? errors.date[0] : ''), showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+        });
+      } else if (e.response?.status === 404 || e.response?.status === 403 || e?.response?.status === 401) {
+        Swal.fire({
+          icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+        });
+      } else {
+        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      }
+    }
+  }
+
+  const updateHolidayAsync = async (calendarApi, data, newEvent) => {
+    try {
+      await axios.get('/sanctum/csrf-cookie')
+      const response = await axios.put('/api/holiday/' + newEvent.id, data, { headers: { Authorization: `Bearer ${secureLocalStorage.getItem('token')}` } })
+      calendarApi.addEvent(newEvent)
+      Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500 });
+    } catch (e) {
+      if (e.response.status === 422) {
+        Swal.fire({
+          icon: "error", title: "Error!", html: e.response.data?.errors?.label[ 0 ] + "<br/>" + e.response.data?.errors?.date[ 0 ], showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+        });
+      } else if (e.response?.status === 404 || e.response?.status === 403 || e?.response?.status === 401) {
+        Swal.fire({
+          icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+        });
+      } else {
+        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      }
+    }
+  }
+
+  const deleteHolidayAsync = async (id) => {
+    try {
+      await axios.get('/sanctum/csrf-cookie')
+      const response = await axios.delete('/api/holiday/' + id, {headers:{Authorization:`Bearer ${secureLocalStorage.getItem('token')}`}})
+      Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500 });
+    } catch (e) {
+      if (e.response?.status === 404 || e.response?.status === 403 || e?.response?.status === 401) {
+        Swal.fire({
+          icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+        });
+      } else {
+        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      }
+    }
+  }
+
+  return ( holidays.length > 0 ?
     <>
       <div className="container" style={{ background: "white", }}>
         <FullCalendar
@@ -180,13 +240,7 @@ export default function Calendar() {
             right: 'today next'
           }}
           initialView='multiMonthYear'
-          initialEvents={holidays ? holidays : []} // alternatively, use the `events` setting to fetch from a feed
-          // initialEvents={[
-          //   {
-          //   id: 1,
-          //   title: '1 event',
-          //   start: "2023-01-01"
-          // }]} // alternatively, use the `events` setting to fetch from a feed
+          initialEvents={holidays} // alternatively, use the `events` setting to fetch from a feed
           selectable={true}
           droppable={true}
           editable={true} // aktifkan eventDrop
@@ -197,8 +251,8 @@ export default function Calendar() {
           eventDrop={handleEventDrop}
         />
       </div>
-
-    </>
+      <AlertNewYear isShow={isShowAlert} handleClose={() => {setIsShowAlert(false)}} />
+    </> : <Loader/>
   );
 }
 
@@ -233,7 +287,6 @@ const renderEventContent = (eventInfo) => {
       </div>
       </OverlayTrigger>
       </div>
-      
     </>
   )
 }
