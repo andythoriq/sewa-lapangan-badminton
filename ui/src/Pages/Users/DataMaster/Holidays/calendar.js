@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FullCalendar from '@fullcalendar/react'
 import interactionPlugin from '@fullcalendar/interaction'; // for selectable
 import multiMonthPlugin from '@fullcalendar/multimonth'
@@ -8,44 +8,31 @@ import Swal from "sweetalert2";
 import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
+import axios from "../../../../api/axios";
+import secureLocalStorage from "react-secure-storage";
 
-export default class Calendar extends React.Component {
+export default function Calendar() {
 
-  state = { currentEvents: [] }
+  const [holidays, setHolidays] = useState([])
+  const [ currentEvents, setCurrentEvents ] = useState([]);
 
-  render() { 
-    return (
-      <>
-      <div className="container" style={{ background: "white",}}>
-      <FullCalendar
-          plugins={[multiMonthPlugin, interactionPlugin]}
-          headerToolbar={{
-            left: 'prev',
-            center: 'title',
-            right: 'today next'
-          }}
-          initialView='multiMonthYear'
-          initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
-          selectable={true}
-          droppable={true} 
-          editable={true} // aktifkan eventDrop
-          eventsSet={this.handleEvents}
-          eventContent={renderEventContent}
-          eventClick={this.handleEventClick}
-          select={this.handleDateSelect}
-          eventDrop={this.handleEventDrop}
-        />
-      </div>
-        
-      </>
-    );        
+  useEffect(() => {
+    axios.get('/api/calendar', {
+      headers: {
+        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
+      }
+    }).then(({ data }) => {
+      setHolidays(data)
+    }).catch((e) => {
+      Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+    })
+  },[])
+
+  const handleDateSelect = (selectInfo) => {
+    handleAddEvent(selectInfo)
   }
 
-  handleDateSelect = (selectInfo) => {
-    this.handleAddEvent(selectInfo)
-  }
-
-  handleEventDrop = (dropInfo) => {
+  const handleEventDrop = (dropInfo) => {
     console.log(dropInfo);
     const { start, end } = dropInfo.oldEvent._instance.range;
     console.log(start, end);
@@ -60,7 +47,7 @@ export default class Calendar extends React.Component {
     }
   }
 
-  handleEventClick = (clickInfo) => {
+  const handleEventClick = (clickInfo) => {
     // console.log(clickInfo);
     Swal.fire({
       title: 'Do you want to edit or delete?',
@@ -71,16 +58,16 @@ export default class Calendar extends React.Component {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        this.handleAddEvent(clickInfo, clickInfo.event.title);
+        handleAddEvent(clickInfo, clickInfo.event.title);
       } else if (result.isDenied) {
-        this.handleDelete(clickInfo);
+        handleDelete(clickInfo);
       }
     })
   }
 
-  handleEvents = (events) => this.setState({ currentEvents: events })
+  const handleEvents = (events) => setCurrentEvents(events)
 
-  handleAddEvent = (selectInfo, value="") => {
+  const handleAddEvent = (selectInfo, value="") => {
     // console.log(selectInfo);
     const ifEdit = (value) ? true:false;
     var startDate=""; var endDate="";
@@ -159,7 +146,7 @@ export default class Calendar extends React.Component {
     })
   }
 
-  handleDelete = (clickInfo) => {
+  const handleDelete = (clickInfo) => {
     Swal.fire({
       title: 'Are you sure ?',
       html: `Permanent delete '<b>${clickInfo.event.title}</b>'`,
@@ -180,6 +167,31 @@ export default class Calendar extends React.Component {
     });
   }
 
+  return (
+    <>
+      <div className="container" style={{ background: "white", }}>
+        <FullCalendar
+          plugins={[ multiMonthPlugin, interactionPlugin ]}
+          headerToolbar={{
+            left: 'prev',
+            center: 'title',
+            right: 'today next'
+          }}
+          initialView='multiMonthYear'
+          initialEvents={holidays} // alternatively, use the `events` setting to fetch from a feed
+          selectable={true}
+          droppable={true}
+          editable={true} // aktifkan eventDrop
+          eventsSet={handleEvents}
+          eventContent={renderEventContent}
+          eventClick={handleEventClick}
+          select={handleDateSelect}
+          eventDrop={handleEventDrop}
+        />
+      </div>
+
+    </>
+  );
 }
 
 

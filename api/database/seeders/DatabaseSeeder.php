@@ -577,6 +577,7 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now()
             ]
         ]);
+        // non unique holiday
         // HolidayModel::insert([[
         //     'label' => 'Hari libur nasional tahun baru',
         //     'date' => '2023-01-01',

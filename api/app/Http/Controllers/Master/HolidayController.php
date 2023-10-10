@@ -24,6 +24,14 @@ class HolidayController extends Controller
         return response()->json($holidays);
     }
 
+    public function calendar()
+    {
+        $calendars = HolidayModel::select(['id', 'label AS title', 'date AS start'])
+            ->orderBy('date', 'asc')
+                ->get();
+        return response()->json($calendars);
+    }
+
     public function create(HolidayRequest $request)
     {
         $request->createHoliday();
