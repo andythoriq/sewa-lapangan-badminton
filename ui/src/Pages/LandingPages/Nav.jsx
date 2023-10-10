@@ -135,11 +135,11 @@ const Landing = () => {
                       <span>Logout</span>
                     </Dropdown.Item>
                     <Dropdown.Item>
-                        <Nav.Link style={{ marginRight: "30px", color: "white" }}>
+                        <div style={{ marginRight: "30px", color: "black" }}>
                           <div onClick={() => {
                             navigate('/dashboard-user')
-                          }}>Dashboard</div>
-                        </Nav.Link>
+                          }}><span>Dashboard User</span></div>
+                        </div>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                   <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">

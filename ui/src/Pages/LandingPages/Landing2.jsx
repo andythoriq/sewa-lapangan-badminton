@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ScheduleModal from "../Users/Schedule/modal";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import "./landing2.css";
 import RiwayatBooking from "./RiwayatBooking";
@@ -78,7 +78,7 @@ const Landing2 = () => {
           <hr style={{ width: 130, float:'left', marginTop: 0 }} />
         </div>
         <Row>
-          <Col className="col-12 col-md-6 d-flex mt-3">
+          <Col className="col-12 col-md-6 d-flex mt-3 mb-2">
             <div>
               <div className="bullet bullet-cyan"></div> <div className="bullet-text">Booked</div>
             </div>
@@ -92,11 +92,11 @@ const Landing2 = () => {
               <div className="bullet bullet-orange"></div> <div className="bullet-text">On progress</div>
             </div>
           </Col>
-          <Col className="col-12 col-md-6 mt-1 mb-1" style={{ textAlign: "right" }}>
+          {/* <Col className="col-12 col-md-6 mt-1 mb-1" style={{ textAlign: "right" }}>
             <Link to="/landingbookuser" className="btn btn-danger btn-sm">
               + Add Booking
             </Link>
-          </Col>
+          </Col> */}
         </Row>
         <div className="table-responsive mt-2">
           <table id="schedule" className="table" width={"100%"} border={1}>
