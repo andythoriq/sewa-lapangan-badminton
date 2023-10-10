@@ -9,6 +9,7 @@ import { Card } from "react-bootstrap";
 import Moment from "react-moment";
 import { useParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import { Search } from "react-bootstrap-icons";
 
 const Verification = () => {
   // let listData = [{ start: "10-00", finish: "12-00", status: "on progress", price: "Rp150.000", court: "Court A", customer: "Budi - (0892347826382)" }];
@@ -27,6 +28,7 @@ const Verification = () => {
   const [currentPage, setCurrentPage] = useState(0); // buat paginasi
   const [pageCount, setPageCount] = useState(0); // buat paginasi
   const [originalRentals, setOriginalRentals] = useState([]); // buat pencarian like query
+  const [searchValue, setSearchValue] = useState('')
 
   useEffect(() => {
     axios
@@ -303,6 +305,28 @@ const Verification = () => {
     setCurrentPage(number);
   }
 
+  const handleSearch = async (e) => {
+    e.preventDefault()
+    try {
+      const { data } = await axios.get('/api/rental?keyword=' + searchValue, {
+        headers: {
+          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
+        }
+      });
+      setRentalsAll(data.data)
+      if (data.data.length < 1) {
+        Swal.fire({ icon: "warning", title: "Not found!", html: `'${searchValue}' in booking not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+          .then((result) => {
+            if (result.isConfirmed) {
+              setRentalsAll(originalRentals)
+            }
+          })
+      }
+    } catch (e) {
+      Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+    }
+  }
+
   return (
     <>
       {/* left */}
@@ -413,6 +437,15 @@ const Verification = () => {
         {/* right */}
         <div className="col-lg-12">
           <Card className="p-3 mt-5" style={{ marginLeft: "-18px" }}>
+            <div className="row">
+              <div className="col-12 col-md-4" style={{ marginTop: -20 }} >
+                <div className="inputSearch">
+                  <form onSubmit={handleSearch}>
+                    <input type="text" name="search" value={searchValue} icon={<Search />} onChange={(e) => setSearchValue(e.target.value)} placeholder="Enter to search" />
+                  </form>
+                </div>
+              </div>
+            </div>
             <div className="table-responsive">
               <table className="table table-hover mt-3" border={1}>
                 <thead>
