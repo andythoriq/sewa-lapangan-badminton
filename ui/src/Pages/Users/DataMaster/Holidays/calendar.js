@@ -30,7 +30,7 @@ export default function Calendar() {
       Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
     })
     .finally(() => {
-      if (new Date().getMonth() === 9) {
+      if (new Date().getMonth() === 11) {
         setTimeout(() => {
           setIsShowAlert(true)
         }, 2000);
