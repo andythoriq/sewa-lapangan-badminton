@@ -33,6 +33,8 @@ import FormProfile from "./Pages/Users/Profile/form";
 import Verification from "./Pages/Verifikasi/verifikasi";
 import Calendar from "./Pages/Users/DataMaster/Holidays/calendar";
 import secureLocalStorage from "react-secure-storage";
+import ProfilUser from "./Pages/LandingPages/profiluser/userprofil";
+import FormProfileUser from "./Pages/LandingPages/profiluser/edituser";
 
 // export default class App extends Component {
 //   render() {
@@ -229,6 +231,7 @@ export default function App() {
         <Route path="/" element={<RequireAuth role="user" />}>
           <Route path="/dashboard-user" element={<Landing2 />} />
           <Route path="/landingbookuser" element={<LandingBookUser />} />
+          <Route path="/profile-user" element={<ProfilUser/>} />
         </Route>
         <Route path="/" element={<RequireAuth role="admin" />}>
           {filteredMenus}
