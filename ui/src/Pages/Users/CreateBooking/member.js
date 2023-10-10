@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Form, Row, Col } from "react-bootstrap";
 import FormSelect from "../../../Components/Form/select";
 import FormInput from "../../../Components/Form/input";
-import { Trash3 } from "react-bootstrap-icons";
+// import { Trash3 } from "react-bootstrap-icons";
 import "./form.css";
 import axios from "../../../api/axios";
 import Swal from "sweetalert2";
@@ -69,18 +69,19 @@ const CreateBookingFormMember = () => {
                 {errors[`rentals.${index}.court_id`] && <span className="text-danger">{errors[`rentals.${index}.court_id`][ 0 ]}</span>}
               </Col>
               <Col className="col-12 col-md-4">
-                <FormInput type="datetime-local" name="start_time" label="Start" value={start_time} onChange={handleChange} disabled={showSendBookingCode} />
+                <FormInput type="datetime-local" name="start_time" label="Start Time Booking" value={start_time} onChange={handleChange} disabled={showSendBookingCode} />
                 {errors[`rentals.${index}.start`] && <span className="text-danger">{errors[`rentals.${index}.start`][ 0 ]}</span>}
               </Col>
               <Col className="col-12 col-md-4">
-                <FormInput type="datetime-local" name="finish_time" label="Finish" value={finish_time} onChange={handleChange} disabled={showSendBookingCode} />
+                <FormInput type="datetime-local" name="finish_time" label="Finish Time Booking" value={finish_time} onChange={handleChange} disabled={showSendBookingCode} />
                 {errors[`rentals.${index}.finish`] && <span className="text-danger">{errors[`rentals.${index}.finish`][ 0 ]}</span>}
               </Col>
               <Col className="col-12 mt-3 text-right">
                 {index === rows.length - 1 &&
                   <>
                   <button type="button" className="btn btn-danger btn-sm me-md-2 text-white" onClick={onRemove} disabled={showSendBookingCode}>
-                    <Trash3 className="text-white" style={{ marginTop: -5 }} />
+                    {/* <Trash3 className="text-white" style={{ marginTop: -5 }} /> */}
+                    Delete
                   </button>
                   <button type="button" className="btn btn-danger btn-sm me-md-2" onClick={addRowBox} disabled={showSendBookingCode}>
                     + Add
@@ -235,14 +236,14 @@ const CreateBookingFormMember = () => {
         <Row>
           <Col className="col-12 col-md-1"></Col>
           <Col className="col-12 col-md-3 mt-3 text-center">
-            <b>Totally hour:</b>
+            <b>Totally hour booking:</b>
             <br />
             <br />
             <br />
             {transactionResponse.total_hour ? <span>{transactionResponse.total_hour <= 1 ? transactionResponse.total_hour + ' hour' : transactionResponse.total_hour + ' hours'}</span> : <span>{totallyHour ? (totallyHour <= 1 ? totallyHour + ' hour' : totallyHour + ' hours') : '...'}</span>}
           </Col>
           <Col className="col-12 col-md-3 mt-3 text-center">
-            <b>Totally price:</b>
+            <b>Totally price booking:</b>
             <br />
             <br />
             {transactionResponse.total_price ? 
@@ -250,7 +251,7 @@ const CreateBookingFormMember = () => {
             : <br /> }
             {transactionResponse.total_price ? <span>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transactionResponse.total_price)}</span> : <span>{totallyPrice ? 'starting price: ' + new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(totallyPrice) : '...'}</span>}
           </Col>
-          <Col className="col-12 text-right mt-4">
+          <Col className="col-12 text-right mt-4"><hr/>
             <button type="button" className="btn btn-danger btn-sm me-md-4" onClick={onSubmit} disabled={showSendBookingCode}>
               Booking
             </button>

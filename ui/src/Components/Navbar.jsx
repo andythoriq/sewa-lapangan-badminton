@@ -122,7 +122,7 @@ const Navbar = () => {
             </ul>
           </div>}
       <ul className={`menu2 m-0`}>
-        <li>
+        <li className="mx-2">
           <NavLink to="/" className="">
             <img src={`${dirIcon}notif.png`} alt="" />
           </NavLink>

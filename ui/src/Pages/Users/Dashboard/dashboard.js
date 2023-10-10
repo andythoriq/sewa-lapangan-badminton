@@ -67,7 +67,7 @@ const Dashboard = () => {
                   <h3> {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dashboard.total_income_all)} </h3>
                   <p> Total income all </p>
                 </div>
-                <img src="./assets/icon/incomeall.png" className="img" alt="..." />
+                <img src="./assets/icon/incomeall.png" className="img" alt="..." style={{ width: "80px" }}/>
               </div>
             </div>
             <div className="col-lg-3" style={{ marginLeft: "-3px" }}>
@@ -76,7 +76,7 @@ const Dashboard = () => {
                   <h3> {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dashboard.total_income_today)} </h3>
                   <p> Total income today </p>
                 </div>
-                <img src="./assets/icon/incometoday.png" className="img" alt="..." />
+                <img src="./assets/icon/incometoday.png" className="img" alt="..." style={{ width: "80px" }}/>
               </div>
             </div>
           </div>
