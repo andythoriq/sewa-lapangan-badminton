@@ -10,6 +10,7 @@ import secureLocalStorage from "react-secure-storage";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { dirIcon } from "../../Components/Services/config";
+import { Link } from "react-router-dom";
 
 const Landing = () => {
   // loader state
@@ -125,9 +126,13 @@ const Landing = () => {
               <div className="text-white">
                 <Dropdown>
                 <Dropdown.Menu>
+                  ` <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }}>
+                    <Link to={'/profile-user'} className="">
+                          Profile
+                    </Link>
+                    </Dropdown.Item>
                     <Dropdown.Item eventKey="2" onClick={handleLogout}>
-                      <img src={`${dirIcon}logout.png`} alt=""  style={{ width: "25px" }}/>
-                      <span className="mt-3 text-sm"> Logout</span>
+                      <span>Logout</span>
                     </Dropdown.Item>
                       <Dropdown.Item style={{ marginRight: "30px", color: "black" }} onClick={() => {
                         navigate('/dashboard-user')
@@ -183,7 +188,7 @@ const Landing = () => {
                     bfb is an application that allows you to book a court or facility online or offline. You can choose the date, time, and type of court you want. The application has an availability calendar that allows you to see when the
                     court or facility is available for booking. bfb may provide discounts to club members or their regular customers as an incentive to faithfully use the facility or pitch.
                   </p>
-                  <button className="btn btn-danger">AboutUs</button>
+                  <button className="btn btn-danger">About Us</button>
                 </div>
               </div>
             </div>

@@ -26,13 +26,15 @@ import Rush from "./Pages/Users/DataMaster/Rush Hour/rush";
 import LoginCustomer from "./Pages/LandingPages/Step/LoginC";
 import Regular from "./Pages/Users/DataMaster/Customer/Regular";
 import Member from "./Pages/Users/DataMaster/Customer/Member";
-import LandingBookUser from "./Pages/LandingPages/Booking/LandingBooking";
+// import LandingBookUser from "./Pages/LandingPages/Booking/LandingBooking";
 import PeakTime from "./Pages/Users/DataMaster/Rush Hour/PeakTime";
 import Profile from "./Pages/Users/Profile/profile";
 import FormProfile from "./Pages/Users/Profile/form";
 import Verification from "./Pages/Verifikasi/verifikasi";
 import Calendar from "./Pages/Users/DataMaster/Holidays/calendar";
 import secureLocalStorage from "react-secure-storage";
+import ProfilUser from "./Pages/LandingPages/profiluser/userprofil";
+// import FormProfileUser from "./Pages/LandingPages/profiluser/edituser";
 
 // export default class App extends Component {
 //   render() {
@@ -228,7 +230,8 @@ export default function App() {
         {/* Protected */}
         <Route path="/" element={<RequireAuth role="user" />}>
           <Route path="/dashboard-user" element={<Landing2 />} />
-          <Route path="/landingbookuser" element={<LandingBookUser />} />
+          {/* <Route path="/landingbookuser" element={<LandingBookUser />} /> */}
+          <Route path="/profile-user" element={<ProfilUser/>} />
         </Route>
         <Route path="/" element={<RequireAuth role="admin" />}>
           {filteredMenus}
