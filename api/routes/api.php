@@ -102,6 +102,7 @@ Route::middleware('auth:sanctum')->group(function () {
     /** Master Holiday
      * policy/role: schedule-handle, admin */
     Route::controller(HolidayController::class)->middleware('admin')->group(function () {
+        Route::get('/calendar', 'calendar');
         Route::get('/holiday', 'index');
         Route::post('/holiday', 'create');
         Route::post('/create-multiple-holiday', 'create_multiple')->name('create-multiple-holiday');
