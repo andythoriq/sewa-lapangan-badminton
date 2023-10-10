@@ -10,7 +10,6 @@ import secureLocalStorage from "react-secure-storage";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { dirIcon } from "../../Components/Services/config";
-import { Link } from "react-router-dom";
 
 const Landing = () => {
   // loader state
@@ -126,18 +125,20 @@ const Landing = () => {
               <div className="text-white">
                 <Dropdown>
                 <Dropdown.Menu>
-                  ` <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }}>
-                    <Link to={'/profile-user'} className="">
-                          Profile
-                    </Link>
+                  ` <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }} onClick={() => navigate('/profile-user')}>
+                    <span>Profile</span>
                     </Dropdown.Item>
-                    <Dropdown.Item eventKey="2" onClick={handleLogout}>
-                      <span>Logout</span>
-                    </Dropdown.Item>
-                      <Dropdown.Item style={{ marginRight: "30px", color: "black" }} onClick={() => {
-                        navigate('/dashboard-user')
-                      }}>
+                    <Dropdown.Item style={{ marginRight: "30px", color: "black" }} onClick={() => { navigate('/dashboard-user') }}>
                         <span>Dashboard</span>
+                    </Dropdown.Item>
+                    <Dropdown.Item eventKey="2" onClick={() => {
+                      Swal.fire({icon: "warning", title: "Are you sure?", html: "Are you sure to logout from this web? <br /> you cannot login more than once in a few minutes", showConfirmButton: true, showCancelButton:true, allowOutsideClick: false, allowEscapeKey: false}).then(result => {
+                        if (result.isConfirmed) {
+                          handleLogout()
+                        }
+                      })
+                    }}>
+                      <span>Logout</span>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                   <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">

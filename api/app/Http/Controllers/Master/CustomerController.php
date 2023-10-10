@@ -122,4 +122,14 @@ class CustomerController extends Controller
         $customer->deleteOrFail();
         return response()->json(['message' => 'Success delete regular customer'], 202, ['success' => 'Customer regular deleted.']);
     }
+
+    public function update_name(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ['required', 'regex:/^[A-Za-z\s]+$/', 'min:3', 'max:60'],
+            'customer_code' => ['required', 'exists:tb_customer,customer_code']
+        ]);
+        CustomerModel::where('customer_code', $data['customer_code'])->update([ 'name' => $data['name'] ]);
+        return response()->json(['message' => 'Customer name changed successfully'], 202, ['success' => 'Customer name changed successfully.']);
+    }
 }
