@@ -62,6 +62,7 @@ const Login = () => {
         password: values.password,
       });
       setErrors("");
+      secureLocalStorage.clear()
       secureLocalStorage.setItem('token', data.token)
       secureLocalStorage.setItem('username', data.user.username)
       secureLocalStorage.setItem('id', data.user.id)
@@ -69,7 +70,8 @@ const Login = () => {
       secureLocalStorage.setItem('role', 'admin')
       Swal.fire({ icon: "success", title: "Success!", html: "Login successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
-        navigate('/', {replace:true})
+        // navigate('/dashboard', {replace:true})
+        window.location.href = "/dashboard"
       }, 2000);
     } catch (e) {
       if (e?.response?.status === 422) {

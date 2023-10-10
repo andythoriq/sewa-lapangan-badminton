@@ -27,35 +27,35 @@ const Landing = () => {
   // }, []);
 
   const handleLogout = async () => {
-    // try {
-    //   await axios.get("/sanctum/csrf-cookie");
-    //   await axios.post("/api/logout", null, {
-    //     headers: {
-    //       Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-    //     },
-    //   });
-    //   secureLocalStorage.clear();
-    //   // setTimeout(function () {
-    //   //   navigate('/', {replace:true})
-    //   // }, 500);
-    // } catch (e) {
-    //   if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "Error!",
-    //       html: e.response.data.message,
-    //       showConfirmButton: true,
-    //       allowOutsideClick: false,
-    //       allowEscapeKey: false,
-    //     }).then((result) => {
-    //       if (result.isConfirmed) {
-    //         secureLocalStorage.clear();
-    //       }
-    //     });
-    //   } else {
-    //     secureLocalStorage.clear();
-    //   }
-    // }
+    try {
+      await axios.get("/sanctum/csrf-cookie");
+      await axios.post("/api/logout", null, {
+        headers: {
+          Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
+        },
+      });
+      secureLocalStorage.clear();
+      setTimeout(function () {
+        navigate('/userstep', {replace:true})
+      }, 500);
+    } catch (e) {
+      if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          html: e.response.data.message,
+          showConfirmButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            secureLocalStorage.clear();
+          }
+        });
+      } else {
+        secureLocalStorage.clear();
+      }
+    }
   };
 
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -129,12 +129,10 @@ const Landing = () => {
                       <img src={`${dirIcon}logout.png`} alt=""  style={{ width: "25px" }}/>
                       <span className="mt-3 text-sm"> Logout</span>
                     </Dropdown.Item>
-                    <Dropdown.Item>
-                        <Nav.Link style={{ marginRight: "30px", color: "white" }}>
-                          <div onClick={() => {
-                            navigate('/dashboard-user')
-                          }}>Dashboard</div>
-                        </Nav.Link>
+                      <Dropdown.Item style={{ marginRight: "30px", color: "black" }} onClick={() => {
+                        navigate('/dashboard-user')
+                      }}>
+                        <span>Dashboard</span>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                   <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
