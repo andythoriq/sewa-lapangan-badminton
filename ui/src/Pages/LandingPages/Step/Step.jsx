@@ -77,7 +77,7 @@ const FormStep = () => {
   return (
     <>
       <NavbarPublic />
-      <Container className="regis pt-5 pb-5">
+      <Container className="regis pt-5 pb-5" style={{ marginBottom: "99px" }}>
         <Card className="bgRegis mt-5">
           <Row>
             <Col className="col-sm-6 px-0 d-none d-md-block divLeft position-relative">
@@ -129,7 +129,7 @@ const FormStep = () => {
           </Row>
         </Card>
       </Container>
-      <FooterPublic style={{ marginTop: "100px" }} />
+      <FooterPublic />
     </>
   );
 };

@@ -59,7 +59,7 @@ const Step2 = () => {
   return (
     <>
     <NavbarPublic/>
-    <Container className="regis pt-5 pb-5">
+    <Container className="regis pt-5 pb-5 mt-2"  style={{ marginBottom: "105px" }}>
       <Card className="bgRegis">
         <Row>
           <Col className="col-sm-6 px-0 d-none d-md-block divLeft position-relative">
@@ -86,7 +86,7 @@ const Step2 = () => {
               <p style={{fontSize:13}}>We are sending an phone<br/>numberverification code to WhatsApp please enter the code.</p>
               <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
                 {inputs.map((input, index) => (
-                  <Form.Group className="mb-3" key={index}>
+                  <Form.Group className="mb-3 mt-2" key={index}>
                     <OTPInput value={OTP} onChange={setOTP}  OTPLength={6} otpType="number" />
                   </Form.Group>
                 ))}
