@@ -51,7 +51,10 @@ class UserRequest extends FormRequest
 
     public function updateUser(User $user)
     {
-        $user->updateOrFail($this->validated());
+        $validated = $this->validated();
+        $validated['status'] = strtoupper($validated['status']);
+        $validated['password'] = Hash::make($validated['password']);
+        $user->updateOrFail($validated);
     }
 
 }

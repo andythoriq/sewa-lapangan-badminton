@@ -162,7 +162,7 @@ const HistoryBooking = () => {
   };
 
   const handlePageClick = (e) => {
-    const number = e.selected + 10;
+    const number = e.selected + 1;
     setCurrentPage(number);
   };
 

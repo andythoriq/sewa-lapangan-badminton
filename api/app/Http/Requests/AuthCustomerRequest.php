@@ -74,7 +74,7 @@ class AuthCustomerRequest extends FormRequest
         $validated = $this->validated();
         $customer = CustomerModel::where('phone_number', $validated['phone_number']);
         if ($customer->exists()) {
-            if (isset($customer->first()->expiration) && Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->first()->expiration))) {
+            if (isset($customer->first()->expiration) && Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->first()->expiration, 'Asia/Jakarta'))) {
                 throw ValidationException::withMessages([
                     'phone_number' => ['Can\'t get OTP in less than 9 minutes.']
                 ]);
@@ -129,7 +129,7 @@ class AuthCustomerRequest extends FormRequest
     public function verify_otp()
     {
         $customer = CustomerModel::select(['otp_code', 'phone_number', 'name', 'customer_code', 'expiration', 'membership_status'])->where('otp_code', $this->otp_code)->firstOrFail();
-        if (Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->expiration))) {
+        if (Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->expiration, 'Asia/Jakarta'))) {
             return [
                 'token' => $customer->createToken(str_replace(' ', '', $customer->phone_number) . '-token')->plainTextToken,
                 'customer' => $customer

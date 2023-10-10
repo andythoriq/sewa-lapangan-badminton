@@ -118,7 +118,7 @@ class RentalRequest extends FormRequest
 
         $transaction = TransactionModel::create([
             'total_price' => $data['price'],
-            'total_hour' => Carbon::parse($this->start)->floatDiffInHours($this->finish),
+            'total_hour' => Carbon::parse($this->start, 'Asia/Jakarta')->floatDiffInHours($this->finish),
             'booking_code' => $booking_code,
             'qr_code_image' => $qr_code
         ]);
@@ -182,12 +182,12 @@ class RentalRequest extends FormRequest
 
             $validated_price = $this->getPeakTimePrice($rental['court_id'], date('l'));
 
-            $ceiled = ceil($validated_price / 1.25);
+            $discount = $validated_price - ((10 / 100) * $validated_price);
 
-            $rental['price'] = $this->getCost($rental['start'], $rental['finish'], $ceiled);
+            $rental['price'] = $this->getCost($rental['start'], $rental['finish'], $discount);
 
             $transaction->total_price += $rental['price'];
-            $transaction->total_hour += Carbon::parse($rental['start'])->floatDiffInHours($rental['finish']);
+            $transaction->total_hour += Carbon::parse($rental['start'], 'Asia/Jakarta')->floatDiffInHours($rental['finish']);
 
             $rental['transaction_id'] = $transaction->id;
             $rental['customer_id'] = $this->customer_id;

@@ -7,10 +7,10 @@ trait ChangeRentalStatus
 {
     public function getAndChangeRentalStatus(string $rentalStart, string $rentalFinish, object $rental):string
     {
-        $current = Carbon::parse(now('Asia/Jakarta')->format('Y-m-d H:i:s'));
+        $current = Carbon::parse(now('Asia/Jakarta')->format('Y-m-d H:i:s'), 'Asia/Jakarta');
 
-        $start = Carbon::parse($rentalStart);
-        $finish = Carbon::parse($rentalFinish);
+        $start = Carbon::parse($rentalStart, 'Asia/Jakarta');
+        $finish = Carbon::parse($rentalFinish, 'Asia/Jakarta');
 
         $status = 'B';
 

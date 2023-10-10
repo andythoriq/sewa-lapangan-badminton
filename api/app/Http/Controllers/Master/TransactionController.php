@@ -30,27 +30,34 @@ class TransactionController extends Controller
         $keyword = $request->input('keyword');
 
         $rentals = RentalModel::when($keyword, function ($query) use ($keyword) {
-            $query->where('start', 'like', '%' . $keyword . '%')
-                ->orWhere('finish', 'like', '%' . $keyword . '%')
-                ->orWhereHas('customer', function ($customer) use ($keyword) {
-                    $customer->where('name', 'like', '%' . $keyword . '%')
-                        ->orWhere('phone_number', 'like', '%' . $keyword . '%');
-                })
-                ->orWhereHas('court', function ($court) use ($keyword) {
-                    $court->where('label', 'like', '%' . $keyword . '%')
-                        ->orWhere('initial_price', 'like', '%' . $keyword . '%');
+             $query->where(function($q) use($keyword){
+                return $q->where('start', 'like', '%' . $keyword . '%')
+                    ->orWhere('finish', 'like', '%' . $keyword . '%')
+                    ->orWhereHas('customer', function ($customer) use ($keyword) {
+                        $customer->where('name', 'like', '%' . $keyword . '%')
+                            ->orWhere('phone_number', 'like', '%' . $keyword . '%');
+                    })
+                    ->orWhereHas('court', function ($court) use ($keyword) {
+                        $court->where('label', 'like', '%' . $keyword . '%')
+                            ->orWhere('initial_price', 'like', '%' . $keyword . '%');
+                    });
                 });
-
-        })
+            })
+            ->whereHas('transaction', function ($transaction){
+                $transaction->where('isPaid', 'Y');
+            })
             ->select(['id', 'start', 'finish', 'price', 'status', 'transaction_id', 'customer_id', 'court_id'])
             ->where('status', 'F')
             ->with([
                 'transaction:id,total_price,total_hour,booking_code,customer_paid,customer_debt',
                 'customer:customer_code,name,phone_number',
                 'court:id,label,initial_price'
-            ])
-            ->paginate(10);
-        return new HistoryBookingCollection($rentals);
+            ]);
+
+        if (auth()->user() === $request->user('customers') || auth()->user() instanceof CustomerModel) {
+            $rentals = $rentals->where('customer_id', auth('customers')->id());
+        }
+        return new HistoryBookingCollection($rentals->paginate(10));
     }
 
     public function booking_verification(Request $request, string $booking_code = '')

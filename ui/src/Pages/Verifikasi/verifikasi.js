@@ -8,6 +8,8 @@ import Modal from "react-bootstrap/Modal";
 import { Card } from "react-bootstrap";
 import Moment from "react-moment";
 import { useParams } from "react-router-dom";
+import ReactPaginate from "react-paginate";
+import { Search } from "react-bootstrap-icons";
 
 const Verification = () => {
   // let listData = [{ start: "10-00", finish: "12-00", status: "on progress", price: "Rp150.000", court: "Court A", customer: "Budi - (0892347826382)" }];
@@ -26,6 +28,7 @@ const Verification = () => {
   const [currentPage, setCurrentPage] = useState(0); // buat paginasi
   const [pageCount, setPageCount] = useState(0); // buat paginasi
   const [originalRentals, setOriginalRentals] = useState([]); // buat pencarian like query
+  const [searchValue, setSearchValue] = useState('')
 
   useEffect(() => {
     axios
@@ -59,7 +62,7 @@ const Verification = () => {
       return (
         <tr key={val.id}>
           <td>{index + 1}</td>
-          <td>{val.transaction.booking_code}</td>
+          <td>{val.transaction.booking_code} <span className={val.transaction.isPaid === 'Y' ? "text-success" : "text-danger"}>({val.transaction.isPaid === 'Y' ? 'paid' : 'not paid'})</span></td>
           <td>
             {val.customer.name} ({val.customer.phone_number})
           </td>
@@ -78,13 +81,31 @@ const Verification = () => {
           <td className="text-center">{val.status === "B" ? "Booked" : val.status === "O" ? "On progress" : "Finished"}</td>
           <td className=" d-md-flex justify-content-center align-items-center">
             {val.status === "O" || val.status === "F" ? null : (
-              <button className="btn btn-sm btn-success" onClick={(e) => handleStartGame(val.id)}>
+              <button className="btn btn-sm btn-success" onClick={() => {
+                Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to start this game?", showConfirmButton: true, showCancelButton:true, allowOutsideClick: false, allowEscapeKey: false })
+                .then((result) => {
+                  if (result.isConfirmed) {
+                    handleStartGame(val.id)
+                  }
+                })
+              }}>
                 Start Game
               </button>
             )}
             &nbsp;
             {val.status === "B" || val.status === "F" ? null : (
-              <button className="btn btn-sm btn-danger" onClick={(e) => handleFinishGame(val.id)}>
+              <button className="btn btn-sm btn-danger" onClick={() => {
+                if (val.transaction.isPaid === 'N') {
+                  Swal.fire({ icon: "warning", title: "Warning", html: "You can't finish it before paying", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                } else {
+                  Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to finish this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                    .then((result) => {
+                      if (result.isConfirmed) {
+                        handleFinishGame(val.id)
+                      }
+                    })
+                }
+              }}>
                 End Game
               </button>
             )}
@@ -220,7 +241,7 @@ const Verification = () => {
     }
   };
 
-  const TableRows = ({ rows }) => {
+  const TableRows = ({ rows, transaction }) => {
     return rows.map((val, index) => {
       return (
         <tr key={val.id}>
@@ -239,13 +260,31 @@ const Verification = () => {
 
           <td className=" d-md-flex justify-content-between">
             {val.status === "O" || val.status === "F" ? null : (
-              <button className="btn btn-sm btn-success" onClick={() => handleStartGame(val.id, true)}>
+              <button className="btn btn-sm btn-success" onClick={() => {
+                Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to start this game?", showConfirmButton: true, showCancelButton: true,  allowOutsideClick: false, allowEscapeKey: false })
+                  .then((result) => {
+                    if (result.isConfirmed) {
+                      handleStartGame(val.id, true)
+                    }
+                  })
+              }}>
                 Start Game
               </button>
             )}
             &nbsp;
             {val.status === "B" || val.status === "F" ? null : (
-              <button className="btn btn-sm btn-danger" onClick={() => handleFinishGame(val.id, true)}>
+              <button className="btn btn-sm btn-danger" onClick={() => {
+                if (transaction.isPaid === 'N') {
+                  Swal.fire({ icon: "warning", title: "Warning", html: "You can't finish it before paying", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                } else {
+                  Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to finish this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                    .then((result) => {
+                      if (result.isConfirmed) {
+                        handleFinishGame(val.id, true)
+                      }
+                    })
+                }
+              }}>
                 End Game
               </button>
             )}
@@ -258,6 +297,33 @@ const Verification = () => {
   const updateTransaction = (newTransaction) => {
     if (newTransaction) {
       setTransaction(newTransaction)
+    }
+  }
+
+  const handlePageClick = (e) => {
+    const number = e.selected + 1;
+    setCurrentPage(number);
+  }
+
+  const handleSearch = async (e) => {
+    e.preventDefault()
+    try {
+      const { data } = await axios.get('/api/rental?keyword=' + searchValue, {
+        headers: {
+          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
+        }
+      });
+      setRentalsAll(data.data)
+      if (data.data.length < 1) {
+        Swal.fire({ icon: "warning", title: "Not found!", html: `'${searchValue}' in booking not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+          .then((result) => {
+            if (result.isConfirmed) {
+              setRentalsAll(originalRentals)
+            }
+          })
+      }
+    } catch (e) {
+      Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
     }
   }
 
@@ -349,7 +415,7 @@ const Verification = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        <TableRows rows={rentals} />
+                        <TableRows rows={rentals} transaction={transaction} />
                       </tbody>
                     </table>
                     <div className="d-flex justify-content-between align-items-center">
@@ -371,15 +437,24 @@ const Verification = () => {
         {/* right */}
         <div className="col-lg-12">
           <Card className="p-3 mt-5" style={{ marginLeft: "-18px" }}>
+            <div className="row">
+              <div className="col-12 col-md-4" style={{ marginTop: -20 }} >
+                <div className="inputSearch">
+                  <form onSubmit={handleSearch}>
+                    <input type="text" name="search" value={searchValue} icon={<Search />} onChange={(e) => setSearchValue(e.target.value)} placeholder="Enter to search" />
+                  </form>
+                </div>
+              </div>
+            </div>
             <div className="table-responsive">
               <table className="table table-hover mt-3" border={1}>
                 <thead>
                   <tr>
                     <th width={"1%"}>No</th>
-                    <th width={"15%"}>Booking Code</th>
+                    <th width={"20%"}>Booking Code</th>
                     <th width={"20%"}>Name Customer</th>
                     <th width={"15%"}>Court</th>
-                    <th width={"22%"}>Start - Finish</th>
+                    <th width={"24%"}>Start - Finish</th>
                     <th width={"10%"} className="text-center">
                       Status
                     </th>
@@ -392,6 +467,21 @@ const Verification = () => {
                   <TableRowsAll rows={rentalsAll} />
                 </tbody>
               </table>
+            </div>
+            <div className="clearfix">
+              <ReactPaginate
+                className="pagination"
+                pageLinkClassName="page-link"
+                breakLabel="..."
+                nextLinkClassName="page-link next"
+                nextLabel=">"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={pageCount}
+                previousLinkClassName="page-link prev"
+                previousLabel=" <"
+                renderOnZeroPageCount={null}
+              />
             </div>
           </Card>
         </div>

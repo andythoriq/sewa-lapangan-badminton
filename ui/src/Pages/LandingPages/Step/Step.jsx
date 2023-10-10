@@ -108,7 +108,7 @@ const FormStep = () => {
                 <br />
                 <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
                   <Form.Group className="mb-2">
-                    <FormInput type="text" name="name" label="Full name" value={name} placeholder="input full name (not required)" onChange={(e) => setName(e.target.value)} />
+                    <FormInput type="text" name="name" label="Full name" value={name} placeholder="required if the account is new" onChange={(e) => setName(e.target.value)} />
                     {errors.name && <span className="text-danger">{errors.name[ 0 ]}</span>}
                   </Form.Group>
                   <Form.Group className="mb-2">

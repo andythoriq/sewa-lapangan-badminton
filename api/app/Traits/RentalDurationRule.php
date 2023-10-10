@@ -9,8 +9,8 @@ trait RentalDurationRule
 {
     public function validateDuration(string $start, string $finish)
     {
-        $start = Carbon::parse($start);
-        $finish = Carbon::parse($finish);
+        $start = Carbon::parse($start, 'Asia/Jakarta');
+        $finish = Carbon::parse($finish, 'Asia/Jakarta');
 
         $minDuration = 60;
         $multipleOf = 30;

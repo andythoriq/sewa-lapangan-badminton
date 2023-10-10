@@ -11,7 +11,7 @@ class ScheduleController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $config_open_time = ConfigModel::where('slug', 'open-time')->first();
+        $config_open_time = ConfigModel::getOpenTime();
 
         $filtered_open_time = [];
 

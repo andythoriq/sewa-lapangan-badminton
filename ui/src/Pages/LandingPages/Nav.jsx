@@ -7,6 +7,7 @@ import Court from "../../Components/Court";
 import axios from "../../api/axios";
 import Swal from "sweetalert2";
 import secureLocalStorage from "react-secure-storage";
+import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { dirIcon } from "../../Components/Services/config";
 import { Link } from "react-router-dom";
@@ -14,7 +15,7 @@ import { Link } from "react-router-dom";
 const Landing = () => {
   // loader state
   // const [isLoading, setIsLoading] = useState(true);
-
+  const navigate = useNavigate()
   // create sync method to fetch
   // useEffect(() => {
   //   const DataFetch = () => {
@@ -133,6 +134,13 @@ const Landing = () => {
                     <Dropdown.Item eventKey="2" onClick={handleLogout}>
                       <span>Logout</span>
                     </Dropdown.Item>
+                    <Dropdown.Item>
+                        <Nav.Link style={{ marginRight: "30px", color: "white" }}>
+                          <div onClick={() => {
+                            navigate('/dashboard-user')
+                          }}>Dashboard</div>
+                        </Nav.Link>
+                    </Dropdown.Item>
                   </Dropdown.Menu>
                   <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                     <div>
@@ -142,7 +150,7 @@ const Landing = () => {
                 </Dropdown>
                 </div>
             ) : (
-              <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} href="userstep">
+              <a className="btn btn-danger ms-2" style={{ borderRadius: 13 }} onClick={() => navigate('/userstep')}>
                 Register
               </a>
             )}
