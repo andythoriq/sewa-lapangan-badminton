@@ -37,7 +37,7 @@ const Landing = () => {
       });
       secureLocalStorage.clear();
       setTimeout(function () {
-        navigate('/userstep', {replace:true})
+        navigate('/landing-page', {replace:true})
       }, 500);
     } catch (e) {
       if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {

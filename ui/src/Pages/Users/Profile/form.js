@@ -89,6 +89,7 @@ const FormProfile = () => {
           <Link to="/profile" className="btnBack">
             <ArrowLeft />
           </Link>
+          <span className="text-dark">Edit Profile Admin</span>
         </b>
       </h4>
       <Row>

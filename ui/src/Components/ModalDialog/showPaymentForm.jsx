@@ -126,6 +126,7 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
             <>
               <hr />
               <button
+                className="btn btn-sm btn-warning "
                 onClick={() => {
                   setShowUseDeposit(!showUseDeposit);
                   setDepositInput("");
@@ -138,16 +139,16 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
 
           {showUseDeposit === true && customerPaid < transaction_total_price && transaction_customer_deposit > 0 && (
             <>
-              <hr />
-              <h5>You have {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transaction_customer_deposit)} from deposit</h5>
+              <h5 className="mt-2 text-danger">You have {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transaction_customer_deposit)} from deposit</h5>
+              <hr/>
               <label htmlFor="customer_deposit">How much?</label>
               <br />
-              <input id="customer_deposit" value={depositInput} onChange={validateDepositInput} />
+              <input className="form-control" type="number" id="customer_deposit" value={depositInput} onChange={validateDepositInput} />
             </>
           )}
           {errorDeposit.length > 0 && <p className="text-danger">{errorDeposit}</p>}
-          <hr />
-          <button type="submit" className="btn btn-sm btn-success">
+          <hr/>
+          <button type="submit" className="btn btn-sm btn-success mt-2">
             Pay
           </button>
         </form>
