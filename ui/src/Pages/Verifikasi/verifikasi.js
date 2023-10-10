@@ -5,7 +5,8 @@ import secureLocalStorage from "react-secure-storage";
 import PaymentForm from "../../Components/ModalDialog/showPaymentForm";
 import Scanner from "../Users/ScannerQr/Scanner";
 import Modal from "react-bootstrap/Modal";
-import { Card } from "react-bootstrap";
+import { Card, Form, Col, Row } from "react-bootstrap";
+import FormInput from "../../Components/Form/input";
 import Moment from "react-moment";
 import { useParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
@@ -437,7 +438,16 @@ const Verification = () => {
         {/* right */}
         <div className="col-lg-12">
           <Card className="p-3 mt-5" style={{ marginLeft: "-18px" }}>
-            <div className="row">
+          <Row className="">
+          <Col className="col-12 col-md-4" style={{ marginTop: -20 }}>
+            <Form.Group className="inputSearch">
+              <Form onSubmit={handleSearch}>
+                <FormInput type="text" name="search" value={searchValue} icon={<Search />} onChange={(e) => setSearchValue(e.target.value)} placeholder="Enter to search" />
+              </Form>
+            </Form.Group>
+          </Col>
+        </Row>
+            {/* <div className="row">
               <div className="col-12 col-md-4" style={{ marginTop: -20 }} >
                 <div className="inputSearch">
                   <form onSubmit={handleSearch}>
@@ -445,7 +455,7 @@ const Verification = () => {
                   </form>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="table-responsive">
               <table className="table table-hover mt-3" border={1}>
                 <thead>

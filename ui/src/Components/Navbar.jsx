@@ -10,6 +10,7 @@ import FormSelect from "./Form/select";
 import axios from "../api/axios";
 import Swal from "sweetalert2";
 import secureLocalStorage from "react-secure-storage";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate()
@@ -132,6 +133,12 @@ const Navbar = () => {
               <div><img src={`${dirIcon}owl.png`} alt="" /> <span className="text-white localstorge">Hi,</span> <span className="localstorge">{secureLocalStorage.getItem('username')}</span></div>
             </Dropdown.Toggle>
             <Dropdown.Menu>
+            <Dropdown.Item eventKey="1">
+              <Link to={'/profile'} className="">
+              <img src={`${dirIcon}profile.png`} alt="" />
+              Profile
+              </Link>
+            </Dropdown.Item>
               {/* <Dropdown.Item eventKey="1" href="/logout">Logout</Dropdown.Item> */}
               {/* <Dropdown.Item eventKey="1" to={'./profile'}>
                 My Profile
