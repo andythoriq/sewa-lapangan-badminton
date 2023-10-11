@@ -256,12 +256,12 @@ const Setting = () => {
                 {errors.invalid_input &&
                     <span className="text-danger">{errors.invalid_input[ 0 ]}</span>}
                 <center>
-                    <button type="button" className="btn btn-danger btn-sm" onClick={addRowTable}>
-                        + Add
+                    <button type="button" className="btn btn-sm" onClick={addRowTable} style={{ background: "#B21830", color: "white" }}>
+                        Add
                     </button>
                 </center>
                   <Col className="col-12 text-right mt-4">
-                    <button type="submit" className="btn btn-danger btn-sm me-md-6">
+                    <button type="submit" className="btn btn-sm me-md-6" style={{ background: "#B21830", color: "white" }}>
                       Save
                     </button>
                   </Col>

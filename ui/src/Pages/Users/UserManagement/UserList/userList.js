@@ -143,8 +143,8 @@ const UserList = () => {
                     </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6 pt-1">
-                    <Link to={'/user-management/user-list/add'} className="btn btn-danger btn-sm add">
-                        + Add User
+                    <Link to={'/user-management/user-list/add'} className="btn btn-sm add" style={{ background: "#B21830", color: "white" }}>
+                        Add User
                     </Link>
                 </Col>
             </Row>

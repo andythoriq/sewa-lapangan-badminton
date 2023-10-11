@@ -139,8 +139,8 @@ const PeakTime = () => {
                     </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6 pt-1">
-                    <Link to={'/data-master/rush/add'} className="btn btn-danger btn-sm add">
-                        + Add Peak Time
+                    <Link to={'/data-master/rush/add'} className="btn btn-sm add" style={{ background: "#B21830", color: "white" }}>
+                        Add Peak Time
                     </Link>
                 </Col>
             </Row>

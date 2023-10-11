@@ -140,8 +140,8 @@ const Regular = () => {
                     </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6 pt-1">
-                    <Link to={'/data-master/customer-regular/add'} className="btn btn-danger btn-sm add">
-                        + Add Regular Customer
+                    <Link to={'/data-master/customer-regular/add'} className="btn btn-sm add" style={{ background: "#B21830", color: "white" }}>
+                        Add Regular Customer
                     </Link>
                 </Col>
                 {/* <Col className="col-12 col-md-12">

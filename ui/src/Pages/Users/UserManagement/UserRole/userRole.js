@@ -149,8 +149,8 @@ const UserRole = () => {
                         </Form.Group>
                     </Col>
                     <Col className="col-12 col-md-8 pt-1">
-                        <Link to={'/user-management/user-role/add'} className="btn btn-danger btn-sm add">
-                            + Add Role
+                        <Link to={'/user-management/user-role/add'} className="btn btn-sm add" style={{ background: "#B21830", color: "white" }}>
+                            Add Role
                         </Link>
                     </Col>
                     {/* <Col className="col-12 col-md-12 mt-2">

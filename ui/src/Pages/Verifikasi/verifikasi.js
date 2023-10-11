@@ -352,7 +352,7 @@ const Verification = () => {
                       {errors.booking_code && <span className="text-danger">{errors.booking_code[0]}</span>}
                     </div>
                   </div>
-                  <button className="btn btn-danger btn-sm w-100 mt-2" onClick={() => handleCheckDetail(bookingCode)}>
+                  <button className="btn btn-sm w-100 mt-2" onClick={() => handleCheckDetail(bookingCode)} style={{background: "#B21830", color: "white" }}>
                     Check Order
                   </button>
                 </div>

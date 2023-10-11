@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Form, Card, Row, Col } from "react-bootstrap";
-import { Trash3, Search, EyeFill } from "react-bootstrap-icons";
+import { Search, EyeFill } from "react-bootstrap-icons";
 import FormInput from "../../Components/Form/input";
 import ModalConfirmDelete from "../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
@@ -142,9 +142,6 @@ const HistoryBooking = () => {
           </td>
           <td className="text-center">{val.status === "B" ? "Booked" : val.status === "O" ? "On progress" : "Finished"}</td>
           <td className="text-center">
-            <a href="#delete" onClick={() => handleShow(index, val.id)}>
-              <Trash3 className="material-icons" color="dark" title="Delete" />
-            </a>
             &nbsp;&nbsp;
             <a href="#detail" onClick={() => handleShowDetail(val)}>
               <EyeFill className="material-icons" color="dark" title="Detail" />

@@ -170,7 +170,7 @@ const UserListForm = () => {
                   {errors.status && <span className="text-danger">{errors.status[0]}</span>}
                 </Col>
                 <Col className="col-12 text-right pt-3">
-                  <Button type="submit" onClick={handleSubmitClick} className="btn btn-danger">
+                  <Button type="submit" onClick={handleSubmitClick} className="btn" style={{ background: "#B21830", color: "white" }}>
                     Save
                   </Button>
                 </Col>

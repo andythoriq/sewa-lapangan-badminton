@@ -168,7 +168,7 @@ const Rush = () => {
                   {errors.finish && <span className="text-danger">{errors.finish[0]}</span>}
                 </Col>
                 <Col className="col-12 col-sm-12 col-md-12 m-auto text-right pt-3">
-                  <button onClick={handleSubmitClick} type="button" className="btn btn-danger btn-sm">
+                  <button onClick={handleSubmitClick} type="button" className="btn btn-sm" style={{ background: "#B21830", color: "white" }}>
                     Save
                   </button>
                 </Col>

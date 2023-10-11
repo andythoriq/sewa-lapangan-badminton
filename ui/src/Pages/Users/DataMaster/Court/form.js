@@ -173,7 +173,7 @@ const CourtForm = () => {
                     <>
                       <Image src={imgDefault} className="imgDefault" title="Upload" />
                       <br />
-                      <div className="btn btn-danger">Upload</div>
+                      <div className="btn" style={{ background: "#B21830", color: "white" }}>Upload</div>
                     </>
                   )}
                 </center>
@@ -181,7 +181,7 @@ const CourtForm = () => {
               {errors.image_path && <span className="text-danger">{errors.image_path[0]}</span>}
             </Col>
             <Col className="col-12 text-right pt-3">
-              <button onClick={handleSubmitClick} type="button" className="btn btn-danger me-md-4">
+              <button onClick={handleSubmitClick} type="button" className="btn me-md-4" style={{ background: "#B21830", color: "white" }}>
                 Save
               </button>
             </Col>

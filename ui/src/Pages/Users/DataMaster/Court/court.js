@@ -151,8 +151,8 @@ const Court = () => {
                     </Form.Group>
                 </Col>
                 <Col className="col-12 col-md-6 pt-1">
-                    <Link to={'/data-master/court/add'} className="btn btn-danger btn-sm add">
-                        + Add Court
+                    <Link to={'/data-master/court/add'} className="btn btn-sm add" style={{ background: "#B21830", color: "white" }}>
+                        Add Court
                     </Link>
                 </Col>
             </Row>

@@ -1,6 +1,6 @@
 @media (max-width: 1994px) {
   .nav {
-    position: fixed;
+    /* position: fixed; */
     top: 0;
     width: 100%;
     z-index: 9999;
@@ -15,7 +15,7 @@
   .jumbotron {
     background-image: url(/public/assets/img/bg.jpg);
     background-size: cover;
-    height: 580px;
+    height: 450px;
   }
   .scroll-down {
     height: 50px;
@@ -23,7 +23,7 @@
     border: 2px solid white;
     position: absolute;
     left: 50%;
-    bottom: 350px;
+    bottom: 390px;
     border-radius: 50px;
     cursor: pointer;
   }
@@ -70,7 +70,7 @@
   .about-text h2 {
     font-size: 45px;
     font-weight: 700;
-    color: black;
+    color: #201E37;
   }
   .about-text .btn {
     background: #d93221;
@@ -83,11 +83,11 @@
 
   /* court */
   #court {
-    background-color: #d93221;
+    /* background-color: #d93221; */
     padding: 10px 0;
   }
   .card-court {
-    transition: 0.5s ease;
+    transition: 0.3s ease;
   }
   .card-body {
     padding: 25px;
@@ -110,7 +110,7 @@
 
   /* footer */
   .footer.lpages {
-    background-color: #000000;
+    background-color: #201E37;
     padding: 0 20px;
     margin: 0 auto;
   }
