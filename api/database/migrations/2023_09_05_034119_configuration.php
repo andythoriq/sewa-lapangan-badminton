@@ -17,7 +17,7 @@ class Configuration extends Migration
             $table->smallIncrements('id');
             $table->string('slug', 60);
             $table->text('description');
-            $table->longText('value');
+            $table->mediumText('value');
             $table->timestamps();
         });
     }

@@ -23,7 +23,7 @@ class ConfigModel extends Model
         if (empty($open_time)) {
             $open_time = self::where('id', 1)->first();
         }
-        return $open_time;
+        return $open_time->value;
     }
 
     public static function getExpireDuration()
@@ -32,6 +32,15 @@ class ConfigModel extends Model
         if (empty($expire_otp)) {
             $expire_otp = self::where('id', 4)->first();
         }
-        return $expire_otp;
+        return $expire_otp->value;
+    }
+
+    public static function memberDiscount()
+    {
+        $member_discount = self::where('slug', 'member-discount')->first();
+        if (empty($member_discount)) {
+            $member_discount = self::where('id', 5)->first();
+        }
+        return $member_discount->value;
     }
 }

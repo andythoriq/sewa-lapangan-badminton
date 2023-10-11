@@ -97,6 +97,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/config', 'create');
         Route::put('/config/{config}', 'update');
         Route::delete('/config/{config}', 'delete');
+        Route::get('/get-config', 'get_config');
+        Route::post('/change-config', 'change_config')->name('change-config');
     });
 
     /** Master Holiday
