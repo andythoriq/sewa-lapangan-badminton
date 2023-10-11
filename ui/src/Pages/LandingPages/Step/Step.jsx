@@ -4,8 +4,10 @@ import { logoApp, namaApp } from "../../../Components/Services/config";
 import FormInput from "../../../Components/Form/input";
 import PhoneInput from "react-phone-input-2";
 import axios from "../../../api/axios";
-import NavbarPublic from "../../../Components/NavbarPublic";
-import FooterPublic from "../../../Components/FooterPublic";
+import { ArrowLeft } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
+// import NavbarPublic from "../../../Components/NavbarPublic";
+// import FooterPublic from "../../../Components/FooterPublic";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -76,8 +78,8 @@ const FormStep = () => {
 
   return (
     <>
-      <NavbarPublic />
-      <Container className="regis pt-5 pb-5" style={{ marginBottom: "99px" }}>
+      <div style={{ backgroundColor: "#F5F5F5" }}>
+      <Container className="regis pt-5 pb-5" style={{  height: "100vh", borderRadius: "30px" }}>
         <Card className="bgRegis mt-5">
           <Row>
             <Col className="col-sm-6 px-0 d-none d-md-block divLeft position-relative">
@@ -98,7 +100,12 @@ const FormStep = () => {
                 <div className="d-md-none d-md-block text-center mb-2">
                   <img src={`/${logoApp}`} alt="" width={100} />
                 </div>
-                <b className="text-heading" style={{ fontSize: 25 }}>
+                <div className="back" style={{ width: "50px" }}>
+                  <Link to="/landing-page" className="btnBack">
+                    <ArrowLeft/>
+                  </Link>
+                </div>
+                <b className="text-heading" style={{ fontSize: 30 }}>
                   New Sport
                   <br />
                   Experience.
@@ -106,7 +113,7 @@ const FormStep = () => {
                 {/* <p>Create your account now</p> */}
                 <br />
                 <br />
-                <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
+                <Form onSubmit={handleSubmit} style={{ width: "120%" }}>
                   <Form.Group className="mb-2">
                     <FormInput type="text" name="name" label="Full name" value={name} placeholder="required if the account is new" onChange={(e) => setName(e.target.value)} />
                     {errors.name && <span className="text-danger">{errors.name[ 0 ]}</span>}
@@ -129,7 +136,7 @@ const FormStep = () => {
           </Row>
         </Card>
       </Container>
-      <FooterPublic />
+      </div>
     </>
   );
 };

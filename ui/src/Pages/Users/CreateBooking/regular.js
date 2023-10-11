@@ -190,7 +190,7 @@ const CreateBookingFormRegular = () => {
             {transactionResponse.total_price ? <span>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transactionResponse.total_price)}</span> : <span>{totallyPrice ? new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(totallyPrice) : '...'}</span>}
           </Col><hr className="mt-3"/>
           <Col className="col-12 text-right mt-2">
-            <button type="button" className="btn btn-danger btn-sm me-md-4" onClick={onSubmit} disabled={showSendBookingCode}>
+            <button type="button" className="btn btn-sm me-md-4" onClick={onSubmit} disabled={showSendBookingCode} style={{ background: "#B21830", color: "white" }}>
               Booking
             </button>
           </Col>

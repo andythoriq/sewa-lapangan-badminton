@@ -3,8 +3,10 @@ import { Card, Col, Container, Row, Form, Button } from "react-bootstrap";
 import { logoApp, namaApp } from "../../../Components/Services/config";
 import OTPInput from "otp-input-react";
 import Swal from "sweetalert2";
-import NavbarPublic from "../../../Components/NavbarPublic";
-import FooterPublic from "../../../Components/FooterPublic";
+// import NavbarPublic from "../../../Components/NavbarPublic";
+// import FooterPublic from "../../../Components/FooterPublic";
+// import { ArrowLeft } from "react-bootstrap-icons";
+// import { Link } from "react-router-dom";
 import "../nav.css";
 import axios from "../../../api/axios";
 import { useNavigate } from "react-router-dom";
@@ -59,8 +61,8 @@ const Step2 = () => {
 
   return (
     <>
-    <NavbarPublic/>
-    <Container className="regis pt-5 pb-5 mt-2"  style={{ marginBottom: "105px" }}>
+    <div style={{ backgroundColor: "#F5F5F5" }}>
+    <Container className="regis pt-5 pb-5 m-auto"  style={{ height: "100vh" }}>
       <Card className="bgRegis">
         <Row>
           <Col className="col-sm-6 px-0 d-none d-md-block divLeft position-relative">
@@ -81,18 +83,23 @@ const Step2 = () => {
               <div className="d-md-none d-md-block text-center mb-2">
                 <img src={`/${logoApp}`} alt="" width={100} />
               </div>
+              {/* <div className="back" style={{ width: "50px" }}>
+                  <Link to="/step2" className="btnBack">
+                    <ArrowLeft/>
+                  </Link>
+                </div> */}
               <b className="text-heading" style={{ fontSize: 25 }}>
                 Check your inbox!
               </b>
               <p style={{fontSize:13}}>We are sending an phone<br/>numberverification code to WhatsApp please enter the code.</p>
               <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
                 {inputs.map((input, index) => (
-                  <Form.Group className="mb-3 mt-2" key={index}>
+                  <Form.Group className="mb-3 mt-2 m-2" key={index}>
                     <OTPInput value={OTP} onChange={setOTP}  OTPLength={6} otpType="number" />
                   </Form.Group>
                 ))}
                 {errors.otp_code && <span className="text-danger">{errors.otp_code[0]}</span>}
-                <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded m-2" >
+                <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded" >
                   Submit
                 </Button>
               </Form>
@@ -101,7 +108,7 @@ const Step2 = () => {
         </Row>
       </Card>
     </Container>
-    <FooterPublic/>
+    </div>
     </>
   );
 };

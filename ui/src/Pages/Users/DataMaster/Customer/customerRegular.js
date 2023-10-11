@@ -177,7 +177,7 @@ const CustomerRegular = (props) => {
                   </Col>
                 )}
                 <Col className="col-12 text-right pt-3">
-                  <button onClick={handleSubmitClick} type="button" className="btn btn-danger me-md-4">
+                  <button onClick={handleSubmitClick} type="button" className="btn me-md-4" style={{ background: "#B21830", color: "white" }}>
                     Save
                   </button>
                 </Col>

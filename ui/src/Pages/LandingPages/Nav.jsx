@@ -71,14 +71,14 @@ const Landing = () => {
     </a>
   ));
 
-  const [color, setColor] = useState(false);
-  const changeColor = () => {
-    if (window.scrollY >= 90) {
-      setColor(true);
-    } else {
-      setColor(false);
-    }
-  };
+  // const [color, setColor] = useState(false);
+  // const changeColor = () => {
+  //   if (window.scrollY >= 90) {
+  //     setColor(true);
+  //   } else {
+  //     setColor(false);
+  //   }
+  // };
 
   const [courts, setCourts] = useState([]);
 
@@ -93,18 +93,18 @@ const Landing = () => {
       });
   }, []);
 
-  window.addEventListener("scroll", changeColor);
+  // window.addEventListener("scroll", changeColor);
 
   return courts.length < 0 ? (
     <Loader />
   ) : (
     <>
       {/* navbar */}
-      <Navbar expand="lg" className={color ? "nav nav-bg" : "nav"}>
+      <Navbar expand="lg" className= "nav nav-bg">
         <Container>
           <Navbar.Brand href="#">
             <img src="./logo.png" alt="bfb" />
-            <b className="text-white" style={{ paddingLeft: 6, fontSize: 25 }}>
+            <b className="text-white" style={{ paddingLeft: 7, fontSize: 25 }}>
               BFB
             </b>
           </Navbar.Brand>
@@ -160,7 +160,7 @@ const Landing = () => {
       {/* header */}
       <div className="p-5 mb-4 bg-light jumbotron">
         <div className="container py-5">
-          <h1 className=" fw-bold" style={{ textAlign: "center", marginTop: "100px", fontWeight: 200, color: "white" }}>
+          <h1 className=" fw-bold" style={{ textAlign: "center", marginTop: "65px", fontWeight: 200, color: "white" }}>
             Top Quality Badminton Sports Venue.
           </h1>
           <p style={{ textAlign: "center", color: "white" }}>bfb is an application that allows you to book a court or facility online or offline. </p>
@@ -197,13 +197,33 @@ const Landing = () => {
         </div>
       </section>
       {/* about */}
+
+      {/* diskon */}
+      <section id="diskon" style={{ marginBottom: "70px" }}>
+        <div className="container">
+          <div className="card" style={{ backgroundColor: "#201E37" }}>
+            <div className="row">
+              <div className="col-md-4">
+                <img src="../assets/img/people2.jpg" alt="..." className="img-fluid" />
+              </div>
+              <div className="col-md-8 text-white p-5">
+                  <p className="card-title mt-2" style={{ color: "#DADADA" }}>Booking Diskon</p>
+                  <h1 className="mt-2" style={{ fontWeight: "bold" }}>25% discount for customers and 
+                  get a discount every Monday.</h1>
+                  <button className="btn btn-lg btn-light mt-3">Let's go booking now </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Card Court */}
       <section id="court">
         <div className="container py-5">
           <div className="row cnt2 text-center">
             <div className="col">
-              <h2 className="fw-bold text-white">Our Courts</h2>
-              <p className="text-white">BFB is a sports hall that rents out courts specifically for badminton.</p>
+              <h2 className="fw-bold" style={{ color: "#201E37" }}>Our Courts</h2>
+              <p className="text-dark">BFB is a sports hall that rents out courts specifically for badminton.</p>
             </div>
           </div>
 
@@ -301,7 +321,7 @@ const Landing = () => {
           <div className="container py-5">
             <div className="row cnt2 text-center">
               <div className="col">
-                <h2 className="fw-bold">Our Services</h2>
+                <h2 className="fw-bold" style={{ color: "#201E37" }}>Our Services</h2>
                 <p>Services we provide at bfb that can make it easier for you to book the court</p>
               </div>
             </div>

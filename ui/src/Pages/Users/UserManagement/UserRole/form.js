@@ -213,8 +213,8 @@ const UserRoleForm = () => {
                             <span className="text-danger">{errors.menu[ 0 ]}</span>}
                 <div className="mb-3"><span className="text-secondary"><small>initial value: {menus}</small></span></div>
                 <center>
-                    <button type="button" className="btn btn-danger btn-sm" onClick={addRowTable}>
-                        + Add
+                    <button type="button" className="btn  btn-sm" onClick={addRowTable} style={{ background: "#B21830", color: "white" }}>
+                        Add
                     </button>
                 </center>
                 <div className="d-flex mt-2">
@@ -231,7 +231,7 @@ const UserRoleForm = () => {
                 {errors.status &&
                             <span className="text-danger">{errors.status[ 0 ]}</span>}
                 <div className="text-right">
-                    <button type="submit" className="btn btn-danger btn-sm">
+                    <button type="submit" className="btn  btn-sm" style={{ background: "#B21830", color: "white" }}>
                         Save
                     </button>
                 </div>

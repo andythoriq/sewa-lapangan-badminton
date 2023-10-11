@@ -3,6 +3,7 @@
     color: #fff;
     padding: 20px 10px 40px;
     margin: 20px 0px;
+    border-radius: 10px;
 }
 .card-box:hover {
     text-decoration: none;
@@ -51,14 +52,14 @@
     background: rgba(0, 0, 0, 0.3);
 }
 .bg-blue {
-    background-color: #00c0ef !important;
+    background-color: #7F1122!important;
 }
 .bg-green {
-    background-color: #00a65a !important;
+    background-color: #7F1122 !important;
 }
 .bg-orange {
-    background-color: #f39c12 !important;
+    background-color: #7F1122 !important;
 }
 .bg-red {
-    background-color: #d9534f !important;
+    background-color: #7F1122 !important;
 }

@@ -23,15 +23,15 @@ const Sidebar = () => {
         {name:"User Role", link:"/user-management/user-role"},
     ];
     let Links =[
-        {name:"Dashboard", link:"/dashboard", icon:"dashboard"},
-        {name:"Schedule", link:"/schedule", icon:"schedule"},
+        {name:"Dashboard", link:"/dashboard", icon:"dashboard2"},
+        {name:"Schedule", link:"/schedule", icon:"schedule3"},
         // {name:"Qr Code", link:"/scanner", icon:"code qr"},
-        {name:"Verification Booking", link:"/verification", icon:"order"},
-        {name:"History Booking", link:"/history-booking", icon:"history"},
-        {name:"Data Master", link:"/", icon:"master", sub:subMaster},
-        {name:"User Management", link:"/", icon:"user", sub:subUser},
+        {name:"Verification Booking", link:"/verification", icon:"verifikasi2"},
+        {name:"History Booking", link:"/history-booking", icon:"history3"},
+        {name:"Data Master", link:"/", icon:"master2", sub:subMaster},
+        {name:"User Management", link:"/", icon:"user3", sub:subUser},
         // {name:"Profile", link:"/profile", icon:"adminprofile"},
-        {name:"Setting", link:"/setting", icon:"setting"},
+        {name:"Setting", link:"/setting", icon:"setting2"},
     ];
     const [menuOpen, setMenuOpen] = useState(true);
     const [menuSubOpen, setMenuSubOpen] = useState(0);
@@ -82,7 +82,7 @@ const Sidebar = () => {
 
     return (
     <div className="border-end text-dark" id="sidebar-wrapper">
-        <div onClick={handleToggle} className={`sidebar-heading border-bottom text-white menu_sidebar mb-5 ${menuOpen ? "open" : ""}`}>{menuOpen?<ArrowLeftCircleIcon/>:<ArrowRightCircleIcon />}</div>
+        <div onClick={handleToggle} className={`sidebar-heading border-bottom text-white menu_sidebar mb-5 ${menuOpen ? "open" : ""}`}>{menuOpen?<ArrowLeftCircleIcon style={{ color:"#9AA49A" }}/>:<ArrowRightCircleIcon style={{ color:"#9AA49A" }}/>}</div>
         <div className="list-group list-group-flush list_menu_sidebar">
         {
           filteredLinks.map((val, key) => (

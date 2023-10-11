@@ -102,8 +102,8 @@ const Schedule = ({ aksi = "" }) => {
         </Col>
         {ifDashboard ? (
           <Col className="col-12 mt-1 mb-2 " style={{ textAlign:"right",marginLeft: "-16px" }}>
-            <Link to="/create-booking" className="btn btn-danger btn-sm">
-              + New Booking
+            <Link to="/create-booking" className="btn btn-sm" style={{ background: "#B21830", color: "white" }}>
+              New Booking
             </Link>
           </Col>
         ) : (

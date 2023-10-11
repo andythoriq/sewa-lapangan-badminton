@@ -79,12 +79,12 @@ const CreateBookingFormMember = () => {
               <Col className="col-12 mt-3 text-right">
                 {index === rows.length - 1 &&
                   <>
-                  <button type="button" className="btn btn-danger btn-sm me-md-2 text-white" onClick={onRemove} disabled={showSendBookingCode}>
+                  <button type="button" className="btn btn-sm me-md-2 text-white" onClick={onRemove} disabled={showSendBookingCode} style={{ background: "#B21830", color: "white" }}>
                     {/* <Trash3 className="text-white" style={{ marginTop: -5 }} /> */}
                     Delete
                   </button>
-                  <button type="button" className="btn btn-danger btn-sm me-md-2" onClick={addRowBox} disabled={showSendBookingCode}>
-                    + Add
+                  <button type="button" className="btn btn-sm me-md-2" onClick={addRowBox} disabled={showSendBookingCode} style={{ background: "#B21830", color: "white" }}>
+                    Add
                   </button>
                   </>
                 }
@@ -252,7 +252,7 @@ const CreateBookingFormMember = () => {
             {transactionResponse.total_price ? <span>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transactionResponse.total_price)}</span> : <span>{totallyPrice ? 'starting price: ' + new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(totallyPrice) : '...'}</span>}
           </Col>
           <Col className="col-12 text-right mt-4"><hr/>
-            <button type="button" className="btn btn-danger btn-sm me-md-4" onClick={onSubmit} disabled={showSendBookingCode}>
+            <button type="button" className="btn btn-sm me-md-4" onClick={onSubmit} disabled={showSendBookingCode} style={{ background: "#B21830", color: "white" }}>
               Booking
             </button>
           </Col>
