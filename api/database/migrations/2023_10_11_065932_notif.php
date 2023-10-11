@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Holiday extends Migration
+class Notif extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class Holiday extends Migration
      */
     public function up()
     {
-        Schema::create('tb_holiday', function (Blueprint $table) {
-            $table->id();
-            $table->string('label', 128);
-            // $table->string('label', 50);
-            $table->date('date')->unique();
-            // $table->date('date');
-            // $table->date('finish');
+        Schema::create('tb_notification', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('label', 64);
+            $table->text('value');
+            $table->enum('read_status', ['Y', 'N']);
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class Holiday extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_holiday');
+        Schema::dropIfExists('tb_notification');
     }
 }

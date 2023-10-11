@@ -1073,8 +1073,8 @@ class DatabaseSeeder extends Seeder
 
         RoleModel::create([
 
-            'label' => 'Admin',
-            'menu' => "['/dashboard']",
+            'label' => 'Super_Admin',
+            'menu' => "['/super-admin']",
             'status' => 'Y'
 
         ]);

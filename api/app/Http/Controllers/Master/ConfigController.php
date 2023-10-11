@@ -53,7 +53,7 @@ class ConfigController extends Controller
     public function change_config(Request $request)
     {
         $request->validate([
-            'error_message' => ['nullable', function ($attr, $value, $fail) {
+            'invalid_input' => ['nullable', function ($attr, $value, $fail) {
                 if ($value === '38569de2-6078-11ee-8c99-0242ac120002') {
                     $fail(str_replace("_", " ", $attr) . ': Company data is incomplete.');
 

@@ -18,7 +18,7 @@ class OtpHistory extends Migration
 
             $table->integer('customer_id');
             $table->foreign('customer_id')->references('customer_code')->on('tb_customer')->cascadeOnDelete();
-            $table->string('otp_code', 6);
+            $table->string('otp_code', 8);
 
             $table->timestamps();
         });

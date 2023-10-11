@@ -15,7 +15,7 @@ class Customer extends Migration
     {
         Schema::create('tb_customer', function (Blueprint $table) {
             $table->integer('customer_code')->primary()->unique();
-            $table->string('name', 60);
+            $table->string('name', 64);
             $table->string('phone_number', 20)->unique();
             $table->float('deposit')->nullable()->default(null);
             $table->float('debt')->nullable()->default(null);

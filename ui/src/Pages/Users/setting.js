@@ -50,7 +50,7 @@ const Setting = () => {
     const errors = [];
 
     schedule.forEach((item) => {
-      const { day, hours } = item;
+      const { day, start, finish } = item;
 
       if (!values.name || !values.phone_number || !values.email || !values.address || !values.otp_expiration || !values.member_discount || schedule.length <= 0) {
         errors.push('38569de2-6078-11ee-8c99-0242ac120002'); // Company data is incomplete.
@@ -60,7 +60,6 @@ const Setting = () => {
         errors.push('3fc8d328-6079-11ee-8c99-0242ac120002'); // Invalid day
       }
 
-      const { start, finish } = hours;
       if (!start || !finish) {
         errors.push('7a789d1e-6079-11ee-8c99-0242ac120002'); // Start and finish times are required
       } else {
@@ -83,7 +82,7 @@ const Setting = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     const data = {
-      error_message: '',
+      invalid_input: '',
       configs: [
         {
           slug: 'open-time',
@@ -119,9 +118,9 @@ const Setting = () => {
 
     const scheduleErrors = validateSchedule(rows);
     if (scheduleErrors.length > 0) {
-      data.error_message = scheduleErrors[0]
+      data.invalid_input = scheduleErrors[0]
     }else{
-      data.error_message = '';
+      data.invalid_input = '';
       setErrors([])
     }
     try {
@@ -142,10 +141,9 @@ const Setting = () => {
     }
   }
 
-  const TableRows = ({ rows, tableRowRemove, onValUpdate, onValUpdateTime }) => {
-    return rows.map((rowsData, index) => {
-        const { day, hours } = rowsData;
-        // console.log(idnya, isCheck);
+  const TableRows = ({ rows, onRemove, onUpdate }) => {
+    return rows.map((row, index) => {
+        const { day, start, finish } = row;
         return (
             <tr key={index}>
                 <td>
@@ -153,18 +151,18 @@ const Setting = () => {
                     name="day"
                     className="form-select form-select-sm"
                     options={dayData}
-                    selected={day?day:""}
-                    onChange={(event) => onValUpdate(index, event)}
+                    selected={day}
+                    onChange={(e) => onUpdate(index, e.target.name, e.target.value)}
                   />
                 </td>
                 <td>
-                  <FormInput type="time" name="start" value={hours?hours.start:""} onChange={(event) => onValUpdateTime("start",index, event)} />
+                  <FormInput type="time" name="start" value={start} onChange={(e) => onUpdate(index, "start", e.target.value)} />
                 </td>
                 <td>
-                  <FormInput type="time" name="finish" value={hours?hours.finish:""} onChange={(event) => onValUpdateTime("finish",index, event)} />
+                  <FormInput type="time" name="finish" value={finish} onChange={(e) => onUpdate(index, "finish", e.target.value)} />
                 </td>
                 <td className="text-center">
-                    <a href="#delete" onClick={() => tableRowRemove(index)}>
+                    <a href="#delete" onClick={() => onRemove(index)}>
                         <Trash3 className="material-icons" color="dark" title="Delete" />
                     </a>
                 </td>
@@ -173,29 +171,19 @@ const Setting = () => {
     });
   };
   
-  const dataDefault = { day:"", hours:{} };
+  const dataDefault = { day:"", start: "", finish: "" };
   const addRowTable = () => {
       initRow([...rows, dataDefault]);
   };
-  const tableRowRemove = (index) => {
+  const removeRow = (index) => {
     const dataRow = [...rows];
     dataRow.splice(index, 1);
     initRow(dataRow);
   };
-  const onValUpdate = (i, event) => {
-    const { name, value } = event.target;
-    const data = [...rows];
-    data[i][name] = value;
-    // console.log(data);
-    initRow(data);
-  };
-  const onValUpdateTime = (name, i, e)  => {
-    const value = e.target.value;
-    // console.log(value);
-    const data = [...rows];
-    data[i]["hours"][name] = value;
-    // console.log(data);
-    // initRow(data);
+  const updateRow = (index, name, value) => {
+    const updatedRow = [...rows];
+    updatedRow[index][name] = value;
+    initRow(updatedRow);
   }
 
   return (
@@ -259,15 +247,14 @@ const Setting = () => {
                         <tbody>
                             <TableRows
                                 rows={rows}
-                                tableRowRemove={tableRowRemove}
-                                onValUpdate={onValUpdate}
-                                onValUpdateTime={onValUpdateTime}
+                                onRemove={removeRow}
+                                onUpdate={updateRow}
                             />
                         </tbody>
                     </table>
                 </div>
-                {errors.error_message &&
-                    <span className="text-danger">{errors.error_message[ 0 ]}</span>}
+                {errors.invalid_input &&
+                    <span className="text-danger">{errors.invalid_input[ 0 ]}</span>}
                 <center>
                     <button type="button" className="btn btn-danger btn-sm" onClick={addRowTable}>
                         + Add

@@ -17,7 +17,7 @@ class Transaction extends Migration
             $table->increments('id');
             $table->float('total_price');
             $table->float('total_hour');
-            $table->string('qr_code_image', 255)->nullable()->default(null);
+            $table->string('qr_code_image', 254)->nullable()->default(null);
 
             $table->enum('isPaid', ['Y', 'N'])->default('N');
             $table->float('customer_paid')->nullable()->default(null);
