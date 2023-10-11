@@ -149,7 +149,7 @@ const Landing = () => {
                 </Dropdown>
                 </div>
             ) : (
-              <button onClick={() => navigate('/userstep')} className="btn btn-danger ms-2" style={{ borderRadius: 13 }}>
+              <button onClick={() => navigate('/userstep')} className="btn ms-2" style={{ borderRadius: 13, background: "#B21830", color: "white" }}>
                 Register
               </button>
             )}
@@ -189,7 +189,7 @@ const Landing = () => {
                     bfb is an application that allows you to book a court or facility online or offline. You can choose the date, time, and type of court you want. The application has an availability calendar that allows you to see when the
                     court or facility is available for booking. bfb may provide discounts to club members or their regular customers as an incentive to faithfully use the facility or pitch.
                   </p>
-                  <button className="btn btn-danger">About Us</button>
+                  <button className="btn" style={{ background: "#B21830", color: "white" }}>About Us</button>
                 </div>
               </div>
             </div>

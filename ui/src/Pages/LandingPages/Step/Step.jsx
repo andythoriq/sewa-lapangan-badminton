@@ -127,7 +127,7 @@ const FormStep = () => {
                   {/* <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded" href="/step2">
                   Next
                 </Button> */}
-                  <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded">
+                  <Button type="submit" className="btn col-12 mt-2 rounded" style={{  background: "#B21830", color: "white" }}>
                     Send OTP
                   </Button>
                 </Form>

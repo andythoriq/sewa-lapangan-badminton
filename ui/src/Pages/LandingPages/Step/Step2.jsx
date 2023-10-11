@@ -99,7 +99,7 @@ const Step2 = () => {
                   </Form.Group>
                 ))}
                 {errors.otp_code && <span className="text-danger">{errors.otp_code[0]}</span>}
-                <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded" >
+                <Button type="submit" className="btn btn-sm btn-block col-12 mt-2 rounded"  style={{ background: "#B21830", color: "white" }}>
                   Submit
                 </Button>
               </Form>
