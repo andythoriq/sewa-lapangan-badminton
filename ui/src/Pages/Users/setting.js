@@ -19,15 +19,15 @@ const Setting = () => {
   useEffect(() => {
     axios.get('/api/get-config')
       .then(({data}) => {
-        const contactParsed = JSON.parse(data.contact.value)
-        setValues({name: data.name.value, 
+        const contactParsed = JSON.parse(data.contact)
+        setValues({name: data.name, 
           phone_number: contactParsed.number, 
           email: contactParsed.email, 
           address: contactParsed.address, 
-          otp_expiration: data.expire_duration.value,
-          member_discount: data.member_discount.value
+          otp_expiration: data.expire_duration,
+          member_discount: data.member_discount
         })
-        initRow(JSON.parse(data.open_time.value))
+        initRow(JSON.parse(data.open_time))
       })
       .catch((e) => {
         if (e.response?.status === 404 || e.response?.status === 403 || e?.response?.status === 401) {
@@ -85,7 +85,7 @@ const Setting = () => {
       invalid_input: '',
       configs: [
         {
-          slug: 'open-time',
+          slug: 'open_time',
           description: 'Jam buka kami atau operational time adalah waktu kami untuk menerima pesanan booking selain dari waktu ini kami tidak menerima pesanan tersebut.',
           value: JSON.stringify(rows)
         },
@@ -104,12 +104,12 @@ const Setting = () => {
           })
         },
         {
-          slug: 'expire-duration',
+          slug: 'expire_duration',
           description: 'Expire duration OTP code in minutes after request it. (in minutes)',
           value: values.otp_expiration
         },
         {
-          slug: 'member-discount',
+          slug: 'member_discount',
           description: 'Potongan harga untuk booking member / multiple booking. (in percent)',
           value: values.member_discount
         }

@@ -40,14 +40,12 @@ class ConfigController extends Controller
 
     public function get_config()
     {
-        $config = ConfigModel::select('slug', 'description', 'value')->get();
-        return response()->json([
-            'open_time' => $config[0],
-            'name' => $config[1],
-            'contact' => $config[2],
-            'expire_duration' => $config[3],
-            'member_discount' => $config[4]
-        ]);
+        $configs = ConfigModel::select('slug', 'description', 'value')->get();
+        $data = [];
+        foreach ($configs as $item) {
+            $data[$item->slug] = $item->value;
+        }
+        return response()->json($data);
     }
 
     public function change_config(Request $request)

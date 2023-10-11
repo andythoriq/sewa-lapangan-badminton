@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, StartRentalController, FinishRentalController, DashboardController, ScheduleController};
+use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, StartRentalController, FinishRentalController, DashboardController, ScheduleController, NotificationController};
 use App\Http\Controllers\Master\{HolidayController, ConfigController, OpenTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController, TransactionController};
 use Illuminate\Support\Facades\Route;
 
@@ -63,6 +63,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/admin-role-menu-list', GetRoleMenusController::class)->middleware('admin');
     Route::get('/dashboard', DashboardController::class)->middleware('admin');
+    Route::get('/notification', [NotificationController::class, 'index'])->middleware('admin');
+    Route::post('/notification', [NotificationController::class, 'change'])->middleware('admin');
 
     /** START MASTER DATA */
 

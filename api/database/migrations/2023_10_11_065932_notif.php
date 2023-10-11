@@ -17,7 +17,7 @@ class Notif extends Migration
             $table->increments('id');
             $table->string('label', 64);
             $table->text('value');
-            $table->enum('read_status', ['Y', 'N']);
+            $table->enum('read_status', ['Y', 'N'])->default('N');
             $table->timestamps();
         });
     }
