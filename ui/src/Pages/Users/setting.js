@@ -5,29 +5,40 @@ import { Trash3 } from "react-bootstrap-icons";
 import FormInput from "../../Components/Form/input";
 import FormTextarea from "../../Components/Form/textarea";
 import FormSelect from "../../Components/Form/select";
-import { dayData, settingData } from "../../Components/settingData";
+import { dayData } from "../../Components/settingData";
 import axios from "../../api/axios";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
-import secureLocalStorage from "react-secure-storage";
 
 const Setting = () => {
-  const navigate = useNavigate()
-  const [values, setValues] = useState({ name:"", number:"", email:"", address:"", slug: "", description: "" });
+  const [values, setValues] = useState({ name:"", phone_number:"", email:"", address:"", otp_expiration: 0, member_discount: 0 });
   const [rows, initRow] = useState([]);
-  const [slug, setSlug] = useState('')
-  const [description, setDescription] = useState('')
+  const [triggerFetch, setTriggerFetch] = useState(false)
 
-  const [errors, setErrors] = useState('')
+  const [errors, setErrors] = useState([])
 
   useEffect(() => {
-    const setFormData = () => {
-      const get = settingData.data;
-      setValues({name:get.name, number:get.whatsapp_number, email:get.email, address:get.address});
-    }
-    initRow(settingData.open_days);
-    setFormData();
-  }, []);
+    axios.get('/api/get-config')
+      .then(({data}) => {
+        const contactParsed = JSON.parse(data.contact)
+        setValues({name: data.name, 
+          phone_number: contactParsed.number, 
+          email: contactParsed.email, 
+          address: contactParsed.address, 
+          otp_expiration: data.expire_duration,
+          member_discount: data.member_discount
+        })
+        initRow(JSON.parse(data.open_time))
+      })
+      .catch((e) => {
+        if (e.response?.status === 404 || e.response?.status === 403 || e?.response?.status === 401) {
+          Swal.fire({
+            icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+          });
+        } else {
+          Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+        }
+      })
+  }, [triggerFetch]);
 
 
   const onChange = (e) => {
@@ -39,9 +50,9 @@ const Setting = () => {
     const errors = [];
 
     schedule.forEach((item) => {
-      const { day, hours } = item;
+      const { day, start, finish } = item;
 
-      if (!values.name || !values.number || !values.email || !values.address) {
+      if (!values.name || !values.phone_number || !values.email || !values.address || !values.otp_expiration || !values.member_discount || schedule.length <= 0) {
         errors.push('38569de2-6078-11ee-8c99-0242ac120002'); // Company data is incomplete.
       }
 
@@ -49,7 +60,6 @@ const Setting = () => {
         errors.push('3fc8d328-6079-11ee-8c99-0242ac120002'); // Invalid day
       }
 
-      const { start, finish } = hours;
       if (!start || !finish) {
         errors.push('7a789d1e-6079-11ee-8c99-0242ac120002'); // Start and finish times are required
       } else {
@@ -72,36 +82,52 @@ const Setting = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     const data = {
-      slug: slug,
-      description: description,
-      value: '',
+      invalid_input: '',
+      configs: [
+        {
+          slug: 'open_time',
+          description: 'Jam buka kami atau operational time adalah waktu kami untuk menerima pesanan booking selain dari waktu ini kami tidak menerima pesanan tersebut.',
+          value: JSON.stringify(rows)
+        },
+        {
+          slug: 'name',
+          description: 'Nama perusahaan kami akan ditampilkan pada navbar dan tempat informasi yang lainnya.',
+          value: values.name
+        },
+        {
+          slug: 'contact',
+          description: 'Berisikan nomor Whatsapp, Email, dan Alamat yang sedia untuk dihubungi.',
+          value: JSON.stringify({
+              number: values.phone_number,
+              email: values.email,
+              address: values.address
+          })
+        },
+        {
+          slug: 'expire_duration',
+          description: 'Expire duration OTP code in minutes after request it. (in minutes)',
+          value: values.otp_expiration
+        },
+        {
+          slug: 'member_discount',
+          description: 'Potongan harga untuk booking member / multiple booking. (in percent)',
+          value: values.member_discount
+        }
+      ]
     }
 
     const scheduleErrors = validateSchedule(rows);
     if (scheduleErrors.length > 0) {
-      data.value = scheduleErrors[0]
-    } else {
-      data.value = JSON.stringify({
-        name: values.name,
-        number: values.number,
-        email: values.email,
-        address: values.address,
-        schedule: rows
-      })
-    }
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
-      }
+      data.invalid_input = scheduleErrors[0]
+    }else{
+      data.invalid_input = '';
+      setErrors([])
     }
     try {
       await axios.get('/sanctum/csrf-cookie')
-      const response = await axios.post('/api/config', data, config)
+      const response = await axios.post('/api/change-config', data)
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
-      setTimeout(function () {
-        navigate('/dashboard', { replace: true })
-      }, 2000);
+      setTimeout(() => { setTriggerFetch(!triggerFetch) }, 2000);
     } catch (e) {
       if (e?.response?.status === 422) {
         setErrors(e.response.data.errors)
@@ -115,10 +141,9 @@ const Setting = () => {
     }
   }
 
-  const TableRows = ({ rows, tableRowRemove, onValUpdate, onValUpdateTime }) => {
-    return rows.map((rowsData, index) => {
-        const { day, hours } = rowsData;
-        // console.log(idnya, isCheck);
+  const TableRows = ({ rows, onRemove, onUpdate }) => {
+    return rows.map((row, index) => {
+        const { day, start, finish } = row;
         return (
             <tr key={index}>
                 <td>
@@ -126,18 +151,18 @@ const Setting = () => {
                     name="day"
                     className="form-select form-select-sm"
                     options={dayData}
-                    selected={day?day:""}
-                    onChange={(event) => onValUpdate(index, event)}
+                    selected={day}
+                    onChange={(e) => onUpdate(index, e.target.name, e.target.value)}
                   />
                 </td>
                 <td>
-                  <FormInput type="time" name="start" value={hours?hours.start:""} onChange={(event) => onValUpdateTime("start",index, event)} />
+                  <FormInput type="time" name="start" value={start} onChange={(e) => onUpdate(index, "start", e.target.value)} />
                 </td>
                 <td>
-                  <FormInput type="time" name="finish" value={hours?hours.finish:""} onChange={(event) => onValUpdateTime("finish",index, event)} />
+                  <FormInput type="time" name="finish" value={finish} onChange={(e) => onUpdate(index, "finish", e.target.value)} />
                 </td>
                 <td className="text-center">
-                    <a href="#delete" onClick={() => tableRowRemove(index)}>
+                    <a href="#delete" onClick={() => onRemove(index)}>
                         <Trash3 className="material-icons" color="dark" title="Delete" />
                     </a>
                 </td>
@@ -146,29 +171,19 @@ const Setting = () => {
     });
   };
   
-  const dataDefault = { day:"", hours:{} };
+  const dataDefault = { day:"", start: "", finish: "" };
   const addRowTable = () => {
       initRow([...rows, dataDefault]);
   };
-  const tableRowRemove = (index) => {
+  const removeRow = (index) => {
     const dataRow = [...rows];
     dataRow.splice(index, 1);
     initRow(dataRow);
   };
-  const onValUpdate = (i, event) => {
-    const { name, value } = event.target;
-    const data = [...rows];
-    data[i][name] = value;
-    // console.log(data);
-    initRow(data);
-  };
-  const onValUpdateTime = (name, i, e)  => {
-    const value = e.target.value;
-    // console.log(value);
-    const data = [...rows];
-    data[i]["hours"][name] = value;
-    // console.log(data);
-    // initRow(data);
+  const updateRow = (index, name, value) => {
+    const updatedRow = [...rows];
+    updatedRow[index][name] = value;
+    initRow(updatedRow);
   }
 
   return (
@@ -185,22 +200,6 @@ const Setting = () => {
                 <Col>
                   <Col className="col-12 col-sm-8 col-md-12 m-auto">
                     <Form.Group>
-                      <label style={{ fontSize: "18px" }}>Slug</label>
-                      <FormInput type="text" name="slug" value={slug} onChange={(e) => setSlug(e.target.value)} />
-                      {errors.slug &&
-                            <span className="text-danger">{errors.slug[ 0 ]}</span>}
-                    </Form.Group>
-                  </Col>
-                  <Col className="col-12 col-sm-8 col-md-12 m-auto">
-                    <Form.Group>
-                      <label style={{ fontSize: "18px" }}>Description</label>
-                      <FormTextarea name="description" value={description} onChange={(e) => setDescription(e.target.value)}></FormTextarea>
-                      {errors.description &&
-                            <span className="text-danger">{errors.description[ 0 ]}</span>}
-                    </Form.Group>
-                  </Col>
-                  <Col className="col-12 col-sm-8 col-md-12 m-auto">
-                    <Form.Group>
                       <label style={{ fontSize: "18px" }}>Name</label>
                       <FormInput type="text" name="name" value={values.name} onChange={onChange} />
                     </Form.Group>
@@ -208,7 +207,7 @@ const Setting = () => {
                   <Col className="col-12 col-sm-8 col-md-12 m-auto">
                     <Form.Group>
                       <label style={{ fontSize: "18px" }}>Number WhatsApp</label>
-                      <FormInput type="text" name="number" value={values.number} onChange={onChange} />
+                      <FormInput type="text" name="phone_number" value={values.phone_number} onChange={onChange} />
                     </Form.Group>
                   </Col>
                   <Col className="col-12 col-sm-8 col-md-12 m-auto mt-2">
@@ -221,6 +220,18 @@ const Setting = () => {
                     <Form.Group>
                       <label style={{ fontSize: "18px" }}>Address</label>
                       <FormTextarea name="address" value={values.address} onChange={onChange} style={{ height: "65px" }} />
+                    </Form.Group>
+                  </Col>
+                  <Col className="col-12 col-sm-8 col-md-12 m-auto">
+                    <Form.Group>
+                      <label style={{ fontSize: "18px" }}>OTP code Expiration (in minutes)</label>
+                      <FormInput type="number" name="otp_expiration" value={values.otp_expiration} onChange={onChange} />
+                    </Form.Group>
+                  </Col>
+                  <Col className="col-12 col-sm-8 col-md-12 m-auto">
+                    <Form.Group>
+                      <label style={{ fontSize: "18px" }}>Member discount (in percent)</label>
+                      <FormInput type="number" name="member_discount" value={values.member_discount} onChange={onChange} />
                     </Form.Group>
                   </Col>
                   <div className="table-responsive">
@@ -236,15 +247,14 @@ const Setting = () => {
                         <tbody>
                             <TableRows
                                 rows={rows}
-                                tableRowRemove={tableRowRemove}
-                                onValUpdate={onValUpdate}
-                                onValUpdateTime={onValUpdateTime}
+                                onRemove={removeRow}
+                                onUpdate={updateRow}
                             />
                         </tbody>
                     </table>
                 </div>
-                {errors.value &&
-                    <span className="text-danger">{errors.value[ 0 ]}</span>}
+                {errors.invalid_input &&
+                    <span className="text-danger">{errors.invalid_input[ 0 ]}</span>}
                 <center>
                     <button type="button" className="btn btn-sm" onClick={addRowTable} style={{ background: "#B21830", color: "white" }}>
                         Add

@@ -15,8 +15,8 @@ class Court extends Migration
     {
         Schema::create('tb_court', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->string('label', 60)->unique();
-            $table->string('image_path', 255)->nullable()->default(null);
+            $table->string('label', 64)->unique();
+            $table->string('image_path', 254)->nullable()->default(null);
             $table->text('description');
             $table->float('initial_price');
             // $table->float('per_30_mnt_price');

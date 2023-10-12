@@ -15,7 +15,7 @@ class Role extends Migration
     {
         Schema::create('tb_role', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->string('label', 60)->unique();
+            $table->string('label', 32)->unique();
             $table->text('menu');
             $table->enum('status', ['Y', 'N'])->comment('Y: Active, N: Inactive')->default('Y');
             $table->timestamps();

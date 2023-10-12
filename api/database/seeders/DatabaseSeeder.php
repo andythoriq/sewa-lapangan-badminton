@@ -1073,8 +1073,8 @@ class DatabaseSeeder extends Seeder
 
         RoleModel::create([
 
-            'label' => 'Admin',
-            'menu' => "['/dashboard']",
+            'label' => 'Super_Admin',
+            'menu' => "['/super-admin']",
             'status' => 'Y'
 
         ]);
@@ -1087,6 +1087,33 @@ class DatabaseSeeder extends Seeder
             'status' => 'Y',
             'role_id' => 1
 
+        ]);
+        ConfigModel::insert([
+            [
+          'slug'=> 'open_time',
+          'description'=> 'Jam buka kami atau operational time adalah waktu kami untuk menerima pesanan booking selain dari waktu ini kami tidak menerima pesanan tersebut.',
+          'value' => '[{"day":"monday","start":"08:00","finish":"17:00"},{"day":"tuesday","start":"09:00","finish":"17:00"},{"day":"wednesday","start":"09:00","finish":"18:00"}]'
+        ],
+        [
+          'slug' => 'name',
+          'description' => 'Nama perusahaan kami akan ditampilkan pada navbar dan tempat informasi yang lainnya.',
+          'value' => 'BFB'
+        ],
+        [
+          'slug' => 'contact',
+          'description' => 'Berisikan nomor Whatsapp, Email, dan Alamat yang sedia untuk dihubungi.',
+          'value' => '{"number":"080878786565","email":"bfb@bfb.com","address":"Jl Durian Runtuh"}'
+        ],
+        [
+          'slug' => 'expire_duration',
+          'description' => 'Expire duration OTP code in minutes after request it. (in minutes)',
+          'value' => 9
+        ],
+        [
+          'slug' =>  'member_discount',
+          'description' => 'Potongan harga untuk booking member / multiple booking. (in percent)',
+          'value' =>  10
+        ]
         ]);
     }
 }

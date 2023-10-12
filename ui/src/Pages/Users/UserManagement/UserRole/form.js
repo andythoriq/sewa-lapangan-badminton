@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Form, Card, Row, Col } from "react-bootstrap";
 import FormInput from "../../../../Components/Form/input";
 import FormSelect from "../../../../Components/Form/select";
@@ -10,7 +10,7 @@ import secureLocalStorage from "react-secure-storage";
 
 const UserRoleForm = () => {
     const {id} = useParams();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [ selectedStatus, setSelectedStatus ] = useState("")
     const [ menuList, setMenuList ] = useState([])
     const [ values, setValues ] = useState({ rolename: "" });
@@ -42,7 +42,7 @@ const UserRoleForm = () => {
 
             if (menuSet.size === data.menu.length) {
                 data.menu = JSON.stringify(data.menu);
-                if (secureLocalStorage.getItem('id').toString() === id.toString()) {
+                if (secureLocalStorage.getItem('id').toString() === id) {
                     secureLocalStorage.setItem('menus', JSON.stringify(data.menu))
                 }
             } else {
@@ -66,7 +66,8 @@ const UserRoleForm = () => {
             setErrors('');
             Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
             setTimeout(function () {
-                navigate('/user-management/user-role', { replace: true })
+                // navigate('/user-management/user-role', { replace: true })
+                window.location.href = "/user-management/user-role"
             }, 2000);
         } catch (e) {
             if (e?.response?.status === 422) {

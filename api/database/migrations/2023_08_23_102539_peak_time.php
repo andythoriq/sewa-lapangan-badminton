@@ -18,7 +18,7 @@ class PeakTime extends Migration
             $table->time('start');
             $table->time('finish');
             $table->float('price_increase');
-            $table->string('day_name', 20);
+            $table->string('day_name', 16);
 
             $table->unsignedSmallInteger('court_id');
             $table->foreign('court_id')->references('id')->on('tb_court')->cascadeOnDelete();
