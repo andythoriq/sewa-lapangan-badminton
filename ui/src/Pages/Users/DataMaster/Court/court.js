@@ -53,11 +53,15 @@ const Court = () => {
         try {
             const { data } = await axios.get('/api/court?keyword=' + values.search);
             setCourts(data.data)
+            setPageCount(data.meta.last_page);
+            setCurrentPage(data.meta.current_page);
             if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in court not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
                 .then((result) => {
                     if (result.isConfirmed) {
                         setCourts(originalCourts)
+                        setPageCount(originalCount)
+                        setCurrentPage(originalCurrent)
                     }
                 })
             }
@@ -73,6 +77,8 @@ const Court = () => {
 
     const [courts, setCourts] = useState([]);
     const [originalCourts, setOriginalCourts] = useState([])
+    const [originalCount, setOriginalCount] = useState(0)
+    const [originalCurrent, setOriginalCurrent] = useState(0)
 
     useEffect(() => {
         axios.get('/api/court?page=' + currentPage)
@@ -80,7 +86,9 @@ const Court = () => {
             setCourts(data.data);
             setOriginalCourts(data.data)
             setPageCount(data.meta.last_page)
+            setOriginalCount(data.meta.last_page)
             setCurrentPage(data.meta.current_page)
+            setOriginalCurrent(data.meta.current_page)
         })
         .catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });

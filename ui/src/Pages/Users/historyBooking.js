@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Form, Card, Row, Col } from "react-bootstrap";
 import { Search, EyeFill } from "react-bootstrap-icons";
 import FormInput from "../../Components/Form/input";
-import ModalConfirmDelete from "../../Components/ModalDialog/modalConfirmDelete";
+// import ModalConfirmDelete from "../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
 import ReactPaginate from "react-paginate";
@@ -10,9 +10,9 @@ import ModalShowDetailTransaction from "../../Components/ModalDialog/modalShowDe
 import Moment from "react-moment";
 
 const HistoryBooking = () => {
-  const [show, setShow] = useState(false);
-  const [deleteId, setDeleteId] = useState("");
-  const [item_id, set_item_id] = useState("");
+  // const [show, setShow] = useState(false);
+  // const [deleteId, setDeleteId] = useState("");
+  // const [item_id, set_item_id] = useState("");
 
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -25,14 +25,17 @@ const HistoryBooking = () => {
     setShowDetail(true);
   };
 
-  const handleShow = (index, id) => {
-    set_item_id(id);
-    setDeleteId(index);
-    setShow(true);
-  };
+  // const handleShow = (index, id) => {
+  //   set_item_id(id);
+  //   setDeleteId(index);
+  //   setShow(true);
+  // };
 
   const [rentals, setRentals] = useState([]);
   const [originalRentals, setOriginalRentals] = useState([]);
+
+  const [ originalCount, setOriginalCount ] = useState(0)
+  const [ originalCurrent, setOriginalCurrent ] = useState(0)
 
   useEffect(() => {
     axios
@@ -41,7 +44,9 @@ const HistoryBooking = () => {
         setRentals(data.data);
         setOriginalRentals(data.data);
         setPageCount(data.meta.last_page);
+        setOriginalCount(data.meta.last_page)
         setCurrentPage(data.meta.current_page);
+        setOriginalCurrent(data.meta.current_page)
       })
       .catch((e) => {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -53,10 +58,14 @@ const HistoryBooking = () => {
     try {
       const { data } = await axios.get("/api/booking-history?keyword=" + values.search);
       setRentals(data.data);
+      setPageCount(data.meta.last_page);
+      setCurrentPage(data.meta.current_page);
       if (data.data.length < 1) {
         Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in booking not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
             setRentals(originalRentals);
+            setPageCount(originalCount)
+            setCurrentPage(originalCurrent)
           }
         });
       }
@@ -65,37 +74,37 @@ const HistoryBooking = () => {
     }
   };
 
-  const handleYes = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.get("/sanctum/csrf-cookie");
-      const { data } = await axios.delete("/api/booking-history/" + item_id);
-      tableRowRemove(deleteId);
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        html: data.message,
-        showConfirmButton: false,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        timer: 2000,
-      });
-      setShow(false);
-    } catch {
-      if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
-        Swal.fire({
-          icon: "error",
-          title: "Error!",
-          html: e.response.data.message,
-          showConfirmButton: true,
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-        });
-      } else {
-        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
-      }
-    }
-  };
+  // const handleYes = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     await axios.get("/sanctum/csrf-cookie");
+  //     const { data } = await axios.delete("/api/booking-history/" + item_id);
+  //     tableRowRemove(deleteId);
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: "Success!",
+  //       html: data.message,
+  //       showConfirmButton: false,
+  //       allowOutsideClick: false,
+  //       allowEscapeKey: false,
+  //       timer: 2000,
+  //     });
+  //     setShow(false);
+  //   } catch {
+  //     if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Error!",
+  //         html: e.response.data.message,
+  //         showConfirmButton: true,
+  //         allowOutsideClick: false,
+  //         allowEscapeKey: false,
+  //       });
+  //     } else {
+  //       Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+  //     }
+  //   }
+  // };
 
   const [values, setValues] = useState({ search: "" });
   const onChange = (e) => {
@@ -139,11 +148,11 @@ const HistoryBooking = () => {
     });
   };
 
-  const tableRowRemove = (index) => {
-    const dataRow = [...rentals];
-    dataRow.splice(index, 1);
-    setRentals(dataRow);
-  };
+  // const tableRowRemove = (index) => {
+  //   const dataRow = [...rentals];
+  //   dataRow.splice(index, 1);
+  //   setRentals(dataRow);
+  // };
 
   const handlePageClick = (e) => {
     const number = e.selected + 1;
@@ -201,7 +210,7 @@ const HistoryBooking = () => {
           </div>
         </div>
       </Card>
-      <ModalConfirmDelete show={show} handleClose={() => setShow(false)} handleYes={handleYes} />
+      {/* <ModalConfirmDelete show={show} handleClose={() => setShow(false)} handleYes={handleYes} /> */}
       <ModalShowDetailTransaction
         show={showDetail}
         handleClose={() => {

@@ -23,6 +23,9 @@ const RiwayatBooking = () => {
     const [ rentals, setRentals ] = useState([]);
     const [ originalRentals, setOriginalRentals ] = useState([]);
 
+    const [originalCount, setOriginalCount] = useState(0)
+    const [originalCurrent, setOriginalCurrent] = useState(0)
+
     const handleShowDetail = ({ transaction }) => {
         setDetailData(transaction);
         setShowDetail(true);
@@ -33,10 +36,14 @@ const RiwayatBooking = () => {
         try {
             const { data } = await axios.get("/api/booking-history?keyword=" + values.search);
             setRentals(data.data);
+            setPageCount(data.meta.last_page);
+            setCurrentPage(data.meta.current_page);
             if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in booking not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
                     if (result.isConfirmed) {
                         setRentals(originalRentals);
+                        setPageCount(originalCount)
+                        setCurrentPage(originalCurrent)
                     }
                 });
             }
@@ -52,7 +59,9 @@ const RiwayatBooking = () => {
                 setRentals(data.data);
                 setOriginalRentals(data.data);
                 setPageCount(data.meta.last_page);
+                setOriginalCount(data.meta.last_page)
                 setCurrentPage(data.meta.current_page);
+                setOriginalCurrent(data.meta.current_page)
             })
             .catch((e) => {
                 Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });

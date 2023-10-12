@@ -21,6 +21,8 @@ const PeakTime = () => {
 
     const [ currentPage, setCurrentPage ] = useState(0)
     const [ pageCount, setPageCount ] = useState(0)
+    const [ originalCount, setOriginalCount ] = useState(0)
+    const [ originalCurrent, setOriginalCurrent ] = useState(0)
 
     const handleYes = async () => {
         try {
@@ -50,7 +52,9 @@ const PeakTime = () => {
             setPeakTimes(data.data)
             setOriginal(data.data)
             setPageCount(data.meta.last_page)
+            setOriginalCount(data.meta.last_page)
             setCurrentPage(data.meta.current_page)
+            setOriginalCurrent(data.meta.current_page)
         }).catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
         })
@@ -66,11 +70,15 @@ const PeakTime = () => {
         try {
             const { data } = await axios.get('/api/peak-time?keyword=' + values.search);
             setPeakTimes(data.data)
+            setPageCount(data.meta.last_page);
+            setCurrentPage(data.meta.current_page);
             if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in peak time not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
                 .then((result) => {
                     if (result.isConfirmed) {
                         setPeakTimes(original)
+                        setPageCount(originalCount)
+                        setCurrentPage(originalCurrent)
                     }
                 })
             }

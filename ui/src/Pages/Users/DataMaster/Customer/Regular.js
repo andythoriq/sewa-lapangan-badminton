@@ -21,6 +21,8 @@ const Regular = () => {
 
     const [ currentPage, setCurrentPage ] = useState(0)
     const [ pageCount, setPageCount ] = useState(0)
+    const [ originalCount, setOriginalCount ] = useState(0)
+    const [ originalCurrent, setOriginalCurrent ] = useState(0)
 
     const handleYes = async () => {
         try {
@@ -50,11 +52,15 @@ const Regular = () => {
         try {
             const { data } = await axios.get('/api/customer/regular?keyword=' + values.search);
             setRegulars(data.data)
+            setPageCount(data.meta.last_page);
+            setCurrentPage(data.meta.current_page);
             if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in regular not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
                 .then((result) => {
                     if (result.isConfirmed) {
                         setRegulars(originalRegulars)
+                        setPageCount(originalCount)
+                        setCurrentPage(originalCurrent)
                     }
                 })
             }
@@ -68,7 +74,9 @@ const Regular = () => {
             setRegulars(data.data)
             setOriginalRegulars(data.data)
             setPageCount(data.meta.last_page)
+            setOriginalCount(data.meta.last_page)
             setCurrentPage(data.meta.current_page)
+            setOriginalCurrent(data.meta.current_page)
         }).catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
         })
