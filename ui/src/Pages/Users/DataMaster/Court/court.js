@@ -7,7 +7,6 @@ import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmD
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import ReactPaginate from 'react-paginate';
-import secureLocalStorage from "react-secure-storage";
 
 const Court = () => {
 
@@ -27,11 +26,7 @@ const Court = () => {
     const handleYes = async () => {
         try {
             await axios.get('/sanctum/csrf-cookie')
-            const { data } = await axios.delete('/api/court/' + item_id, {
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-                }
-            })
+            const { data } = await axios.delete('/api/court/' + item_id)
             tableRowRemove(deleteId);
             Swal.fire({icon:"success", title:"Success!", html: data.message, 
             showConfirmButton: false, allowOutsideClick: false,
@@ -56,11 +51,7 @@ const Court = () => {
     const handleSearch = async (e) => {
         e.preventDefault()
         try {
-            const { data } = await axios.get('/api/court?keyword=' + values.search,{
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-                }
-            });
+            const { data } = await axios.get('/api/court?keyword=' + values.search);
             setCourts(data.data)
             if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in court not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
@@ -84,11 +75,7 @@ const Court = () => {
     const [originalCourts, setOriginalCourts] = useState([])
 
     useEffect(() => {
-        axios.get('/api/court?page=' + currentPage, {
-            headers: {
-                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-            }
-        })
+        axios.get('/api/court?page=' + currentPage)
         .then(({data}) => {
             setCourts(data.data);
             setOriginalCourts(data.data)

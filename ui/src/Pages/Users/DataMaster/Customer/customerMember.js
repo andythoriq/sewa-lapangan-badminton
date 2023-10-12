@@ -7,7 +7,6 @@ import CurrencyInput from "react-currency-input-field";
 import PhoneInput from "react-phone-input-2";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
-import secureLocalStorage from "react-secure-storage";
 
 const CustomerMember = () => {
   const { id } = useParams();
@@ -36,18 +35,14 @@ const CustomerMember = () => {
       isChangeToRegular: isChange,
       member_active_period: values.member_active_period,
     };
-    const config = {
-      headers: {
-        Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-      },
-    };
+
     try {
       await axios.get("/sanctum/csrf-cookie");
       let response;
       if (id) {
-        response = await axios.put("/api/customer/member/" + id, data, config);
+        response = await axios.put("/api/customer/member/" + id, data);
       } else {
-        response = await axios.post("/api/customer/member", data, config);
+        response = await axios.post("/api/customer/member", data);
       }
       setErrors("");
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
@@ -83,11 +78,7 @@ const CustomerMember = () => {
   useEffect(() => {
     if (id) {
       axios
-        .get("/api/customer/member/" + id + "/edit", {
-          headers: {
-            Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-          },
-        })
+        .get("/api/customer/member/" + id + "/edit")
         .then(({ data }) => {
           setValues({ ...values, name: data.name, member_active_period: data.member_active_period.substring(0, 10) });
           setPhoneNumber(data.phone_number);

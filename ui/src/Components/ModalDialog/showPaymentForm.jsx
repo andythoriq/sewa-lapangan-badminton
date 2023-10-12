@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import axios from "../../api/axios";
-import secureLocalStorage from "react-secure-storage";
 
 const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction, setShowDetail }) => {
 
@@ -38,11 +37,7 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
         phone_number: transaction.customer?.phone_number,
         booking_code: transaction.booking_code,
       };
-      const configRequest = {
-        headers: {
-          Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-        },
-      };
+
       if (errorDeposit.length > 0) {
         swal.fire({ icon: "error", title: "Error!", html: errorDeposit, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       } else if (+depositInput + +customerPaid > transaction_total_price) {
@@ -61,7 +56,7 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
               const rest = +depositInput + +customerPaid - transaction_total_price;
               dataRequest.customer_deposit = rest;
               dataRequest.customer_paid = dataRequest.customer_paid - rest;
-              axios.post("/api/pay", dataRequest, configRequest).then(({ data }) => {
+              axios.post("/api/pay", dataRequest).then(({ data }) => {
                 swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
                   if (result.isConfirmed) {
                     handleClose()
@@ -73,7 +68,7 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
             }
           });
       } else {
-        const { data } = await axios.post("/api/pay", dataRequest, configRequest);
+        const { data } = await axios.post("/api/pay", dataRequest);
         swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
             handleClose()

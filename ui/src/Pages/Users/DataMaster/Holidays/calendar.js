@@ -8,7 +8,6 @@ import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import axios from "../../../../api/axios";
-import secureLocalStorage from "react-secure-storage";
 import Loader from "../../../../Components/Loader/Loading";
 import AlertNewYear from "../../../../Components/AlertNewYear";
 
@@ -19,11 +18,7 @@ export default function Calendar() {
   const [ isShowAlert, setIsShowAlert ] = useState(false)
 
   useEffect(() => {
-    axios.get('/api/calendar', {
-      headers: {
-        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-      }
-    }).then(({ data }) => {
+    axios.get('/api/calendar').then(({ data }) => {
       setHolidays(data)
     })
     .catch((e) => {
@@ -172,7 +167,7 @@ export default function Calendar() {
     // Start API Proses Add
     try {
       await axios.get('/sanctum/csrf-cookie')
-      const response  = await axios.post('/api/holiday', data, {headers: {Authorization: `Bearer ${secureLocalStorage.getItem('token')}`}})
+      const response  = await axios.post('/api/holiday', data)
       newEvent.id = response.data.id
       calendarApi.addEvent(newEvent)
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500 });
@@ -195,7 +190,7 @@ export default function Calendar() {
   const updateHolidayAsync = async (calendarApi, data, newEvent) => {
     try {
       await axios.get('/sanctum/csrf-cookie')
-      const response = await axios.put('/api/holiday/' + newEvent.id, data, { headers: { Authorization: `Bearer ${secureLocalStorage.getItem('token')}` } })
+      const response = await axios.put('/api/holiday/' + newEvent.id, data)
       calendarApi.addEvent(newEvent)
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500 });
     } catch (e) {
@@ -216,7 +211,7 @@ export default function Calendar() {
   const deleteHolidayAsync = async (id) => {
     try {
       await axios.get('/sanctum/csrf-cookie')
-      const response = await axios.delete('/api/holiday/' + id, {headers:{Authorization:`Bearer ${secureLocalStorage.getItem('token')}`}})
+      const response = await axios.delete('/api/holiday/' + id)
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500 });
     } catch (e) {
       if (e.response?.status === 404 || e.response?.status === 403 || e?.response?.status === 401) {

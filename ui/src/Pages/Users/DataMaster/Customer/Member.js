@@ -7,7 +7,6 @@ import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmD
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import ReactPaginate from 'react-paginate';
-import secureLocalStorage from "react-secure-storage";
 
 const Member = () => {
     const [show, setShow] = useState(false);
@@ -26,11 +25,7 @@ const Member = () => {
     const handleYes = async () => {
         try {
             await axios.get('/sanctum/csrf-cookie')
-            const { data } = await axios.delete('/api/customer/member/' + customerCode, {
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-                }
-            })
+            const { data } = await axios.delete('/api/customer/member/' + customerCode)
             tableRowRemove(deleteId);
             Swal.fire({icon:"success", title:"Success!", html: data.message,
             showConfirmButton: false, allowOutsideClick: false,
@@ -51,11 +46,7 @@ const Member = () => {
     const [originalMembers, setOriginalMembers] = useState([])
 
     useEffect(() => {
-        axios.get('/api/customer/member?page=' + currentPage, {
-            headers: {
-                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-            }
-        }).then(({ data }) => {
+        axios.get('/api/customer/member?page=' + currentPage).then(({ data }) => {
             setMembers(data.data)
             setOriginalMembers(data.data)
             setPageCount(data.meta.last_page)
@@ -73,11 +64,7 @@ const Member = () => {
     const handleSearch = async (e) => {
         e.preventDefault()
         try {
-            const { data } = await axios.get('/api/customer/member?keyword=' + values.search,{
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-                }
-            });
+            const { data } = await axios.get('/api/customer/member?keyword=' + values.search);
             setMembers(data.data)
             if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in member not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })

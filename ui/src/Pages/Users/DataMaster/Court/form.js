@@ -12,7 +12,6 @@ import axiosFormData from "../../../../api/axiosFormData";
 // import NumberInput from "react-text-mask";
 import CurrencyInput from "react-currency-input-field";
 import "./form.css";
-import secureLocalStorage from "react-secure-storage";
 
 const CourtForm = () => {
   const { id } = useParams();
@@ -70,19 +69,14 @@ const CourtForm = () => {
     formData.append("description", data.description);
     formData.append("image_path", data.image_path);
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
-      },
-    };
     try {
       await axios.get("/sanctum/csrf-cookie");
       let response;
       if (id > 0) {
         formData.append("old_image", imagePreview);
-        response = await axiosFormData.post("/api/court/" + id, formData, config);
+        response = await axiosFormData.post("/api/court/" + id, formData);
       } else {
-        response = await axiosFormData.post("/api/court", formData, config);
+        response = await axiosFormData.post("/api/court", formData);
       }
       setErrors("");
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
@@ -105,11 +99,7 @@ const CourtForm = () => {
   useEffect(() => {
     if (id > 0) {
       axios
-        .get("/api/court-edit/" + id, {
-          headers: {
-            Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
-          },
-        })
+        .get("/api/court-edit/" + id)
         .then(({ data }) => {
           setValues({
             ...values,

@@ -21,11 +21,7 @@ const ProfilUser = () => {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    axios.get('/api/me', {
-      headers: {
-        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-      }
-    })
+    axios.get('/api/me')
       .then(({ data }) => {
         setCustomer(data)
         setName(data.name)
@@ -38,7 +34,7 @@ const ProfilUser = () => {
   const handleUpdate = async () => {
     try {
       await axios.get("/sanctum/csrf-cookie");
-      const response = await axios.post("/api/update-customer-name", { name: name, customer_code: secureLocalStorage.getItem('customer_code') }, { headers: { Authorization: `Bearer ${secureLocalStorage.getItem('token')}` } });
+      const response = await axios.post("/api/update-customer-name", { name: name, customer_code: secureLocalStorage.getItem('customer_code') });
       setErrors("");
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
       .then(result => {

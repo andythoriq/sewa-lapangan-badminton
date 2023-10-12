@@ -6,7 +6,6 @@ import Swal from "sweetalert2";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "react-bootstrap-icons";
 import CurrencyInput from "react-currency-input-field";
-import secureLocalStorage from "react-secure-storage";
 
 const Rush = () => {
   const navigate = useNavigate();
@@ -36,11 +35,7 @@ const Rush = () => {
 
   useEffect(() => {
     axios
-      .get("/api/court-select", {
-        headers: {
-          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
-        },
-      })
+      .get("/api/court-select")
       .then(({ data }) => {
         setCourts(data);
       })
@@ -48,11 +43,7 @@ const Rush = () => {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       });
       if (id > 0) {
-        axios.get('/api/peak-time-edit/' + id, {
-          headers: {
-            Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-          }
-        }).then(({data}) => {
+        axios.get('/api/peak-time-edit/' + id).then(({data}) => {
           setValues({
             start: data.start,
             finish: data.finish,
@@ -74,18 +65,14 @@ const Rush = () => {
       day_name: values.day_name.toLowerCase(),
       price_increase: priceIncrease,
     };
-    const config = {
-      headers: {
-        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
-      },
-    };
+
     try {
       await axios.get("/sanctum/csrf-cookie");
       let response;
       if (id > 0) {
-        response = await axios.put("/api/peak-time/" + id, data, config);
+        response = await axios.put("/api/peak-time/" + id, data);
       } else {
-        response = await axios.post("/api/peak-time", data, config);
+        response = await axios.post("/api/peak-time", data);
       }
       setErrors("");
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });

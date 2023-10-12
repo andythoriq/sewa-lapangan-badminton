@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import { Card } from "react-bootstrap";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
-import secureLocalStorage from "react-secure-storage";
 import { useNavigate  } from "react-router-dom";
 const ListData = () => {
     const navigate = useNavigate();
@@ -55,11 +54,6 @@ const ListData = () => {
             "/api/start-rental",
             {
               id: id,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-              },
             }
           );
           Swal.fire({
@@ -97,11 +91,6 @@ const ListData = () => {
             "/api/finish-rental",
             {
               id: id,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-              },
             }
           );
           Swal.fire({
@@ -134,11 +123,7 @@ const ListData = () => {
 
       useEffect(() => {
         axios
-          .get("/api/rental?page=" + currentPage, {
-            headers: {
-              Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-            },
-          })
+          .get("/api/rental?page=" + currentPage)
           .then(({ data }) => {
             setRentals(data.data);
             setOriginalRentals(data.data);

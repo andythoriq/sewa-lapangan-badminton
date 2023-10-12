@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
-import secureLocalStorage from "react-secure-storage";
 import PaymentForm from "../../Components/ModalDialog/showPaymentForm";
 import Scanner from "../Users/ScannerQr/Scanner";
 import Modal from "react-bootstrap/Modal";
@@ -33,11 +32,7 @@ const Verification = () => {
 
   useEffect(() => {
     axios
-      .get("/api/rental?page=" + currentPage, {
-        headers: {
-          Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-        },
-      })
+      .get("/api/rental?page=" + currentPage)
       .then(({ data }) => {
         setRentalsAll(data.data);
         setOriginalRentals(data.data);
@@ -123,11 +118,6 @@ const Verification = () => {
         "/api/booking-verification",
         {
           booking_code: booking,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-          },
         }
       );
       setErrors("");
@@ -159,11 +149,6 @@ const Verification = () => {
         "/api/start-rental",
         {
           id: id
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-          },
         }
       );
       Swal.fire({
@@ -204,11 +189,6 @@ const Verification = () => {
         "/api/finish-rental",
         {
           id: id
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-          },
         }
       );
       Swal.fire({
@@ -309,11 +289,7 @@ const Verification = () => {
   const handleSearch = async (e) => {
     e.preventDefault()
     try {
-      const { data } = await axios.get('/api/rental?keyword=' + searchValue, {
-        headers: {
-          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-        }
-      });
+      const { data } = await axios.get('/api/rental?keyword=' + searchValue);
       setRentalsAll(data.data)
       if (data.data.length < 1) {
         Swal.fire({ icon: "warning", title: "Not found!", html: `'${searchValue}' in booking not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })

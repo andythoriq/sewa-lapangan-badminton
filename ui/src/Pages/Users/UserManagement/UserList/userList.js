@@ -29,11 +29,7 @@ const UserList = () => {
     const handleSearch = async (e) => {
         e.preventDefault()
         try {
-            const { data } = await axios.get('/api/admin?keyword=' + values.search,{
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-                }
-            });
+            const { data } = await axios.get('/api/admin?keyword=' + values.search);
             setUsers(data.data)
             if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in user not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
@@ -49,11 +45,7 @@ const UserList = () => {
     }
 
     useEffect(() => {
-        axios.get('/api/admin?page=' + currentPage, {
-            headers: {
-                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-            }
-        })
+        axios.get('/api/admin?page=' + currentPage)
         .then(({data}) => {
             setUsers(data.data);
             setOriginalUsers(data.data)
@@ -68,11 +60,7 @@ const UserList = () => {
     const handleYes = async () => {
         try {
             await axios.get('/sanctum/csrf-cookie');
-            const { data } = await axios.delete('/api/admin/' + deleteId, {
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-                }
-            });
+            const { data } = await axios.delete('/api/admin/' + deleteId);
             handleRemove()
             Swal.fire({
                 icon: "success", title: "Success!", html: data.message,

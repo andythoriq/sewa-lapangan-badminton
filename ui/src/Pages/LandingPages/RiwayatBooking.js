@@ -6,7 +6,6 @@ import ReactPaginate from "react-paginate";
 import Moment from "react-moment";
 import ModalShowDetailTransaction from "../../Components/ModalDialog/modalShowDetailTransaction";
 import axios from "../../api/axios";
-import secureLocalStorage from "react-secure-storage";
 import Swal from "sweetalert2";
 
 const RiwayatBooking = () => {
@@ -32,11 +31,7 @@ const RiwayatBooking = () => {
     const handleSubmitSearch = async (e) => {
         e.preventDefault()
         try {
-            const { data } = await axios.get("/api/booking-history?keyword=" + values.search, {
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-                },
-            });
+            const { data } = await axios.get("/api/booking-history?keyword=" + values.search);
             setRentals(data.data);
             if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in booking not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
@@ -52,7 +47,7 @@ const RiwayatBooking = () => {
 
     useEffect(() => {
         axios
-            .get("/api/booking-history?page=" + currentPage, { headers: { Authorization: `Bearer ${secureLocalStorage.getItem("token")}` }})
+            .get("/api/booking-history?page=" + currentPage)
             .then(({ data }) => {
                 setRentals(data.data);
                 setOriginalRentals(data.data);

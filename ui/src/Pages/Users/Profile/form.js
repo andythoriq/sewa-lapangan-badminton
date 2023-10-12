@@ -29,7 +29,7 @@ const FormProfile = () => {
     };
     try {
       await axios.get("/sanctum/csrf-cookie");
-      const response = await axios.put("/api/admin/" + secureLocalStorage.getItem('id'), data, { headers: { Authorization: `Bearer ${secureLocalStorage.getItem('token')}` } });
+      const response = await axios.put("/api/admin/" + secureLocalStorage.getItem('id'), data);
       setErrors("");
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
@@ -49,11 +49,7 @@ const FormProfile = () => {
   };
 
   useEffect(() => {
-    axios.get('/api/role-select', {
-      headers: {
-        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-      }
-    })
+    axios.get('/api/role-select')
     .then(({ data }) => {
       setRoles(data);
     })
@@ -61,11 +57,7 @@ const FormProfile = () => {
       Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
     })
     .finally(() => {
-      axios.get('/api/admin-edit/' + secureLocalStorage.getItem('id'), {
-        headers: {
-          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-        }
-      })
+      axios.get('/api/admin-edit/' + secureLocalStorage.getItem('id'))
         .then(({ data }) => {
           setValues({
             ...values,

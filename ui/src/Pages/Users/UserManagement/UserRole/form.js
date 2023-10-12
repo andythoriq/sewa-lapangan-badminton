@@ -50,18 +50,13 @@ const UserRoleForm = () => {
             }
         }
 
-        const config = {
-            headers: {
-                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-            }
-        }
         try {
             await axios.get('/sanctum/csrf-cookie')
             let response
             if (id > 0) {
-                response = await axios.put('/api/role/' + id, data, config)
+                response = await axios.put('/api/role/' + id, data)
             } else {
-                response = await axios.post('/api/role', data, config);
+                response = await axios.post('/api/role', data);
             }
             setErrors('');
             Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
@@ -83,11 +78,7 @@ const UserRoleForm = () => {
     };
 
     useEffect(() => {
-        axios.get('/api/admin-role-menu-list', {
-            headers: {
-                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-            }
-        })
+        axios.get('/api/admin-role-menu-list')
         .then(({ data }) => {
             setMenuList(data)
         })
@@ -95,11 +86,7 @@ const UserRoleForm = () => {
            Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
         });
         if (id > 0) {
-            axios.get('/api/role-edit/' + id, {
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-                }
-            })
+            axios.get('/api/role-edit/' + id)
             .then(({data}) => {
                 setValues({ ...values, rolename: data.label })
                 setSelectedStatus(data.status)

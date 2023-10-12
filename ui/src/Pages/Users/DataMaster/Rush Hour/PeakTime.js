@@ -7,7 +7,6 @@ import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmD
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import ReactPaginate from 'react-paginate';
-import secureLocalStorage from "react-secure-storage";
 
 const PeakTime = () => {
     const [show, setShow] = useState(false);
@@ -26,11 +25,7 @@ const PeakTime = () => {
     const handleYes = async () => {
         try {
             await axios.get('/sanctum/csrf-cookie')
-            const { data } = await axios.delete('/api/peak-time/' + peaktimeCode, {
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-                }
-            })
+            const { data } = await axios.delete('/api/peak-time/' + peaktimeCode)
             tableRowRemove(deleteId);
             Swal.fire({icon:"success", title:"Success!", html: data.message,
             showConfirmButton: false, allowOutsideClick: false,
@@ -51,11 +46,7 @@ const PeakTime = () => {
     const [original, setOriginal] = useState([])
 
     useEffect(() => {
-        axios.get('/api/peak-time?page=' + currentPage, {
-            headers: {
-                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-            }
-        }).then(({ data }) => {
+        axios.get('/api/peak-time?page=' + currentPage).then(({ data }) => {
             setPeakTimes(data.data)
             setOriginal(data.data)
             setPageCount(data.meta.last_page)
@@ -73,11 +64,7 @@ const PeakTime = () => {
     const handleSearch = async (e) => {
         e.preventDefault()
         try {
-            const { data } = await axios.get('/api/peak-time?keyword=' + values.search,{
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-                }
-            });
+            const { data } = await axios.get('/api/peak-time?keyword=' + values.search);
             setPeakTimes(data.data)
             if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in peak time not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })

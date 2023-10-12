@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "../../../api/axios";
-import secureLocalStorage from "react-secure-storage";
 import Swal from "sweetalert2";
 import Loader from "../../../Components/Loader/Loading";
 
@@ -9,11 +8,7 @@ const Profile = () => {
   const [admin, setAdmin] = useState({})
 
   useEffect(() => {
-    axios.get('/api/me-admin', {
-      headers: {
-        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-      }
-    })
+    axios.get('/api/me-admin')
       .then(({ data }) => {
         setAdmin(data)
       })

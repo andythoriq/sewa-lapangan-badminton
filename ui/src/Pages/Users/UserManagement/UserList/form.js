@@ -5,7 +5,6 @@ import FormInput from "../../../../Components/Form/input";
 import { ArrowLeft } from "react-bootstrap-icons";
 import axios from "../../../../api/axios";
 import Swal from "sweetalert2";
-import secureLocalStorage from "react-secure-storage";
 
 const UserListForm = () => {
   const { id } = useParams();
@@ -19,11 +18,7 @@ const UserListForm = () => {
   const [roles, setRoles] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/role-select', {
-            headers: {
-                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-            }
-        })
+        axios.get('/api/role-select')
         .then(({ data }) => {
             setRoles(data);
         })
@@ -31,11 +26,7 @@ const UserListForm = () => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
         });
         if (id > 0) {
-            axios.get('/api/admin-edit/' + id, {
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-                }
-            })
+            axios.get('/api/admin-edit/' + id)
             .then(({data}) => {
                 setValues({
                     ...values,
@@ -63,18 +54,14 @@ const UserListForm = () => {
       role_id: values.role_id,
       password: values.password,
     };
-    const config = {
-      headers: {
-        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
-      },
-    };
+
     try {
       await axios.get("/sanctum/csrf-cookie");
       let response;
       if (id > 0) {
-        response = await axios.put("/api/admin/" + id, data, config);
+        response = await axios.put("/api/admin/" + id, data);
       } else {
-        response = await axios.post("/api/admin", data, config);
+        response = await axios.post("/api/admin", data);
       }
       setErrors("");
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });

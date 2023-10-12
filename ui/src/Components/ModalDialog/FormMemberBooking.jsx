@@ -19,11 +19,7 @@ const FormMemberBooking = ({ isShow, handleClose, courtProp }) => {
   const [ totallyPrice, setTotallyPrice ] = useState(0)
 
   useEffect(() => {
-    axios.get("/api/court-select", {
-      headers: {
-        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-      }
-    }).then(({ data }) => {
+    axios.get("/api/court-select").then(({ data }) => {
       setDataCourt(data);
     }).catch((e) => {
       Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -61,10 +57,6 @@ const FormMemberBooking = ({ isShow, handleClose, courtProp }) => {
             finish: item.finish_time,
             court_id: item.court.value
           }))
-        }, {
-          headers: {
-            Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
-          }
         });
         setErrors("");
         Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
@@ -99,10 +91,6 @@ const FormMemberBooking = ({ isShow, handleClose, courtProp }) => {
       const { data } = await axios.post('/api/send-booking-code', {
         phone_number: transactionResponse.phone_number,
         booking_code: transactionResponse.booking_code
-      }, {
-        headers: {
-          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
-        }
       });
       if (data.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `Booking code has been sent to ${data.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {

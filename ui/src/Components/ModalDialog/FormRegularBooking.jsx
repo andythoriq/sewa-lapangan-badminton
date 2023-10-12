@@ -45,10 +45,6 @@ const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice }) => 
           customer_id: secureLocalStorage.getItem('customer_code') ?? '',
           start: values.start,
           finish: values.finish
-        }, {
-          headers: {
-            Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
-          }
         });
         setErrors("");
         Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
@@ -83,10 +79,6 @@ const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice }) => 
       const { data } = await axios.post('/api/send-booking-code', {
         phone_number: transactionResponse.phone_number,
         booking_code: transactionResponse.booking_code
-      }, {
-        headers: {
-          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
-        }
       });
       if (data.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `Booking code has been sent to ${data.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {

@@ -5,7 +5,6 @@ import FormInput from "../../Components/Form/input";
 import ModalConfirmDelete from "../../Components/ModalDialog/modalConfirmDelete";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
-import secureLocalStorage from "react-secure-storage";
 import ReactPaginate from "react-paginate";
 import ModalShowDetailTransaction from "../../Components/ModalDialog/modalShowDetailTransaction";
 import Moment from "react-moment";
@@ -37,11 +36,7 @@ const HistoryBooking = () => {
 
   useEffect(() => {
     axios
-      .get("/api/booking-history?page=" + currentPage, {
-        headers: {
-          Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-        },
-      })
+      .get("/api/booking-history?page=" + currentPage)
       .then(({ data }) => {
         setRentals(data.data);
         setOriginalRentals(data.data);
@@ -56,11 +51,7 @@ const HistoryBooking = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.get("/api/booking-history?keyword=" + values.search, {
-        headers: {
-          Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-        },
-      });
+      const { data } = await axios.get("/api/booking-history?keyword=" + values.search);
       setRentals(data.data);
       if (data.data.length < 1) {
         Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in booking not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
@@ -78,11 +69,7 @@ const HistoryBooking = () => {
     e.preventDefault();
     try {
       await axios.get("/sanctum/csrf-cookie");
-      const { data } = await axios.delete("/api/booking-history/" + item_id, {
-        headers: {
-          Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-        },
-      });
+      const { data } = await axios.delete("/api/booking-history/" + item_id);
       tableRowRemove(deleteId);
       Swal.fire({
         icon: "success",

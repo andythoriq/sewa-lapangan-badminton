@@ -18,19 +18,14 @@ const CreateBookingFormRegular = () => {
   const [initialPrice, setInitialPrice] = useState(0)
 
   useEffect(() => {
-    let config = {
-      headers: {
-        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-      }
-    }
-    axios.get('/api/regular-select', config)
+    axios.get('/api/regular-select')
     .then(({ data }) => {
       setDataCustomer(data);
     })
     .catch((e) => {
       Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
     });
-    axios.get('/api/court-select', config)
+    axios.get('/api/court-select')
     .then(({ data }) => {
       setDataCourt(data);
     })
@@ -81,10 +76,6 @@ const CreateBookingFormRegular = () => {
           start: values.start_time,
           finish: values.finish_time,
           user_id: secureLocalStorage.getItem('id') ?? '',
-        }, {
-          headers: {
-            Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
-          }
         });
         setErrors("");
         Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
@@ -119,10 +110,6 @@ const CreateBookingFormRegular = () => {
       const { data } = await axios.post('/api/send-booking-code', {
         phone_number: transactionResponse.phone_number,
         booking_code: transactionResponse.booking_code
-      }, {
-        headers: {
-          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
-        }
       });
       if (data.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `Booking code has been sent to ${data.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {

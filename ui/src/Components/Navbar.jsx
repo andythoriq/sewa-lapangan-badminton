@@ -29,11 +29,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await axios.get("/sanctum/csrf-cookie");
-      await axios.post("/api/logout-admin", null, {
-        headers: {
-          Authorization: `Bearer ${secureLocalStorage.getItem('token')}`,
-        },
-      });
+      await axios.post("/api/logout-admin");
       secureLocalStorage.clear()
       setTimeout(function () {
         navigate('/', {replace:true})

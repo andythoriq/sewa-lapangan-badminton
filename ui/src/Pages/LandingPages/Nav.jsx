@@ -29,11 +29,7 @@ const Landing = () => {
   const handleLogout = async () => {
     try {
       await axios.get("/sanctum/csrf-cookie");
-      await axios.post("/api/logout", null, {
-        headers: {
-          Authorization: `Bearer ${secureLocalStorage.getItem("token")}`,
-        },
-      });
+      await axios.post("/api/logout");
       secureLocalStorage.clear();
       setTimeout(function () {
         navigate('/landing-page', {replace:true})

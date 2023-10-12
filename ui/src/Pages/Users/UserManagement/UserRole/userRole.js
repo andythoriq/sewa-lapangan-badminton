@@ -7,7 +7,6 @@ import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmD
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import ReactPaginate from 'react-paginate';
-import secureLocalStorage from "react-secure-storage";
 
 const UserRole = () => {
     const [show, setShow] = useState(false);
@@ -29,11 +28,7 @@ const UserRole = () => {
     const handleSearch = async (e) => {
         e.preventDefault()
         try {
-         const { data } = await axios.get('/api/role?keyword=' + values.search,{
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-                }
-            });
+         const { data } = await axios.get('/api/role?keyword=' + values.search);
             setRoles(data.data)
             if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in role not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
@@ -49,11 +44,7 @@ const UserRole = () => {
     }
 
     useEffect(() => {
-        axios.get('/api/role?page=' + currentPage, {
-            headers: {
-                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-            }
-        })
+        axios.get('/api/role?page=' + currentPage)
         .then(({data}) => {
             setRoles(data.data);
             setOriginalRoles(data.data)
@@ -74,11 +65,7 @@ const UserRole = () => {
     const handleYes = async () => {
         try {
             await axios.get('/sanctum/csrf-cookie');
-            const { data } = await axios.delete('/api/role/' + deleteId, {
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-                }
-            });
+            const { data } = await axios.delete('/api/role/' + deleteId);
             handleSplice()
             Swal.fire({
                 icon: "success", title: "Success!", html: data.message,

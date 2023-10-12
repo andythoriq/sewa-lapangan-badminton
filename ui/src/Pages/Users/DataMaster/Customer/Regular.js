@@ -7,7 +7,6 @@ import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmD
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import ReactPaginate from 'react-paginate';
-import secureLocalStorage from "react-secure-storage";
 
 const Regular = () => {
     const [show, setShow] = useState(false);
@@ -26,11 +25,7 @@ const Regular = () => {
     const handleYes = async () => {
         try {
             await axios.get('/sanctum/csrf-cookie')
-            const { data } = await axios.delete('/api/customer/regular/' + customerCode, {
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-                }
-            })
+            const { data } = await axios.delete('/api/customer/regular/' + customerCode)
             tableRowRemove(deleteId);
             Swal.fire({icon:"success", title:"Success!", html: data.message,
             showConfirmButton: false, allowOutsideClick: false,
@@ -53,11 +48,7 @@ const Regular = () => {
     const handleSearch = async (e) => {
         e.preventDefault()
         try {
-            const { data } = await axios.get('/api/customer/regular?keyword=' + values.search,{
-                headers: {
-                    Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-                }
-            });
+            const { data } = await axios.get('/api/customer/regular?keyword=' + values.search);
             setRegulars(data.data)
             if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in regular not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
@@ -73,11 +64,7 @@ const Regular = () => {
     }
 
     useEffect(() => {
-        axios.get('/api/customer/regular?page=' + currentPage, {
-            headers: {
-                Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-            }
-        }).then(({data}) => {
+        axios.get('/api/customer/regular?page=' + currentPage).then(({data}) => {
             setRegulars(data.data)
             setOriginalRegulars(data.data)
             setPageCount(data.meta.last_page)

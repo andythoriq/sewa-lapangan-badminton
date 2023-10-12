@@ -6,7 +6,6 @@ import FormatDate from "../../../Components/Services/formatDate";
 import "./dashboard.css";
 import axios from "../../../api/axios";
 import Swal from "sweetalert2";
-import secureLocalStorage from "react-secure-storage";
 
 const Dashboard = () => {
   const date = new Date();
@@ -20,11 +19,7 @@ const Dashboard = () => {
   const [ dashboard, setDashboard ] = useState({})
 
   useEffect(() => {
-    axios.get('/api/dashboard', {
-      headers: {
-        Authorization: `Bearer ${secureLocalStorage.getItem('token')}`
-      }
-    })
+    axios.get('/api/dashboard')
     .then(({data}) => {
       setDashboard(data)
     })
