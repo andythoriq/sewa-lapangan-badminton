@@ -18,17 +18,17 @@ class OnOperationalHours
      */
     public function handle(Request $request, Closure $next)
     {
-        $config_open_time = ConfigModel::where('slug', 'open-time')->first();
+        $config_open_time = ConfigModel::getOpenTime();
 
         $today = strtolower(date("l"));
 
-        $string_to_array = json_decode($config_open_time->value, true);
+        $string_to_array = json_decode($config_open_time, true);
 
         $get_hours = [];
 
         foreach ($string_to_array as $value) {
             if ($value['day'] === $today) {
-                $get_hours = $value['hours'];
+                $get_hours = ['start' => $value['start'], 'finish' => $value['finish']];
             }
         }
 

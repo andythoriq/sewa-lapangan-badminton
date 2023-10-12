@@ -47,8 +47,8 @@ class ScheduleResource extends JsonResource
             'schedule' => [
                 'day_name' => $this['schedule']['day'],
                 'hours' => [
-                    'start' => $this['schedule']['hours']['start'],
-                    'finish' => $this['schedule']['hours']['finish']
+                    'start' => $this['schedule']['start'],
+                    'finish' => $this['schedule']['finish']
                 ]
             ]
         ];

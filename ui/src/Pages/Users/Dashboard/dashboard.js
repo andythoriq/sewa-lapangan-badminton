@@ -6,6 +6,7 @@ import FormatDate from "../../../Components/Services/formatDate";
 import "./dashboard.css";
 import axios from "../../../api/axios";
 import Swal from "sweetalert2";
+import Loader from "../../../Components/Loader/Loading";
 
 const Dashboard = () => {
   const date = new Date();
@@ -28,7 +29,7 @@ const Dashboard = () => {
     })
   }, [])
 
-  return (
+  return (dashboard.customer_count >= 0 && dashboard.booking_today_count >= 0 && dashboard.total_income_all >= 0 && dashboard.total_income_today >= 0 ?
     <>
       <h4 className="mb-4">
         <b>Dashboard</b>
@@ -83,7 +84,7 @@ const Dashboard = () => {
       <div className="mt-4 mb-4"></div>
       <Schedule aksi="dashboard" />
       <Info />
-    </>
+    </> : <Loader />
   );
 };
 

@@ -63,6 +63,8 @@ const Setting = () => {
       if (!start || !finish) {
         errors.push('7a789d1e-6079-11ee-8c99-0242ac120002'); // Start and finish times are required
       } else {
+        const minDuration = 60;
+        const multipleOf = 30;
         const startTime = new Date(`2000-01-01T${start}`);
         const finishTime = new Date(`2000-01-01T${finish}`);
 
@@ -72,6 +74,15 @@ const Setting = () => {
 
         if (start === finish) {
           errors.push('ae004b00-6079-11ee-8c99-0242ac120002'); // Start and finish times cannot be the same
+        }
+
+        if ((finishTime - startTime) / (1000 * 60) < minDuration) {
+          errors.push('faeac55a-68ab-11ee-8c99-0242ac120002'); // Start and Finish must be more than 1 hour
+        }
+
+        const minutesDiff = (finishTime - startTime) / (1000 * 60);
+        if (minutesDiff % multipleOf !== 0 || startTime.getMinutes() % multipleOf !== 0 || finishTime.getMinutes() % multipleOf !== 0) {
+          errors.push('2421810c-68ac-11ee-8c99-0242ac120002'); // Start and Finish must be multiplied by 30 minutes
         }
       }
     });

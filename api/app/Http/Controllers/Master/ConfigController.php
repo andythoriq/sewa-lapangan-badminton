@@ -66,6 +66,12 @@ class ConfigController extends Controller
 
                 } else if ($value === 'ae004b00-6079-11ee-8c99-0242ac120002') {
                     $fail(str_replace("_", " ", $attr) . ': Start and finish times cannot be the same.');
+
+                } else if ($value === 'faeac55a-68ab-11ee-8c99-0242ac120002') {
+                    $fail(str_replace("_", " ", $attr) . ': Start and Finish must be more than 1 hour.');
+
+                } else if ($value === '2421810c-68ac-11ee-8c99-0242ac120002') {
+                    $fail(str_replace("_", " ", $attr) . ': Start and Finish must be multiplied by 30 minutes.');
                 }
             }]
         ]);
