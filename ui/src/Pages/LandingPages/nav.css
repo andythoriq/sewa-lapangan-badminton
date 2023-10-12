@@ -23,7 +23,7 @@
     border: 2px solid white;
     position: absolute;
     left: 50%;
-    bottom: 390px;
+    bottom: 150px;
     border-radius: 50px;
     cursor: pointer;
   }
@@ -63,7 +63,7 @@
 
   /* about */
   .img-area img {
-    width: 100%;
+    width: 90%;
     padding: 20px;
     border-radius: 30px;
   }
@@ -71,6 +71,9 @@
     font-size: 45px;
     font-weight: 700;
     color: #201E37;
+  }
+  p {
+    line-height: 2;
   }
   .about-text .btn {
     background: #d93221;
