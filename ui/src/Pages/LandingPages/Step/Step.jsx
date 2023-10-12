@@ -80,13 +80,13 @@ const FormStep = () => {
     <>
       <div style={{ backgroundColor: "#F5F5F5" }}>
       <Container className="regis pt-5 pb-5" style={{  height: "100vh", borderRadius: "30px" }}>
-        <Card className="bgRegis mt-5">
+        <Card className="bgRegis">
           <Row>
             <Col className="col-sm-6 px-0 d-none d-md-block divLeft position-relative">
               <div className="position-relative top-50 start-50 translate-middle p-4">
                 <img src={`/${logoApp}`} alt="" width={30} style={{ marginTop: -10 }} />
                 <b style={{ paddingLeft: 5, fontSize: 20 }}>{namaApp}</b>
-                <div className="text-danger mt-4 text-heading">Management Booking</div>
+                <div className="text-danger mt-4 text-heading fw-bold">Management Booking</div>
                 <div className="mb-3 text-heading">Court Badminton</div>
                 <div style={{ fontSize: 12 }}>
                   BFB provides various features that support the operational

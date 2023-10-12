@@ -14,7 +14,7 @@ import { dirIcon } from "../../Components/Services/config";
 const Landing = () => {
   // loader state
   // const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // create sync method to fetch
   // useEffect(() => {
   //   const DataFetch = () => {
@@ -32,7 +32,7 @@ const Landing = () => {
       await axios.post("/api/logout");
       secureLocalStorage.clear();
       setTimeout(function () {
-        navigate('/landing-page', {replace:true})
+        navigate("/landing-page", { replace: true });
       }, 500);
     } catch (e) {
       if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
@@ -96,7 +96,7 @@ const Landing = () => {
   ) : (
     <>
       {/* navbar */}
-      <Navbar expand="lg" className= "nav nav-bg">
+      <Navbar expand="lg" className="nav nav-bg">
         <Container>
           <Navbar.Brand href="#">
             <img src="./logo.png" alt="bfb" />
@@ -120,32 +120,49 @@ const Landing = () => {
             {secureLocalStorage.getItem("name") ? (
               <div className="text-white">
                 <Dropdown>
-                <Dropdown.Menu>
-                  ` <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }} onClick={() => navigate('/profile-user')}>
-                    <span>Profile</span>
+                  <Dropdown.Menu>
+                    `{" "}
+                    <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }} onClick={() => navigate("/profile-user")}>
+                      <span>Profile</span>
                     </Dropdown.Item>
-                    <Dropdown.Item style={{ marginRight: "30px", color: "black" }} onClick={() => { navigate('/dashboard-user') }}>
-                        <span>Dashboard</span>
+                    <Dropdown.Item
+                      style={{ marginRight: "30px", color: "black" }}
+                      onClick={() => {
+                        navigate("/dashboard-user");
+                      }}
+                    >
+                      <span>Dashboard</span>
                     </Dropdown.Item>
-                    <Dropdown.Item eventKey="2" onClick={() => {
-                      Swal.fire({icon: "warning", title: "Are you sure?", html: "Are you sure to logout from this web? <br /> you cannot login more than once in a few minutes", showConfirmButton: true, showCancelButton:true, allowOutsideClick: false, allowEscapeKey: false}).then(result => {
-                        if (result.isConfirmed) {
-                          handleLogout()
-                        }
-                      })
-                    }}>
+                    <Dropdown.Item
+                      eventKey="2"
+                      onClick={() => {
+                        Swal.fire({
+                          icon: "warning",
+                          title: "Are you sure?",
+                          html: "Are you sure to logout from this web? <br /> you cannot login more than once in a few minutes",
+                          showConfirmButton: true,
+                          showCancelButton: true,
+                          allowOutsideClick: false,
+                          allowEscapeKey: false,
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            handleLogout();
+                          }
+                        });
+                      }}
+                    >
                       <span>Logout</span>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                   <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                     <div>
-                      <img src={`${dirIcon}user-circle.png`} alt="" style={{ width:"35px" }}/>  <span className="localstorge m-auto">{secureLocalStorage.getItem("name")}</span>
+                      <img src={`${dirIcon}user-circle.png`} alt="" style={{ width: "35px" }} /> <span className="localstorge m-auto">{secureLocalStorage.getItem("name")}</span>
                     </div>
                   </Dropdown.Toggle>
                 </Dropdown>
-                </div>
+              </div>
             ) : (
-              <button onClick={() => navigate('/userstep')} className="btn ms-2" style={{ borderRadius: 13, background: "#B21830", color: "white" }}>
+              <button onClick={() => navigate("/userstep")} className="btn ms-2" style={{ borderRadius: 13, background: "#B21830", color: "white" }}>
                 Register
               </button>
             )}
@@ -185,7 +202,9 @@ const Landing = () => {
                     bfb is an application that allows you to book a court or facility online or offline. You can choose the date, time, and type of court you want. The application has an availability calendar that allows you to see when the
                     court or facility is available for booking. bfb may provide discounts to club members or their regular customers as an incentive to faithfully use the facility or pitch.
                   </p>
-                  <button className="btn" style={{ background: "#B21830", color: "white" }}>About Us</button>
+                  <button className="btn" style={{ background: "#B21830", color: "white" }}>
+                    Learn More
+                  </button>
                 </div>
               </div>
             </div>
@@ -197,16 +216,21 @@ const Landing = () => {
       {/* diskon */}
       <section id="diskon" style={{ marginBottom: "70px" }}>
         <div className="container">
-          <div className="card" style={{ backgroundColor: "#201E37" }}>
+          <div className="card-diskon rounded" style={{ backgroundColor: "#201E37" }}>
             <div className="row">
               <div className="col-md-4">
-                <img src="../assets/img/people2.jpg" alt="..." className="img-fluid" />
+                <img src="../assets/img/people2.jpg" alt="..." className="img-fluid rounded" />
               </div>
               <div className="col-md-8 text-white p-5">
-                  <p className="card-title mt-2" style={{ color: "#DADADA" }}>Booking Diskon</p>
-                  <h1 className="mt-2" style={{ fontWeight: "bold" }}>25% discount for customers and 
-                  get a discount every Monday.</h1>
-                  <button className="btn btn-lg btn-light mt-3" href="userstep">Let's go booking now </button>
+                <p className="card-title mt-2" style={{ color: "#DADADA" }}>
+                  Booking
+                </p>
+                <h1 className="mt-2" style={{ fontWeight: "bold" }}>
+                  Easy field booking? <br /> Register now!
+                </h1>
+                <button className="btn btn-lg btn-light mt-3" href="userstep">
+                  Register now{" "}
+                </button>
               </div>
             </div>
           </div>
@@ -218,7 +242,9 @@ const Landing = () => {
         <div className="container py-5">
           <div className="row cnt2 text-center">
             <div className="col">
-              <h2 className="fw-bold" style={{ color: "#201E37" }}>Our Courts</h2>
+              <h2 className="fw-bold" style={{ color: "#201E37" }}>
+                Our Courts
+              </h2>
               <p className="text-dark">BFB is a sports hall that rents out courts specifically for badminton.</p>
             </div>
           </div>
@@ -317,7 +343,9 @@ const Landing = () => {
           <div className="container py-5">
             <div className="row cnt2 text-center">
               <div className="col">
-                <h2 className="fw-bold" style={{ color: "#201E37" }}>Our Services</h2>
+                <h2 className="fw-bold" style={{ color: "#201E37" }}>
+                  Our Services
+                </h2>
                 <p>Services we provide at bfb that can make it easier for you to book the court</p>
               </div>
             </div>
@@ -329,9 +357,9 @@ const Landing = () => {
                   <img src="./assets/icon/document.png" alt="..." />
                 </div>
                 <div className="desc">
-                  <h5 style={{ fontWeight: 700, fontSize: "18px", lineHeight: "24px", paddingBottom: "12px" }}>Registrasion Account</h5>
+                  <h5 style={{ fontWeight: 700, fontSize: "18px", lineHeight: "24px", paddingBottom: "12px" }}>Registrasion</h5>
                   <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black" }}>
-                    Customer will be asked to register for an account first. then customer will receive an OTP code as verification.
+                  The customer registers, then the customer will receive an OTP code as verification.
                   </p>
                 </div>
               </div>
@@ -342,7 +370,7 @@ const Landing = () => {
                 <div className="desc">
                   <h5 style={{ fontWeight: 700, fontSize: "18px", lineHeight: "24px", paddingBottom: "12px" }}>QR Code</h5>
                   <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black" }}>
-                    Customers will receive a QR Code after account registration. and brought to the GOR QR Code is used as proof of booking.
+                  Customers will receive a QR Code after placing an order. The QR code is used as proof of order.
                   </p>
                 </div>
               </div>
@@ -353,7 +381,7 @@ const Landing = () => {
                 <div className="desc">
                   <h5 style={{ fontWeight: 700, fontSize: "18px", lineHeight: "24px", paddingBottom: "12px" }}>Payment</h5>
                   <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black" }}>
-                    Payment is made after the customer has finished playing. payments can use deposits, and other systems in payment.
+                  Payment is made after the customer has finished playing. 
                   </p>
                 </div>
               </div>
