@@ -199,7 +199,7 @@ const UserRoleForm = () => {
                 </div>
                 {errors.menu &&
                             <span className="text-danger">{errors.menu[ 0 ]}</span>}
-                <div className="mb-3"><span className="text-secondary"><small>initial value: {menus}</small></span></div>
+                <div className="mb-3"><span className="text-secondary"><small>previous value: {menus}</small></span></div>
                 <center>
                     <button type="button" className="btn  btn-sm" onClick={addRowTable} style={{ background: "#B21830", color: "white" }}>
                         Add
