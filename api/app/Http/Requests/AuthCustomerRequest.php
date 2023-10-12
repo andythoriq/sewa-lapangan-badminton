@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\NotificationModel;
 use App\Models\OTPModel;
 use App\Traits\SendWA;
 use App\Models\CustomerModel;
@@ -87,6 +88,8 @@ class AuthCustomerRequest extends FormRequest
                     'otp_code' => $otp,
                     'expiration' => Carbon::now('Asia/Jakarta')->addMinutes(9)
                 ]);
+                $customer_data = CustomerModel::select(['name', 'membership_status'])->where('phone_number', $validated['phone_number'])->first();
+                NotificationModel::customerLoggedIn($customer_data->name, $validated['phone_number'], $customer_data->membership_status);
             }
         } else {
             if (empty($this->name)) {
@@ -102,6 +105,7 @@ class AuthCustomerRequest extends FormRequest
                 'customer_id' => $newCustomer->customer_code,
                 'otp_code' => $otp
             ]);
+            NotificationModel::customerRegistered($newCustomer->name, $newCustomer->phone_number, $newCustomer->membership_status);
         }
 
         $app_name = env('APP_NAME', 'GOR Badminton');

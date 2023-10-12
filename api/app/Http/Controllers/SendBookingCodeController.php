@@ -40,9 +40,11 @@ class SendBookingCodeController extends Controller
         // EOT;
 
 
-        $image_link = public_path('storage/qr-code-images/') . $data['booking_code'] . 'png';
+        $image_link = public_path('storage/qr-code-images/') . $data['booking_code'] . '.png';
         $caption = 'Your booking code: ' . $data['booking_code'];
-        $response = $this->sendImage($data['phone_number'], $image_link, $caption, env('ZENZIVA_USER_KEY'), env('ZENZIVA_API_KEY'));
+        $user_key = env('ZENZIVA_USER_KEY');
+        $api_key = env('ZENZIVA_API_KEY');
+        $response = $this->sendImage($data['phone_number'], $image_link, $caption, $user_key, $api_key);
 
         // $response = $this->sendWA($data['phone_number'], $message, env('ZENZIVA_USER_KEY'), env('ZENZIVA_API_KEY'));
 
