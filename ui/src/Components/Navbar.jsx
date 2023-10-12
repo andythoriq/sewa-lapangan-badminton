@@ -11,9 +11,35 @@ import axios from "../api/axios";
 import Swal from "sweetalert2";
 import secureLocalStorage from "react-secure-storage";
 import { Link } from "react-router-dom";
+import Notifications from "react-notifications-menu";
 
 const Navbar = () => {
-  const navigate = useNavigate()
+  const DEFAULT_NOTIFICATION = {
+    image: "https://synergi-dev.s3.ap-southeast-1.amazonaws.com/profile-pictures/6b9.png",
+    message: "Notification one.",
+    detailPage: "/events",
+    receivedTime: "12h ago",
+  };
+
+  const [data, setData] = useState([DEFAULT_NOTIFICATION]);
+  const [message, setMessage] = useState("");
+
+  const [bell, setBell] = useState("../assets/icon/notif.png");
+
+  const onClicknotif = () => {
+    if (message.length > 0) {
+      setData([
+        ...data,
+        {
+          ...DEFAULT_NOTIFICATION,
+          message,
+        },
+      ]);
+      setMessage("");
+      alert("notification added");
+    }
+  };
+  const navigate = useNavigate();
   const { menuSidebar } = useSelector((state) => state.menu);
   const dispatch = useDispatch();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -32,19 +58,24 @@ const Navbar = () => {
       await axios.post("/api/logout-admin");
       secureLocalStorage.clear()
       setTimeout(function () {
-        navigate('/', {replace:true})
+        navigate("/", { replace: true });
       }, 500);
-    } catch(e) {
+    } catch (e) {
       if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
         Swal.fire({
-          icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+          icon: "error",
+          title: "Error!",
+          html: e.response.data.message,
+          showConfirmButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         }).then((result) => {
           if (result.isConfirmed) {
-            secureLocalStorage.clear()
+            secureLocalStorage.clear();
           }
         });
       } else {
-        secureLocalStorage.clear()
+        secureLocalStorage.clear();
       }
     }
   };
@@ -79,20 +110,20 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg fixed-top" style={{ background: "#B21830" }}>
       <div className="container-fluid">
-      <div className="menu_bar_mobile" onClick={handleToggle}>
-        {menuSidebar ? <XMarkIcon /> : <Bars3BottomLeftIcon />}
-      </div>
-      <NavLink>
-        <img src={`/${logoApp}`} alt="" />
-        <b className="text-white" style={{ paddingLeft: 5, fontSize: 20 }}>
-          {namaApp}
-        </b>
-      </NavLink>
+        <div className="menu_bar_mobile" onClick={handleToggle}>
+          {menuSidebar ? <XMarkIcon /> : <Bars3BottomLeftIcon />}
+        </div>
+        <NavLink>
+          <img src={`/${logoApp}`} alt="" />
+          <b className="text-white" style={{ paddingLeft: 5, fontSize: 20 }}>
+            {namaApp}
+          </b>
+        </NavLink>
 
-      <div className="menu" onClick={toggle}>
+        {/* <div className="menu" onClick={toggle}>
         {menuOpen ? <XMarkIcon /> : <FunnelIcon />}
-      </div>
-        {(curLoc.pathname === '/dashboard' || curLoc.pathname === '/') &&
+      </div> */}
+        {(curLoc.pathname === "/dashboard" || curLoc.pathname === "/") && (
           <div className={menuOpen ? "menu_filter active" : "menu_filter inactive"}>
             <ul className={`filter text-white m-0${menuOpen ? " open" : ""}`}>
               <li key="filter0">
@@ -116,37 +147,50 @@ const Navbar = () => {
                 <FormSelect className="form-select form-select-sm" style={{ width: 116, fontSize: 15 }} options={dataCondition} />
               </li>
             </ul>
-          </div>}
-      <ul className={`menu2 m-0`}>
-        <li className="mx-2">
-          <NavLink to="/" className="">
-            <img src={`${dirIcon}notif.png`} alt="" />
-          </NavLink>
-        </li>
-        <li>
-          <Dropdown>
-            <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-              <div><img src={`${dirIcon}owl.png`} alt="" /> <span className="text-white localstorge">Hi,</span> <span className="localstorge">{secureLocalStorage.getItem('username')}</span></div>
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-            <Dropdown.Item eventKey="1">
-              <Link to={'/profile'} className="">
-              <img src={`${dirIcon}profile.png`} alt="" />
-              Profile
-              </Link>
-            </Dropdown.Item>
-              {/* <Dropdown.Item eventKey="1" href="/logout">Logout</Dropdown.Item> */}
-              {/* <Dropdown.Item eventKey="1" to={'./profile'}>
+          </div>
+        )}
+        <ul className={`menu2 m-0`}>
+          <li className="mx-2">
+            <NavLink to="/" className="">
+              <Notifications
+                data={data}
+                header={{
+                  title: "Notifications",
+                  option: { text: "View All", onClicknotif: () => console.log("Clicked") },
+                }}
+                markAsRead={(data) => {
+                  console.log(data);
+                }}
+                icon={bell}
+              />
+            </NavLink>
+          </li>
+          <li>
+            <Dropdown>
+              <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                <div>
+                  <img src={`${dirIcon}owl.png`} alt="" /> <span className="text-white localstorge">Hi,</span> <span className="localstorge">{secureLocalStorage.getItem("username")}</span>
+                </div>
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item eventKey="1">
+                  <Link to={"/profile"} className="">
+                    <img src={`${dirIcon}profile.png`} alt="" />
+                    Profile
+                  </Link>
+                </Dropdown.Item>
+                {/* <Dropdown.Item eventKey="1" href="/logout">Logout</Dropdown.Item> */}
+                {/* <Dropdown.Item eventKey="1" to={'./profile'}>
                 My Profile
               </Dropdown.Item> */}
-              <Dropdown.Item eventKey="2" onClick={handleLogout}>
-              <img src={`${dirIcon}logout.png`} alt="" />
-                <span className="mt-2">  Logout</span>
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </li>
-      </ul>
+                <Dropdown.Item eventKey="2" onClick={handleLogout}>
+                  <img src={`${dirIcon}logout.png`} alt="" />
+                  <span className="mt-2"> Logout</span>
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </li>
+        </ul>
       </div>
     </nav>
   );

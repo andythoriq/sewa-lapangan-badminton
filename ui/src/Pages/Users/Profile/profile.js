@@ -40,7 +40,7 @@ const Profile = () => {
               <div className="card-body">
                 <img src="./assets/icon/owl.png" alt="user" className="img img-thumbnail rounded-circle w-50" />
                 <h2>{admin.name}</h2>
-                <Link to={'/formprofile/edit'} className="btn btn-danger btn-sm add">
+                <Link to={'/formprofile/edit'} className="btn btn-sm add" style={{ background: "#B21830", color: "white" }}>
                        Edit Profile
                 </Link>
               </div>
