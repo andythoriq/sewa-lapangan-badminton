@@ -1,0 +1,60 @@
+.icon-bell {
+  cursor: pointer;
+  margin-right: 50px;
+  line-height: 60px;
+}
+.icon-bell span {
+  background: #f00;
+  padding: 7px;
+  border-radius: 50%;
+  color: #fff;
+  vertical-align: top;
+  margin-left: -25px;
+}
+.icon-bell img {
+  display: inline-block;
+  width: 26px;
+  margin-top: 4px;
+}
+.icon-bell:hover {
+  opacity: 0.7;
+}
+.notif {
+  width: 300px;
+  height: 0px;
+  opacity: 0;
+  position: absolute;
+  top: 63px;
+  right: 62px;
+  border-radius: 5px 0px 5px 5px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.notif h3 {
+  font-size: 14px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  color: #999;
+}
+.notif h3 span {
+  color: #f00;
+}
+.notif-items {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  padding: 6px 9px;
+  margin-bottom: 0px;
+  cursor: pointer;
+}
+.notif-items:hover {
+  background-color: #eee;
+}
+.notif-items .text-notif h4 {
+  color: #777;
+  font-size: 16px;
+  margin-top: 3px;
+}
+.notif-items.text-notif p {
+  color: #aaa;
+  font-size: 12px;
+}

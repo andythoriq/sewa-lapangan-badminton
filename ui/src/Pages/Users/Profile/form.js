@@ -149,7 +149,7 @@ const FormProfile = () => {
                   {errors.status && <span className="text-danger">{errors.status[ 0 ]}</span>}
                 </Col>
                 <Col className="col-12 text-right pt-4">
-                  <Button type="submit" className="btn btn-danger btn-sm">
+                  <Button type="submit" className="btn btn-sm" style={{ background: "#B21830", color: "white" }}>
                     Save Change
                   </Button>
                 </Col>

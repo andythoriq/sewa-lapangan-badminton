@@ -111,7 +111,7 @@ const Login = () => {
                 <FormInput key={input.id} {...input} value={values[input.name]} onChange={onChange} icon={input.icon} />
               </Form.Group>
             ))}
-            <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 mb-2 rounded">
+            <Button type="submit" className=" btn btn-block col-12 mt-2 mb-2 rounded" style={{ background: "#B21830", color: "white" }}>
               Login
             </Button>
           </Form>

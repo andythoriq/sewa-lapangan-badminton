@@ -210,7 +210,7 @@ const Landing = () => {
                   <p className="card-title mt-2" style={{ color: "#DADADA" }}>Booking Diskon</p>
                   <h1 className="mt-2" style={{ fontWeight: "bold" }}>25% discount for customers and 
                   get a discount every Monday.</h1>
-                  <button className="btn btn-lg btn-light mt-3">Let's go booking now </button>
+                  <button className="btn btn-lg btn-light mt-3" href="userstep">Let's go booking now </button>
               </div>
             </div>
           </div>
