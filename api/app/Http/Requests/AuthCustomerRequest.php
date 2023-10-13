@@ -137,7 +137,11 @@ class AuthCustomerRequest extends FormRequest
         if (Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->expiration, 'Asia/Jakarta'))) {
             return [
                 'token' => $customer->createToken(str_replace(' ', '', $customer->phone_number) . '-token')->plainTextToken,
-                'customer' => $customer
+                'customer' => $customer,
+                'notification' => [
+                    'data' => NotificationModel::getNotifications(),
+                    'unread' => NotificationModel::getUnreadCount()
+                ]
             ];
         }
         throw ValidationException::withMessages([

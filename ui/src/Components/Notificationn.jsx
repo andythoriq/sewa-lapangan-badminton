@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./notif.css";
 import axios from "../api/axios";
+import { useNotification } from "../context/notificationContext";
 function Notification({ swal }) {
+  const { setNotifications, notifications, setUnreadCount, unreadCount } = useNotification()
+
   const [ isShow, setIsShow ] = useState(false);
-  const [ notifications, setNotifications ] = useState([]);
   const [ triggerEffect, setTriggerEffect ] = useState(false)
-  const [ unreadCount, setUnreadCount ] = useState(0)
 
   useEffect(() => {
     axios.get('/api/notification')
@@ -51,7 +52,7 @@ function Notification({ swal }) {
               <strong>{item.label}</strong>{item.read_status === 'N' && <small className="text-secondary"> (click to read)</small>}
             </h6>
             <p className="card-text">
-              <small>{item.value}</small>
+              <small><span dangerouslySetInnerHTML={{ __html: item.value.replace(/\n/g, '<br />') }} /></small>
             </p>
             <small className="text-secondary">{item.created_at}</small>
           </div>);

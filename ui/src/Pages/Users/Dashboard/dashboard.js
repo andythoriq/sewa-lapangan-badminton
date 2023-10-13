@@ -29,7 +29,7 @@ const Dashboard = () => {
     })
   }, [])
 
-  return (dashboard.customer_count >= 0 && dashboard.booking_today_count >= 0 && dashboard.total_income_all >= 0 && dashboard.total_income_today >= 0 ?
+  return (
     <>
       <h4 className="mb-4">
         <b>Dashboard</b>
@@ -41,7 +41,7 @@ const Dashboard = () => {
             <div className="col-lg-3 col-sm-6">
               <div className="card-box bg-blue">
                 <div className="inner">
-                  <h3> {dashboard.customer_count} </h3>
+                  <h3> {dashboard.customer_count ?? 0} </h3>
                   <p> Customer </p>
                 </div>
                 <img src="./assets/icon/users.png" className="img" alt="..." />
@@ -51,7 +51,7 @@ const Dashboard = () => {
             <div className="col-lg-3 col-sm-6">
               <div className="card-box bg-green">
                 <div className="inner">
-                  <h3> {dashboard.booking_today_count} </h3>
+                  <h3> {dashboard.booking_today_count ?? 0} </h3>
                   <p> Booking Today </p>
                   <img src="./assets/icon/today2.png" className="img" alt="..." />
                 </div>
@@ -60,7 +60,7 @@ const Dashboard = () => {
             <div className="col-lg-3 col-sm-6">
               <div className="card-box bg-orange">
                 <div className="inner">
-                  <h3> {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dashboard.total_income_all)} </h3>
+                  <h3> {dashboard.total_income_all ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dashboard.total_income_all) : 0} </h3>
                   <p> Total income all </p>
                 </div>
                 <img src="./assets/icon/incomeall.png" className="img" alt="..." style={{ width: "80px" }}/>
@@ -69,7 +69,7 @@ const Dashboard = () => {
             <div className="col-lg-3" style={{ marginLeft: "-3px" }}>
               <div className="card-box bg-red">
                 <div className="inner">
-                  <h3> {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dashboard.total_income_today)} </h3>
+                  <h3> {dashboard.total_income_today ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dashboard.total_income_today) : 0 } </h3>
                   <p> Total income today </p>
                 </div>
                 <img src="./assets/icon/incometoday.png" className="img" alt="..." style={{ width: "80px" }}/>
@@ -84,7 +84,7 @@ const Dashboard = () => {
       <div className="mt-4 mb-4"></div>
       <Schedule aksi="dashboard" />
       <Info />
-    </> : <Loader />
+    </>
   );
 };
 
