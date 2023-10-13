@@ -33,7 +33,16 @@ class UserResource extends JsonResource
                 'start' => $rental->start,
                 'finish' => $rental->finish,
                 'status' => $rental->status,
-                'price' => $rental->price
+                'price' => $rental->price,
+                'customer' => [
+                    'name' => $rental->customer->name,
+                    'phone_number' => $rental->customer->phone_number
+                ],
+                'court' => [
+                    'label' => $rental->court->label,
+                    'initial_price' => $rental->court->initial_price
+                ],
+                'created_at' => $rental->created_at->diffForHumans()
             ]))
         ];
     }

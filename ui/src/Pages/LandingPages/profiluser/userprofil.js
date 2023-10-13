@@ -67,6 +67,9 @@ const ProfilUser = () => {
           <td>{val.finish}</td>
           <td>{val.status}</td>
           <td>{val.price}</td>
+          <td>{val.court}</td>
+          <td>{val.booking_code}</td>
+          <td>{val.created_at}</td>
         </tr>
       )
     });
@@ -77,7 +80,7 @@ const ProfilUser = () => {
       <NavbarPublic />
       <div className="container py-5" style={{ marginTop: "50px", marginBottom: "172px" }}>
         <div className="row">
-          <div className="col-lg-4">
+          <div className="col-lg-3">
             <div className="card text-center p-5">
               <div className="card-body">
                 <img src="./assets/icon/user-circle.png" alt="user" className="img img-thumbnail rounded-circle w-50" />
@@ -89,7 +92,7 @@ const ProfilUser = () => {
             </div>
           </div>
 
-          <div className="col-lg-7 mt-2">
+          <div className="col-lg-8 mt-2">
             <div className="row">
               <div className="shadow border rounder p-5 mb-4 bg-white">
                 <h5>Details</h5>
@@ -115,10 +118,13 @@ const ProfilUser = () => {
                   <thead>
                     <tr>
                       <th width={'1%'}>No</th>
-                      <th width={'30%'}>start</th>
-                      <th width={'30%'}>finish</th>
-                      <th width={'10%'}>status</th>
-                      <th width={'19%'}>price</th>
+                      <th width={'20%'}>start</th>
+                      <th width={'20%'}>finish</th>
+                      <th width={'5%'}>status</th>
+                      <th width={'15%'}>price</th>
+                      <th width={'15%'}>court</th>
+                      <th width={'15%'}>booking code</th>
+                      <th width={'15%'}></th>
                     </tr>
                   </thead>
                   <tbody>

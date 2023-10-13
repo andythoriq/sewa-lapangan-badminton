@@ -38,9 +38,9 @@ class AuthCustomerController extends Controller
         $customer = $request->user('customers');
 
         if(strtoupper($customer->membership_status == 'M')){
-            return new MemberResource($customer->loadMissing('rentals'));
+            return new MemberResource($customer->loadMissing('rentals', 'rentals.court:id,label', 'rentals.transaction:id,booking_code'));
         }else if(strtoupper($customer->membership_status == 'R')){
-            return new RegularResource($customer->loadMissing('rentals'));
+            return new RegularResource($customer->loadMissing('rentals', 'rentals.court:id,label', 'rentals.transaction:id,booking_code'));
         }
     }
 }

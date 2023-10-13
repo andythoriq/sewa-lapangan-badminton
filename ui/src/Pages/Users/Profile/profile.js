@@ -26,6 +26,9 @@ const Profile = () => {
           <td>{val.finish}</td>
           <td>{val.status}</td>
           <td>{val.price}</td>
+          <td>{val.customer.name} ({val.customer.phone_number})</td>
+          <td>{val.court.label} ({val.court.initial_price})</td>
+          <td>{val.created_at}</td>
         </tr>
       )
     });
@@ -64,10 +67,13 @@ const Profile = () => {
                   <thead>
                     <tr>
                       <th width={'1%'}>No</th>
-                      <th width={'30%'}>start</th>
-                      <th width={'30%'}>finish</th>
+                      <th width={'20%'}>start</th>
+                      <th width={'20%'}>finish</th>
                       <th width={'10%'}>status</th>
-                      <th width={'19%'}>price</th>
+                      <th width={'9%'}>price</th>
+                      <th width={'15%'}>customer</th>
+                      <th width={'15%'}>court</th>
+                      <th width={'15%'}></th>
                     </tr>
                   </thead>
                   <tbody>

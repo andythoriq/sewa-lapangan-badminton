@@ -28,6 +28,9 @@ class RegularResource extends JsonResource
                 'finish' => $rental->finish,
                 'status' => $rental->status,
                 'price' => $rental->price,
+                'court' => $rental->court->label,
+                'booking_code' => $rental->transaction->booking_code,
+                'created_at' => $rental->created_at->diffForHumans()
             ]))
         ];
     }
