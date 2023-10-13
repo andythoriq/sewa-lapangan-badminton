@@ -260,11 +260,11 @@ const CreateBookingFormMember = () => {
                   <div className="card-body codeqr d-flex flex-column">
                     <div className="d-flex justify-content-between">
                       <p>Booking Code : </p>
-                      <p className="fw-bold">{transactionResponse.booking_code}</p>
+                      <p className="fw-bold"> {transactionResponse.booking_code}</p>
                     </div>
                     <div className="d-flex justify-content-between">
                       <p>Phone number : </p>
-                      <p className="fw-bold">{transactionResponse.phone_number}</p>
+                      <p className="fw-bold"> {transactionResponse.phone_number}</p>
                     </div>
                     <div className="d-flex flex-column mt-4">
                       <button onClick={sendBookingCode} className="btn btn-warning btn-sm mt-2 ">

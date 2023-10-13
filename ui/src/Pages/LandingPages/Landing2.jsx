@@ -72,7 +72,7 @@ const Landing2 = () => {
   return (
     <>
       <NavbarUser/>
-      <div className="container mt-5">
+      <div className="container mt-2">
         <div className="table-responsive" id="schedule">
           <h3 className="text-left mt-5">Schedule</h3>
           <hr style={{ width: 130, float:'left', marginTop: 0 }} />
@@ -155,7 +155,7 @@ const Landing2 = () => {
       {/* riwayat booking */}
         <div className="container">
           <div className="table-responsive" id="bookinghistory">
-            <h3 className="text-left mt-5">History Booking</h3>
+            <h3 className="text-left mt-4">History Booking</h3>
             <hr style={{ width: 220, float: "left", marginTop:-5 }}/>
             <RiwayatBooking/>
           </div>

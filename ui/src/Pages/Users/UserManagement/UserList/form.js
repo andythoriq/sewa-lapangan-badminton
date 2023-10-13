@@ -119,6 +119,7 @@ const UserListForm = () => {
                     <Form.Group>
                       {/* <FormInput  type="text" name="password" label="Password" value={values.password} onChange={onChange} icon={input.icon} /> */}
                       <FormInput type="password" name="password" label="Password" value={values.password} onChange={onChange} />
+                      {errors.password && <span className="text-danger">{errors.password[0]}</span>}
                     </Form.Group>
                   </Col>}
                 <Col className="col-12 col-md-6">

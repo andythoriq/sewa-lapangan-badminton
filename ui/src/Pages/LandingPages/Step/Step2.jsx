@@ -105,6 +105,7 @@ const Step2 = () => {
                 <Button type="submit" className="btn btn-sm btn-block col-12 mt-2 rounded"  style={{ background: "#B21830", color: "white" }}>
                   Submit
                 </Button>
+                <a href="#" className="mt-2" style={{ float: "right", textDecoration: "none"}}>Resend code</a>
               </Form>
             </div>
           </Col>

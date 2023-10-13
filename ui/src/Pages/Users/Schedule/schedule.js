@@ -100,15 +100,11 @@ const Schedule = ({ aksi = "" }) => {
             <div className="bullet bullet-orange"></div> <div className="bullet-text">On progress</div>
           </div>
         </Col>
-        {ifDashboard ? (
           <Col className="col-12 mt-1 mb-2 " style={{ textAlign:"right",marginLeft: "-16px" }}>
             <Link to="/create-booking" className="btn btn-sm" style={{ background: "#B21830", color: "white" }}>
               New Booking
             </Link>
           </Col>
-        ) : (
-          ""
-        )}
       </Row>
       <div className="table-responsive">
         <table id="schedule" className="table" width={"100%"} border={1} style={{ marginLeft: "-16px" }}>

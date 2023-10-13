@@ -6,12 +6,14 @@ import Swal from "sweetalert2";
 import axios from "../../api/axios";
 import { useNavigate } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
+import Alert from "react-bootstrap/Alert";
 
 const Login = () => {
+  const [isShow, setIsShow] = useState(false);
   // loader state
   const [isLoading, setIsLoading] = useState(true);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // create sync method to fetch
   useEffect(() => {
@@ -62,29 +64,34 @@ const Login = () => {
         password: values.password,
       });
       setErrors("");
-      secureLocalStorage.clear()
-      secureLocalStorage.setItem('token', data.token)
-      secureLocalStorage.setItem('username', data.user.username)
-      secureLocalStorage.setItem('id', data.user.id)
-      secureLocalStorage.setItem('menus', data.user.role.menu)
-      secureLocalStorage.setItem('role', 'admin')
+      secureLocalStorage.clear();
+      secureLocalStorage.setItem("token", data.token);
+      secureLocalStorage.setItem("username", data.user.username);
+      secureLocalStorage.setItem("id", data.user.id);
+      secureLocalStorage.setItem("menus", data.user.role.menu);
+      secureLocalStorage.setItem("role", "admin");
       Swal.fire({ icon: "success", title: "Success!", html: "Login successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
       setTimeout(function () {
         // navigate('/dashboard', {replace:true})
-        window.location.href = "/dashboard"
+        window.location.href = "/dashboard";
       }, 2000);
     } catch (e) {
       if (e?.response?.status === 422) {
-        setErrors(e.response.data.errors);
+        // setErrors(e.response.data.errors);
+        setIsShow(true);
+        setTimeout(() => {
+          setIsShow(false);
+        }, 3000);
       } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
-        Swal.fire({
-          icon: "error",
-          title: "Error!",
-          html: e.response.data.message,
-          showConfirmButton: true,
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-        });
+        // Swal.fire({
+        //   icon: "error",
+        //   title: "Error!",
+        //   html: e.response.data.message,
+        //   showConfirmButton: true,
+        //   allowOutsideClick: false,
+        //   allowEscapeKey: false,
+        // });
+        setIsShow(true);
       } else {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
@@ -105,6 +112,14 @@ const Login = () => {
           <h3 className="mb-1" style={{ fontSize: 23 }}>
             Login Admin
           </h3>
+
+          {isShow === true && (
+            <Alert variant="danger" className="py-1 px-2" style={{ width: "300px" }}>
+              <p style={{ fontSize: "13px" }} className="mb-0">
+                Account is not found. Please re-check the username and password you entered.
+              </p>
+            </Alert>
+          )}
           <Form onSubmit={handleSubmit} style={{ width: "300px" }} className="mx-auto">
             {inputs.map((input) => (
               <Form.Group key={input.id} className="mb-2 ">

@@ -10,7 +10,7 @@
     width: 50px;
   }
   .nav-bg {
-    background-color: #000000;
+    background: #000000;
   }
   .jumbotron {
     background-image: url(/public/assets/img/bg.jpg);

@@ -128,7 +128,8 @@ const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice }) => 
             {errors.finish && <span className="text-danger">{errors.finish[ 0 ]}</span>}
           </div>
         </div>
-        <div className="row justify-content-center">
+     
+        <div className=" row justify-content-center">
           <div className="col-6 mt-3 text-center">
             <b>Totally hour:</b>
             <br />
@@ -149,14 +150,15 @@ const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice }) => 
             </div>
           </div>
         </div>
+    
       </form>
       {showSendBookingCode === true &&
         <>
           <hr className="my-4 text-dark"></hr>
           <div className="row">
-            <div className="col-md-12 d-flex justify-content-center">
+            <div className="col-md-12">
               <div className="card card-barcode mt-2 mb-3 shadow text-white" style={{ background: "#dc3545" }}>
-                <img src={process.env.REACT_APP_BACKEND_URL + '/storage/' + transactionResponse.qr_code_image} alt="qr-code" />
+                <img src={process.env.REACT_APP_BACKEND_URL + '/storage/' + transactionResponse.qr_code_image} alt="qr-code" /></div>
                 <div className="card-body codeqr d-flex flex-column">
                   <div className="d-flex justify-content-between">
                     <p>Booking Code : </p>
@@ -166,7 +168,7 @@ const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice }) => 
                     <p>Phone number : </p>
                     <p className="fw-bold">{transactionResponse.phone_number}</p>
                   </div>
-                  <div className="d-flex flex-column mt-4">
+                  <div className=" mt-1 d-flex justify-content-center">
                     <button onClick={sendBookingCode} className="btn btn-secondary btn-sm mt-2 ">
                       Get booking code Via Whatsapp
                     </button>
@@ -174,7 +176,7 @@ const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice }) => 
                 </div>
               </div>
             </div>
-          </div>
+          
         </>}
     </Modal.Body>
   </Modal>)

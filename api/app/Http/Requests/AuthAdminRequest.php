@@ -63,7 +63,7 @@ class AuthAdminRequest extends FormRequest
 
         if (! $user || ! Hash::check($this->password, $user->password)) {
             throw ValidationException::withMessages([
-                'username' => ['The provided credentials are incorrect.'],
+                'username' => ['Account is not found. Please re-check the username and password you entered.'],
             ]);
         }
         return [

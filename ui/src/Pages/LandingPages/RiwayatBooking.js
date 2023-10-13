@@ -103,7 +103,7 @@ const RiwayatBooking = () => {
 
     return (
     <>
-        <Card className="p-3 mt-5">
+        <Card className="p-3 mt-4">
             <Row className="">
                 <Col className="col-12 col-md-4" style={{marginTop:-20}}>
                     <Form.Group className="inputSearch" >

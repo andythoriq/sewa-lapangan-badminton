@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
-import { Nav, Navbar } from "react-bootstrap";
+import { Button, Nav, Navbar } from "react-bootstrap";
 import "./nav.css";
 import Loader from "../../Components/Loader/Loading.js";
 import Court from "../../Components/Court";
@@ -10,6 +10,7 @@ import secureLocalStorage from "react-secure-storage";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { dirIcon } from "../../Components/Services/config";
+
 
 const Landing = () => {
   // loader state
@@ -96,7 +97,7 @@ const Landing = () => {
   ) : (
     <>
       {/* navbar */}
-      <Navbar expand="lg" className="nav nav-bg">
+      <Navbar expand="lg" className="nav nav nav-bg">
         <Container>
           <Navbar.Brand href="#">
             <img src="./logo.png" alt="bfb" />
@@ -163,7 +164,7 @@ const Landing = () => {
               </div>
             ) : (
               <button onClick={() => navigate("/userstep")} className="btn ms-2" style={{ borderRadius: 13, background: "#B21830", color: "white" }}>
-                Register
+                Sign Up
               </button>
             )}
           </Navbar.Collapse>
@@ -219,18 +220,19 @@ const Landing = () => {
           <div className="card-diskon rounded" style={{ backgroundColor: "#201E37" }}>
             <div className="row">
               <div className="col-md-4">
-                <img src="../assets/img/people2.jpg" alt="..." className="img-fluid rounded" />
+                <img src="../assets/img/people2.jpg" alt="..." className="img-fluid rounded" style={{ width: "100vh", height: "100%" }}/>
               </div>
               <div className="col-md-8 text-white p-5">
                 <p className="card-title mt-2" style={{ color: "#DADADA" }}>
                   Booking
                 </p>
                 <h1 className="mt-2" style={{ fontWeight: "bold" }}>
-                  Easy field booking? <br /> Register now!
+                Play badminton with special price! <br/>
+                Enjoy playing badminton at BFB with a special price.
                 </h1>
-                <button className="btn btn-lg btn-light mt-3" href="userstep">
-                  Register now{" "}
-                </button>
+                <Button onClick={() => navigate("/userstep")} className="btn btn-lg btn-light mt-3">
+                  Sign Up now{" "}
+                </Button>
               </div>
             </div>
           </div>
