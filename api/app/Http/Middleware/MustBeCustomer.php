@@ -16,7 +16,7 @@ class MustBeCustomer
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user('customers') === auth()->user() || auth()->user() instanceof \App\Models\CustomerModel) {
+        if ($request->user('customers') === auth()->user() || auth()->user() instanceof \App\Models\CustomerModel || $request->user('customers') instanceof \App\Models\CustomerModel) {
             return $next($request);
         }
         abort(403, 'only customers can access this url.');
