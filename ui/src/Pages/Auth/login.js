@@ -4,7 +4,7 @@ import FormInput from "../../Components/Form/input";
 import Loader from "../../Components/Loader/Loading";
 import Swal from "sweetalert2";
 import axios from "../../api/axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
 import Alert from "react-bootstrap/Alert";
 
@@ -13,7 +13,7 @@ const Login = () => {
   // loader state
   const [isLoading, setIsLoading] = useState(true);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // create sync method to fetch
   useEffect(() => {

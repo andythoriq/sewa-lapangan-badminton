@@ -6,7 +6,7 @@ import FormatDate from "../../../Components/Services/formatDate";
 import "./dashboard.css";
 import axios from "../../../api/axios";
 import Swal from "sweetalert2";
-// import Loader from "../../../Components/Loader/Loading";
+import { useNotification } from "../../../context/notificationContext";
 
 const Dashboard = () => {
   const date = new Date();
@@ -18,11 +18,13 @@ const Dashboard = () => {
   //   ];
 
   const [ dashboard, setDashboard ] = useState({})
+  const { setTriggerNotif, triggerNotif } = useNotification()
 
   useEffect(() => {
     axios.get('/api/dashboard')
     .then(({data}) => {
       setDashboard(data)
+      setTriggerNotif(!triggerNotif)
     })
     .catch((e) => {
       Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
@@ -41,7 +43,7 @@ const Dashboard = () => {
             <div className="col-lg-3 col-sm-6">
               <div className="card-box bg-blue">
                 <div className="inner">
-                  <h3> {dashboard.customer_count} </h3>
+                  <h3> {dashboard.customer_count ?? 0} </h3>
                   <p> Customer </p>
                 </div>
                 <img src="./assets/icon/customers.png" className="img" alt="..." />
@@ -51,7 +53,7 @@ const Dashboard = () => {
             <div className="col-lg-3 col-sm-6">
               <div className="card-box bg-green">
                 <div className="inner">
-                  <h3> {dashboard.booking_today_count} </h3>
+                  <h3> {dashboard.booking_today_count ?? 0} </h3>
                   <p> Booking Today </p>
                   <img src="./assets/icon/today2.png" className="img" alt="..." />
                 </div>
@@ -60,7 +62,7 @@ const Dashboard = () => {
             <div className="col-lg-3 col-sm-6">
               <div className="card-box bg-orange">
                 <div className="inner">
-                  <h3> {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dashboard.total_income_all)} </h3>
+                  <h3> {dashboard.total_income_all ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dashboard.total_income_all) : 0} </h3>
                   <p> Total income all </p>
                 </div>
                 <img src="./assets/icon/income.png" className="img" alt="..." style={{ width: "80px" }}/>
@@ -69,7 +71,7 @@ const Dashboard = () => {
             <div className="col-lg-3" style={{ marginLeft: "-3px" }}>
               <div className="card-box bg-red">
                 <div className="inner">
-                  <h3> {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dashboard.total_income_today)} </h3>
+                  <h3> {dashboard.total_income_today ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dashboard.total_income_today) : 0 } </h3>
                   <p> Total income today </p>
                 </div>
                 <img src="./assets/icon/incomeday.png" className="img" alt="..." style={{ width: "80px" }}/>

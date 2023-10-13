@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./notif.css";
 import axios from "../api/axios";
+import { useNotification } from "../context/notificationContext";
 function Notification({ swal }) {
+  const { setTriggerNotif, triggerNotif } = useNotification()
+
   const [ isShow, setIsShow ] = useState(false);
-  const [ notifications, setNotifications ] = useState([]);
-  const [ triggerEffect, setTriggerEffect ] = useState(false)
+  const [ notifications, setNotifications ] = useState([])
   const [ unreadCount, setUnreadCount ] = useState(0)
 
   useEffect(() => {
@@ -15,13 +17,13 @@ function Notification({ swal }) {
       }).catch((e) => {
         swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       })
-  }, [ triggerEffect ])
+  }, [ triggerNotif ])
 
   const changeReadStatus = async (id) => {
     try {
       await axios.get("/sanctum/csrf-cookie");
       await axios.post("/api/notification", { id: id });
-      setTriggerEffect(!triggerEffect)
+      setTriggerNotif(!triggerNotif)
     } catch (e) {
       swal.fire({
         icon: "error",
@@ -36,7 +38,7 @@ function Notification({ swal }) {
   return (<>
     <div key={1} className="icon" onClick={() => {
       setIsShow(!isShow)
-      setTriggerEffect(!triggerEffect)
+      setTriggerNotif(!triggerNotif)
     }}>
       <img src="https://i.imgur.com/AC7dgLA.png" alt="" />
       <div className="count">{unreadCount}</div>
@@ -51,7 +53,7 @@ function Notification({ swal }) {
               <strong>{item.label}</strong>{item.read_status === 'N' && <small className="text-secondary"> (click to read)</small>}
             </h6>
             <p className="card-text">
-              <small>{item.value}</small>
+              <small><span dangerouslySetInnerHTML={{ __html: item.value.replace(/\n/g, '<br />') }} /></small>
             </p>
             <small className="text-secondary">{item.created_at}</small>
           </div>);

@@ -28,7 +28,7 @@ class ConfigRequest extends FormRequest
         $id = isset($this->config) ? ($this->config->id ?? null) : null;
         return  [
             'slug' => ['required', 'alpha_dash', 'min:3', 'max:60', Rule::unique('tb_configuration', 'slug')->ignore($id)],
-            'description' => ['required', 'max:90'],
+            'description' => ['required', 'max:128'],
             'value' => ['required', function ($attr, $value, $fail) {
                 if ($value === '38569de2-6078-11ee-8c99-0242ac120002') {
                     $fail($attr . ': Company data is incomplete.');

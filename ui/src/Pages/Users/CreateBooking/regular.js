@@ -5,9 +5,13 @@ import axios from '../../../api/axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage';
+import { useNotification } from "../../../context/notificationContext";
 
 const CreateBookingFormRegular = () => {
   const navigate = useNavigate();
+
+  const { setNotifications, setUnreadCount } = useNotification()
+
   const [dataCustomer, setDataCustomer] = useState([]);
   const [dataCourt, setDataCourt] = useState([]);
   const [showSendBookingCode, setShowSendBookingCode] = useState(false);
@@ -78,6 +82,8 @@ const CreateBookingFormRegular = () => {
           user_id: secureLocalStorage.getItem('id') ?? '',
         });
         setErrors("");
+        setNotifications(data.notification.data)
+        setUnreadCount(data.notification.unread)
         Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
             setTransactionResponse(data.transaction);
@@ -114,7 +120,7 @@ const CreateBookingFormRegular = () => {
       if (data.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `Booking code has been sent to ${data.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
-            navigate("/history-booking", { replace: true });
+            navigate("/verification", { replace: true });
           }
         });
       } else {

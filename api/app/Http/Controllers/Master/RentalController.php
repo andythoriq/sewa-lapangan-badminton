@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\Models\NotificationModel;
 use App\Models\RentalModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

@@ -23,10 +23,10 @@ class NotificationModel extends Model
         self::create([
             'label' => 'Customer Booking!',
             'value' => <<<EOT
-            name        : $customer_name \n
-            start at    : $start \n
-            finish at   : $finish \n
-            total hour  : $total_hour \n
+            name        : $customer_name
+            start at    : $start
+            finish at   : $finish
+            total hour  : $total_hour
             total price : Rp $formatted_price
             EOT,
             'read_status' => 'N'
@@ -39,9 +39,9 @@ class NotificationModel extends Model
         self::create([
             'label' => 'Member Customer Booking!',
             'value' => <<<EOT
-            name        : $customer_name \n
-            amount      : $amount \n
-            total hour  : $total_hour \n
+            name        : $customer_name
+            amount      : $amount
+            total hour  : $total_hour
             total price : Rp $formatted_price
             EOT,
             'read_status' => 'N'
@@ -54,7 +54,7 @@ class NotificationModel extends Model
         self::create([
             'label' => $value,
             'value' => <<<EOT
-            name          : $name \n
+            name          : $name
             phone number  : $phone_number
             EOT,
             'read_status' => 'N'
@@ -67,11 +67,20 @@ class NotificationModel extends Model
         self::create([
             'label' => $value,
             'value' => <<<EOT
-            name         : $name \n
+            name         : $name
             phone number : $phone_number
             EOT,
             'read_status' => 'N'
         ]);
     }
 
+    public static function getNotifications()
+    {
+        return self::select(['id', 'label', 'value', 'read_status', 'created_at'])->orderBy('created_at', 'desc')->get();
+    }
+
+    public static function getUnreadCount()
+    {
+        return self::where('read_status', 'N')->count();
+    }
 }
