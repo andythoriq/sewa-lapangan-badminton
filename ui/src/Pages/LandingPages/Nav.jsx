@@ -96,7 +96,7 @@ const Landing = () => {
   ) : (
     <>
       {/* navbar */}
-      <Navbar expand="lg" className="nav nav-bg">
+      <Navbar expand="lg" className="nav nav-bg ">
         <Container>
           <Navbar.Brand href="#">
             <img src="./logo.png" alt="bfb" />
