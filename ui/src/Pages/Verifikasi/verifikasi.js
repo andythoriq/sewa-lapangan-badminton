@@ -10,10 +10,11 @@ import Moment from "react-moment";
 import { useParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { Search } from "react-bootstrap-icons";
+import { useNotification } from "../../context/notificationContext";
 
 const Verification = () => {
   // let listData = [{ start: "10-00", finish: "12-00", status: "on progress", price: "Rp150.000", court: "Court A", customer: "Budi - (0892347826382)" }];
-
+  const { setTriggerNotif, triggerNotif } = useNotification()
   const [errors, setErrors] = useState([]);
   const { bookingCodeParam } = useParams();
   const [bookingCode, setBookingCode] = useState(bookingCodeParam || "");
@@ -42,6 +43,7 @@ const Verification = () => {
         setOriginalCount(data.meta.last_page)
         setCurrentPage(data.meta.current_page);
         setOriginalCurrent(data.meta.current_page)
+        setTriggerNotif(!triggerNotif)
       })
       .catch((e) => {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -297,6 +299,7 @@ const Verification = () => {
       setRentalsAll(data.data)
       setPageCount(data.meta.last_page);
       setCurrentPage(data.meta.current_page);
+      setTriggerNotif(!triggerNotif)
       if (data.data.length < 1) {
         Swal.fire({ icon: "warning", title: "Not found!", html: `'${searchValue}' in booking not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
           .then((result) => {

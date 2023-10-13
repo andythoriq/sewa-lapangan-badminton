@@ -10,10 +10,8 @@ import Swal from "sweetalert2";
 import "../nav.css";
 import axios from "../../../api/axios";
 import secureLocalStorage from "react-secure-storage";
-import { useNotification } from "../../../context/notificationContext";
 
 const Step2 = () => {
-  const { setNotifications, setUnreadCount } = useNotification()
   const [OTP, setOTP] = useState('');
   const [errors, setErrors] = useState([])
 
@@ -44,8 +42,6 @@ const Step2 = () => {
      secureLocalStorage.setItem('customer_code', data.customer.customer_code)
      secureLocalStorage.setItem('name',data.customer.name)
      secureLocalStorage.setItem('role', 'user')
-     setNotifications(data.notification.data)
-     setUnreadCount(data.notification.unread)
      Swal.fire({ icon: "success", title: "Success!", html: "OTP verified successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
      setTimeout(function () {
       //  navigate('/landing-page', { replace: true })

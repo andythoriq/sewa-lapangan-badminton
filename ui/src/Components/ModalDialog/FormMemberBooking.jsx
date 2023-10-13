@@ -6,11 +6,8 @@ import secureLocalStorage from "react-secure-storage";
 import Swal from "sweetalert2";
 import FormSelect from "../Form/select";
 import { Trash3 } from "react-bootstrap-icons";
-import { useNotification } from "../../context/notificationContext";
 
 const FormMemberBooking = ({ isShow, handleClose, courtProp }) => {
-  const { setNotifications, setUnreadCount } = useNotification()
-
   const [ dataCourt, setDataCourt ] = useState([]);
   const dataDefault = { court: courtProp, start_time: "", finish_time: "" };
   const [ rows, setRows ] = useState([ dataDefault ]);
@@ -62,8 +59,6 @@ const FormMemberBooking = ({ isShow, handleClose, courtProp }) => {
           }))
         }, {headers: {Authorization: `Bearer ${secureLocalStorage.getItem('token')}`}});
         setErrors("");
-        setNotifications(data.notification.data)
-        setUnreadCount(data.notification.unread)
         Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
             setTransactionResponse(data.transaction);

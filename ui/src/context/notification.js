@@ -4,12 +4,11 @@ const NotificationContext = createContext()
 
 function NotificationProvider({children}) {
 
-  const [ notifications, setNotifications ] = useState([])
-  const [ unreadCount, setUnreadCount ] = useState(0)
+  const [ triggerNotif, setTriggerNotif ] = useState(false)
 
   return (
     <NotificationContext.Provider value={
-      {notifications, setNotifications, unreadCount, setUnreadCount}
+      {setTriggerNotif, triggerNotif}
     }>
       {children}
     </NotificationContext.Provider>

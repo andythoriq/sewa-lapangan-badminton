@@ -4,10 +4,8 @@ import FormInput from "../Form/input";
 import axios from "../../api/axios";
 import secureLocalStorage from "react-secure-storage";
 import Swal from "sweetalert2";
-import { useNotification } from "../../context/notificationContext";
 
 const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice }) => {
-  const { setNotifications, setUnreadCount } = useNotification()
   const [ values, setValues ] = useState({ start: "", finish: "" });
   const [ errors, setErrors ] = useState([])
   const [ showSendBookingCode, setShowSendBookingCode ] = useState(false);
@@ -49,8 +47,6 @@ const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice }) => 
           finish: values.finish
         }, {headers: {Authorization: `Bearer ${secureLocalStorage.getItem('token')}`}});
         setErrors("");
-        setNotifications(data.notification.data)
-        setUnreadCount(data.notification.unread)
         Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
             setTransactionResponse(data.transaction);

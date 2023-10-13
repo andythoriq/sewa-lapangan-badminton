@@ -7,8 +7,10 @@ import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmD
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import ReactPaginate from 'react-paginate';
+import { useNotification } from "../../../../context/notificationContext";
 
 const PeakTime = () => {
+    const { setTriggerNotif, triggerNotif } = useNotification()
     const [show, setShow] = useState(false);
     const [peaktimeCode, setPeaktimeCode] = useState('')
     const [deleteId, setDeleteId] = useState("");
@@ -55,6 +57,7 @@ const PeakTime = () => {
             setOriginalCount(data.meta.last_page)
             setCurrentPage(data.meta.current_page)
             setOriginalCurrent(data.meta.current_page)
+            setTriggerNotif(!triggerNotif)
         }).catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
         })
@@ -72,6 +75,7 @@ const PeakTime = () => {
             setPeakTimes(data.data)
             setPageCount(data.meta.last_page);
             setCurrentPage(data.meta.current_page);
+            setTriggerNotif(!triggerNotif)
             if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in peak time not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
                 .then((result) => {

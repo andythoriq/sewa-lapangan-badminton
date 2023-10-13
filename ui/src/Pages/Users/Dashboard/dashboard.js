@@ -6,7 +6,7 @@ import FormatDate from "../../../Components/Services/formatDate";
 import "./dashboard.css";
 import axios from "../../../api/axios";
 import Swal from "sweetalert2";
-import Loader from "../../../Components/Loader/Loading";
+import { useNotification } from "../../../context/notificationContext";
 
 const Dashboard = () => {
   const date = new Date();
@@ -18,11 +18,13 @@ const Dashboard = () => {
   //   ];
 
   const [ dashboard, setDashboard ] = useState({})
+  const { setTriggerNotif, triggerNotif } = useNotification()
 
   useEffect(() => {
     axios.get('/api/dashboard')
     .then(({data}) => {
       setDashboard(data)
+      setTriggerNotif(!triggerNotif)
     })
     .catch((e) => {
       Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })

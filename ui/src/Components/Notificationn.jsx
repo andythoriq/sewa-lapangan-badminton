@@ -3,10 +3,11 @@ import "./notif.css";
 import axios from "../api/axios";
 import { useNotification } from "../context/notificationContext";
 function Notification({ swal }) {
-  const { setNotifications, notifications, setUnreadCount, unreadCount } = useNotification()
+  const { setTriggerNotif, triggerNotif } = useNotification()
 
   const [ isShow, setIsShow ] = useState(false);
-  const [ triggerEffect, setTriggerEffect ] = useState(false)
+  const [ notifications, setNotifications ] = useState([])
+  const [ unreadCount, setUnreadCount ] = useState(0)
 
   useEffect(() => {
     axios.get('/api/notification')
@@ -16,13 +17,13 @@ function Notification({ swal }) {
       }).catch((e) => {
         swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       })
-  }, [ triggerEffect ])
+  }, [ triggerNotif ])
 
   const changeReadStatus = async (id) => {
     try {
       await axios.get("/sanctum/csrf-cookie");
       await axios.post("/api/notification", { id: id });
-      setTriggerEffect(!triggerEffect)
+      setTriggerNotif(!triggerNotif)
     } catch (e) {
       swal.fire({
         icon: "error",
@@ -37,7 +38,7 @@ function Notification({ swal }) {
   return (<>
     <div key={1} className="icon" onClick={() => {
       setIsShow(!isShow)
-      setTriggerEffect(!triggerEffect)
+      setTriggerNotif(!triggerNotif)
     }}>
       <img src="https://i.imgur.com/AC7dgLA.png" alt="" />
       <div className="count">{unreadCount}</div>

@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'customer' => \App\Http\Middleware\MustBeCustomer::class,
         'holiday' => \App\Http\Middleware\OnHoliday::class,
         'operational' => \App\Http\Middleware\OnOperationalHours::class,
+        // 'notification' => \App\Http\Middleware\FetchNotificationMiddleware::class,
         // 'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
         // 'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
     ];

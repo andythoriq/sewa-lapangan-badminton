@@ -61,10 +61,6 @@ class RentalController extends Controller
                 'total_price' => $response['tp'],
                 'qr_code_image' => $response['qr'],
                 'phone_number' => $response['pn']
-            ],
-            'notification' => [
-                'data' => NotificationModel::getNotifications(),
-                'unread' => NotificationModel::getUnreadCount()
             ]
         ], 201, ['success' => 'Created New Rental data.']);
     }
@@ -92,10 +88,6 @@ class RentalController extends Controller
                 'total_price' => $response['tp'],
                 'qr_code_image' => $response['qr'],
                 'phone_number' => $response['pn']
-            ],
-            'notification' => [
-                'data' => NotificationModel::getNotifications(),
-                'unread' => NotificationModel::getUnreadCount()
             ]
         ], 201, ['success' => 'Multiple rental Created.']);
     }

@@ -8,8 +8,10 @@ import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import ReactPaginate from 'react-paginate';
 import secureLocalStorage from "react-secure-storage";
+import { useNotification } from "../../../../context/notificationContext";
 
 const UserList = () => {
+    const { setTriggerNotif, triggerNotif } = useNotification()
     const [show, setShow] = useState(false);
     const [deleteId, setDeleteId] = useState(0)
     const [ indexToSplice, setIndexToSplice] = useState("");
@@ -35,6 +37,7 @@ const UserList = () => {
             setUsers(data.data)
             setPageCount(data.meta.last_page);
             setCurrentPage(data.meta.current_page);
+            setTriggerNotif(!triggerNotif)
             if (data.data.length < 1) {
                 Swal.fire({ icon: "warning", title: "Not found!", html: `'${values.search}' in user not found`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
                 .then((result) => {
@@ -59,6 +62,7 @@ const UserList = () => {
             setOriginalCount(data.meta.last_page)
             setCurrentPage(data.meta.current_page)
             setOriginalCurrent(data.meta.current_page)
+            setTriggerNotif(!triggerNotif)
         })
         .catch((e) => {
             Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });

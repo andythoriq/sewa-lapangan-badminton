@@ -125,12 +125,12 @@ class AuthCustomerRequest extends FormRequest
 
         $user_key = env('ZENZIVA_USER_KEY');
         $api_key = env('ZENZIVA_API_KEY');
-        $response = $this->sendWA($validated['phone_number'], $message,  $user_key, $api_key);
-        return $response;
-        // return [
-        //     'text' => 'Success',
-        //     'to' => $this->phone_number
-        // ];
+        // $response = $this->sendWA($validated['phone_number'], $message,  $user_key, $api_key);
+        // return $response;
+        return [
+            'text' => 'Success',
+            'to' => $this->phone_number
+        ];
     }
 
     public function verify_otp()
@@ -139,11 +139,7 @@ class AuthCustomerRequest extends FormRequest
         if (Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->expiration, 'Asia/Jakarta'))) {
             return [
                 'token' => $customer->createToken(str_replace(' ', '', $customer->phone_number) . '-token')->plainTextToken,
-                'customer' => $customer,
-                'notification' => [
-                    'data' => NotificationModel::getNotifications(),
-                    'unread' => NotificationModel::getUnreadCount()
-                ]
+                'customer' => $customer
             ];
         }
         throw ValidationException::withMessages([
