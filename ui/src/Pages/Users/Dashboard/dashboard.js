@@ -29,7 +29,7 @@ const Dashboard = () => {
     })
   }, [])
 
-  return (dashboard.customer_count >= 0 && dashboard.booking_today_count >= 0 && dashboard.total_income_all >= 0 && dashboard.total_income_today >= 0 ?
+  return (dashboard.customer_count >= 0 && dashboard.booking_today_count >= 0 && dashboard.total_income_all && dashboard.total_income_today ?
     <>
       <h4 className="mb-4">
         <b>Dashboard</b>

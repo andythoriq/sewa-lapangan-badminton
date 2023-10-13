@@ -12,9 +12,9 @@
     flex-direction: row;
 }
 .card-barcode img {
-    max-width: 34%;
+    max-width: 50%;
     margin: auto;
-    padding: 0.5em;
+    padding: 0.5rem;
 }
 .codeqr {
     display: flex;
