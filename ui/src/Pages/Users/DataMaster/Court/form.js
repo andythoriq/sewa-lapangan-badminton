@@ -17,7 +17,8 @@ const CourtForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState("");
-  const [values, setValues] = useState({ label: "", price: "", description: "" });
+  const [values, setValues] = useState({ label: "", description: "" });
+  const [price, setPrice] = useState(0)
   const [errors, setErrors] = useState([]);
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -59,7 +60,7 @@ const CourtForm = () => {
     e.preventDefault();
     const data = {
       label: values.label,
-      initial_price: values.price,
+      initial_price: price,
       description: values.description,
       image_path: image[0]?.file ?? "",
     };
@@ -126,7 +127,7 @@ const CourtForm = () => {
         </b>
       </h4>
       <Card className="p-3 mt-5" style={{ marginLeft: "-18px" }}>
-        <Form encType="multipart/form-data">
+        <Form>
           <Row>
             <Col className="col-12 col-md-6">
               <Form.Group>
@@ -138,7 +139,7 @@ const CourtForm = () => {
               <Form.Group>
                 {/* <FormInput type="text" name="price" label="Price" value={values.price} onChange={onChange} placeholder="Rp "/> */}
                 <label>Price</label>
-                <CurrencyInput className="form-control" id="price" prefix="Rp"  name="price" value={values.price} decimalsLimit={2} onChange={onChange} />
+                <CurrencyInput className="form-control" id="price" prefix="Rp"  name="price" value={price} decimalsLimit={2} onValueChange={(value) => setPrice(value)} />
                 {errors.initial_price && <span className="text-danger">{errors.initial_price[0]}</span>}
               </Form.Group>
             </Col>

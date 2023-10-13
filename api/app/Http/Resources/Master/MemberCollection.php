@@ -2,10 +2,12 @@
 
 namespace App\Http\Resources\Master;
 
+use App\Traits\CheckMembershipStatus;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class MemberCollection extends ResourceCollection
 {
+    use CheckMembershipStatus;
     /**
      * Transform the resource collection into an array.
      *
@@ -25,7 +27,7 @@ class MemberCollection extends ResourceCollection
                 'deposit' => $customer->deposit,
                 'debt' => $customer->debt,
                 'status' => $customer->status,
-                'member_active_period' => $customer->member_active_period,
+                'member_active_period' => $this->checkActivePeriod($customer->code, $customer->member_active_period)
             ];
         });
     }

@@ -138,14 +138,15 @@ Route::middleware('auth:sanctum')->group(function () {
     /** Master Court
      * policy/role: court-handle, admin */
     Route::controller(CourtController::class)->middleware('admin')->group(function () {
-        Route::get('/court', 'index')->withoutMiddleware(['auth:sanctum', 'admin']);
+        Route::get('/court', 'index');
         Route::get('/court/{court}', 'show');
-        Route::get('/court-select', 'court_select');
+        Route::get('/court-select', 'court_select')->withoutMiddleware(['auth:sanctum', 'admin']);
         Route::get('/court-edit/{court}', 'edit');
         Route::post('/court', 'create');
         Route::post('/court/{court}', 'update');
         Route::delete('/court/{court}', 'delete');
     });
+    Route::get('/court-landing-page', [CourtController::class, 'landing_page'])->withoutMiddleware('auth:sanctum');
 
     /** Master Customer
      * policy/role: customer-handle, admin */

@@ -115,20 +115,25 @@ const FormStep = () => {
                 <br />
                 <Form onSubmit={handleSubmit} style={{ width: "120%" }}>
                   <Form.Group className="mb-2">
-                    <FormInput type="text" name="name" label="Full name" value={name} placeholder="required if the account is new" onChange={(e) => setName(e.target.value)} />
-                    {errors.name && <span className="text-danger">{errors.name[ 0 ]}</span>}
-                  </Form.Group>
-                  <Form.Group className="mb-2">
                     <label>Phone Number</label>
-                    <PhoneInput placeholder="input phone number" specialLabel={""} country={"id"} value={(phoneNumber.substring(0, 1) === '0' ? "62" + phoneNumber.slice(1) : phoneNumber)} onChange={(phone) => setPhoneNumber(phone)} />
+                    <PhoneInput placeholder="input phone number" specialLabel={""} country={"id"} value={(phoneNumber.substring(0, 1) === '0' ? "62" + phoneNumber.slice(1) : phoneNumber)} onChange={(phone) => {
+                      setPhoneNumber(phone)
+                      setName('')
+                      setErrors([])
+                    }} />
                     {errors.phone_number && <span className="text-danger">{errors.phone_number[0]}</span>}
                   </Form.Group>
-
+                    <Form.Group className="mb-2">
+                      {errors.name && <>
+                        <FormInput type="text" name="name" label="Full name" value={name} onChange={(e) => setName(e.target.value)} />
+                        <span className={errors.name[0] === 'Please enter your name.' ? "text-success" : "text-danger"}>{errors.name[ 0 ]}</span>
+                      </>}
+                    </Form.Group>
                   {/* <Button type="submit" className="btn-danger btn-sm btn-block col-12 mt-2 rounded" href="/step2">
                   Next
                 </Button> */}
                   <Button type="submit" className="btn col-12 mt-2 rounded" style={{  background: "#B21830", color: "white" }}>
-                    Send OTP
+                    Next
                   </Button>
                 </Form>
               </div>

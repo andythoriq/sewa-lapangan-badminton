@@ -67,7 +67,6 @@ class MemberRequest extends FormRequest
             $data = $this->except('isChangeToRegular');
             $data['membership_status'] = 'R';
             $data['member_active_period'] = null;
-            $data['customer_code'] = $this->getFormattedCode();
             $customer->updateOrFail($data);
         } else {
             $customer->updateOrFail($this->except('isChangeToRegular'));

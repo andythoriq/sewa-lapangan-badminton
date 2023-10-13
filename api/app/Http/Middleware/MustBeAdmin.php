@@ -16,7 +16,7 @@ class MustBeAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user() === auth()->user() || auth()->user() instanceof \App\Models\User) {
+        if ($request->user() === auth()->user() || auth()->user() instanceof \App\Models\User || $request->user() instanceof \App\Models\User) {
             return $next($request);
         }
 

@@ -57,7 +57,7 @@ const FormMemberBooking = ({ isShow, handleClose, courtProp }) => {
             finish: item.finish_time,
             court_id: item.court.value
           }))
-        });
+        }, {headers: {Authorization: `Bearer ${secureLocalStorage.getItem('token')}`}});
         setErrors("");
         Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {

@@ -80,7 +80,7 @@ const Landing = () => {
 
   useEffect(() => {
     axios
-      .get("/api/court")
+      .get("/api/court-landing-page")
       .then(({ data }) => {
         setCourts(data);
       })

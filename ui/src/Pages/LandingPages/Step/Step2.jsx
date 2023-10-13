@@ -9,13 +9,11 @@ import Swal from "sweetalert2";
 // import { Link } from "react-router-dom";
 import "../nav.css";
 import axios from "../../../api/axios";
-import { useNavigate } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
 
 const Step2 = () => {
   const [OTP, setOTP] = useState('');
   const [errors, setErrors] = useState([])
-  const navigate = useNavigate()
 
   const inputs = [
     {
@@ -46,7 +44,8 @@ const Step2 = () => {
      secureLocalStorage.setItem('role', 'user')
      Swal.fire({ icon: "success", title: "Success!", html: "OTP verified successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
      setTimeout(function () {
-       navigate('/landing-page', { replace: true })
+      //  navigate('/landing-page', { replace: true })
+       window.location.href = 'landing-page';
      }, 2000);
    } catch (e) {
      if (e?.response?.status === 422) {

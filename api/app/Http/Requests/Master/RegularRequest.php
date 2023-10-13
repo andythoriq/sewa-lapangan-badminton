@@ -65,7 +65,6 @@ class RegularRequest extends FormRequest
         if ($this->isChangeToMember) {
             $data = $this->except('isChangeToMember');
             $data['membership_status'] = 'M';
-            $data['customer_code'] = $this->getFormattedCode();
             $customer->updateOrFail($data);
         } else {
             $customer->updateOrFail($this->except('isChangeToMember'));
