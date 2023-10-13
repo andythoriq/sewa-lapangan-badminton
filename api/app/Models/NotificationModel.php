@@ -17,17 +17,16 @@ class NotificationModel extends Model
         'read_status'
     ];
 
-    public static function notifyRegularBooking($customer_name, $court_name, $start, $finish, $total_hour, $total_price)
+    public static function notifyRegularBooking($customer_name, $start, $finish, $total_hour, $total_price)
     {
         $formatted_price = number_format((float) $total_price, 0, '.', '.');
         self::create([
-            'value' => 'Regular Customer Booking!',
-            'description' => <<<EOT
-            name        : $customer_name
-            court       : $court_name
-            start at    : $start
-            finish at   : $finish
-            total hour  : $total_hour
+            'label' => 'Customer Booking!',
+            'value' => <<<EOT
+            name        : $customer_name \n
+            start at    : $start \n
+            finish at   : $finish \n
+            total hour  : $total_hour \n
             total price : Rp $formatted_price
             EOT,
             'read_status' => 'N'
@@ -38,40 +37,38 @@ class NotificationModel extends Model
     {
         $formatted_price = number_format((float) $total_price, 0, '.', '.');
         self::create([
-            'value' => 'Member Customer Booking!',
-            'description' => <<<EOT
-            name        : $customer_name
-            amount      : $amount
-            total hour  : $total_hour
+            'label' => 'Member Customer Booking!',
+            'value' => <<<EOT
+            name        : $customer_name \n
+            amount      : $amount \n
+            total hour  : $total_hour \n
             total price : Rp $formatted_price
             EOT,
             'read_status' => 'N'
         ]);
     }
 
-    public static function customerRegistered($name, $phone_number, $membership_status, $now)
+    public static function customerRegistered($name, $phone_number, $membership_status)
     {
         $value = $membership_status === 'M' ? 'New Member Customer Registered' : 'New Regular Customer Registered';
         self::create([
-            'value' => $value,
-            'description' => <<<EOT
-            name          : $name
+            'label' => $value,
+            'value' => <<<EOT
+            name          : $name \n
             phone number  : $phone_number
-            registered at : $now
             EOT,
             'read_status' => 'N'
         ]);
     }
 
-    public static function customerLoggedIn($name, $phone_number, $membership_status, $now)
+    public static function customerLoggedIn($name, $phone_number, $membership_status)
     {
         $value = $membership_status === 'M' ? 'Member Customer Logged in' : 'New Regular Customer Logged in';
         self::create([
-            'value' => $value,
-            'description' => <<<EOT
-            name         : $name
+            'label' => $value,
+            'value' => <<<EOT
+            name         : $name \n
             phone number : $phone_number
-            logged in at : $now
             EOT,
             'read_status' => 'N'
         ]);

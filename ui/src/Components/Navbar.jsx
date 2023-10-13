@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { namaApp, logoApp, dirIcon } from "./Services/config";
 import { Row, Col } from "react-bootstrap";
-import { FunnelIcon, XMarkIcon, Bars3BottomLeftIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon, Bars3BottomLeftIcon } from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { setToggle } from "../Reducers/menuSlice";
 import FormSelect from "./Form/select";
@@ -11,34 +11,10 @@ import axios from "../api/axios";
 import Swal from "sweetalert2";
 import secureLocalStorage from "react-secure-storage";
 import { Link } from "react-router-dom";
-import Notifications from "react-notifications-menu";
+import Notification from "./Notificationn";
 
 const Navbar = () => {
-  const DEFAULT_NOTIFICATION = {
-    image: "https://synergi-dev.s3.ap-southeast-1.amazonaws.com/profile-pictures/6b9.png",
-    message: "Notification one.",
-    detailPage: "/events",
-    receivedTime: "12h ago",
-  };
 
-  const [data, setData] = useState([DEFAULT_NOTIFICATION]);
-  const [message, setMessage] = useState("");
-
-  const [bell, setBell] = useState("../assets/icon/notif.png");
-
-  const onClicknotif = () => {
-    if (message.length > 0) {
-      setData([
-        ...data,
-        {
-          ...DEFAULT_NOTIFICATION,
-          message,
-        },
-      ]);
-      setMessage("");
-      alert("notification added");
-    }
-  };
   const navigate = useNavigate();
   const { menuSidebar } = useSelector((state) => state.menu);
   const dispatch = useDispatch();
@@ -149,21 +125,9 @@ const Navbar = () => {
             </ul>
           </div>
         )}
-        <ul className={`menu2 m-0`}>
-          <li className="mx-2">
-            <NavLink to="/" className="">
-              <Notifications
-                data={data}
-                header={{
-                  title: "Notifications",
-                  option: { text: "View All", onClicknotif: () => console.log("Clicked") },
-                }}
-                markAsRead={(data) => {
-                  console.log(data);
-                }}
-                icon={bell}
-              />
-            </NavLink>
+        <ul className={`menu2 m-0 align-items-center`}>
+          <li className="mx-2 notification-icon-menu">
+            <Notification swal={Swal} />
           </li>
           <li>
             <Dropdown>

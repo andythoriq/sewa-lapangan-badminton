@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Master;
 
 use App\Models\CustomerModel;
+use App\Models\NotificationModel;
 use App\Models\RentalModel;
 use App\Traits\CollideCheck;
 use App\Traits\CreateQrCode;
@@ -126,14 +127,16 @@ class RentalRequest extends FormRequest
 
         RentalModel::create($data);
 
-        $customer_phone_number = CustomerModel::select('phone_number')->where('customer_code', $this->customer_id)->firstOrFail()->phone_number;
+        $customer = CustomerModel::select(['phone_number', 'name'])->where('customer_code', $this->customer_id)->first();
+
+        NotificationModel::notifyRegularBooking($customer->name, $this->start, $this->finish, $transaction->total_hour, $transaction->total_price);
 
         return [
             'bc' => $transaction->booking_code,
             'tp' => $transaction->total_price,
             'th' => $transaction->total_hour,
             'qr' => $transaction->qr_code_image,
-            'pn' => $customer_phone_number
+            'pn' => $customer->phone_number
         ];
     }
 
@@ -197,14 +200,16 @@ class RentalRequest extends FormRequest
         $transaction->saveOrFail();
         RentalModel::insert($data['rentals']);
 
-        $customer_phone_number = CustomerModel::select('phone_number')->where('customer_code', $this->customer_id)->firstOrFail()->phone_number;
+        $customer = CustomerModel::select(['phone_number', 'name'])->where('customer_code', $this->customer_id)->first();
+
+        NotificationModel::notifyMemberBooking($customer->name, $transaction->total_hour, $transaction->total_price, count($data['rentals']));
 
         return [
             'bc' => $transaction->booking_code,
             'tp' => $transaction->total_price,
             'th' => $transaction->total_hour,
             'qr' => $transaction->qr_code_image,
-            'pn' => $customer_phone_number
+            'pn' => $customer->phone_number
         ];
     }
 
