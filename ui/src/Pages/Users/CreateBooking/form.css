@@ -12,14 +12,14 @@
     flex-direction: row;
 }
 .card-barcode img {
-    max-width: 50%;
+    max-width: 250px;
     margin: auto;
-    padding: 0.5rem;
+    padding: 15px;
 }
 .codeqr {
     display: flex;
     justify-content: space-between;
 }
 .text-section {
-    max-width: 80%;
+    max-width: 70%;
 }
