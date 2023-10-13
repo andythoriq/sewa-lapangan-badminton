@@ -16,7 +16,7 @@ const Landing = () => {
   // loader state
   // const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  // create sync method to fetch
+  // // create sync method to fetch
   // useEffect(() => {
   //   const DataFetch = () => {
   //     setTimeout(() => {
@@ -93,7 +93,7 @@ const Landing = () => {
   // window.addEventListener("scroll", changeColor);
 
   return courts.length < 0 ? (
-    <Loader />
+  <Loader />
   ) : (
     <>
       {/* navbar */}

@@ -10,7 +10,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #011015;
+    background: #f2f2f2;
 }
 .container-loading{
     position: relative;
@@ -42,7 +42,7 @@
     animation: rotate3 2s linear infinite;
 }
 .loading-text {
-    color: white;
+    color: rgb(9, 9, 9);
     letter-spacing: 2px;
     font-size: 16px;
 }

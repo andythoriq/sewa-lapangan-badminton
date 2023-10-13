@@ -247,7 +247,7 @@ export default function Calendar() {
         />
       </div>
       <AlertNewYear isShow={isShowAlert} handleClose={() => {setIsShowAlert(false)}} />
-    </> : <Loader/>
+      </> : <Loader/>
   );
 }
 

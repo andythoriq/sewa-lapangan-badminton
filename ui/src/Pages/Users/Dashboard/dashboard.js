@@ -6,7 +6,7 @@ import FormatDate from "../../../Components/Services/formatDate";
 import "./dashboard.css";
 import axios from "../../../api/axios";
 import Swal from "sweetalert2";
-import Loader from "../../../Components/Loader/Loading";
+// import Loader from "../../../Components/Loader/Loading";
 
 const Dashboard = () => {
   const date = new Date();
@@ -84,7 +84,7 @@ const Dashboard = () => {
       <div className="mt-4 mb-4"></div>
       <Schedule aksi="dashboard" />
       <Info />
-    </>
+    </> 
   );
 };
 
