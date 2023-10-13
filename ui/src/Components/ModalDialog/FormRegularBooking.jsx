@@ -45,7 +45,7 @@ const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice }) => 
           customer_id: secureLocalStorage.getItem('customer_code') ?? '',
           start: values.start,
           finish: values.finish
-        });
+        }, {headers: {Authorization: `Bearer ${secureLocalStorage.getItem('token')}`}});
         setErrors("");
         Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {

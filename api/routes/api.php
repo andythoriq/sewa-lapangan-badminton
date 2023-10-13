@@ -138,7 +138,7 @@ Route::middleware('auth:sanctum')->group(function () {
     /** Master Court
      * policy/role: court-handle, admin */
     Route::controller(CourtController::class)->middleware('admin')->group(function () {
-        Route::get('/court', 'index')->withoutMiddleware(['auth:sanctum', 'admin']);
+        Route::get('/court', 'index')->withoutMiddleware(['auth:sanctum', 'admin', 'customer']);
         Route::get('/court/{court}', 'show');
         Route::get('/court-select', 'court_select');
         Route::get('/court-edit/{court}', 'edit');

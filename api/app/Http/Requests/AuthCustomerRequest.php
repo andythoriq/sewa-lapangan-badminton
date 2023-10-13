@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ConfigModel;
 use App\Models\NotificationModel;
 use App\Models\OTPModel;
 use App\Traits\SendWA;
@@ -71,13 +72,13 @@ class AuthCustomerRequest extends FormRequest
         do {
             $otp = random_int(100000, 999999);
         } while (CustomerModel::where('otp_code', $otp)->exists());
-
+        $expire_minutes = ConfigModel::getExpireDuration();
         $validated = $this->validated();
         $customer = CustomerModel::where('phone_number', $validated['phone_number']);
         if ($customer->exists()) {
             if (isset($customer->first()->expiration) && Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->first()->expiration, 'Asia/Jakarta'))) {
                 throw ValidationException::withMessages([
-                    'phone_number' => ['Can\'t get OTP in less than 9 minutes.']
+                    'phone_number' => ["Can't get OTP in less than $expire_minutes minutes."]
                 ]);
             } else {
                 OTPModel::create([
@@ -86,14 +87,14 @@ class AuthCustomerRequest extends FormRequest
                 ]);
                 $customer->update([
                     'otp_code' => $otp,
-                    'expiration' => Carbon::now('Asia/Jakarta')->addMinutes(9)
+                    'expiration' => Carbon::now('Asia/Jakarta')->addMinutes((int) $expire_minutes)
                 ]);
                 $customer_data = CustomerModel::select(['name', 'membership_status'])->where('phone_number', $validated['phone_number'])->first();
                 NotificationModel::customerLoggedIn($customer_data->name, $validated['phone_number'], $customer_data->membership_status);
             }
         } else {
             if (empty($this->name)) {
-                throw ValidationException::withMessages([ 'name' => ['The name field is required when creating a new account.'] ]);
+                throw ValidationException::withMessages([ 'name' => ['Please enter your name.'] ]);
             }
             $validated['membership_status'] = 'R';
             $validated['status'] = 'Y';

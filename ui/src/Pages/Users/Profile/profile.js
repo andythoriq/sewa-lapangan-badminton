@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "../../../api/axios";
 import Swal from "sweetalert2";
 import Loader from "../../../Components/Loader/Loading";
+import secureLocalStorage from "react-secure-storage";
 
 const Profile = () => {
   const [admin, setAdmin] = useState({})
@@ -11,7 +12,7 @@ const Profile = () => {
     axios.get('/api/me-admin')
       .then(({ data }) => {
         setAdmin(data)
-      })
+      },{headers: {Authorization: `Bearer ${secureLocalStorage.getItem('token')}`}})
       .catch((e) => {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       });

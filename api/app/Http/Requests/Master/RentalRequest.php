@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Master;
 
+use App\Models\ConfigModel;
 use App\Models\CustomerModel;
 use App\Models\NotificationModel;
 use App\Models\RentalModel;
@@ -184,10 +185,10 @@ class RentalRequest extends FormRequest
             $this->validateDuration($rental['start'], $rental['finish']);
 
             $validated_price = $this->getPeakTimePrice($rental['court_id'], date('l'));
+            $discount = ConfigModel::memberDiscount();
+            $discounted = $validated_price - (($discount / 100) * $validated_price);
 
-            $discount = $validated_price - ((10 / 100) * $validated_price);
-
-            $rental['price'] = $this->getCost($rental['start'], $rental['finish'], $discount);
+            $rental['price'] = $this->getCost($rental['start'], $rental['finish'], $discounted);
 
             $transaction->total_price += $rental['price'];
             $transaction->total_hour += Carbon::parse($rental['start'], 'Asia/Jakarta')->floatDiffInHours($rental['finish']);

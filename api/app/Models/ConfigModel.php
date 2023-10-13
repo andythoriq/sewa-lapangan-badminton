@@ -19,7 +19,7 @@ class ConfigModel extends Model
 
     public static function getOpenTime()
     {
-        $open_time = self::where('slug', 'open-time')->first();
+        $open_time = self::where('slug', 'open_time')->first();
         if (empty($open_time)) {
             $open_time = self::where('id', 1)->first();
         }
@@ -28,7 +28,7 @@ class ConfigModel extends Model
 
     public static function getExpireDuration()
     {
-        $expire_otp = self::where('slug', 'expire-duration')->first();
+        $expire_otp = self::where('slug', 'expire_duration')->first();
         if (empty($expire_otp)) {
             $expire_otp = self::where('id', 4)->first();
         }
@@ -37,7 +37,7 @@ class ConfigModel extends Model
 
     public static function memberDiscount()
     {
-        $member_discount = self::where('slug', 'member-discount')->first();
+        $member_discount = self::where('slug', 'member_discount')->first();
         if (empty($member_discount)) {
             $member_discount = self::where('id', 5)->first();
         }
