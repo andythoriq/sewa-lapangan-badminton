@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Card, Button } from "react-bootstrap";
 import ScheduleModal from "./modal";
+import { MultiSelect } from "react-multi-select-component";
 
 const Schedule = ({ aksi = "" }) => {
   const ifDashboard = aksi === "dashboard" ? true : false;
@@ -51,7 +52,28 @@ const Schedule = ({ aksi = "" }) => {
     },
   ];
 
-  const [booking, setBooking] = useState()
+  const [selected, setSelected] = useState([]);
+
+  // let dataCourt = [
+  //     { value: "1", label: "Court A" },
+  //     { value: "2", label: "Court B" },
+  //     { value: "3", label: "Court C" },
+  //     { value: "4", label: "Court D" },
+  // ];
+  const dataLapangan = [
+    { value: "1", label: "Court A" },
+    { value: "2", label: "Court B" },
+    { value: "3", label: "Court C" },
+    { value: "4", label: "Court D" },
+  ];
+  const dataCondition = [
+    { value: "1", label: "Booked" },
+    { value: "2", label: "Availabe" },
+    { value: "3", label: "On Progress" },
+    { value: "4", label: "Finished" },
+  ];
+
+  const [booking, setBooking] = useState();
 
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
@@ -70,11 +92,8 @@ const Schedule = ({ aksi = "" }) => {
 
   useEffect(() => {
     try {
-      
-    } catch (e) {
-      
-    }
-  }, [])
+    } catch (e) {}
+  }, []);
 
   return (
     <>
@@ -85,6 +104,33 @@ const Schedule = ({ aksi = "" }) => {
           <b>Schedule</b>
         </h4>
       )}
+      {ifDashboard ? (
+        ""
+      ) : (
+        <Card className="p-3 mt-3 mb-4 " style={{ marginLeft: "-18px" }}>
+          <Row className="d-flex justify-content-center">
+            <Col className="col-12 col-md-2">
+              Date:
+              <input className="form-control form-control-sm" type="date" placeholder=".form-control-sm" style={{ width: 159, height: 40 }}></input>
+            </Col>
+            <Col className="col-12 col-md-2">
+              Court:
+              <MultiSelect options={dataLapangan} value={selected} onChange={setSelected} labelledBy="Select" style={{ width: 116 }} />
+            </Col>
+            <Col className="col-12 col-md-2">
+              Condition:
+              <MultiSelect options={dataCondition} value={selected} onChange={setSelected} labelledBy="Select" />
+              {/* <FormSelect className="form-select form-select-sm" style={{ width: 116, fontSize: 15 }} options={dataCondition} /> */}
+            </Col>
+            <Col className="col-12 col-md-2 mt-4">
+              <Button className="btn" type="submit" style={{ background: "#7F1122 " }}>
+                Search
+              </Button>
+            </Col>
+          </Row>
+        </Card>
+      )}
+
       <Row>
         <Col className="col-12 col-md-6 d-flex mb-4">
           <div>
@@ -100,11 +146,11 @@ const Schedule = ({ aksi = "" }) => {
             <div className="bullet bullet-orange"></div> <div className="bullet-text">On progress</div>
           </div>
         </Col>
-          <Col className="col-12 mt-1 mb-2 " style={{ textAlign:"right",marginLeft: "-16px" }}>
-            <Link to="/create-booking" className="btn btn-sm" style={{ background: "#B21830", color: "white" }}>
-              New Booking
-            </Link>
-          </Col>
+        <Col className="col-12 mt-1 mb-2 " style={{ textAlign: "right", marginLeft: "-16px" }}>
+          <Link to="/create-booking" className="btn btn-sm" style={{ background: "#B21830", color: "white" }}>
+            New Booking
+          </Link>
+        </Col>
       </Row>
       <div className="table-responsive">
         <table id="schedule" className="table" width={"100%"} border={1} style={{ marginLeft: "-16px" }}>
