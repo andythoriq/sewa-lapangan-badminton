@@ -100,7 +100,7 @@ const Schedule = ({ aksi = "" }) => {
       {ifDashboard ? (
         ""
       ) : (
-        <h4 className="mb-4">
+        <h4 className="mb-4 mt-5">
           <b>Schedule</b>
         </h4>
       )}

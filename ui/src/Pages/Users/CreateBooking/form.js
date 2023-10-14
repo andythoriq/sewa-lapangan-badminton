@@ -5,13 +5,10 @@ import CreateBookingFormRegular from "./regular";
 import CreateBookingFormMember from "./member";
 import { ArrowLeft } from "react-bootstrap-icons";
 
-
-const CreateBookingForm = ({reaksi = ""}) => {
+const CreateBookingForm = () => {
   const [checkedRegular, setCheckedRegular] = useState(true);
   const [checkedMember, setCheckedMember] = useState(false);
-
-  const ifSchedule = reaksi === "schedule" ? true : false;
-  
+  const currentPage = "schedule";
 
   const handleRadioBtn = (aksi = "") => {
     // console.log(aksi);
@@ -26,15 +23,24 @@ const CreateBookingForm = ({reaksi = ""}) => {
 
   return (
     <>
-      <h4>
+
+      <h4 className="mt-5">
         <b>
-          {ifSchedule ? (
-            ""
-          ) : (
-            <Link to="/dashboard" className="btnBack">
-              <ArrowLeft />
-            </Link>
-          )}
+        {currentPage === "schedule" ? (
+          
+      <Link to="/dashboard" className="btnBack">
+        <ArrowLeft/>
+      </Link>
+          
+    ) : (
+      <Link to="/schedule" className="btnBack">
+        <ArrowLeft/>
+      </Link>
+    
+    )}
+          {/* <Link to="/dashboard" className="btnBack">
+            <ArrowLeft />
+          </Link> */}
           {/* <Link to="/dashboard" className="btnBack">
             <ArrowLeft />
           </Link> */}
@@ -43,7 +49,7 @@ const CreateBookingForm = ({reaksi = ""}) => {
       </h4>
       <Row>
         <Col>
-          <Card className="p-3 mt-5">
+          <Card className="p-3 mt-3">
             <div className="d-flex">
               <div className="form-check">
                 <input id="regId" type="radio" className="form-check-input" value="regular" checked={checkedRegular} onChange={() => handleRadioBtn("regular")} />

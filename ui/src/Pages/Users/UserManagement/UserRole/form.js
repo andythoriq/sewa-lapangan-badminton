@@ -160,14 +160,14 @@ const UserRoleForm = () => {
 
   return (
     <>
-        <h4><b>
+        <h4 className="mt-5"><b>
             <Link to="/user-management/user-role" className="btnBack"><ArrowLeft/></Link>
             {id? "Edit":"Create"} user role
             </b>
         </h4>
         <Row>
             <Col>
-            <Card className="p-3 mt-5" style={{ marginLeft: "-18px" }}>
+            <Card className="p-3 mt-3" style={{ marginLeft: "-18px" }}>
                 <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col className="col-12 col-md-6" style={{marginTop:2}}>

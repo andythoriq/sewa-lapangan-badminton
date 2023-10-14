@@ -102,7 +102,7 @@ const Rush = () => {
 
   return (
     <>
-      <h4>
+      <h4 className="mt-5"> 
         <b>
           <Link to="/data-master/peaktime" className="btnBack">
             <ArrowLeft />

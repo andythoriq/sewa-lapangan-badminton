@@ -166,10 +166,10 @@ const HistoryBooking = () => {
 
   return (
     <>
-      <h4>
+      <h4 className="mt-5">
         <b>History Booking</b>
       </h4>
-      <Card className="p-3 mt-5" style={{ marginLeft: "-18px" }}>
+      <Card className="p-3 mt-3" style={{ marginLeft: "-18px" }}>
         <Row className="">
           <Col className="col-12 col-md-4" style={{ marginTop: -20 }}>
             <Form.Group className="inputSearch">

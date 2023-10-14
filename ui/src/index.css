@@ -242,7 +242,7 @@ input:invalid[focused="true"] ~ #validError {
 
 .navbar .container-fluid {
   margin-bottom: 0px !important;
-  margin-left: 40px !important;
+  margin-left: 10px !important;
   margin-right: 40px !important;
 }
 .localstorge {
@@ -251,7 +251,7 @@ input:invalid[focused="true"] ~ #validError {
 
 #sidebar-wrapper {
   z-index: 1;
-  padding-top: 60px;
+  padding-top: 20px;
   min-height: 100vh;
   margin-left: -15rem;
   transition: margin 0.25s ease-out;
@@ -280,10 +280,10 @@ input:invalid[focused="true"] ~ #validError {
   padding: 16px !important;
 }
 #sidebar-wrapper .list-group-item.active {
-  color: #fff !important;
+  color: #c8c8c8 !important;
 }
 #page-content-wrapper {
-  padding-top: 80px;
+  padding-top: 0px;
   padding-left: 20px;
   min-width: 100vw;
   background: #f1f1f1;
@@ -301,11 +301,12 @@ input:invalid[focused="true"] ~ #validError {
 }
 
 body.sb-sidenav-toggled #wrapper .menu_sidebar {
-  margin-left: 230px !important;
+  margin-left:9px !important;
+  margin-top: 20px;
 }
 
 body.sb-sidenav-toggled #wrapper .menu_sidebar svg {
-  margin-left: 10px !important;
+  margin-left: 0px !important;
   margin-right: -10px !important;
 }
 
@@ -453,7 +454,7 @@ nav .menu svg {
 
 option:hover {
   background-color: var(--color-abu) !important;
-  color: #fff;
+  color: #a9a9a9;
 }
 
 select:focus > option:checked {
@@ -569,7 +570,14 @@ body.sb-sidenav-toggled .dropdown_menu_item.active span {
 .text-bg-green {
   background: var(--color-hijau) !important;
 }
-
+.navbar-utama {
+  background-color: #b21830;
+  height: 45px;
+  width: 100;
+  text-align: center;
+  margin-left: -21px;
+  color: white;
+}
 footer {
   position: fixed;
   background-color: #b21830;
@@ -625,7 +633,7 @@ footer .footer .text {
     max-width: 720px;
   }
   #page-content-wrapper {
-    padding-top: 80px;
+    padding-top: 0px;
     padding-left: 0px;
     min-width: 0;
     width: 100%;

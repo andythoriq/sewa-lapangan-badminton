@@ -199,7 +199,7 @@ const Setting = () => {
 
   return (
     <>
-      <h4 className="mb-2">
+      <h4 className="mb-2 mt-5">
         <b>Setting</b>
       </h4>
       <Row>
