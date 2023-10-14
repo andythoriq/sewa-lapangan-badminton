@@ -104,11 +104,11 @@ class TransactionController extends Controller
             ]);
         }
 
-        if (isset($data['customer_deposit']) || (float) $data['customer_deposit'] > 0) { // jika bayarnya lebih, dijadikan deposit
+        if ((float) $data['customer_deposit'] > 0) { // jika bayarnya lebih, dijadikan deposit
             $customer->deposit += (float) $data['customer_deposit'];
         }
 
-        if (isset($data['input_deposit']) || (float) $data['input_deposit'] > 0) { // jika depositnya dipakai
+        if ((float) $data['input_deposit'] > 0) { // jika depositnya dipakai
             $customer->deposit -= (float) $data['input_deposit'];
             $transaction->fill([
                 'isDeposit' => 'Y',
@@ -117,7 +117,7 @@ class TransactionController extends Controller
             ]);
         }
 
-        if (isset($data['customer_paid']) || (float) $data['customer_paid'] > 0) { // jika membayar dengan normal
+        if ((float) $data['customer_paid'] > 0) { // jika membayar dengan normal
             $transaction->fill([
                 'isPaid' => 'Y',
                 'customer_paid' => $data['customer_paid'],
