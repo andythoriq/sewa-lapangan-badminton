@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ConfigModel;
 use App\Models\CustomerModel;
 use App\Models\RentalModel;
 use App\Models\TransactionModel;
@@ -18,32 +19,42 @@ class DashboardController extends Controller
     public function __invoke(Request $request)
     {
         $today = now('Asia/Jakarta')->format('Y-m-d');
+        $yesterday = now('Asia/Jakarta')->subDay()->format('Y-m-d');
 
-            $customer_count = CustomerModel::count();
+        $booking_today = RentalModel::whereDate('start', $today)->OrWhereDate('finish', $today);
 
-            $booking_today_count = RentalModel::whereDate('start', '<=', $today)
-                                        ->whereDate('finish', '>=', $today)->count();
+        $all_booked =  RentalModel::where('status', 'B');
+        $finished_booking = $booking_today->where('status', 'F')->count();
+        $onprogress_booking = $booking_today->where('status', 'O')->count();
+        $upcoming_booking = $booking_today->where('status', 'B')->count();
+        $canceled_booking = $booking_today->where('status', 'C')->count();
 
-        $transaction_paid = TransactionModel::where('isPaid', 'Y')->sum('customer_paid');
-        $transaction_debt = TransactionModel::where('isDebt', 'Y')->sum('customer_debt');
-            $total_income_all = $transaction_paid - $transaction_debt;
+        $received = $booking_today->where('status', 'F')->sum('price');
+        $in_projection = $all_booked->sum('price');
+        $yesterday_received = RentalModel::whereDate('finish', $yesterday)->where('status', 'F')->sum('price');
 
-        $transaction_paid_today = TransactionModel::whereDate('created_at', $today)
-                                                ->where('isPaid', 'Y')
-                                                ->sum('customer_paid');
+        $total_deposit = CustomerModel::sum('deposit');
+        $total_debt = CustomerModel::sum('debt');
 
-        $transaction_debt_today = TransactionModel::whereDate('created_at', $today)
-                                                ->where('isDebt', 'Y')
-                                                ->sum('customer_debt');
-
-            $total_income_today = $transaction_paid_today - $transaction_debt_today;
-
+        $today_total_booker_deposit = CustomerModel::whereHas('rentals', function($query) use($today){
+            $query->whereDate('start', $today)->orWhereDate('finish', $today)->where('status', '!=', 'C');
+        })->sum('deposit');
+        $today_deposit_used = TransactionModel::whereDate('deposit_at', $today)->where('isDeposit', 'Y')->sum('customer_deposit');
 
         return response()->json([
-            'customer_count' => $customer_count,
-            'booking_today_count' => $booking_today_count,
-            'total_income_all' => $total_income_all,
-            'total_income_today' => $total_income_today
+            'company_name' => ConfigModel::getCompanyName(),
+            'all_booked' => $all_booked->count(),
+            'finished' => $finished_booking,
+            'onprogress' => $onprogress_booking,
+            'upcoming' => $upcoming_booking,
+            'canceled' => $canceled_booking,
+            'received' => $received,
+            'in_projection' => $in_projection,
+            'yesterday_received' => $yesterday_received,
+            'total_deposit' => $total_deposit,
+            'total_debt' => $total_debt,
+            'total_booker_deposit' => $today_total_booker_deposit,
+            'deposit_used' => $today_deposit_used
         ]);
     }
 }

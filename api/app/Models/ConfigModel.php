@@ -43,4 +43,13 @@ class ConfigModel extends Model
         }
         return $member_discount->value;
     }
+
+    public static function getCompanyName()
+    {
+        $name = self::where('slug', 'name')->first();
+        if (empty($name)) {
+            $name = self::where('id', 2)->first();
+        }
+        return $name->value;
+    }
 }
