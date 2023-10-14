@@ -7,11 +7,9 @@ import "./dashboard.css";
 import axios from "../../../api/axios";
 import Swal from "sweetalert2";
 import { useNotification } from "../../../context/notificationContext";
-
-
+import FormatTime from "../../../Components/Services/formatTime";
 
 const Dashboard = () => {
-  
   const date = new Date();
   //   let imgCard = [
   //     { name: "Customer", value: "0", icon: "users" },
@@ -19,6 +17,7 @@ const Dashboard = () => {
   //     { name: "Total income all", value: "0", icon: "audit" },
   //     { name: "Today's income", value: "0", icon: "audit" },
   //   ];
+  const time = new Date();
 
   const [dashboard, setDashboard] = useState({});
   const { setTriggerNotif, triggerNotif } = useNotification();
@@ -40,7 +39,11 @@ const Dashboard = () => {
       <h4 className="mb-4">
         <b>Dashboard</b>
       </h4>
-      <b>{FormatDate(date)}</b>
+      <div className="d-flex justify-content-between me-4">
+        <b>{FormatDate(date)}</b>
+        <b>{FormatTime(time)}</b>
+      </div>
+
       <Row className="mt-4 mb-4">
         <div className="container">
           <div className="row">
@@ -161,7 +164,6 @@ const Dashboard = () => {
                 <img src="./assets/icon/incomeday.png" className="img" alt="..." style={{ width: "80px" }} />
               </div>
             </div>
-
           </div>
           <div className="row">
             <div className="col-lg-3 col-sm-6"></div>
@@ -170,7 +172,7 @@ const Dashboard = () => {
       </Row>
       <div className="mt-4 mb-4"></div>
       <Schedule aksi="dashboard" />
-      
+
       <Info />
     </>
   );
