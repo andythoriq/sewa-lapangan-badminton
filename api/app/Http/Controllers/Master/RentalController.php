@@ -33,10 +33,10 @@ class RentalController extends Controller
                     });
             });
         })
-            ->where('status', '!=', 'F')
+            ->whereNotIn('status', ['F', 'C'])
             ->select(['id', 'start', 'finish', 'price', 'status', 'transaction_id', 'customer_id', 'court_id'])
             ->with([
-                'transaction:id,total_price,total_hour,booking_code,isPaid',
+                'transaction:id,total_price,total_hour,booking_code,isPaid,isDebt,isDeposit',
                 'customer:customer_code,name,phone_number',
                 'court:id,label,initial_price'
             ])

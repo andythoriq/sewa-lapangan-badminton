@@ -12,13 +12,10 @@ trait RegularRentalsCheck
         $customer = CustomerModel::with('rentals')->where('customer_code', $customer_code)->firstOrFail();
 
         if (strtoupper($customer->membership_status) == 'R') {
-            $unfinishedRentalsCount = $customer->rentals->where('status', '!=', 'F')->count();
 
-            if ($unfinishedRentalsCount > 1) {
                 throw ValidationException::withMessages([
                     'customer_id' => ['Regular customer can\'t booking multiple times.'],
                 ]);
-            }
         }
     }
 }

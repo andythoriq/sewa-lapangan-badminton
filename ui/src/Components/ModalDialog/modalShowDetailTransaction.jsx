@@ -16,6 +16,7 @@ const ModalShowDetailTransaction = ({ show, handleClose, data }) => {
           <tr>
             <th>Paid</th>
             <th>Debt</th>
+            <th>Deposit</th>
             <th>Play Duration</th>
           </tr>
         </thead>
@@ -23,6 +24,7 @@ const ModalShowDetailTransaction = ({ show, handleClose, data }) => {
           <tr>
             <td>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(data.customer_paid)}</td>
             <td>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(data.customer_debt)}</td>
+            <td>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(data.customer_deposit)}</td>
             <td>{data.total_hour > 1 ? data.total_hour + ' hours' : data.total_hour + ' hour'}</td>
           </tr>
         </tbody>

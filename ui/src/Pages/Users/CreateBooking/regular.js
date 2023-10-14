@@ -10,7 +10,7 @@ import { useNotification } from "../../../context/notificationContext";
 const CreateBookingFormRegular = () => {
   const navigate = useNavigate();
 
-  const { setNotifications, setUnreadCount } = useNotification()
+  const { setTriggerNotif, triggerNotif } = useNotification()
 
   const [dataCustomer, setDataCustomer] = useState([]);
   const [dataCourt, setDataCourt] = useState([]);
@@ -82,8 +82,7 @@ const CreateBookingFormRegular = () => {
           user_id: secureLocalStorage.getItem('id') ?? '',
         });
         setErrors("");
-        setNotifications(data.notification.data)
-        setUnreadCount(data.notification.unread)
+        setTriggerNotif(!triggerNotif)
         Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
             setTransactionResponse(data.transaction);

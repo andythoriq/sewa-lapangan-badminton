@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, StartRentalController, FinishRentalController, DashboardController, ScheduleController, NotificationController};
+use App\Http\Controllers\BookingChangeStatus;
 use App\Http\Controllers\Master\{HolidayController, ConfigController, OpenTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController, TransactionController};
 use Illuminate\Support\Facades\Route;
 
@@ -56,8 +57,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/send-booking-code', SendBookingCodeController::class);
     Route::post('/booking-verification', [TransactionController::class, 'booking_verification'])->middleware('admin');
-    Route::post('/start-rental', StartRentalController::class)->middleware('admin');
-    Route::post('/finish-rental', FinishRentalController::class)->middleware('admin');
+
+    Route::controller(BookingChangeStatus::class)->middleware('admin')->group(function () {
+        Route::post('/start-rental', 'start');
+        Route::post('/finish-rental', 'finish');
+        Route::post('/cancel-rental', 'cancel');
+    });
+
     Route::post('/pay', [TransactionController::class, 'pay'])->middleware('admin');
     Route::get('/booking-history', [TransactionController::class, 'booking_history']);
 

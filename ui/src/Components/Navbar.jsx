@@ -99,7 +99,7 @@ const Navbar = () => {
         {/* <div className="menu" onClick={toggle}>
         {menuOpen ? <XMarkIcon /> : <FunnelIcon />}
       </div> */}
-        {(curLoc.pathname === "/dashboard" || curLoc.pathname === "/") && (
+        {(curLoc.pathname === "/schedule") && (
           <div className={menuOpen ? "menu_filter active" : "menu_filter inactive"}>
             <ul className={`filter text-white m-0${menuOpen ? " open" : ""}`}>
               <li key="filter0">

@@ -28,6 +28,8 @@ class RentalCollection extends ResourceCollection
                 'transaction' => [
                     // 'id' => $rental->transaction->id,
                     'isPaid' => $rental->transaction->isPaid,
+                    'isDeposit' => $rental->transaction->isDeposit,
+                    'isDebt' => $rental->transaction->isDebt,
                     'total_hour' => $rental->transaction->total_hour,
                     'total_price' => $rental->transaction->total_price,
                     'booking_code' => $rental->transaction->booking_code

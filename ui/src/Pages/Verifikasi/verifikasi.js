@@ -61,10 +61,11 @@ const Verification = () => {
 
   const TableRowsAll = ({ rows }) => {
     return rows.map((val, index) => {
+      const isPaymentDone = (val.transaction.isPaid === 'Y' || val.transaction.isDebt === 'Y' || val.transaction.isDeposit === 'Y')
       return (
         <tr key={val.id}>
           <td>{index + 1}</td>
-          <td>{val.transaction.booking_code} <span className={val.transaction.isPaid === 'Y' ? "text-success" : "text-danger"}>({val.transaction.isPaid === 'Y' ? 'paid' : 'not paid'})</span></td>
+          <td>{val.transaction.booking_code} <span className={isPaymentDone ? "text-success" : "text-danger"}>({isPaymentDone ? 'paid' : 'not paid'})</span></td>
           <td>
             {val.customer.name} ({val.customer.phone_number})
           </td>
@@ -80,35 +81,45 @@ const Verification = () => {
               <Moment format="dddd, Do MMM YYYY h:mm">{val.finish}</Moment>
             </span>
           </td>
-          <td className="text-center">{val.status === "B" ? "Booked" : val.status === "O" ? "On progress" : "Finished"}</td>
+          <td className="text-center">{val.status === "B" ? "Booked" : val.status === "O" ? "On progress" : val.status === "F" ? "Finished" : "Canceled"}</td>
           <td className=" d-md-flex justify-content-center align-items-center">
-            {val.status === "O" || val.status === "F" ? null : (
+            {val.status === "O" || val.status === "F" || val.status === "C" ? null : (<>
               <button className="btn btn-sm btn-success" onClick={() => {
-                Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to start this game?", showConfirmButton: true, showCancelButton:true, allowOutsideClick: false, allowEscapeKey: false })
-                .then((result) => {
-                  if (result.isConfirmed) {
-                    handleStartGame(val.id)
-                  }
-                })
+                Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to start this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                  .then((result) => {
+                    if (result.isConfirmed) {
+                      handleActionGame(val.id, 'start-rental')
+                    }
+                  })
               }}>
-                Start Game
+                start
               </button>
-            )}
+              <button className="btn btn-sm btn-warning" onClick={() => {
+                Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to cancel this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                  .then((result) => {
+                    if (result.isConfirmed) {
+                      handleActionGame(val.id, 'cancel-rental')
+                    }
+                  })
+              }}>
+                cancel
+              </button>
+            </>)}
             &nbsp;
-            {val.status === "B" || val.status === "F" ? null : (
+            {val.status === "B" || val.status === "F" || val.status === "C" ? null : (
               <button className="btn btn-sm btn-danger" onClick={() => {
-                if (val.transaction.isPaid === 'N') {
+                if (!isPaymentDone) {
                   Swal.fire({ icon: "warning", title: "Warning", html: "You can't finish it before paying", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
                 } else {
                   Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to finish this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false })
                     .then((result) => {
                       if (result.isConfirmed) {
-                        handleFinishGame(val.id)
+                        handleActionGame(val.id, 'finish-rental')
                       }
                     })
                 }
               }}>
-                End Game
+                finish
               </button>
             )}
           </td>
@@ -148,11 +159,11 @@ const Verification = () => {
     }
   };
 
-  const handleStartGame = async (id, isCheckDetail = false) => {
+  const handleActionGame = async (id, action, isCheckDetail = false) => {
     try {
       await axios.get("/sanctum/csrf-cookie");
       const { data } = await axios.post(
-        "/api/start-rental",
+        "/api/" + action, // cancel-rental, start-rental, finish-rental
         {
           id: id
         }
@@ -186,47 +197,7 @@ const Verification = () => {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
     }
-  };
-
-  const handleFinishGame = async (id, isCheckDetail = false) => {
-    try {
-      await axios.get("/sanctum/csrf-cookie");
-      const { data } = await axios.post(
-        "/api/finish-rental",
-        {
-          id: id
-        }
-      );
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        html: data.message,
-        showConfirmButton: true,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          setChangeStatus(!changeStatus);
-          if (isCheckDetail) {
-            handleCheckDetail(bookingCode)
-          }
-        }
-      });
-    } catch (e) {
-      if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
-        Swal.fire({
-          icon: "error",
-          title: "Error!",
-          html: e.response.data.message,
-          showConfirmButton: true,
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-        });
-      } else {
-        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
-      }
-    }
-  };
+  }
 
   const TableRows = ({ rows, transaction }) => {
     return rows.map((val, index) => {
@@ -239,35 +210,45 @@ const Verification = () => {
           <td>
             {val.start} s/d {val.finish}
           </td>
-          <td>{val.status === "B" ? "Booked" : val.status === "O" ? "On progress" : "Finished"}</td>
+          <td>{val.status === "B" ? "Booked" : val.status === "O" ? "On progress" : val.status === "F" ? "Finished" : "Canceled"}</td>
           <td>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(val.price)}</td>
           <td>
             {val.court.label} ({new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(val.court.initial_price)})
           </td>
 
           <td className=" d-md-flex justify-content-between">
-            {val.status === "O" || val.status === "F" ? null : (
+            {val.status === "O" || val.status === "F" || val.status === "C" ? null : (<>
               <button className="btn btn-sm btn-success" onClick={() => {
                 Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to start this game?", showConfirmButton: true, showCancelButton: true,  allowOutsideClick: false, allowEscapeKey: false })
                   .then((result) => {
                     if (result.isConfirmed) {
-                      handleStartGame(val.id, true)
+                      handleActionGame(val.id, 'start-rental', true)
                     }
                   })
               }}>
-                Start Game
+                start
               </button>
-            )}
+              <button className="btn btn-sm btn-warning" onClick={() => {
+                Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to cancel this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false })
+                  .then((result) => {
+                    if (result.isConfirmed) {
+                      handleActionGame(val.id, 'cancel-rental', true)
+                    }
+                  })
+              }}>
+                cancel
+              </button>
+            </>)}
             &nbsp;
-            {val.status === "B" || val.status === "F" ? null : (
+            {val.status === "B" || val.status === "F" || val.status === "C" ? null : (
               <button className="btn btn-sm btn-danger" onClick={() => {
-                if (transaction.isPaid === 'N') {
+                if (!transaction.isPaymentDone) {
                   Swal.fire({ icon: "warning", title: "Warning", html: "You can't finish it before paying", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
                 } else {
                   Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to finish this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false })
                     .then((result) => {
                       if (result.isConfirmed) {
-                        handleFinishGame(val.id, true)
+                        handleActionGame(val.id, 'finish-rental', true)
                       }
                     })
                 }
@@ -407,11 +388,11 @@ const Verification = () => {
                       </tbody>
                     </table>
                     <div className="d-flex justify-content-between align-items-center">
-                      <span className={transaction.isPaid === "Y" ? "text-success" : "text-danger"}>{transaction.isPaid === "Y" ? " Already paid" : " Not paid yet"}</span>
+                      <span className={transaction.isPaymentDone ? "text-success" : "text-danger"}>{transaction.isPaymentDone ? " Already paid" : " Not paid yet"}</span>
                       <button className="btn btn-primary" onClick={() => {
                         setShowPaymentForm(true)
                         setShowDetail(false)
-                      }} disabled={transaction.isPaid === "Y"}>
+                      }} disabled={transaction.isPaymentDone}>
                         Pay Now
                       </button>
                     </div>

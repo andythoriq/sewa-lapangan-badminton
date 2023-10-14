@@ -7,6 +7,9 @@ trait ChangeRentalStatus
 {
     public function getAndChangeRentalStatus(string $rentalStart, string $rentalFinish, object $rental):string
     {
+        if ($rental->status == 'C') {
+            return 'C';
+        }
         $current = Carbon::parse(now('Asia/Jakarta')->format('Y-m-d H:i:s'), 'Asia/Jakarta');
 
         $start = Carbon::parse($rentalStart, 'Asia/Jakarta');

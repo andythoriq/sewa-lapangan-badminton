@@ -141,7 +141,7 @@ const HistoryBooking = () => {
               <Moment format="dddd, Do MMM YYYY h:mm">{val.finish}</Moment>
             </span>
           </td>
-          <td className="text-center">{val.status === "B" ? "Booked" : val.status === "O" ? "On progress" : "Finished"}</td>
+          <td className="text-center">{val.status === "B" ? "Booked" : val.status === "O" ? "On progress" : val.status === "F" ? "Finished" : "Canceled"}</td>
           <td className="text-center">
             &nbsp;&nbsp;
             <a href="#detail" onClick={() => handleShowDetail(val)}>

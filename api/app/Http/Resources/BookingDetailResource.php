@@ -21,6 +21,9 @@ class BookingDetailResource extends JsonResource
                 'total_hour' => $this->total_hour,
                 'booking_code' => $this->booking_code,
                 'isPaid' => $this->isPaid,
+                'isDebt' => $this->isDebt,
+                'isDeposit' => $this->isDeposit,
+                'isPaymentDone' => ($this->isPaid == 'Y' || $this->isDebt == 'Y' || $this->isDeposit == 'Y'),
                 'customer' => $this->whenLoaded('rentals', function () {
                     $firstRental = $this->rentals->first();
 

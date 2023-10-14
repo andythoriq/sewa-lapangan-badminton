@@ -32,8 +32,10 @@ class OnOperationalHours
             }
         }
 
-        if (Carbon::now('Asia/Jakarta')->between(Carbon::parse($get_hours['start'], 'Asia/Jakarta'), Carbon::parse($get_hours['finish'], 'Asia/Jakarta'))) {
-            return $next($request);
+        if (count($get_hours) > 0) {
+            if (Carbon::now('Asia/Jakarta')->between(Carbon::parse($get_hours['start'], 'Asia/Jakarta'), Carbon::parse($get_hours['finish'], 'Asia/Jakarta'))) {
+                return $next($request);
+            }
         }
 
         abort(403, 'You are outside of operational hours.');

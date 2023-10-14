@@ -27,7 +27,8 @@ class HistoryBookingCollection extends ResourceCollection
                     'total_price' => $booking->transaction->total_price,
                     'booking_code' => $booking->transaction->booking_code,
                     'customer_paid' => $booking->transaction->customer_paid,
-                    'customer_debt' => $booking->transaction->customer_debt
+                    'customer_debt' => $booking->transaction->customer_debt,
+                    'customer_deposit' => $booking->transaction->customer_deposit
                 ],
                 'customer' => [
                     'name' => $booking->customer->name,

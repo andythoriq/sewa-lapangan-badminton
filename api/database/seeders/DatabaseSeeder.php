@@ -11,12 +11,14 @@ use App\Models\HolidayModel;
 use App\Models\CustomerModel;
 use App\Models\OpenTimeModel;
 use App\Models\PeakTimeModel;
+use App\Traits\CustomerCodeFormat;
 use Illuminate\Database\Seeder;
 use App\Models\TransactionModel;
 use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
+    use CustomerCodeFormat;
     /**
      * Seed the application's database.
      *
@@ -1114,6 +1116,13 @@ class DatabaseSeeder extends Seeder
           'description' => 'Potongan harga untuk booking member / multiple booking. (in percent)',
           'value' =>  10
         ]
+        ]);
+        CustomerModel::create([
+            'customer_code' => $this->getFormattedCode(),
+            'name' => 'Mr Regular',
+            'phone_number' => '080878786565',
+            'membership_status' => 'R',
+            'status' => 'Y'
         ]);
     }
 }

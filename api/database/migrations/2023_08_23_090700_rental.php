@@ -17,7 +17,7 @@ class Rental extends Migration
             $table->increments('id');
             $table->dateTime('start');
             $table->dateTime('finish');
-            $table->enum('status', ['B', 'O', 'F'])->comment('B: booked, O: onprogress, F: finished')->default('B');
+            $table->enum('status', ['B', 'O', 'F', 'C'])->comment('B: booked, O: onprogress, F: finished, C: canceled')->default('B');
             $table->float('price');
 
             $table->unsignedSmallInteger('court_id');

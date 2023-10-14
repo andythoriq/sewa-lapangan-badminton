@@ -43,13 +43,10 @@ class TransactionController extends Controller
                     });
                 });
             })
-            ->whereHas('transaction', function ($transaction){
-                $transaction->where('isPaid', 'Y');
-            })
             ->select(['id', 'start', 'finish', 'price', 'status', 'transaction_id', 'customer_id', 'court_id'])
-            ->where('status', 'F')
+            ->whereIn('status', ['F', 'C'])
             ->with([
-                'transaction:id,total_price,total_hour,booking_code,customer_paid,customer_debt',
+                'transaction:id,total_price,total_hour,booking_code,customer_paid,customer_debt,customer_deposit',
                 'customer:customer_code,name,phone_number',
                 'court:id,label,initial_price'
             ]);
@@ -75,7 +72,8 @@ class TransactionController extends Controller
             'rentals.user:id,name,username',
             'rentals.court:id,label,initial_price'
         ])
-        ->where('booking_code', $data['booking_code'])->firstOrFail();
+            ->where('booking_code', $data['booking_code'])
+            ->firstOrFail();
 
         return new BookingDetailResource($transactions);
     }
@@ -92,31 +90,42 @@ class TransactionController extends Controller
         ]);
 
         $customer = CustomerModel::where('phone_number', $data['phone_number'])->firstOrFail();
-        $transaction = TransactionModel::where('booking_code', $data['booking_code'])->where('isPaid', 'N')->with('rentals.customer')->firstOrFail();
+        $transaction = TransactionModel::where('booking_code', $data['booking_code'])->with('rentals.customer')->firstOrFail();
 
         $total_paid = (float) $data['customer_paid'] + (float) $data['input_deposit'];
 
-        if ($total_paid < $data['total_price']) { // jika bayar kurang dari biaya, dijadikan hutang
+        if ($total_paid < (float) $data['total_price']) { // jika bayar kurang dari biaya, dijadikan hutang
             $debt = (float) $data['total_price'] - (float) $total_paid;
             $customer->debt += $debt;
             $transaction->fill([
                 'isDebt' => 'Y',
-                'customer_debt' => $debt
+                'customer_debt' => $debt,
+                'debt_at' => now('Asia/Jakarta')->format('Y-m-d H:i:s')
             ]);
         }
 
-        if (isset($data['customer_deposit']) || $data['customer_deposit'] > 0) { // jika menambah deposit
+        if (isset($data['customer_deposit']) || (float) $data['customer_deposit'] > 0) { // jika bayarnya lebih, dijadikan deposit
             $customer->deposit += (float) $data['customer_deposit'];
         }
 
-        if (isset($data['input_deposit']) || $data['input_deposit'] > 0) { // jika depositnya dipakai
+        if (isset($data['input_deposit']) || (float) $data['input_deposit'] > 0) { // jika depositnya dipakai
             $customer->deposit -= (float) $data['input_deposit'];
+            $transaction->fill([
+                'isDeposit' => 'Y',
+                'customer_deposit' => $data['input_deposit'],
+                'deposit_at' => now('Asia/Jakarta')->format('Y-m-d H:i:s')
+            ]);
         }
 
-        $transaction->fill([
-            'isPaid' => 'Y',
-            'customer_paid' => $total_paid
-        ])->save();
+        if (isset($data['customer_paid']) || (float) $data['customer_paid'] > 0) { // jika membayar dengan normal
+            $transaction->fill([
+                'isPaid' => 'Y',
+                'customer_paid' => $data['customer_paid'],
+                'paid_at' => now('Asia/Jakarta')->format('Y-m-d H:i:s')
+            ]);
+        }
+
+        $transaction->save();
         $customer->save();
 
         return response()->json([
@@ -126,6 +135,9 @@ class TransactionController extends Controller
                 'total_hour' => $transaction->total_hour,
                 'booking_code' => $transaction->booking_code,
                 'isPaid' => $transaction->isPaid,
+                'isDebt' => $transaction->isDebt,
+                'isDeposit' => $transaction->isDeposit,
+                'isPaymentDone' => ($transaction->isPaid == 'Y' || $transaction->isDebt == 'Y' || $transaction->isDeposit == 'Y'),
                 'customer' => $transaction->relationLoaded('rentals') ?
                     [
                         'name' => $transaction->rentals->first()->customer->name,

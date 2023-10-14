@@ -21,9 +21,15 @@ class Transaction extends Migration
 
             $table->enum('isPaid', ['Y', 'N'])->default('N');
             $table->float('customer_paid')->nullable()->default(null);
+            $table->dateTime('paid_at')->nullable()->default(null);
 
             $table->enum('isDebt', ['Y', 'N'])->default('N');
             $table->float('customer_debt')->nullable()->default(null);
+            $table->dateTime('debt_at')->nullable()->default(null);
+
+            $table->enum('isDeposit', ['Y', 'N'])->default('N');
+            $table->float('customer_deposit')->nullable()->default(null);
+            $table->dateTime('deposit_at')->nullable()->default(null);
 
             $table->string('booking_code', 191)->unique();
             $table->timestamps();

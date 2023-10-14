@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import ScheduleModal from "./modal";
+import axios from "../../../api/axios"
 
 const Schedule = ({ aksi = "" }) => {
+  const [courts, setCourts] = useState([])
+
   const ifDashboard = aksi === "dashboard" ? true : false;
   let dataCourt = [
     // {time:'08.00-09.00', court1_1:'', court1_2:'cyan', court2_1:'', court2_2:'', court3_1:'', court3_2:'', court4_1:'', court4_2:'',
@@ -48,6 +51,10 @@ const Schedule = ({ aksi = "" }) => {
         { court: "", color: "", name: "" },
         { court: "", color: "", name: "" },
       ],
+      court3: [
+        { court: "3", color: "cyan", name: "test2" },
+        { court: "3", color: "orange", name: "test3" },
+      ],
     },
   ];
 
@@ -69,11 +76,12 @@ const Schedule = ({ aksi = "" }) => {
   };
 
   useEffect(() => {
-    try {
-      
-    } catch (e) {
-      
-    }
+    axios.get('/api/court-select')
+      .then(({data}) => {
+        setCourts(data)
+      }).catch((e) => {
+        console.error(e)
+      })
   }, [])
 
   return (
@@ -111,42 +119,31 @@ const Schedule = ({ aksi = "" }) => {
           <thead>
             <tr>
               <th className="text-center">Time</th>
-              <th className="text-center" colSpan={2}>
-                Court 1
-              </th>
-              <th></th>
-              <th className="text-center" colSpan={2}>
-                Court 2
-              </th>
-              <th></th>
-              <th className="text-center" colSpan={2}>
-                Court 3
-              </th>
-              <th></th>
-              <th className="text-center" colSpan={2}>
-                Court 4
-              </th>
-              <th></th>
+              {courts.map(court => {
+                return <th key={court.value} className="text-center" colSpan={2}>
+                      {court.label}
+                    </th>
+              })}
             </tr>
           </thead>
           <tbody>
             {dataCourt.map((val, key) => (
-              <tr key={key}>
+              <tr key={key} >
                 <th width={"10%"} className="text-center" style={{ minWidth: 146 }}>
                   {val.time}
                 </th>
                 <td width={"6%"} className={`bg-col-court bg-col-${val.court1 ? val.court1[0].color : ""}`} onClick={() => handleDetail(val.court1 ? val.court1 : [], 0)}></td>
                 <td width={"6%"} className={`bg-col-court bg-col-${val.court1 ? val.court1[1].color : ""}`} onClick={() => handleDetail(val.court1 ? val.court1 : [], 1)}></td>
-                <td width={"4%"} className="bg-col-batas"></td>
+                {/* <td width={"4%"} className="bg-col-batas"></td> */}
                 <td width={"6%"} className={`bg-col-court bg-col-${val.court2 ? val.court2[0].color : ""}`} onClick={() => handleDetail(val.court2 ? val.court2 : [], 0)}></td>
                 <td width={"6%"} className={`bg-col-court bg-col-${val.court2 ? val.court2[1].color : ""}`} onClick={() => handleDetail(val.court2 ? val.court2 : [], 1)}></td>
-                <td width={"4%"} className="bg-col-batas"></td>
+                {/* <td width={"4%"} className="bg-col-batas"></td> */}
                 <td width={"6%"} className={`bg-col-court bg-col-${val.court3 ? val.court3[0].color : ""}`} onClick={() => handleDetail(val.court3 ? val.court3 : [], 0)}></td>
                 <td width={"6%"} className={`bg-col-court bg-col-${val.court3 ? val.court3[1].color : ""}`} onClick={() => handleDetail(val.court3 ? val.court3 : [], 1)}></td>
-                <td width={"4%"} className="bg-col-batas"></td>
+                {/* <td width={"4%"} className="bg-col-batas"></td> */}
                 <td width={"6%"} className={`bg-col-court bg-col-${val.court4 ? val.court4[0].color : ""}`} onClick={() => handleDetail(val.court4 ? val.court4 : [], 0)}></td>
                 <td width={"6%"} className={`bg-col-court bg-col-${val.court4 ? val.court4[1].color : ""}`} onClick={() => handleDetail(val.court4 ? val.court4 : [], 1)}></td>
-                <td width={"2%"} className="bg-col-batas"></td>
+                {/* <td width={"2%"} className="bg-col-batas"></td> */}
               </tr>
             ))}
           </tbody>

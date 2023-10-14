@@ -26,7 +26,12 @@ class ScheduleResource extends JsonResource
                     'price' => $booking->price,
                     'transaction' => [
                         'booking_code' => $booking->transaction->booking_code,
-                        'isPaid' => $booking->transaction->isPaid
+                        'isPaid' => $booking->transaction->isPaid,
+                        'customer_paid'=> $booking->transaction->customer_paid ?? 0,
+                        'isDebt' => $booking->transaction->isDebt,
+                        'customer_debt' => $booking->transaction->customer_debt ?? 0,
+                        'isDeposit' => $booking->transaction->isDeposit,
+                        'customer_deposit' => $booking->transaction->customer_deposit ?? 0
                     ],
                     'customer' => [
                         'customer_code' => $booking->customer->customer_code,
