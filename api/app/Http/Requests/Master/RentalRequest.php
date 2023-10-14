@@ -9,6 +9,7 @@ use App\Models\RentalModel;
 use App\Traits\CollideCheck;
 use App\Traits\CreateQrCode;
 use App\Traits\PeakTimeCheck;
+use App\Traits\StartFinishBookingCheck;
 use Illuminate\Support\Carbon;
 use App\Models\TransactionModel;
 use App\Traits\BookingCodePattern;
@@ -19,7 +20,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RentalRequest extends FormRequest
 {
-    use CollideCheck, RentalPriceCalculation, RegularRentalsCheck, BookingCodePattern, RentalDurationRule, CreateQrCode, PeakTimeCheck;
+    use CollideCheck, RentalPriceCalculation, RegularRentalsCheck, BookingCodePattern, RentalDurationRule, CreateQrCode, PeakTimeCheck, StartFinishBookingCheck;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -96,19 +97,13 @@ class RentalRequest extends FormRequest
 
     public function createRental()
     {
-        // $this->regularRentalsCheck($this->customer_id);
-
         $this->validateDuration($this->start, $this->finish);
-
+        // $this->startFinishCheck($this->start, $this->finish);
         $this->collideCheck($this->start, $this->finish, $this->getCourtSchedules($this->court_id));
 
         $data = $this->validated();
 
         $validated_price = $this->getPeakTimePrice($this->court_id, date('l'));
-
-        // if (strtolower($data['customer_id'][0]) == 'm') {
-        //     $court_initial_price = ceil($court_initial_price / 1.25);
-        // }
 
         $data['price'] = $this->getCost($this->start, $this->finish, $validated_price);
 
@@ -163,12 +158,6 @@ class RentalRequest extends FormRequest
 
         $data = $this->validated();
 
-        // if (strtolower($data['customer_id'][0]) == 'r') {
-        //     throw \Illuminate\Validation\ValidationException::withMessages([
-        //         'customer_id' => ['Regular can\'t make multiple rentals.']
-        //     ]);
-        // }
-
         $booking_code = $this->getBookingCode();
         $qr_code = $this->createQrCode($booking_code, env('FRONTEND_URL', 'http://localhost:3000'));
 
@@ -180,9 +169,10 @@ class RentalRequest extends FormRequest
         ]);
 
         foreach ($data['rentals'] as &$rental) {
-            $this->collideCheck($rental['start'], $rental['finish'], $this->getCourtSchedules($rental['court_id']));
 
             $this->validateDuration($rental['start'], $rental['finish']);
+            // $this->startFinishCheck($rental['start'], $rental['finish']);
+            $this->collideCheck($rental['start'], $rental['finish'], $this->getCourtSchedules($rental['court_id']));
 
             $validated_price = $this->getPeakTimePrice($rental['court_id'], date('l'));
             $discount = ConfigModel::memberDiscount();
