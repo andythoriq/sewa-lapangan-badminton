@@ -7,7 +7,7 @@ use App\Models\TransactionModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
-class BookingChangeStatus extends Controller
+class ChangeStatusController extends Controller
 {
     public function start(Request $request)
     {

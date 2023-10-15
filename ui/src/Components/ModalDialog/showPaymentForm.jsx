@@ -99,7 +99,20 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
           <p>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transaction_total_price)}</p>
         </div>
         <hr />
-        <form onSubmit={handlePay}>
+        <form onSubmit={(e) => {
+          e.preventDefault()
+          swal.fire({ icon: "warning", title: "Check before confirm!", 
+            html: `<strong>if the payment is less then it becomes a debt</strong> <br/>
+            <span>Total price: ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transaction_total_price)}</span><br/>
+            <span>Customer pay: ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(customerPaid)}</span><br/>
+            <span>Deposit input: ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(depositInput)}</span><br/>`, 
+            showConfirmButton: true, showCancelButton:true, allowOutsideClick: false, allowEscapeKey: false 
+          }).then((result) => {
+            if (result.isConfirmed) {
+              handlePay(e)
+            }
+          });
+        }}>
           <div className="form-group">
             <label htmlFor="customer_paid">Payment Money</label>
             <br />

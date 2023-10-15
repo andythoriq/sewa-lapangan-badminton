@@ -61,11 +61,10 @@ const Verification = () => {
 
   const TableRowsAll = ({ rows }) => {
     return rows.map((val, index) => {
-      const isPaymentDone = (val.transaction.isPaid === 'Y' || val.transaction.isDebt === 'Y' || val.transaction.isDeposit === 'Y')
       return (
         <tr key={val.id}>
           <td>{index + 1}</td>
-          <td>{val.transaction.booking_code} <span className={isPaymentDone ? "text-success" : "text-danger"}>({isPaymentDone ? 'paid' : 'not paid'})</span></td>
+          <td>{val.transaction.booking_code} <span className={val.transaction.isPaymentDone ? "text-success" : "text-danger"}>({val.transaction.isPaymentDone ? 'paid' : 'not paid'})</span></td>
           <td>
             {val.customer.name} ({val.customer.phone_number})
           </td>
@@ -108,7 +107,7 @@ const Verification = () => {
             &nbsp;
             {val.status === "B" || val.status === "F" || val.status === "C" ? null : (
               <button className="btn btn-sm btn-danger" onClick={() => {
-                if (!isPaymentDone) {
+                if (!val.transaction.isPaymentDone) {
                   Swal.fire({ icon: "warning", title: "Warning", html: "You can't finish it before paying", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
                 } else {
                   Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to finish this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false })
@@ -265,6 +264,7 @@ const Verification = () => {
   const updateTransaction = (newTransaction) => {
     if (newTransaction) {
       setTransaction(newTransaction)
+      setChangeStatus(!changeStatus)
     }
   }
 

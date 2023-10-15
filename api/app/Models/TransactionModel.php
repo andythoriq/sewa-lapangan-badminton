@@ -19,15 +19,12 @@ class TransactionModel extends Model
 
         'isPaid',
         'customer_paid',
-        'paid_at',
 
         'isDebt',
         'customer_debt',
-        'debt_at',
 
         'isDeposit',
         'customer_deposit',
-        'deposit_at'
     ];
 
     public function rentals(): \Illuminate\Database\Eloquent\Relations\HasMany

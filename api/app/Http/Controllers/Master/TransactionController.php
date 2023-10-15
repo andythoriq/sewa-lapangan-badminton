@@ -100,7 +100,6 @@ class TransactionController extends Controller
             $transaction->fill([
                 'isDebt' => 'Y',
                 'customer_debt' => $debt,
-                'debt_at' => now('Asia/Jakarta')->format('Y-m-d H:i:s')
             ]);
         }
 
@@ -113,7 +112,6 @@ class TransactionController extends Controller
             $transaction->fill([
                 'isDeposit' => 'Y',
                 'customer_deposit' => $data['input_deposit'],
-                'deposit_at' => now('Asia/Jakarta')->format('Y-m-d H:i:s')
             ]);
         }
 
@@ -121,7 +119,6 @@ class TransactionController extends Controller
             $transaction->fill([
                 'isPaid' => 'Y',
                 'customer_paid' => $data['customer_paid'],
-                'paid_at' => now('Asia/Jakarta')->format('Y-m-d H:i:s')
             ]);
         }
 
