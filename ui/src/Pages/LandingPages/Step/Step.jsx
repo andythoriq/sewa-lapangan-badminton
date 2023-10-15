@@ -97,7 +97,7 @@ const FormStep = () => {
             </Col>
             <Col className="col-12 col-md-6 text-black divRight position-relative p-5">
               <div className="position-relative top-50 start-50 translate-middle p-4">
-                <div className="d-md-none d-md-block text-center mb-2">
+                <div className="d-md-none d-md-block text-center">
                   <img src={`/${logoApp}`} alt="" width={100} />
                 </div>
                 <div className="back" style={{ width: "50px" }}>
@@ -105,16 +105,13 @@ const FormStep = () => {
                     <ArrowLeft/>
                   </Link>
                 </div>
-                <b className="text-heading" style={{ fontSize: 30 }}>
-                  New Sport
-                  <br />
-                  Experience.
-                </b>
+                <b className="text-heading" style={{ fontSize: 20 }}>
+                  New Sport Experience.
+                </b><br/>
+                <sub>There are thousands of people who love to exercise just like you. Let's start our exercise journey together.</sub>
                 {/* <p>Create your account now</p> */}
-                <br />
-                <br />
                 <Form onSubmit={handleSubmit} style={{ width: "120%" }}>
-                  <Form.Group className="mb-2">
+                  <Form.Group className="mb-2 mt-3">
                     <label>Phone Number</label>
                     <PhoneInput placeholder="input phone number" specialLabel={""} country={"id"} value={(phoneNumber.substring(0, 1) === '0' ? "62" + phoneNumber.slice(1) : phoneNumber)} onChange={(phone) => {
                       setPhoneNumber(phone)

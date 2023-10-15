@@ -226,7 +226,7 @@ export default function Calendar() {
 
   return ( holidays.length > 0 ?
     <>
-      <div className="container" style={{ background: "white", }}>
+      <div className="container mt-5 " style={{ background: "white", }}>
         <FullCalendar
           plugins={[ multiMonthPlugin, interactionPlugin ]}
           headerToolbar={{
@@ -247,7 +247,7 @@ export default function Calendar() {
         />
       </div>
       <AlertNewYear isShow={isShowAlert} handleClose={() => {setIsShowAlert(false)}} />
-    </> : <Loader/>
+      </> : <Loader/>
   );
 }
 

@@ -3,6 +3,7 @@
 import secureLocalStorage from "react-secure-storage";
 import axios from "../../api/axios";
 
+
 const Logout = async () => {
     // const location = useLocation();
     // localStorage.clear()
@@ -16,5 +17,6 @@ const Logout = async () => {
     secureLocalStorage.removeItem('role')
     // return (<Navigate to="/" state={{ from: location }} replace />)
     setTimeout(function () { window.location.href = "/"; }, 500);
-}
-export default Logout
+};
+
+export default Logout;

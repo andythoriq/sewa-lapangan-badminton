@@ -16,7 +16,7 @@ const Landing = () => {
   // loader state
   // const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  // create sync method to fetch
+  // // create sync method to fetch
   // useEffect(() => {
   //   const DataFetch = () => {
   //     setTimeout(() => {
@@ -93,7 +93,7 @@ const Landing = () => {
   // window.addEventListener("scroll", changeColor);
 
   return courts.length < 0 ? (
-    <Loader />
+  <Loader />
   ) : (
     <>
       {/* navbar */}
@@ -199,7 +199,7 @@ const Landing = () => {
                   <h2>
                     Know About <span style={{ color: "#D93221" }}>BFB</span>
                   </h2>
-                  <p>
+                  <p className="about-bfb">
                     bfb is an application that allows you to book a court or facility online or offline. You can choose the date, time, and type of court you want. The application has an availability calendar that allows you to see when the
                     court or facility is available for booking. bfb may provide discounts to club members or their regular customers as an incentive to faithfully use the facility or pitch.
                   </p>

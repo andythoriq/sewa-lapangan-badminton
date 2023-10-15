@@ -118,7 +118,7 @@ const CourtForm = () => {
 
   return (
     <>
-      <h4>
+      <h4 className="mt-5">
         <b>
           <Link to="/data-master/court" className="btnBack">
             <ArrowLeft />
@@ -126,7 +126,7 @@ const CourtForm = () => {
           {id ? "Edit" : "Create"} Court
         </b>
       </h4>
-      <Card className="p-3 mt-5" style={{ marginLeft: "-18px" }}>
+      <Card className="p-3 mt-3" style={{ marginLeft: "-18px" }}>
         <Form>
           <Row>
             <Col className="col-12 col-md-6">

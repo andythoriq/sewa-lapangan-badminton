@@ -83,7 +83,7 @@ const UserListForm = () => {
 
   return (
     <>
-      <h4>
+      <h4 className="mt-5">
         <b>
           <Link to="/user-management/user-list" className="btnBack">
             <ArrowLeft />
@@ -93,7 +93,7 @@ const UserListForm = () => {
       </h4>
       <Row>
         <Col>
-          <Card className="p-3 mt-5" style={{ marginLeft: "-18px" }}>
+          <Card className="p-3 mt-3" style={{ marginLeft: "-18px" }}>
             <Form>
               <Row>
                 <Col className="col-12 col-md-6">

@@ -135,10 +135,10 @@ const UserRole = () => {
 
     return (
     <>
-        <h4><b>User Role</b></h4>
+        <h4 className="mt-5"><b>User Role</b></h4>
         <Row>
             <Col>
-            <Card className="p-3 mt-5" style={{ marginLeft: "-18px" }}>
+            <Card className="p-3 mt-3" style={{ marginLeft: "-18px" }}>
                 <Row>
                     <Col className="col-12 col-md-4" style={{marginTop:-20}} >
                         <Form.Group className="inputSearch">

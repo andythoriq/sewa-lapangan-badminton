@@ -299,7 +299,7 @@ const Verification = () => {
   return (
     <>
       {/* left */}
-      <div className="row mt-3">
+      <div className="row mt-3 mt-5">
         <div className="col-lg-3">
           <div className="accordion" id="accordionPayment">
             <div className="accordion-item mb-3">

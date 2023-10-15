@@ -94,7 +94,7 @@ const CustomerMember = () => {
 
   return (
     <>
-      <h4>
+      <h4 className="mt-5">
         <b>
           <Link to="/data-master/member" className="btnBack">
             <ArrowLeft />
@@ -104,7 +104,7 @@ const CustomerMember = () => {
       </h4>
       <Row>
         <Col className="col-12 col-md-12 m-auto">
-          <Card className="p-3 mt-4 mb-2" style={{ marginLeft: "-18px" }}>
+          <Card className="p-3 mt-3 mb-2" style={{ marginLeft: "-18px" }}>
             <Form>
               <Row>
                 <Col className="col-12 col-sm-8 col-md-8 m-auto">
