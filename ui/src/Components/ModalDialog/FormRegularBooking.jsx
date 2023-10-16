@@ -116,11 +116,11 @@ const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice }) => 
       <form onSubmit={handleSubmit}>
         <div className="row justify-content-center">
           <div className="col-6">
-            <FormInput type="datetime-local" name="start" label="Start" value={values.start} onChange={onChange} disabled={showSendBookingCode} />
+            <FormInput type="datetime-local" name="start" label="Time Start Booking" value={values.start} onChange={onChange} disabled={showSendBookingCode} />
             {errors.start && <span className="text-danger">{errors.start[ 0 ]}</span>}
           </div>
           <div className="col-6">
-            <FormInput type="datetime-local" name="finish" label="Finish" value={values.finish} onChange={onChange} disabled={showSendBookingCode} />
+            <FormInput type="datetime-local" name="finish" label="Time Finish Booking" value={values.finish} onChange={onChange} disabled={showSendBookingCode} />
             {errors.finish && <span className="text-danger">{errors.finish[ 0 ]}</span>}
           </div>
         </div>
@@ -165,7 +165,7 @@ const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice }) => 
                     <p className="fw-bold">{transactionResponse.phone_number}</p>
                   </div>
                   <div className=" mt-1 d-flex justify-content-center">
-                    <button onClick={sendBookingCode} className="btn btn-secondary btn-sm mt-2 ">
+                    <button onClick={sendBookingCode} className="btn btn-success btn-sm mt-2 ">
                       Get booking code Via Whatsapp
                     </button>
                   </div>

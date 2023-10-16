@@ -128,7 +128,7 @@ const Step2 = () => {
                           handleResendOTP()
                         }
                       })
-                    }} className="mt-2" style={{ float: "right"}}><span style={{ color: 'dodgerblue', textDecoration: "none", cursor: 'pointer' }}>Resend code</span> <span>{expiration.recent_resend}x</span></div>
+                    }} className="mt-2" style={{ float: "right"}}><span style={{ color: 'dodgerblue', textDecoration: "none", cursor: 'pointer' }}>Resend OTP</span> <span>{expiration.recent_resend}x</span></div>
               </Form>
             </div>
           </Col>
