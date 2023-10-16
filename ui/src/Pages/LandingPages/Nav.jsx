@@ -234,9 +234,9 @@ const Landing = () => {
                 Play badminton with special price! <br/>
                 Enjoy playing badminton at BFB with a special price.
                 </h1>
-                <Button onClick={() => navigate("/userstep")} className="btn btn-lg btn-light mt-3">
+                {!secureLocalStorage.getItem('name') && <Button onClick={() => navigate("/userstep")} className="btn btn-lg btn-light mt-3">
                   Sign Up now{" "}
-                </Button>
+                </Button> }
               </div>
             </div>
           </div>

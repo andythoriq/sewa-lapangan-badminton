@@ -23,7 +23,7 @@ class ConfigModel extends Model
         if (empty($open_time)) {
             $open_time = self::where('id', 1)->first();
         }
-        return $open_time->value;
+        return json_decode($open_time->value, true);
     }
 
     public static function getExpireDuration()
@@ -32,16 +32,25 @@ class ConfigModel extends Model
         if (empty($expire_otp)) {
             $expire_otp = self::where('id', 4)->first();
         }
-        return $expire_otp->value;
+        return (int) ($expire_otp->value ?? 10);
     }
 
-    public static function memberDiscount()
+    public static function getMemberDiscount()
     {
         $member_discount = self::where('slug', 'member_discount')->first();
         if (empty($member_discount)) {
             $member_discount = self::where('id', 5)->first();
         }
-        return $member_discount->value;
+        return (int) ($member_discount->value ?? 10);
+    }
+
+    public static function getResendLimit()
+    {
+        $resend_limit = self::where('slug', 'resend_limit')->first();
+        if (empty($resend_limit)) {
+            $resend_limit = self::where('id', 6)->first();
+        }
+        return (int) ($resend_limit->value ?? 3);
     }
 
     public static function getCompanyName()
@@ -50,6 +59,15 @@ class ConfigModel extends Model
         if (empty($name)) {
             $name = self::where('id', 2)->first();
         }
-        return $name->value;
+        return (string) ($name->value ?? '');
+    }
+
+    public static function getContact()
+    {
+        $contact = self::where('slug', 'contact')->first();
+        if (empty($contact)) {
+            $contact = self::where('id', 3)->first();
+        }
+        return json_decode($contact->value, true);
     }
 }

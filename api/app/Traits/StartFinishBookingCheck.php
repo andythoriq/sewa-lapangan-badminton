@@ -9,7 +9,7 @@ trait StartFinishBookingCheck
 {
     public function startFinishCheck($bookingStart, $bookingFinish)
     {
-        $operational_times = json_decode(ConfigModel::getOpenTime(), true);
+        $operational_times = ConfigModel::getOpenTime();
 
         $currentDay = strtolower(date('l'));
 

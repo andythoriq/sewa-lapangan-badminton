@@ -37,7 +37,7 @@ class NotificationModel extends Model
     {
         $formatted_price = number_format((float) $total_price, 0, '.', '.');
         self::create([
-            'label' => 'Member Customer Booking!',
+            'label' => 'Customer Booking! (multiple)',
             'value' => <<<EOT
             name        : $customer_name
             amount      : $amount
@@ -50,7 +50,7 @@ class NotificationModel extends Model
 
     public static function customerRegistered($name, $phone_number, $membership_status)
     {
-        $value = $membership_status === 'M' ? 'New Member Customer Registered' : 'New Regular Customer Registered';
+        $value = $membership_status === 'M' ? 'Member Customer Registered' : 'Regular Customer Registered';
         self::create([
             'label' => $value,
             'value' => <<<EOT
@@ -63,7 +63,7 @@ class NotificationModel extends Model
 
     public static function customerLoggedIn($name, $phone_number, $membership_status)
     {
-        $value = $membership_status === 'M' ? 'Member Customer Logged in' : 'New Regular Customer Logged in';
+        $value = $membership_status === 'M' ? 'Member Customer Logged in' : 'Regular Customer Logged in';
         self::create([
             'label' => $value,
             'value' => <<<EOT

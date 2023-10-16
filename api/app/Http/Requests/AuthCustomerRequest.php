@@ -81,7 +81,7 @@ class AuthCustomerRequest extends FormRequest
         } while (CustomerModel::where('otp_code', $otp)->exists());
 
         $expire_minutes = ConfigModel::getExpireDuration();
-        $resend_limit = 3; // from config custom able
+        $resend_limit = ConfigModel::getResendLimit();
         $recent_resend = 0;
 
         $validated = $this->validated();
@@ -110,7 +110,7 @@ class AuthCustomerRequest extends FormRequest
             ]);
             $customer->update([
                 'otp_code' => $otp,
-                'expiration' => Carbon::now('Asia/Jakarta')->addMinutes((int) $expire_minutes)
+                'expiration' => Carbon::now('Asia/Jakarta')->addMinutes($expire_minutes)
             ]);
             $customer_data = CustomerModel::select(['name', 'membership_status'])->where('phone_number', $validated['phone_number'])->first();
             NotificationModel::customerLoggedIn($customer_data->name, $validated['phone_number'], $customer_data->membership_status);
@@ -122,28 +122,20 @@ class AuthCustomerRequest extends FormRequest
             $validated['membership_status'] = 'R';
             $validated['status'] = 'Y';
             $validated['otp_code'] = $otp;
-            $validated['expiration'] = Carbon::now('Asia/Jakarta')->addMinutes((int) $expire_minutes);
+            $validated['expiration'] = Carbon::now('Asia/Jakarta')->addMinutes($expire_minutes);
             $validated['customer_code'] = $this->getFormattedCode();
-            $newCustomer = CustomerModel::create($validated);
+            $customer = CustomerModel::create($validated);
             OTPModel::create([
-                'customer_id' => $newCustomer->customer_code,
+                'customer_id' => $customer->customer_code,
                 'otp_code' => $otp
             ]);
-            NotificationModel::customerRegistered($newCustomer->name, $newCustomer->phone_number, $newCustomer->membership_status);
+            NotificationModel::customerRegistered($customer->name, $customer->phone_number, $customer->membership_status);
         }
 
-        $app_name = env('APP_NAME', 'GOR Badminton');
-
         $message = <<<EOT
-        Dear customer,
+        Use *$otp* as OTP to sign in to this app NEVER SHARE OTP with anyone.
 
-        Your One-Time Password (OTP) code for verification is: *$otp*.
         This OTP code is valid for the next $expire_minutes minutes.
-
-        Thank you for using our service.
-
-        Sincerely,
-        $app_name
         EOT;
 
         $user_key = env('ZENZIVA_USER_KEY');
@@ -154,7 +146,8 @@ class AuthCustomerRequest extends FormRequest
             'to' => $this->phone_number
         ];
         return [
-            'response' => $response,
+            'response' => json_decode($response, true),
+            'phone_number' => $customer->phone_number,
             'expiration' => [
                 'recent_resend' => $recent_resend,
                 'resend_limit' => $resend_limit,

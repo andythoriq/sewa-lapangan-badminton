@@ -175,7 +175,7 @@ class RentalRequest extends FormRequest
             $this->collideCheck($rental['start'], $rental['finish'], $this->getCourtSchedules($rental['court_id']));
 
             $validated_price = $this->getPeakTimePrice($rental['court_id'], date('l'));
-            $discount = ConfigModel::memberDiscount();
+            $discount = ConfigModel::getMemberDiscount();
             $discounted = $validated_price - (($discount / 100) * $validated_price);
 
             $rental['price'] = $this->getCost($rental['start'], $rental['finish'], $discounted);

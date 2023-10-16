@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import { useGeneralContext } from "../../context/generalContext";
 
 const Setting = () => {
-  const [values, setValues] = useState({ name:"", phone_number:"", email:"", address:"", otp_expiration: 0, member_discount: 0 });
+  const [values, setValues] = useState({ name:"", phone_number:"", email:"", address:"", otp_expiration: 0, member_discount: 0, resend_limit: 0 });
   const [rows, initRow] = useState([]);
   const [triggerFetch, setTriggerFetch] = useState(false)
   const {handleSetGorName, handleSetContact} = useGeneralContext()
@@ -26,7 +26,8 @@ const Setting = () => {
           email: contactParsed.email, 
           address: contactParsed.address, 
           otp_expiration: data.expire_duration,
-          member_discount: data.member_discount
+          member_discount: data.member_discount,
+          resend_limit: data.resend_limit
         })
         initRow(JSON.parse(data.open_time))
         handleSetGorName(data.name)
@@ -55,7 +56,7 @@ const Setting = () => {
     schedule.forEach((item) => {
       const { day, start, finish } = item;
 
-      if (!values.name || !values.phone_number || !values.email || !values.address || !values.otp_expiration || !values.member_discount || schedule.length <= 0) {
+      if (!values.name || !values.phone_number || !values.email || !values.address || !values.otp_expiration || !values.member_discount || !values.resend_limit || schedule.length <= 0) {
         errors.push('38569de2-6078-11ee-8c99-0242ac120002'); // Company data is incomplete.
       }
 
@@ -126,6 +127,11 @@ const Setting = () => {
           slug: 'member_discount',
           description: 'Potongan harga untuk booking member / multiple booking. (in percent)',
           value: values.member_discount
+        },
+        {
+          slug: 'resend_limit',
+          description: 'Batasan ketika melakukan kirim ulang OTP code ke nomor pelanggan.',
+          value: values.resend_limit
         }
       ]
     }
@@ -246,6 +252,12 @@ const Setting = () => {
                     <Form.Group>
                       <label style={{ fontSize: "18px" }}>Member discount (in percent)</label>
                       <FormInput type="number" name="member_discount" value={values.member_discount} onChange={onChange} />
+                    </Form.Group>
+                  </Col>
+                  <Col className="col-12 col-sm-8 col-md-12 m-auto">
+                    <Form.Group>
+                      <label style={{ fontSize: "18px" }}>Resend limit</label>
+                      <FormInput type="number" name="resend_limit" value={values.resend_limit} onChange={onChange} />
                     </Form.Group>
                   </Col>
                   <div className="table-responsive">
