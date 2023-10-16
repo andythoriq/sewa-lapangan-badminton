@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, ChangeStatusController, DashboardController, ScheduleController, NotificationController};
+use App\Http\Controllers\{AuthCustomerController, AuthAdminController, GetRoleMenusController, SendBookingCodeController, ChangeStatusController, DashboardController, ScheduleController, NotificationController, LandingPageController};
 use App\Http\Controllers\Master\{HolidayController, ConfigController, OpenTimeController, CourtController, CustomerController, UserController, RoleController, RentalController, PeakTimeController, TransactionController};
 use Illuminate\Support\Facades\Route;
 
@@ -70,6 +70,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard', DashboardController::class)->middleware('admin');
     Route::get('/notification', [NotificationController::class, 'index'])->middleware('admin');
     Route::post('/notification', [NotificationController::class, 'change'])->middleware('admin');
+
+    Route::get('/landing-page', LandingPageController::class)->withoutMiddleware('auth:sanctum');
 
     /** START MASTER DATA */
 
@@ -151,7 +153,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/court/{court}', 'update');
         Route::delete('/court/{court}', 'delete');
     });
-    Route::get('/court-landing-page', [CourtController::class, 'landing_page'])->withoutMiddleware('auth:sanctum');
 
     /** Master Customer
      * policy/role: customer-handle, admin */
