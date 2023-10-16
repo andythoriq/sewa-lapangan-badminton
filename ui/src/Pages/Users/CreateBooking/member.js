@@ -8,12 +8,12 @@ import axios from "../../../api/axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
-import { useNotification } from "../../../context/notificationContext";
+import { useGeneralContext } from "../../../context/generalContext";
 
 const CreateBookingFormMember = () => {
   const navigate = useNavigate();
 
-  const { setTriggerNotif, triggerNotif } = useNotification()
+  const { setTriggerNotif, triggerNotif } = useGeneralContext()
 
   const [dataCustomer, setDataCustomer] = useState([]);
   const [dataCourt, setDataCourt] = useState([]);

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./notif.css";
 import axios from "../api/axios";
-import { useNotification } from "../context/notificationContext";
+import { useGeneralContext } from "../context/generalContext";
 function Notification({ swal }) {
-  const { setTriggerNotif, triggerNotif } = useNotification()
+  const { setTriggerNotif, triggerNotif } = useGeneralContext()
 
   const [ isShow, setIsShow ] = useState(false);
   const [ notifications, setNotifications ] = useState([])
@@ -50,7 +50,7 @@ function Notification({ swal }) {
             onClick={() => item.read_status === "N" ? changeReadStatus(item.id) : () => { }} >
 
             <h6 className="card-title">
-              <strong>{item.label}</strong>{item.read_status === 'N' && <small className="text-secondary"> (click to read)</small>}
+              <strong>{item.label}</strong>{item.read_status === 'N' && <small className="text-secondary"> (new)</small>}
             </h6>
             <p className="card-text">
               <small><span dangerouslySetInnerHTML={{ __html: item.value.replace(/\n/g, '<br />') }} /></small>

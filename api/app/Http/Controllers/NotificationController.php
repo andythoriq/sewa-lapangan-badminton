@@ -9,8 +9,11 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        $notifications = NotificationModel::getNotifications();
-        $unread = NotificationModel::getUnreadCount();
+        $notifications = NotificationModel::select(['id', 'label', 'value', 'read_status', 'created_at'])
+                                        ->whereDate('created_at', date('Y-m-d'))
+                                        ->orderBy('created_at', 'desc')
+                                        ->get();
+        $unread = NotificationModel::where('read_status', 'N')->whereDate('created_at', date('Y-m-d'))->count();
         return response()->json([
             'total_unread' => $unread,
             'notifications' => $notifications

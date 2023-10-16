@@ -7,10 +7,10 @@ import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmD
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import ReactPaginate from 'react-paginate';
-import { useNotification } from "../../../../context/notificationContext";
+import { useGeneralContext } from "../../../../context/generalContext";
 
 const PeakTime = () => {
-    const { setTriggerNotif, triggerNotif } = useNotification()
+    const { setTriggerNotif, triggerNotif } = useGeneralContext()
     const [show, setShow] = useState(false);
     const [peaktimeCode, setPeaktimeCode] = useState('')
     const [deleteId, setDeleteId] = useState("");

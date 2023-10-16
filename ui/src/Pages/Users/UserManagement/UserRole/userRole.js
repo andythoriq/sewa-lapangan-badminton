@@ -7,13 +7,13 @@ import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmD
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import ReactPaginate from 'react-paginate';
-import { useNotification } from "../../../../context/notificationContext";
+import { useGeneralContext } from "../../../../context/generalContext";
 
 const UserRole = () => {
     const [show, setShow] = useState(false);
     const [spliceIndex, setSpliceIndex] = useState("");
     const [deleteId, setDeleteId] = useState("")
-    const { setTriggerNotif, triggerNotif } = useNotification()
+    const { setTriggerNotif, triggerNotif } = useGeneralContext()
 
     const handleShow = (id, index) => {
         setDeleteId(id)

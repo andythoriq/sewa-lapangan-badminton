@@ -7,10 +7,10 @@ import ModalConfirmDelete from "../../../../Components/ModalDialog/modalConfirmD
 import Swal from "sweetalert2";
 import axios from "../../../../api/axios";
 import ReactPaginate from 'react-paginate';
-import { useNotification } from "../../../../context/notificationContext";
+import { useGeneralContext } from "../../../../context/generalContext";
 
 const Court = () => {
-    const { setTriggerNotif, triggerNotif } = useNotification()
+    const { setTriggerNotif, triggerNotif } = useGeneralContext()
     const [show, setShow] = useState(false);
     const [deleteId, setDeleteId] = useState("");
     const [item_id, set_item_id] = useState("")

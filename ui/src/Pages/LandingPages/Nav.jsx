@@ -137,10 +137,14 @@ const Landing = () => {
                     <Dropdown.Item
                       eventKey="2"
                       onClick={() => {
+                        const customerExpiration = new Date(secureLocalStorage.getItem('expiration'));
+                        const now = new Date();
+                        const timeDiff = customerExpiration - now;
+                        const minutesRemaining = Math.ceil(timeDiff / 1000 / 60);
                         Swal.fire({
                           icon: "warning",
                           title: "Are you sure?",
-                          html: "Are you sure to logout from this web? <br /> you cannot login more than once in a few minutes",
+                          html: `Are you sure to logout from this web? <br /> ${minutesRemaining > 0 ? `you cannot login again more than once in ${minutesRemaining  <= 1 ? minutesRemaining + ' minute' : minutesRemaining + ' minutes' }` : ''}`,
                           showConfirmButton: true,
                           showCancelButton: true,
                           allowOutsideClick: false,

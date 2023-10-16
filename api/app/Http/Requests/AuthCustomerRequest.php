@@ -55,6 +55,13 @@ class AuthCustomerRequest extends FormRequest
         return $rules;
     }
 
+    public function messages()
+    {
+        return [
+            'otp_code.exists' => 'OTP code is invalid, please try again.'
+        ];
+    }
+
     // private function getToken()
     // {
     //     $customer = CustomerModel::select(['password', 'name', 'customer_code'])->where('phone_number', $this->phone_number)->firstOrFail();
@@ -72,26 +79,42 @@ class AuthCustomerRequest extends FormRequest
         do {
             $otp = random_int(100000, 999999);
         } while (CustomerModel::where('otp_code', $otp)->exists());
+
         $expire_minutes = ConfigModel::getExpireDuration();
+        $resend_limit = 3; // from config custom able
+        $recent_resend = 0;
+
         $validated = $this->validated();
-        $customer = CustomerModel::where('phone_number', $validated['phone_number']);
-        if ($customer->exists()) {
-            if (isset($customer->first()->expiration) && Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->first()->expiration, 'Asia/Jakarta'))) {
+        $customer = CustomerModel::where('phone_number', $validated['phone_number'])->first();
+        if ($customer) {
+
+            $recent_resend = OTPModel::where('customer_id', $customer->customer_code)
+                ->where('created_at', '>=', Carbon::now()->subMinutes($expire_minutes))
+                ->count();
+
+            if ($recent_resend > $resend_limit) {
                 throw ValidationException::withMessages([
-                    'phone_number' => ["Can't get OTP in less than $expire_minutes minutes."]
+                    'phone_number' => ["You can't send OTP more than $expire_minutes minutes."],
+                    'otp_code' => ["You can't resend OTP more than $resend_limit times within $expire_minutes minutes."]
                 ]);
-            } else {
-                OTPModel::create([
-                    'customer_id' => $customer->first()->customer_code,
-                    'otp_code' => $otp
-                ]);
-                $customer->update([
-                    'otp_code' => $otp,
-                    'expiration' => Carbon::now('Asia/Jakarta')->addMinutes((int) $expire_minutes)
-                ]);
-                $customer_data = CustomerModel::select(['name', 'membership_status'])->where('phone_number', $validated['phone_number'])->first();
-                NotificationModel::customerLoggedIn($customer_data->name, $validated['phone_number'], $customer_data->membership_status);
             }
+
+            if ($customer->expiration && Carbon::now('Asia/Jakarta')->gt(Carbon::parse($customer->expiration, 'Asia/Jakarta'))) {
+                OTPModel::where('customer_id', $customer->customer_code)->whereDate('created_at', date('Y-m-d'))->delete();
+                $recent_resend = 0;
+            }
+
+            OTPModel::create([
+                'customer_id' => $customer->customer_code,
+                'otp_code' => $otp
+            ]);
+            $customer->update([
+                'otp_code' => $otp,
+                'expiration' => Carbon::now('Asia/Jakarta')->addMinutes((int) $expire_minutes)
+            ]);
+            $customer_data = CustomerModel::select(['name', 'membership_status'])->where('phone_number', $validated['phone_number'])->first();
+            NotificationModel::customerLoggedIn($customer_data->name, $validated['phone_number'], $customer_data->membership_status);
+
         } else {
             if (empty($this->name)) {
                 throw ValidationException::withMessages([ 'name' => ['Please enter your name.'] ]);
@@ -99,7 +122,7 @@ class AuthCustomerRequest extends FormRequest
             $validated['membership_status'] = 'R';
             $validated['status'] = 'Y';
             $validated['otp_code'] = $otp;
-            $validated['expiration'] = Carbon::now('Asia/Jakarta')->addMinutes(15);
+            $validated['expiration'] = Carbon::now('Asia/Jakarta')->addMinutes((int) $expire_minutes);
             $validated['customer_code'] = $this->getFormattedCode();
             $newCustomer = CustomerModel::create($validated);
             OTPModel::create([
@@ -126,10 +149,17 @@ class AuthCustomerRequest extends FormRequest
         $user_key = env('ZENZIVA_USER_KEY');
         $api_key = env('ZENZIVA_API_KEY');
         // $response = $this->sendWA($validated['phone_number'], $message,  $user_key, $api_key);
-        // return $response;
-        return [
+        $response = [
             'text' => 'Success',
             'to' => $this->phone_number
+        ];
+        return [
+            'response' => $response,
+            'expiration' => [
+                'recent_resend' => $recent_resend,
+                'resend_limit' => $resend_limit,
+                'customer_expiration' => $customer->expiration
+            ]
         ];
     }
 

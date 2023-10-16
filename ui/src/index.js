@@ -7,19 +7,19 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store";
-import { NotificationProvider } from "./context/notification";
+import { GeneralProvider } from "./context/general";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <NotificationProvider>
+      <GeneralProvider>
         <Router>
           <Routes>
             <Route path="/*" element={<App />} />
           </Routes>
         </Router>
-      </NotificationProvider>
+      </GeneralProvider>
     </Provider>
   </React.StrictMode>
 );

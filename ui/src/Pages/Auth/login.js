@@ -35,7 +35,7 @@ const Login = () => {
       name: "username",
       type: "text",
       placeholder: "input username",
-      errorMessage: errors.username,
+      // errorMessage: errors.username,
     },
     {
       id: 2,
@@ -43,17 +43,17 @@ const Login = () => {
       name: "password",
       type: "password",
       placeholder: "input password",
-      errorMessage: errors.password,
+      // errorMessage: errors.password,
     },
   ];
 
-  if (errors.password) {
-    inputs[1].errorMessage = errors.password[0];
-  }
+  // if (errors.password) {
+  //   inputs[1].errorMessage = errors.password[0];
+  // }
 
-  if (errors.username) {
-    inputs[0].errorMessage = errors.username[0];
-  }
+  // if (errors.username) {
+  //   inputs[0].errorMessage = errors.username[0];
+  // }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,11 +77,8 @@ const Login = () => {
       }, 2000);
     } catch (e) {
       if (e?.response?.status === 422) {
-        // setErrors(e.response.data.errors);
+        setErrors(e.response.data.errors);
         setIsShow(true);
-        setTimeout(() => {
-          setIsShow(false);
-        }, 3000);
       } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
         // Swal.fire({
         //   icon: "error",
@@ -114,10 +111,10 @@ const Login = () => {
           </h3>
 
           {isShow === true && (
-            <Alert variant="danger" className="py-1 px-2" style={{ width: "300px" }}>
-              <p style={{ fontSize: "13px" }} className="mb-0">
-                Account is not found. Please re-check the username and password you entered.
-              </p>
+            <Alert variant="danger" className="py-1 px-2" style={{ width: "300px", fontSize: "13px" }} onClose={() => setIsShow(false)} dismissible>
+              {/* <p> Account is not found. Please re-check the username and password you entered. </p> */}
+              {errors.username && <p className="mb-0">{errors.username[0]}</p>}
+              {errors.password && <p className="mb-0">{errors.password[0]}</p>}
             </Alert>
           )}
           <Form onSubmit={handleSubmit} style={{ width: "300px" }} className="mx-auto">

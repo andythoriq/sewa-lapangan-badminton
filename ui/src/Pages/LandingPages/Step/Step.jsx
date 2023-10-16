@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 // import FooterPublic from "../../../Components/FooterPublic";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useGeneralContext } from "../../../context/generalContext";
 
 const FormStep = () => {
   const [errors, setErrors] = useState([]);
@@ -18,6 +19,7 @@ const FormStep = () => {
 
   const [name, setName] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
+  const {setResendPhoneNumber, setExpiration} = useGeneralContext()
 
   const inputs = [
     {
@@ -46,7 +48,7 @@ const FormStep = () => {
   //   inputs[ 1 ].errorMessage = errors.phone_number[ 0 ];
   // }
 
-  const handleSubmit = async (e) => {
+  const handleSendOTP = async (e) => {
     e.preventDefault();
     try {
       await axios.get("/sanctum/csrf-cookie");
@@ -55,14 +57,16 @@ const FormStep = () => {
         phone_number: (phoneNumber.substring(0, 2) === '62' ? "0" + phoneNumber.slice(2) : phoneNumber),
       });
       setErrors('')
-      if (data.text === "Success") {
-        Swal.fire({ icon: "success", title: "Success!", html: `OTP code has been sent to ${data.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+      if (data.response.text === "Success") {
+        Swal.fire({ icon: "success", title: "Success!", html: `OTP code has been sent to ${data.response.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
+            setResendPhoneNumber(data.response.to)
+            setExpiration(data.expiration)
             navigate('/step2', { replace: true })
           }
         });
       } else {
-        Swal.fire({ icon: "error", title: "Error!", html: data.text, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+        Swal.fire({ icon: "error", title: "Error!", html: data.response.text, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
     } catch (e) {
       if (e?.response?.status === 422) {
@@ -110,7 +114,7 @@ const FormStep = () => {
                 </b><br/>
                 <sub>There are thousands of people who love to exercise just like you. Let's start our exercise journey together.</sub>
                 {/* <p>Create your account now</p> */}
-                <Form onSubmit={handleSubmit} style={{ width: "120%" }}>
+                  <Form onSubmit={handleSendOTP} style={{ width: "120%" }}>
                   <Form.Group className="mb-2 mt-3">
                     <label>Phone Number</label>
                     <PhoneInput placeholder="input phone number" specialLabel={""} country={"id"} value={(phoneNumber.substring(0, 1) === '0' ? "62" + phoneNumber.slice(1) : phoneNumber)} onChange={(phone) => {

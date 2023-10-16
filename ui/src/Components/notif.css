@@ -147,6 +147,7 @@ nav {
 }
 
 .notification-card {
+	z-index: 1;
   position: absolute;
 	height: 550px;
 	overflow-y: scroll;

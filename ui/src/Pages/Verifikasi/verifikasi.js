@@ -10,11 +10,11 @@ import Moment from "react-moment";
 import { useParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { Search } from "react-bootstrap-icons";
-import { useNotification } from "../../context/notificationContext";
+import { useGeneralContext } from "../../context/generalContext";
 
 const Verification = () => {
   // let listData = [{ start: "10-00", finish: "12-00", status: "on progress", price: "Rp150.000", court: "Court A", customer: "Budi - (0892347826382)" }];
-  const { setTriggerNotif, triggerNotif } = useNotification()
+  const { setTriggerNotif, triggerNotif } = useGeneralContext()
   const [errors, setErrors] = useState([]);
   const { bookingCodeParam } = useParams();
   const [bookingCode, setBookingCode] = useState(bookingCodeParam || "");

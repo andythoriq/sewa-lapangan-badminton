@@ -8,13 +8,13 @@ import FormSelect from "../../Components/Form/select";
 import { dayData } from "../../Components/settingData";
 import axios from "../../api/axios";
 import Swal from "sweetalert2";
-import { useNotification } from "../../context/notificationContext";
+import { useGeneralContext } from "../../context/generalContext";
 
 const Setting = () => {
   const [values, setValues] = useState({ name:"", phone_number:"", email:"", address:"", otp_expiration: 0, member_discount: 0 });
   const [rows, initRow] = useState([]);
   const [triggerFetch, setTriggerFetch] = useState(false)
-  const {handleSetGorName, handleSetContact} = useNotification()
+  const {handleSetGorName, handleSetContact} = useGeneralContext()
   const [errors, setErrors] = useState([])
 
   useEffect(() => {

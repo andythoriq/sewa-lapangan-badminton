@@ -6,7 +6,7 @@ import FormatDate from "../../../Components/Services/formatDate";
 import "./dashboard.css";
 import axios from "../../../api/axios";
 import Swal from "sweetalert2";
-import { useNotification } from "../../../context/notificationContext";
+import { useGeneralContext } from "../../../context/generalContext";
 import FormatTime from "../../../Components/Services/formatTime";
 
 const Dashboard = () => {
@@ -18,9 +18,9 @@ const Dashboard = () => {
   //     { name: "Today's income", value: "0", icon: "audit" },
   //   ];
   const time = new Date();
-  const {handleSetGorName} = useNotification()
+  const {handleSetGorName} = useGeneralContext()
   const [dashboard, setDashboard] = useState({});
-  const { setTriggerNotif, triggerNotif } = useNotification();
+  const { setTriggerNotif, triggerNotif } = useGeneralContext();
 
   useEffect(() => {
     axios

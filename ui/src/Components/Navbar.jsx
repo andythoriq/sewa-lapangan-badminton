@@ -11,12 +11,12 @@ import Swal from "sweetalert2";
 import secureLocalStorage from "react-secure-storage";
 import { Link } from "react-router-dom";
 import Notification from "./Notificationn";
-import { useNotification } from "../context/notificationContext";
+import { useGeneralContext } from "../context/generalContext";
 // import { MultiSelect } from "react-multi-select-component";
 
 const Navbar = () => {
   // const [selected, setSelected] = useState([]);
-  const {gorName} = useNotification()
+  const {gorName} = useGeneralContext()
   const navigate = useNavigate();
   const { menuSidebar } = useSelector((state) => state.menu);
   const dispatch = useDispatch();

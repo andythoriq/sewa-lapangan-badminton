@@ -10,8 +10,10 @@ import Swal from "sweetalert2";
 import "../nav.css";
 import axios from "../../../api/axios";
 import secureLocalStorage from "react-secure-storage";
+import { useGeneralContext } from "../../../context/generalContext";
 
 const Step2 = () => {
+  const {resendPhoneNumber, expiration, setExpiration} = useGeneralContext()
   const [OTP, setOTP] = useState('');
   const [errors, setErrors] = useState([])
 
@@ -25,11 +27,29 @@ const Step2 = () => {
     }
   ];
 
-  // if (errors.otp_code) {
-  //   inputs[0].errorMessage = errors.otp_code[0]
-  // }
+  const handleResendOTP = async () => {
+    try {
+      await axios.get("/sanctum/csrf-cookie");
+      const { data } = await axios.post("/api/send-opt", { phone_number: resendPhoneNumber});
+      setErrors('')
+      if (data.response.text === "Success") {
+        Swal.fire({ icon: "success", title: "Success!", html: `OTP code has been resent to ${data.response.to} <br/> `, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500 });
+        setExpiration(data.expiration)
+      } else {
+        Swal.fire({ icon: "error", title: "Error!", html: data.response.text, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      }
+    } catch (e) {
+      if (e?.response?.status === 422) {
+        setErrors(e.response.data.errors);
+      } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
+        Swal.fire({ icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false, });
+      } else {
+        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      }
+    }
+  };
 
-  const handleSubmit = async (e) => {
+  const handleVerifyOTP = async (e) => {
     e.preventDefault();
    try {
      await axios.get("/sanctum/csrf-cookie")
@@ -42,6 +62,7 @@ const Step2 = () => {
      secureLocalStorage.setItem('customer_code', data.customer.customer_code)
      secureLocalStorage.setItem('name',data.customer.name)
      secureLocalStorage.setItem('role', 'user')
+     secureLocalStorage.setItem('expiration', data.customer.expiration)
      Swal.fire({ icon: "success", title: "Success!", html: "OTP verified successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
      setTimeout(function () {
       //  navigate('/landing-page', { replace: true })
@@ -91,7 +112,7 @@ const Step2 = () => {
                 Check your inbox!
               </b>
               <p style={{fontSize:13}}>We are sending an phone<br/>numberverification code to WhatsApp please enter the code.</p>
-              <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
+              <Form onSubmit={handleVerifyOTP} style={{ width: "100%" }}>
                 {inputs.map((input, index) => (
                   <Form.Group className="mb-3 mt-2 m-2" key={index}>
                     <OTPInput value={OTP} onChange={setOTP}  OTPLength={6} otpType="number" />
@@ -101,7 +122,13 @@ const Step2 = () => {
                 <Button type="submit" className="btn btn-sm btn-block col-12 mt-2 rounded"  style={{ background: "#B21830", color: "white" }}>
                   Submit
                 </Button>
-                <a href="#" className="mt-2" style={{ float: "right", textDecoration: "none"}}>Resend code</a>
+                    <div onClick={() => {
+                      Swal.fire({ icon: "warning", title: "Are you sure to resend the code?", html: `You can only resend in ${expiration.resend_limit > 1 ? expiration.resend_limit + ' times' : expiration.resend_limit + ' time' } <br /> You've tried ${expiration.recent_resend > 1 ? expiration.recent_resend + ' times' : expiration.recent_resend + ' time' }`, showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false}).then(result => {
+                        if(result.isConfirmed){
+                          handleResendOTP()
+                        }
+                      })
+                    }} className="mt-2" style={{ float: "right"}}><span style={{ color: 'dodgerblue', textDecoration: "none", cursor: 'pointer' }}>Resend code</span> <span>{expiration.recent_resend}x</span></div>
               </Form>
             </div>
           </Col>
