@@ -94,7 +94,7 @@ const ProfilUser = () => {
 
           <div className="col-lg-8 mt-2">
             <div className="row">
-              <div className="shadow border rounder p-5 mb-4 bg-white">
+              <div className="shadow border rounder p-5 mb-4 bg-white ">
                 <h5>Details</h5>
                 <b className="mb-2">Full Name: </b>{customer.name}
                 <br />

@@ -104,19 +104,19 @@ const Landing2 = () => {
               <tr>
                 <th className="text-center">Time</th>
                 <th className="text-center" colSpan={2}>
-                  Court 1
+                  Court A
                 </th>
                 <th></th>
                 <th className="text-center" colSpan={2}>
-                  Court 2
+                  Court B
                 </th>
                 <th></th>
                 <th className="text-center" colSpan={2}>
-                  Court 3
+                  Court C
                 </th>
                 <th></th>
                 <th className="text-center" colSpan={2}>
-                  Court 4
+                  Court C
                 </th>
                 <th></th>
               </tr>

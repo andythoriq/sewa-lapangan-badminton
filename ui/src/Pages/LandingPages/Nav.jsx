@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { dirIcon } from "../../Components/Services/config";
 
-
 const Landing = () => {
   // loader state
   // const [isLoading, setIsLoading] = useState(true);
@@ -93,7 +92,7 @@ const Landing = () => {
   // window.addEventListener("scroll", changeColor);
 
   return courts.length < 0 ? (
-  <Loader />
+    <Loader />
   ) : (
     <>
       {/* navbar */}
@@ -132,7 +131,7 @@ const Landing = () => {
                         navigate("/dashboard-user");
                       }}
                     >
-                      <span>Dashboard</span>
+                      <span>Dashboard User</span>
                     </Dropdown.Item>
                     <Dropdown.Item
                       eventKey="2"
@@ -164,7 +163,7 @@ const Landing = () => {
               </div>
             ) : (
               <button onClick={() => navigate("/userstep")} className="btn ms-2" style={{ borderRadius: 13, background: "#B21830", color: "white" }}>
-                Sign Up
+                Sign In
               </button>
             )}
           </Navbar.Collapse>
@@ -197,11 +196,11 @@ const Landing = () => {
               <div className="col-12 col-lg-6  text-container">
                 <div className="about-text">
                   <h2>
-                    Know About <span style={{ color: "#D93221" }}>BFB</span>
+                    Know About <span style={{ color: "#D93221" }}>....</span>
                   </h2>
                   <p className="about-bfb">
-                    bfb is an application that allows you to book a court or facility online or offline. You can choose the date, time, and type of court you want. The application has an availability calendar that allows you to see when the
-                    court or facility is available for booking. bfb may provide discounts to club members or their regular customers as an incentive to faithfully use the facility or pitch.
+                    ... is a badminton court located in ... , this field provides a booking place whose facilities are guaranteed. toilets, canteens, prayer rooms and several other facilities. this field also offers affordable prices. if
+                    you are interested, please start asking through the whatsapp number .....
                   </p>
                   <button className="btn" style={{ background: "#B21830", color: "white" }}>
                     Learn More
@@ -220,18 +219,18 @@ const Landing = () => {
           <div className="card-diskon rounded" style={{ backgroundColor: "#201E37" }}>
             <div className="row">
               <div className="col-md-4">
-                <img src="../assets/img/people2.jpg" alt="..." className="img-fluid rounded" style={{ width: "100vh", height: "100%" }}/>
+                <img src="../assets/img/people2.jpg" alt="..." className="img-fluid rounded" style={{ width: "100vh", height: "100%" }} />
               </div>
               <div className="col-md-8 text-white p-5">
                 <p className="card-title mt-2" style={{ color: "#DADADA" }}>
                   Booking
                 </p>
                 <h1 className="mt-2" style={{ fontWeight: "bold" }}>
-                Play badminton with special price! <br/>
-                Enjoy playing badminton at BFB with a special price.
+                  Play badminton with special price! <br />
+                  Enjoy playing badminton at BFB with a special price.
                 </h1>
                 <Button onClick={() => navigate("/userstep")} className="btn btn-lg btn-light mt-3">
-                  Sign Up now{" "}
+                  Sign In now{" "}
                 </Button>
               </div>
             </div>
@@ -360,9 +359,7 @@ const Landing = () => {
                 </div>
                 <div className="desc">
                   <h5 style={{ fontWeight: 700, fontSize: "18px", lineHeight: "24px", paddingBottom: "12px" }}>Registrasion</h5>
-                  <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black" }}>
-                  The customer registers, then the customer will receive an OTP code as verification.
-                  </p>
+                  <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black" }}>The customer registers, then the customer will receive an OTP code as verification.</p>
                 </div>
               </div>
               <div className="col-md-4">
@@ -371,9 +368,7 @@ const Landing = () => {
                 </div>
                 <div className="desc">
                   <h5 style={{ fontWeight: 700, fontSize: "18px", lineHeight: "24px", paddingBottom: "12px" }}>QR Code</h5>
-                  <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black" }}>
-                  Customers will receive a QR Code after placing an order. The QR code is used as proof of order.
-                  </p>
+                  <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black" }}>Customers will receive a QR Code after placing an order. The QR code is used as proof of order.</p>
                 </div>
               </div>
               <div className="col-md-4">
@@ -382,9 +377,7 @@ const Landing = () => {
                 </div>
                 <div className="desc">
                   <h5 style={{ fontWeight: 700, fontSize: "18px", lineHeight: "24px", paddingBottom: "12px" }}>Payment</h5>
-                  <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black" }}>
-                  Payment is made after the customer has finished playing. 
-                  </p>
+                  <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black" }}>Payment is made after the customer has finished playing.</p>
                 </div>
               </div>
             </div>
