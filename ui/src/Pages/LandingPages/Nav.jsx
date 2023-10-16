@@ -77,12 +77,14 @@ const Landing = () => {
   // };
 
   const [courts, setCourts] = useState([]);
+  const [contact, setContact] = useState({})
 
   useEffect(() => {
     axios
-      .get("/api/court-landing-page")
+      .get("/api/landing-page")
       .then(({ data }) => {
-        setCourts(data);
+        setCourts(data.courts);
+        setContact(data.contact)
       })
       .catch((e) => {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -200,11 +202,11 @@ const Landing = () => {
               <div className="col-12 col-lg-6  text-container">
                 <div className="about-text">
                   <h2>
-                    Know About <span style={{ color: "#D93221" }}>....</span>
+                    Know About <span style={{ color: "#D93221" }}>{contact.gor_name || '...'}</span>
                   </h2>
                   <p className="about-bfb">
-                    ... is a badminton court located in ... , this field provides a booking place whose facilities are guaranteed. toilets, canteens, prayer rooms and several other facilities. this field also offers affordable prices. if
-                    you are interested, please start asking through the whatsapp number .....
+                    <strong>{contact.gor_name || '...'}</strong> is a badminton court located in <strong>{contact.address || '...'}</strong>, this court provides a booking place whose facilities are guaranteed. toilets, canteens, prayer rooms and several other facilities. this field also offers affordable prices. if
+                    you are interested, please start asking through the whatsapp number <strong>{contact.number || '...'}</strong> or through email <strong>{contact.email || '...'}</strong>
                   </p>
                   <button className="btn" style={{ background: "#B21830", color: "white" }}>
                     Learn More

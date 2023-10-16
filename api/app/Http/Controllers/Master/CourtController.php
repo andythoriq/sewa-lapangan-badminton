@@ -27,13 +27,6 @@ class CourtController extends Controller
         return new CourtCollection($courts);
     }
 
-    public function landing_page()
-    {
-        $courts = CourtModel::select(['id', 'label', 'initial_price', 'image_path', 'description'])
-                            ->get();
-        return new CourtCollection($courts);
-    }
-
     public function show(CourtModel $court)
     {
         return new CourtResource($court->loadMissing(['rentals', 'peak_times']));

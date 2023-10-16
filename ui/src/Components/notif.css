@@ -61,7 +61,7 @@
 nav {
   display: flex;
   align-items: center;
-  background: #ab47bc;
+  background-color: rgba(0, 0, 0);
   height: 60px;
   position: relative;
   border-bottom: 1px solid #495057;
