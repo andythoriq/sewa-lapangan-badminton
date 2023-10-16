@@ -41,7 +41,7 @@ class SendBookingCodeController extends Controller
 
 
         $image_link = public_path('storage/qr-code-images/') . $data['booking_code'] . '.png';
-        $caption = 'Your booking code: ' . $data['booking_code'];
+        $caption = 'Your booking code: *' . $data['booking_code'] . '*';
         $user_key = env('ZENZIVA_USER_KEY');
         $api_key = env('ZENZIVA_API_KEY');
         $response = $this->sendImage($data['phone_number'], $image_link, $caption, $user_key, $api_key);

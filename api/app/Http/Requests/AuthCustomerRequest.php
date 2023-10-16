@@ -114,8 +114,8 @@ class AuthCustomerRequest extends FormRequest
         $message = <<<EOT
         Dear customer,
 
-        Your One-Time Password (OTP) code for verification is: $otp.
-        This OTP code is valid for the next 15 minutes.
+        Your One-Time Password (OTP) code for verification is: *$otp*.
+        This OTP code is valid for the next $expire_minutes minutes.
 
         Thank you for using our service.
 

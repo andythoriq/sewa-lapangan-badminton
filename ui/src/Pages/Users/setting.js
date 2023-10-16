@@ -8,12 +8,13 @@ import FormSelect from "../../Components/Form/select";
 import { dayData } from "../../Components/settingData";
 import axios from "../../api/axios";
 import Swal from "sweetalert2";
+import { useNotification } from "../../context/notificationContext";
 
 const Setting = () => {
   const [values, setValues] = useState({ name:"", phone_number:"", email:"", address:"", otp_expiration: 0, member_discount: 0 });
   const [rows, initRow] = useState([]);
   const [triggerFetch, setTriggerFetch] = useState(false)
-
+  const {handleSetGorName, handleSetContact} = useNotification()
   const [errors, setErrors] = useState([])
 
   useEffect(() => {
@@ -28,6 +29,8 @@ const Setting = () => {
           member_discount: data.member_discount
         })
         initRow(JSON.parse(data.open_time))
+        handleSetGorName(data.name)
+        handleSetContact(contactParsed)
       })
       .catch((e) => {
         if (e.response?.status === 404 || e.response?.status === 403 || e?.response?.status === 401) {

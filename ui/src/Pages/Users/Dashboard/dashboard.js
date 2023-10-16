@@ -18,7 +18,7 @@ const Dashboard = () => {
   //     { name: "Today's income", value: "0", icon: "audit" },
   //   ];
   const time = new Date();
-
+  const {handleSetGorName} = useNotification()
   const [dashboard, setDashboard] = useState({});
   const { setTriggerNotif, triggerNotif } = useNotification();
 
@@ -28,6 +28,7 @@ const Dashboard = () => {
       .then(({ data }) => {
         setDashboard(data);
         setTriggerNotif(!triggerNotif);
+        handleSetGorName(data.company_name)
       })
       .catch((e) => {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });

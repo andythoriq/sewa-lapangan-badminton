@@ -11,10 +11,12 @@ import Swal from "sweetalert2";
 import secureLocalStorage from "react-secure-storage";
 import { Link } from "react-router-dom";
 import Notification from "./Notificationn";
+import { useNotification } from "../context/notificationContext";
 // import { MultiSelect } from "react-multi-select-component";
 
 const Navbar = () => {
   // const [selected, setSelected] = useState([]);
+  const {gorName} = useNotification()
   const navigate = useNavigate();
   const { menuSidebar } = useSelector((state) => state.menu);
   const dispatch = useDispatch();
@@ -129,8 +131,7 @@ const Navbar = () => {
         
         <ul className={`menu2 m-0 align-items-center`}>
         <div className="text-gor d-flex text-white">
-          <b style={{ marginLeft: "-20px" }}>Gor </b>
-          <b> Tunggal Karsa</b>
+          <b style={{ marginLeft: "-20px" }}>Gor { gorName || (secureLocalStorage.getItem('gor_name') || '') }</b>
         </div>
           <li className="mx-2 notification-icon-menu">
             <Notification swal={Swal} />
