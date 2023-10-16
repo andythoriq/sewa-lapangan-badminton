@@ -104,9 +104,9 @@ const Landing = () => {
               BFB
             </b>
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbartoggler" type="button" data-bs-toggle="offcanvas" data-bs-target="offcanvasNavbar" ria-controls="offcanvasNavbar" className="navbar-toogler shadow-none border-0 bg-white" />
-          <Navbar.Collapse id="navbarScroll">
-            <Nav className="ms-auto" style={{ maxHeight: "100px" }} navbarScroll>
+          <Navbar.Toggle aria-controls="navbar" type="button" data-bs-toggle="offcanvas" data-bs-target="offcanvasNavbar" ria-controls="offcanvasNavbar" className="navbar shadow-none border-0 bg-white" />
+          <Navbar.Collapse id="navbar">
+            <Nav className="ms-auto" style={{ maxHeight: "100px" }} >
               <Nav.Link href="#about" style={{ marginRight: "30px", color: "white" }}>
                 About
               </Nav.Link>
@@ -206,9 +206,9 @@ const Landing = () => {
                     ... is a badminton court located in ... , this field provides a booking place whose facilities are guaranteed. toilets, canteens, prayer rooms and several other facilities. this field also offers affordable prices. if
                     you are interested, please start asking through the whatsapp number .....
                   </p>
-                  <button className="btn" style={{ background: "#B21830", color: "white" }}>
+                  {/* <button className="btn" style={{ background: "#B21830", color: "white" }}>
                     Learn More
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
@@ -362,7 +362,7 @@ const Landing = () => {
                   <img src="./assets/icon/document.png" alt="..." />
                 </div>
                 <div className="desc">
-                  <h5 style={{ fontWeight: 700, fontSize: "18px", lineHeight: "24px", paddingBottom: "12px" }}>Registrasion</h5>
+                  <h5 style={{ fontWeight: 700, fontSize: "18px", lineHeight: "24px", paddingBottom: "12px" }}>Registration</h5>
                   <p style={{ fontWeight: 400, fontSize: "13px", lineHeight: "27px", maxWidth: "284px", margin: "0 auto", color: "black" }}>The customer registers, then the customer will receive an OTP code as verification.</p>
                 </div>
               </div>

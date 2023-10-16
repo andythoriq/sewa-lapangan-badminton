@@ -118,7 +118,7 @@ const Schedule = ({ aksi = "" }) => {
       {ifDashboard ? (
         ""
       ) : (
-        <Card className="p-3 mt-3 mb-4 " style={{ marginLeft: "-18px" }}>
+        <Card className="p-3 mt-3 mb-4 " style={{ marginLeft: "-5px" }}>
           <Row className="d-flex justify-content-center">
             <Col className="col-12 col-md-2">
               Date:

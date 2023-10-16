@@ -95,7 +95,7 @@ const Navbar = () => {
         <div className="menu_bar_mobile" onClick={handleToggle2}>
           {menuSidebar ? <XMarkIcon /> : <Bars3BottomLeftIcon />}
         </div>
-        <div onClick={handleToggle} className={`sidebar-heading border-bottom text-white menu_sidebar mb-4 ${menuOpen ? "open" : ""}`}>
+        <div onClick={handleToggle} className={`sidebar-heading text-white menu_sidebar mb-3 ${menuOpen ? "open" : ""}`}>
           {menuOpen ? <Bars3Icon style={{ color: "#fff", width: "50px" }} className="mt-0"/> : <Bars3Icon style={{ color: "#fff", width: "50px"}} className="mt-3"/>}
         </div>
         {/* <img src={`/${logoApp}`} alt="" />
