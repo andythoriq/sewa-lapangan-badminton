@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
-import Schedule from "../Schedule/schedule";
 import Info from "./info";
 import FormatDate from "../../../Components/Services/formatDate";
 import "./dashboard.css";
@@ -8,6 +7,7 @@ import axios from "../../../api/axios";
 import Swal from "sweetalert2";
 import { useGeneralContext } from "../../../context/generalContext";
 import FormatTime from "../../../Components/Services/formatTime";
+import Schedule from "../Schedule/schedule";
 
 const Dashboard = () => {
   const date = new Date();
@@ -171,9 +171,9 @@ const Dashboard = () => {
           </div>
         </div>
       </Row>
-      <div className="mt-4 mb-4"></div>
-      <Schedule aksi="dashboard" />
-
+      <div className="mt-4 mb-4">
+        <Schedule currentPath="dashboard" />
+      </div>
       <Info />
     </>
   );

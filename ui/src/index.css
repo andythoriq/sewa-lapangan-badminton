@@ -802,7 +802,7 @@ footer .footer .text {
 }
 
 .table tbody td {
-  border: 1px solid #ddd !important;
+  border: 1px solid #ddd;
 }
 
 .pagination .page-link {
@@ -841,10 +841,12 @@ footer .footer .text {
   background: #eee !important;
   min-width: 70px !important;
   height: 41px !important;
+  border: 1px solid rgba(0, 0, 0, 0.5) !important;
 }
 .bg-col-batas {
   background: white !important;
   min-width: 20px;
+  border: 0px !important;
 }
 .bg-col-cyan {
   cursor: pointer;
@@ -856,7 +858,7 @@ footer .footer .text {
 }
 .bg-col-red {
   cursor: pointer;
-  background: var(--color-merah) !important;
+  background: #C70039 !important;
 }
 .bg-col-orange {
   cursor: pointer;
@@ -912,11 +914,11 @@ footer .footer .text {
 }
 .table tbody td.bg-col-court,
 .table tbody td.bg-col-batas {
-  border: 0px !important;
+  border: 0px;
 }
 .table tfoot td {
   padding: 3px;
-  border: 1px solid #ddd !important;
+  border: 1px solid #ddd;
 }
 
 .custom-toggler .navbar-toggler-icon {

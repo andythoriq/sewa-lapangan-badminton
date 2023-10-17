@@ -206,6 +206,6 @@ class RentalRequest extends FormRequest
 
     private function getCourtSchedules(int $court_id)
     {
-        return RentalModel::select(['start', 'finish'])->where('court_id', $court_id)->get();
+        return RentalModel::select(['start', 'finish'])->where('court_id', $court_id)->where('status', '!=', 'C')->get();
     }
 }

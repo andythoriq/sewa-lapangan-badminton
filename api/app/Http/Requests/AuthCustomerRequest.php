@@ -140,11 +140,11 @@ class AuthCustomerRequest extends FormRequest
 
         $user_key = env('ZENZIVA_USER_KEY');
         $api_key = env('ZENZIVA_API_KEY');
-        // $response = $this->sendWA($validated['phone_number'], $message,  $user_key, $api_key);
-        $response = [
-            'text' => 'Success',
-            'to' => $this->phone_number
-        ];
+        $response = $this->sendWA($validated['phone_number'], $message,  $user_key, $api_key);
+        // $response = [
+        //     'text' => 'Success',
+        //     'to' => $this->phone_number
+        // ];
         return [
             'response' => json_decode($response, true),
             'phone_number' => $customer->phone_number,
