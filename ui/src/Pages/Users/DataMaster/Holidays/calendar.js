@@ -9,27 +9,26 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import axios from "../../../../api/axios";
 import Loader from "../../../../Components/Loader/Loading";
-import AlertNewYear from "../../../../Components/AlertNewYear";
+// import AlertNewYear from "../../../../Components/AlertNewYear";
 
 export default function Calendar() {
 
   const [holidays, setHolidays] = useState([])
   const [ currentEvents, setCurrentEvents ] = useState([]);
-  const [ isShowAlert, setIsShowAlert ] = useState(false)
+  // const [ isShowAlert, setIsShowAlert ] = useState(false)
 
   useEffect(() => {
     axios.get('/api/calendar').then(({ data }) => {
-      setHolidays(data)
+      setHolidays(data.calendars)
+      return data.alert
+    })
+    .then((alert) => {
+      if (alert) {
+        Swal.fire({ position: 'top-end', icon: 'warning', title: alert.title, html: alert.message, width: 350, showConfirmButton: true })
+      }
     })
     .catch((e) => {
       Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
-    })
-    .finally(() => {
-      if (new Date().getMonth() === 11) {
-        setTimeout(() => {
-          setIsShowAlert(true)
-        }, 2000);
-      }
     })
   },[])
 
@@ -246,7 +245,7 @@ export default function Calendar() {
           eventDrop={handleEventDrop}
         />
       </div>
-      <AlertNewYear isShow={isShowAlert} handleClose={() => {setIsShowAlert(false)}} />
+      {/* <AlertNewYear isShow={isShowAlert} handleClose={() => {setIsShowAlert(false)}} /> */}
       </> : <Loader/>
   );
 }
