@@ -76,7 +76,7 @@ const FormProfile = () => {
 
   return (
     <>
-      <h4>
+      <h4 className="mt-5">
         <b>
           <Link to="/profile" className="btnBack">
             <ArrowLeft />

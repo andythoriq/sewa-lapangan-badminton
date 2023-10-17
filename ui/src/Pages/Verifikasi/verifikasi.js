@@ -329,7 +329,7 @@ const Verification = () => {
           </div>
         </div>
 
-        <div className="col-lg-9">
+        <div className="col-lg-9" style={{ marginLeft:"-5px" }}>
           <div className="accordion" id="accordionPayment">
             <div className="accordion-item mb-3">
               <div id="collapseCC" className="accordion-collapse collapse show" data-bs-parent="#accordionPayment">

@@ -74,9 +74,6 @@ const Schedule = ({ currentPath = "schedule" }) => {
           </Row>
         </Card>
       </>}
-      {currentPath === 'dashboard' && <>
-
-      </>}
       <Row>
         <Col className="col-12 col-md-6 d-flex mb-4">
           <div>
