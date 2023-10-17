@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { Card, Row, Col } from "react-bootstrap";
 import CreateBookingFormRegular from "./regular";
 import CreateBookingFormMember from "./member";
 import { ArrowLeft } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
 
 const CreateBookingForm = () => {
   const [checkedRegular, setCheckedRegular] = useState(true);
   const [checkedMember, setCheckedMember] = useState(false);
-  const currentPage = "schedule";
+  const navigate = useNavigate()
 
   const handleRadioBtn = (aksi = "") => {
     // console.log(aksi);
@@ -26,18 +26,11 @@ const CreateBookingForm = () => {
 
       <h4 className="mt-5">
         <b>
-        {currentPage === "schedule" ? (
           
-      <Link to="/dashboard" className="btnBack">
-        <ArrowLeft/>
-      </Link>
-          
-    ) : (
-      <Link to="/schedule" className="btnBack">
-        <ArrowLeft/>
-      </Link>
-    
-    )}
+          <div className="btnBack" onClick={() => navigate(-1)} style={{ cursor: "pointer" }}>
+            <ArrowLeft/>
+          </div>
+
           {/* <Link to="/dashboard" className="btnBack">
             <ArrowLeft />
           </Link> */}
