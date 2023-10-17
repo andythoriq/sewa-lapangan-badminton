@@ -132,7 +132,7 @@ const CreateBookingFormRegular = () => {
 
   return (
     <>
-      <Form>
+      <Form style={{ marginLeft: "-5px" }}>
         <Row>
           <Col className="col-12 col-md-6">
             <Form.Label>Customer</Form.Label>
@@ -158,29 +158,31 @@ const CreateBookingFormRegular = () => {
             </Form.Select>
             {errors.court_id && <span className="text-danger">{errors.court_id[0]}</span>}
           </Col>
+          
           <Col className="col-6 col-md-3 mt-1">
             <FormInput type="datetime-local" name="start_time" label="Start Time Booking" value={values.start_time} onChange={onChange} disabled={showSendBookingCode} />
             {errors.start && <span className="text-danger">{errors.start[0]}</span>}
           </Col>
-          <Col className="col-6 col-md-3 mt-1">
+          <Col className="col-6 col-md-3 mt-1" style={{ marginLeft: "20px" }}>
             <FormInput type="datetime-local" name="finish_time" label="Finish Time Booking" value={values.finish_time} onChange={onChange} disabled={showSendBookingCode} />
             {errors.finish && <span className="text-danger">{errors.finish[0]}</span>}
           </Col>
-          <Col className="col-12"></Col><hr className="mt-3"/>
-          <Col className="col-12 col-md-6 mt-2 text-center">
+         
+          <Col className="col-12"></Col>
+          <Col className="col-12 col-md-6 mt-3 text-center">
             <b>Totally hour booking:</b>
             <br />
             <br />
             <br />
             {transactionResponse.total_hour ? <span>{transactionResponse.total_hour <= 1 ? transactionResponse.total_hour + ' hour' : transactionResponse.total_hour + ' hours'}</span> : <span>{totallyHour ? (totallyHour <= 1 ? totallyHour + ' hour' : totallyHour + ' hours' ) : '...'}</span>}
           </Col>
-          <Col className="col-12 col-md-6 mt-2 text-center">
+          <Col className="col-12 col-md-6 mt-3 text-center">
             <b>Totally price booking:</b>
             <br />
             <br />
             <br />
             {transactionResponse.total_price ? <span>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transactionResponse.total_price)}</span> : <span>{totallyPrice ? new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(totallyPrice) : '...'}</span>}
-          </Col><hr className="mt-3"/>
+          </Col>
           <Col className="col-12 text-right mt-2">
             <button type="button" className="btn btn-sm me-md-4" onClick={onSubmit} disabled={showSendBookingCode} style={{ background: "#B21830", color: "white" }}>
               Booking

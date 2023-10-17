@@ -34,6 +34,7 @@ import Verification from "./Pages/Verifikasi/verifikasi";
 import Calendar from "./Pages/Users/DataMaster/Holidays/calendar";
 import secureLocalStorage from "react-secure-storage";
 import ProfilUser from "./Pages/LandingPages/profiluser/userprofil";
+import Register from "./Pages/LandingPages/Login user/register";
 // import FormProfileUser from "./Pages/LandingPages/profiluser/edituser";
 
 // export default class App extends Component {
@@ -224,6 +225,7 @@ export default function App() {
         <Route path="/landing-page" element={<LandingPage />} />
         <Route path="/userstep" element={<FormStep />} />
         <Route path="/step2" element={<Step2 />} />
+        <Route path="/register" element={<Register />}/>
         <Route path="/loginc" element={<LoginCustomer />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
