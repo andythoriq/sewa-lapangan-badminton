@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const CreateBookingForm = () => {
   const [checkedRegular, setCheckedRegular] = useState(true);
   const [checkedMember, setCheckedMember] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleRadioBtn = (aksi = "") => {
     // console.log(aksi);
@@ -23,12 +23,11 @@ const CreateBookingForm = () => {
 
   return (
     <>
-
       <h4 className="mt-5">
         <b>
-          
           <div className="btnBack" onClick={() => navigate(-1)} style={{ cursor: "pointer" }}>
-            <ArrowLeft/>
+            <ArrowLeft />
+            Create booking
           </div>
 
           {/* <Link to="/dashboard" className="btnBack">
@@ -37,7 +36,6 @@ const CreateBookingForm = () => {
           {/* <Link to="/dashboard" className="btnBack">
             <ArrowLeft />
           </Link> */}
-          Create booking
         </b>
       </h4>
       <Row>

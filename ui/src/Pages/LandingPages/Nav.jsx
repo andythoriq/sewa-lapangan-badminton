@@ -77,14 +77,14 @@ const Landing = () => {
   // };
 
   const [courts, setCourts] = useState([]);
-  const [contact, setContact] = useState({})
+  const [contact, setContact] = useState({});
 
   useEffect(() => {
     axios
       .get("/api/landing-page")
       .then(({ data }) => {
         setCourts(data.courts);
-        setContact(data.contact)
+        setContact(data.contact);
       })
       .catch((e) => {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -101,14 +101,11 @@ const Landing = () => {
       <Navbar expand="lg" className="nav nav nav-bg">
         <Container>
           <Navbar.Brand href="#">
-            <img src="./logo.png" alt="bfb" />
-            <b className="text-white" style={{ paddingLeft: 7, fontSize: 25 }}>
-              BFB
-            </b>
+            <img src="./assets/img/shuttlebook.png" alt=".." style={{ width: "145px" }} />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbar" type="button" data-bs-toggle="offcanvas" data-bs-target="offcanvasNavbar" ria-controls="offcanvasNavbar" className="navbar shadow-none border-0 bg-white" />
           <Navbar.Collapse id="navbar">
-            <Nav className="ms-auto" style={{ maxHeight: "100px" }} >
+            <Nav className="ms-auto " style={{ maxHeight: "100px" }}>
               <Nav.Link href="#about" style={{ marginRight: "30px", color: "white" }}>
                 About
               </Nav.Link>
@@ -138,14 +135,16 @@ const Landing = () => {
                     <Dropdown.Item
                       eventKey="2"
                       onClick={() => {
-                        const customerExpiration = new Date(secureLocalStorage.getItem('expiration'));
+                        const customerExpiration = new Date(secureLocalStorage.getItem("expiration"));
                         const now = new Date();
                         const timeDiff = customerExpiration - now;
                         const minutesRemaining = Math.ceil(timeDiff / 1000 / 60);
                         Swal.fire({
                           icon: "warning",
                           title: "Are you sure?",
-                          html: `Are you sure to logout from this web? <br /> ${minutesRemaining > 0 ? `you cannot login again more than once in ${minutesRemaining  <= 1 ? minutesRemaining + ' minute' : minutesRemaining + ' minutes' }` : ''}`,
+                          html: `Are you sure to logout from this web? <br /> ${
+                            minutesRemaining > 0 ? `you cannot login again more than once in ${minutesRemaining <= 1 ? minutesRemaining + " minute" : minutesRemaining + " minutes"}` : ""
+                          }`,
                           showConfirmButton: true,
                           showCancelButton: true,
                           allowOutsideClick: false,
@@ -168,19 +167,22 @@ const Landing = () => {
                 </Dropdown>
               </div>
             ) : (
-              <button onClick={() => navigate("/userstep")} className="btn ms-2" style={{ borderRadius: 13, background: "#B21830", color: "white" }}>
+              <button onClick={() => navigate("/userstep")} className="btn me-3 btn-signin" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
                 Sign In
               </button>
             )}
+            <button onClick={() => navigate("/register")} className="btn me-5 btn-Registrion btn active" style={{ borderRadius: 40, color: "white" }}>
+                Registrion
+              </button>
           </Navbar.Collapse>
         </Container>
       </Navbar>
       {/* akhir navbar */}
       {/* header */}
-      <div className="p-5 mb-4 bg-light jumbotron">
+      <div className="p-5 mb- bg-light jumbotron" style={{ marginBottom: "60px" }}>
         <div className="container py-5">
           <h1 className=" fw-bold" style={{ textAlign: "center", marginTop: "65px", fontWeight: 200, color: "white" }}>
-            Top Quality Badminton Sports Venue.
+            Top Quality Badminton Sports Venue
           </h1>
           <p style={{ textAlign: "center", color: "white" }}>bfb is an application that allows you to book a court or facility online or offline. </p>
           <a href="#about">
@@ -199,14 +201,15 @@ const Landing = () => {
                   <img src="./assets/img/bg-lan.jpg" alt="..." />
                 </div>
               </div>
-              <div className="col-12 col-lg-6  text-container">
+              <div className="col-12 col-lg-5  text-container">
                 <div className="about-text">
                   <h2>
-                    Know About <span style={{ color: "#D93221" }}>{contact.gor_name || '...'}</span>
+                    Know About <span style={{ color: "#201E37" }}>{contact.gor_name || "..."}</span>
                   </h2>
                   <p className="about-bfb">
-                    <strong>{contact.gor_name || '...'}</strong> is a badminton court located in <strong>{contact.address || '...'}</strong>, this court provides a booking place whose facilities are guaranteed. toilets, canteens, prayer rooms and several other facilities. this field also offers affordable prices. if
-                    you are interested, please start asking through the whatsapp number <strong>{contact.number || '...'}</strong> or through email <strong>{contact.email || '...'}</strong>
+                    <strong>{contact.gor_name || "..."}</strong> is a badminton court located in <strong>{contact.address || "..."}</strong>, this court provides a booking place whose facilities are guaranteed. toilets, canteens, prayer
+                    rooms and several other facilities. this field also offers affordable prices. if you are interested, please start asking through the whatsapp number <strong>{contact.number || "..."}</strong> or through email{" "}
+                    <strong>{contact.email || "..."}.</strong>
                   </p>
                   {/* <button className="btn" style={{ background: "#B21830", color: "white" }}>
                     Learn More
@@ -235,9 +238,11 @@ const Landing = () => {
                   Play badminton with special price! <br />
                   Enjoy playing badminton at BFB with a special price.
                 </h1>
-                {!secureLocalStorage.getItem('name') && <Button onClick={() => navigate("/userstep")} className="btn btn-lg btn-light mt-3">
-                  Sign In now{" "}
-                </Button> }
+                {!secureLocalStorage.getItem("name") && (
+                  <Button onClick={() => navigate("/userstep")} className="btn btn-lg btn-light mt-3">
+                    Sign In now{" "}
+                  </Button>
+                )}
               </div>
             </div>
           </div>

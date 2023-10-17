@@ -276,7 +276,7 @@ input:invalid[focused="true"] ~ #validError {
 #sidebar-wrapper .list-group-item {
   background-color: rgb(235, 235, 235);
   color: rgb(0, 0, 0);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.25); */
   padding: 16px !important;
 }
 #sidebar-wrapper .list-group-item.active {
@@ -385,7 +385,7 @@ nav {
   color: #333;
   position: sticky;
   top: 0;
-  /* border-bottom: 1px solid #f3f3f3; */
+
 }
 
 nav .title {
