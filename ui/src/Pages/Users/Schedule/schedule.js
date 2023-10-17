@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import ScheduleModal from "./modal";
 import { Link } from "react-router-dom";
 
-const Schedule = ({ currentPath = "schedule" }) => {
+const Schedule = ({ currentPath = 'schedule' }) => {
   const [ courts, setCourts ] = useState([])
   const [ hours, setHours ] = useState([])
   const [ isShow, setIsShow ] = useState(false)
@@ -76,10 +76,12 @@ const Schedule = ({ currentPath = "schedule" }) => {
   }
 
   const showDetail = (id) => {
-    const rental = rentals.find(item => item.court_id === id)
-    if (rental) {
-      setRentalId(rental.rental_id)
-      setIsShow(true)
+    if (currentPath === 'dashboard' || currentPath === 'schedule') {
+      const rental = rentals.find(item => item.court_id === id)
+      if (rental) {
+        setRentalId(rental.rental_id)
+        setIsShow(true)
+      }
     }
   }
 
@@ -161,10 +163,8 @@ const Schedule = ({ currentPath = "schedule" }) => {
                   </th>
                   {courts.map((court, index) => {
                     return (<React.Fragment key={court.id}>
-                      <td width={"6%"} className={`bg-col-court ${checkBgColor(`${court.id}-${hour.id}:00`)}`}
-                        onClick={() => { if (currentPath === 'dashboard' || currentPath === 'schedule') { showDetail(`${court.id}-${hour.id}:00`) } }}></td>
-                      <td width={"6%"} className={`bg-col-court ${checkBgColor(`${court.id}-${hour.id}:30`)}`}
-                        onClick={() => { if (currentPath === 'dashboard' || currentPath === 'schedule') { showDetail(`${court.id}-${hour.id}:30`) } }}></td>
+                      <td width={"6%"} className={`bg-col-court ${checkBgColor(`${court.id}-${hour.id}:00`)}`} onClick={() => showDetail(`${court.id}-${hour.id}:00`)}></td>
+                      <td width={"6%"} className={`bg-col-court ${checkBgColor(`${court.id}-${hour.id}:30`)}`} onClick={() => showDetail(`${court.id}-${hour.id}:30`)}></td>
                       {index === courts.length - 1 ? <td width={"2%"} className="bg-col-batas"></td> : <td width={"4%"} className="bg-col-batas"></td>}
                     </React.Fragment>)
                   })}
@@ -174,7 +174,7 @@ const Schedule = ({ currentPath = "schedule" }) => {
           </tbody>
         </table>
       </div>
-      {currentPath === 'dashboard' || currentPath === 'schedule' &&
+      {(currentPath === 'dashboard' || currentPath === 'schedule') &&
         <ScheduleModal isShow={isShow} handleClose={() => {
           setIsShow(false)
           setRentalId(0)
