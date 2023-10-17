@@ -38,11 +38,11 @@ const Dashboard = () => {
   return (
     <>
       <h4 className="mb-4 mt-5">
-        <b>Dashboard</b>
+        <b>Hello, today is sports day</b>
       </h4>
       <div className="d-flex justify-content-between me-4">
-        <b>{FormatDate(date)}</b>
-        <b>{FormatTime(time)}</b>
+        <p>{FormatDate(date)}</p>
+        <p>{FormatTime(time)}</p>
       </div>
 
       <Row className="mt-4 mb-4">

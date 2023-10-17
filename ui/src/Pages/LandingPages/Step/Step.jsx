@@ -91,8 +91,8 @@ const FormStep = () => {
                   <b style={{ paddingLeft: 5, fontSize: 20 }}>{namaApp}</b>
                   <div className="text-danger mt-4 text-heading fw-bold">Management Booking</div>
                   <div className="mb-3 text-heading">Court Badminton</div>
-                  <div style={{ fontSize: 12 }}>
-                    BFB provides various features that support the operational
+                  <div style={{ fontSize: 10 }}>
+                    Shuttlebook provides various features that support the operational
                     <br />
                     management of yout Badminton sport facility
                   </div>

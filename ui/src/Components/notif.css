@@ -64,7 +64,7 @@ nav {
   background-color: rgba(0, 0, 0);
   height: 60px;
   position: relative;
-  border-bottom: 1px solid #495057;
+  /* border-bottom: 1px solid #495057; */
 }
 .icon {
   cursor: pointer;

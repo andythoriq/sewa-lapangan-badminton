@@ -45,6 +45,9 @@
     top: 30%;
     animation-delay: 0.3s;
   }
+  .btn-signin:hover {
+    background: #B931FC;
+  }
   @keyframes scroll-down {
     0% {
       opacity: 0;
@@ -90,11 +93,13 @@
     padding: 10px 0;
   }
   .card-court {
-    transition: 0.3s ease;
+    /* transition: 0.3s ease; */
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
   }
   .card-body {
     padding: 20px;
     margin-top: 15px;
+    
   }
   .rental-prince {
     display: flex;
@@ -106,10 +111,10 @@
     background-color: #000000;
     color: white;
   }
-  .card-court:hover {
+  /* .card-court:hover {
     transform: scale(1.1);
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6);
-  }
+  } */
 
   /* footer */
   .footer.lpages {

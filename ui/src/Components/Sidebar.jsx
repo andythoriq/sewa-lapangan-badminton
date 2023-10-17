@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { ChevronUpIcon, ChevronDownIcon, ArrowLeftCircleIcon, ArrowRightCircleIcon } from "@heroicons/react/24/solid";
+import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
 import { useDispatch } from "react-redux";
 import { setToggle } from "../Reducers/menuSlice";
 import "./style.css";
@@ -81,8 +81,9 @@ const Sidebar = () => {
 
   return (
     <div className="border-end text-dark" id="sidebar-wrapper">
-      <div className="profile_info d-flex justify-content-center align-items-center">
-        <img src="/logo.png" className="profile_image" alt="" style={{ width: "70px" }} />
+      <div className="profile_info">
+        <img src="./brand.png" className="profile_image" alt="" style={{ width: "45px", marginLeft: "25px" }} />
+        <b style={{ marginLeft: "9px", marginTop: "25px" }}>Shuttlebook.</b>
       </div><hr/>
       
       <div className="list-group list-group-flush list_menu_sidebar">
