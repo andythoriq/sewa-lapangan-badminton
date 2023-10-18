@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { dirIcon } from "./Services/config";
-import { XMarkIcon, Bars3BottomLeftIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon, Bars3BottomLeftIcon} from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { setToggle } from "../Reducers/menuSlice";
 import { Bars3Icon } from "@heroicons/react/24/solid";
@@ -95,6 +95,9 @@ const Navbar = () => {
         <div className="menu_bar_mobile" onClick={handleToggle2}>
           {menuSidebar ? <XMarkIcon /> : <Bars3BottomLeftIcon />}
         </div>
+        {/* <div className="menu" onClick={toggle}>
+          { menuOpen ? <XMarkIcon/> : <FunnelIcon /> }
+        </div> */}
         <div onClick={handleToggle} className={`sidebar-heading text-white menu_sidebar mb-3 ${menuOpen ? "open" : ""}`}>
           {menuOpen ? <Bars3Icon style={{ color: "#fff", width: "50px" }} className="mt-0"/> : <Bars3Icon style={{ color: "#fff", width: "50px"}} className="mt-3"/>}
         </div>

@@ -85,7 +85,7 @@ const Step2 = () => {
             </div>
           </Col>
           <Col className="col-12 col-md-6 text-black divRight position-relative p-5">
-            <div className="position-relative top-50 start-50 translate-middle p-3">
+            <div className="position-relative top-50 start-50 translate-middle p-4">
               <div className="d-md-none d-md-block text-center mb-2">
                 <img src={`/${logoApp}`} alt="" width={100} />
               </div>
