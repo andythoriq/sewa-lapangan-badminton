@@ -30,7 +30,7 @@ const FormStep = () => {
     e.preventDefault();
     try {
       await axios.get("/sanctum/csrf-cookie");
-      const { data } = await axios.post("/api/send-otp-login", { phone_number: phoneNumber.substring(0, 2) === "62" ? "0" + phoneNumber.slice(2) : phoneNumber });
+      const { data } = await axios.post("/api/send-otp-login?normal-login=true", { phone_number: phoneNumber.substring(0, 2) === "62" ? "0" + phoneNumber.slice(2) : phoneNumber });
       setErrors("");
       if (data.response.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `OTP code has been sent to ${data.response.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {

@@ -16,7 +16,7 @@ const Step2 = () => {
   const handleResendOTP = async () => {
     try {
       await axios.get("/sanctum/csrf-cookie");
-      const { data } = await axios.post("/api/send-otp-login", { phone_number: secureLocalStorage.getItem('resend_ph')});
+      const { data } = await axios.post("/api/send-otp-login?re-login=true", { phone_number: secureLocalStorage.getItem('resend_ph')});
       setErrors('')
       if (data.response.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `OTP code has been resent to ${data.response.to} <br/> `, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500 });

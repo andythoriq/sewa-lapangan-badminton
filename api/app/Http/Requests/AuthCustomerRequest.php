@@ -104,7 +104,7 @@ class AuthCustomerRequest extends FormRequest
         ];
     }
 
-    public function login()
+    public function login() // bisa digunakan untuk login maupun resend/relogin
     {
         $expire_minutes = ConfigModel::getExpireDuration();
         $resend_limit = ConfigModel::getResendLimit();
@@ -118,18 +118,54 @@ class AuthCustomerRequest extends FormRequest
             ->where('created_at', '>=', Carbon::now()->subMinutes($expire_minutes))
             ->count();
 
-        if ($recent_resend > $resend_limit) {
-            $remaining = ceil((strtotime($expire_minutes) - time()) / 1000 / 60);
-
-            throw ValidationException::withMessages([
-                'phone_number' => ["You can't send OTP more than $expire_minutes minutes. wait until " . ($remaining > 1 ? $remaining . ' minutes' : $remaining . ' minute')],
-                'otp_code' => ["You can't resend OTP more than $resend_limit times within $expire_minutes minutes."]
-            ]);
-        }
-
         if ($customer->expiration && Carbon::now('Asia/Jakarta')->gt(Carbon::parse($customer->expiration, 'Asia/Jakarta'))) {
             OTPModel::where('customer_id', $customer->customer_code)->whereDate('created_at', date('Y-m-d'))->delete();
             $recent_resend = 0;
+        }
+
+        if ($this->input('normal-login') == 'true' && ($customer->expiration && Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->expiration, 'Asia/Jakarta')))) {
+            $expire_time = Carbon::parse($customer->expiration);
+
+            $remaining_seconds = Carbon::now('Asia/Jakarta')->diffInSeconds($expire_time);
+
+            if ($remaining_seconds > 0) {
+                $minutes = floor(($remaining_seconds % 3600) / 60);
+                $seconds = $remaining_seconds % 60;
+
+                $remaining_seconds_text = '';
+                $expire_minutes_text = '';
+
+                if ($minutes > 0) {
+                    if (! empty($remaining_seconds_text)) {
+                        $remaining_seconds_text .= ' and ';
+                    }
+                    $remaining_seconds_text .= "$minutes " . ($minutes > 1 ? 'minutes' : 'minute');
+                }
+                if ($seconds > 0) {
+                    if (! empty($remaining_seconds_text)) {
+                        $remaining_seconds_text .= ' and ';
+                    }
+                    $remaining_seconds_text .= "$seconds " . ($seconds > 1 ? 'seconds' : 'second');
+                }
+                if ($expire_minutes > 0) {
+                    $expire_minutes_text .= "$expire_minutes " . ($expire_minutes > 1 ? 'minutes' : 'minute');
+                }
+            }
+            throw ValidationException::withMessages([
+                'phone_number' => ["expire in $expire_minutes_text already defined since signin/register. Wait until about $remaining_seconds_text."]
+            ]);
+        }
+        else if ($this->input('re-login') == 'true' && ($recent_resend > $resend_limit)) {
+            $expire_minutes_text = '';
+            if ($expire_minutes > 0) {
+                $expire_minutes_text .= "$expire_minutes " . ($expire_minutes > 1 ? 'minutes' : 'minute');
+            }
+
+            throw ValidationException::withMessages([
+                'otp_code' => [
+                    "You can't resend OTP more than $resend_limit times in $expire_minutes_text."
+                ]
+            ]);
         }
 
         OTPModel::create([
@@ -164,7 +200,7 @@ class AuthCustomerRequest extends FormRequest
             'customer_id' => $customer->customer_code,
             'otp_code' => $otp
         ]);
-        NotificationModel::customerRegistered($customer->name, $customer->phone_number, $customer->membership_status);
+        NotificationModel::customerRegistered($customer->name, $customer->phone_number);
 
         return $this->send_otp($otp, $expire_minutes, $recent_resend, $resend_limit, $customer);
     }
