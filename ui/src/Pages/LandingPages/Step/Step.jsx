@@ -99,7 +99,7 @@ const FormStep = () => {
                 </div>
               </Col>
               <Col className="col-12 col-md-6 text-black divRight position-relative p-5">
-                <div className="position-relative top-50 start-50 translate-middle p-4">
+                <div className="position-relative top-50 start-50 translate-middle p-5">
                   <div className="d-md-none d-md-block text-center">
                     <img src={`/${logoApp}`} alt="" width={100} />
                   </div>
@@ -115,7 +115,7 @@ const FormStep = () => {
                   <sub>There are thousands of people who love to exercise just like you. Let's start our exercise journey together.</sub>
                   {/* <p>Create your account now</p> */}
                   <Form onSubmit={handleSendOTP} style={{ width: "120%" }}>
-                    <Form.Group className="mb-2 mt-3">
+                    <Form.Group className="mb-2 mt-3 col-12">
                       <label>Phone Number</label>
                       <PhoneInput
                         placeholder="input phone number"

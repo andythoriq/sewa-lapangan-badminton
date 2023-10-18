@@ -98,21 +98,22 @@ const Landing = () => {
   ) : (
     <>
       {/* navbar */}
-      <Navbar expand="lg" className="nav nav nav-bg">
+      <Navbar expand="lg" className="nav nav-expand-md nav-bg">
         <Container>
           <Navbar.Brand href="#">
-            <img src="./assets/img/shuttlebook.png" alt=".." style={{ width: "145px" }} />
+            {/* <img src="./brand.png" alt=".." style={{ width: "35px" }} /> */}
+            <span className="fw-bold text-light mt-3"> Shuttlebook.</span>
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbar" type="button" data-bs-toggle="offcanvas" data-bs-target="offcanvasNavbar" ria-controls="offcanvasNavbar" className="navbar shadow-none border-0 bg-white" />
-          <Navbar.Collapse id="navbar">
-            <Nav className="ms-auto " style={{ maxHeight: "100px" }}>
-              <Nav.Link href="#about" style={{ marginRight: "30px", color: "white" }}>
+          <Navbar.Toggle aria-controls="navbar" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-expanded="false" aria-label="Toggle navigation" className="navbar shadow-none border-0 bg-white" />
+          <Navbar.Collapse id="navbarNav">
+            <Nav className="ms-auto mt-3" style={{ maxHeight: "100px" }}>
+              <Nav.Link href="#about" style={{ marginRight: "20px", color: "white" }}>
                 About
               </Nav.Link>
-              <Nav.Link href="#court" style={{ marginRight: "30px", color: "white" }}>
+              <Nav.Link href="#court" style={{ marginRight: "20px", color: "white" }}>
                 Court
               </Nav.Link>
-              <Nav.Link href="#servis" style={{ marginRight: "30px", color: "white" }}>
+              <Nav.Link href="#servis" style={{ marginRight: "20px", color: "white" }}>
                 Services
               </Nav.Link>
             </Nav>
@@ -167,13 +168,13 @@ const Landing = () => {
                 </Dropdown>
               </div>
             ) : (
-              <button onClick={() => navigate("/userstep")} className="btn me-3 btn-signin" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
+              <button onClick={() => navigate("/userstep")} className="btn me-2 btn-signin ms-auto mt-3" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
                 Sign In
               </button>
             )}
-            <button onClick={() => navigate("/register")} className="btn me-5 btn-Registrion btn active" style={{ borderRadius: 40, color: "white" }}>
-                Registrion
-              </button>
+            <button onClick={() => navigate("/register")} className="btn me-2 btn-Registrion mt-3 btn active" style={{ borderRadius: 40, color: "white" }}>
+              Registration
+            </button>
           </Navbar.Collapse>
         </Container>
       </Navbar>
@@ -192,7 +193,7 @@ const Landing = () => {
       </div>
       {/* end header */}
       {/* about */}
-      <section id="about" style={{ padding: "60px 0", marginBottom: "70px" }}>
+      <section id="about" style={{ padding: "70px 0px", marginBottom: "70px" }}>
         <div className="about-area section-padding" id="about">
           <div className="container">
             <div className="row">
