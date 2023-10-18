@@ -41,15 +41,14 @@ const Step2 = () => {
      await axios.get("/sanctum/csrf-cookie")
      const { data } = await axios.post("/api/verify-otp", { otp_code: OTP })
      setErrors('')
-     const exp = secureLocalStorage.getItem('exp')
      secureLocalStorage.clear()
      secureLocalStorage.setItem('token', data.token)
      secureLocalStorage.setItem('phone_number', data.customer.phone_number)
      secureLocalStorage.setItem('membership_status', data.customer.membership_status)
      secureLocalStorage.setItem('customer_code', data.customer.customer_code)
-     secureLocalStorage.setItem('name',data.customer.name)
+     secureLocalStorage.setItem('name', data.customer.name)
      secureLocalStorage.setItem('role', 'user')
-     secureLocalStorage.setItem('expiration', exp)
+     secureLocalStorage.setItem('expiration', data.customer.expiration)
      Swal.fire({ icon: "success", title: "Success!", html: "OTP verified successfully", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 2000 });
      setTimeout(function () {
       //  navigate('/landing-page', { replace: true })
@@ -97,19 +96,23 @@ const Step2 = () => {
               <Form onSubmit={handleVerifyOTP} style={{ width: "100%" }}>
                 <Form.Group className="mb-3 mt-2 m-2">
                   <OTPInput value={OTP} onChange={setOTP}  OTPLength={6} otpType="number" />
+                  {errors.otp_code && <span className="text-danger">{errors.otp_code[0]}</span>}
                 </Form.Group>
-                {errors.otp_code && <span className="text-danger">{errors.otp_code[0]}</span>}
                 <Button type="submit" className="btn btn-sm btn-block col-12 mt-2 rounded"  style={{ background: "#B21830", color: "white" }}>
                   Submit
                 </Button>
-                    <div onClick={() => {
-                      const exp = secureLocalStorage.getItem('expiration')
-                      Swal.fire({ icon: "warning", title: "Are you sure to resend the code?", html: `You can only resend in ${exp.resend_limit > 1 ? exp.resend_limit + ' times' : exp.resend_limit + ' time' } <br /> You've tried ${exp.recent_resend > 1 ? exp.recent_resend + ' times' : exp.recent_resend + ' time' }`, showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false}).then(result => {
-                        if(result.isConfirmed){
-                          handleResendOTP()
-                        }
-                      })
-                    }} className="mt-2" style={{ float: "right"}}><span style={{ color: 'dodgerblue', textDecoration: "none", cursor: 'pointer' }}>Resend OTP</span> <span>{secureLocalStorage.getItem('exp').recent_resend}x</span></div>
+                    <div className="mt-2" style={{ float: "right" }}>
+                      <small>Didn't get your otp yet? </small>
+                      <span style={{ color: 'dodgerblue', textDecoration: "none", cursor: 'pointer' }} onClick={() => {
+                        const exp = secureLocalStorage.getItem('exp')
+                        Swal.fire({ icon: "warning", title: "Are you sure to resend the code?", html: `You can only resend in ${exp.resend_limit > 1 ? exp.resend_limit + ' times' : exp.resend_limit + ' time'} <br /> You've tried ${exp.recent_resend > 1 ? exp.recent_resend + ' times' : exp.recent_resend + ' time'}`, showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then(result => {
+                          if (result.isConfirmed) {
+                            handleResendOTP()
+                          }
+                        })
+                      }}>Resend OTP</span> 
+                      <span> {secureLocalStorage.getItem('exp')?.recent_resend}x</span>
+                    </div>
               </Form>
             </div>
           </Col>

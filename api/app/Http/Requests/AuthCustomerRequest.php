@@ -89,12 +89,12 @@ class AuthCustomerRequest extends FormRequest
         $user_key = env('ZENZIVA_USER_KEY');
         $api_key = env('ZENZIVA_API_KEY');
         // $response = $this->sendWA($customer->phone_number, $message,  $user_key, $api_key);
-        $response = [
+        $response = json_encode([
             'text' => 'Success',
             'to' => $this->phone_number
-        ];
+        ]);
         return [
-            'response' => json_decode(json_encode($response), true),
+            'response' => json_decode($response, true),
             'phone_number' => $customer->phone_number,
             'expiration' => [
                 'recent_resend' => $recent_resend,
@@ -119,8 +119,10 @@ class AuthCustomerRequest extends FormRequest
             ->count();
 
         if ($recent_resend > $resend_limit) {
+            $remaining = ceil((strtotime($expire_minutes) - time()) / 1000 / 60);
+
             throw ValidationException::withMessages([
-                'phone_number' => ["You can't send OTP more than $expire_minutes minutes."],
+                'phone_number' => ["You can't send OTP more than $expire_minutes minutes. wait until " . ($remaining > 1 ? $remaining . ' minutes' : $remaining . ' minute')],
                 'otp_code' => ["You can't resend OTP more than $resend_limit times within $expire_minutes minutes."]
             ]);
         }

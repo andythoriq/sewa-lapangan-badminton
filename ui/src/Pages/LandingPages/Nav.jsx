@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
-import { Button, Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar } from "react-bootstrap";
 import "./nav.css";
 import Loader from "../../Components/Loader/Loading.js";
 import Court from "../../Components/Court";
@@ -10,6 +10,7 @@ import secureLocalStorage from "react-secure-storage";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { dirIcon } from "../../Components/Services/config";
+import { Link } from "react-router-dom";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -110,16 +111,12 @@ const Landing = () => {
                 <Dropdown>
                   <Dropdown.Menu>
                     `{" "}
-                    <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }} onClick={() => navigate("/profile-user")}>
-                      <span>Profile</span>
+                    <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }}>
+                      <Link to={'/profile-user'}>Profile</Link>
                     </Dropdown.Item>
                     <Dropdown.Item
-                      style={{ marginRight: "30px", color: "black" }}
-                      onClick={() => {
-                        navigate("/dashboard-user");
-                      }}
-                    >
-                      <span>Dashboard User</span>
+                      style={{ marginRight: "30px", color: "black" }}>
+                      <Link to={'/dashboard-user'}>Dashboard User</Link>
                     </Dropdown.Item>
                     <Dropdown.Item
                       eventKey="2"
@@ -157,12 +154,12 @@ const Landing = () => {
               </div>
             ) : (
              <>
-               <button onClick={() => navigate("/userstep")} className="btn me-3 btn-signin" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
+               <Link to="/userstep" className="btn me-3 btn-signin" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
                 Sign In
-              </button>
-              <button onClick={() => navigate("/register")} className="btn me-5 btn-Registrion btn active" style={{ borderRadius: 40, color: "white" }}>
-                Registrion
-              </button>
+              </Link>
+              <Link to="/register"className="btn me-5 btn-Registrion btn active" style={{ borderRadius: 40, color: "white" }}>
+                Register
+              </Link>
              </>
             )}
           </Navbar.Collapse>
@@ -230,9 +227,9 @@ const Landing = () => {
                   Enjoy playing badminton at BFB with a special price.
                 </h1>
                 {!secureLocalStorage.getItem("name") && (
-                  <Button onClick={() => navigate("/userstep")} className="btn btn-lg btn-light mt-3">
-                    Sign In now{" "}
-                  </Button>
+                  <div className="btn btn-lg btn-light mt-3">
+                    <Link to="/userstep">Sign In now</Link>
+                  </div>
                 )}
               </div>
             </div>

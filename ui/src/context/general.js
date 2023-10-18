@@ -12,8 +12,7 @@ function GeneralProvider({children}) {
 
   const [resendPhoneNumber, setResendPhoneNumber] = useState('')
 
-  const [defaultPhoneRegister, setDefaultPhoneRegister] = useState('')
-  const [defaultPhoneLogin, setDefaultPhoneLogin] = useState('')
+  const [defaultPhone, setDefaultPhone] = useState('')
 
   const handleSetContact = (contact_obj) => {
     setContact(contact_obj)
@@ -37,7 +36,7 @@ function GeneralProvider({children}) {
 
   return (
     <GeneralContext.Provider value={
-      { setTriggerNotif, triggerNotif, handleSetGorName, handleSetContact, handleSetResendPh, handleSetExpiration, setDefaultPhoneRegister, defaultPhoneRegister, setDefaultPhoneLogin, defaultPhoneLogin}
+      { setTriggerNotif, triggerNotif, handleSetGorName, handleSetContact, handleSetResendPh, handleSetExpiration, setDefaultPhone, defaultPhone}
     }>
       {children}
     </GeneralContext.Provider>

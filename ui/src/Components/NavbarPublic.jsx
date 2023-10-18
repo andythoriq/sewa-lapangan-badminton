@@ -48,14 +48,12 @@ const NavbarPublic = () => {
                 <Dropdown>
                   <Dropdown.Menu>
                     ` <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }}>
-                        <Link to={'/profile-user'} className="">
-                          Profile
-                        </Link>
+                        <Link to={'/profile-user'}>Profile</Link>
                       </Dropdown.Item>
                       <Dropdown.Item>
                         <div style={{ marginRight: "30px", color: "black" }}>
-                            <Link to={'/landing-page'}>Home</Link>
-                          </div>
+                          <Link to={'/landing-page'}>Home</Link>
+                        </div>
                       </Dropdown.Item>
                       <Dropdown.Item>
                           <div style={{ marginRight: "30px", color: "black" }}>
@@ -71,11 +69,9 @@ const NavbarPublic = () => {
                   </Dropdown>
                 </div>
             ) : (
-              <button className="btn btn-danger ms-2" style={{ borderRadius: 13 }}>
-                <Link to={'/userstep'}>
-                  Register
-                </Link>
-              </button>
+              <Link to={'/userstep'} className="btn btn-danger ms-2" style={{ borderRadius: 13 }}>
+                Register
+              </Link>
             )}
         </Navbar.Collapse>
       </Container>

@@ -2,19 +2,24 @@ import PhoneInput from "react-phone-input-2";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { useGeneralContext } from "../../../context/generalContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../../api/axios";
 import Swal from "sweetalert2";
 import { Alert } from "react-bootstrap";
+import secureLocalStorage from "react-secure-storage";
 
 const Register = () => {
 
-  const {defaultPhoneRegister, setDefaultPhoneLogin, handleSetResendPh, handleSetExpiration} = useGeneralContext()
+  const {defaultPhone, setDefaultPhone, handleSetResendPh, handleSetExpiration} = useGeneralContext()
   const navigate = useNavigate()
   const [phoneNumber, setPhoneNumber] = useState('')
   const [name, setName] = useState('')
   const [errors, setErrors] = useState([])
   const [ isShowAlert, setIsShowAlert ] = useState(false)
+
+  useEffect(() => {
+    setPhoneNumber(defaultPhone)
+  }, [defaultPhone])
 
   const handleSendOTP = async (e) => {
     e.preventDefault();
@@ -28,6 +33,7 @@ const Register = () => {
       if (data.response.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `OTP code has been sent to ${data.response.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
+            secureLocalStorage.clear();
             handleSetResendPh(data.phone_number); // string
             handleSetExpiration(data.expiration); // object
             navigate("/step2", { replace: true });
@@ -61,9 +67,10 @@ const Register = () => {
                 <div className="card-body p-md-5">
                   <div className="row justify-content-center">
                     <div className="back">
-                      <Link to={-1} className="btnBack">
+                      <Link to="/landing-page" className="btnBack">
                         <ArrowLeft className="rounded-circle"style={{ background: "#7F1122", color: "white", width: "30px", height: "30px" }}/>
                       </Link>
+                      Back Home
                     </div>
                     <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                       <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registration</p>
@@ -99,9 +106,9 @@ const Register = () => {
                             </label>
                             <PhoneInput 
                               placeholder="input phone number" specialLabel={""} country={"id"}
-                              value={phoneNumber.substring(0, 1) === "0" ? "62" + phoneNumber.slice(1) : phoneNumber ? phoneNumber : defaultPhoneRegister } 
+                              value={phoneNumber.substring(0, 1) === "0" ? "62" + phoneNumber.slice(1) : phoneNumber ? phoneNumber : defaultPhone } 
                               onChange={(phone) => {
-                                setDefaultPhoneLogin(phone)
+                                setDefaultPhone(phone)
                                 setPhoneNumber(phone)
                                 setErrors([{phone_number: []}])
                               }}

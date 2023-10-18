@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Col, Container, Row, Form, Button } from "react-bootstrap";
 import { logoApp, namaApp } from "../../../Components/Services/config";
 import PhoneInput from "react-phone-input-2";
@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useGeneralContext } from "../../../context/generalContext";
 import Alert from "react-bootstrap/Alert";
+import secureLocalStorage from "react-secure-storage";
 
 const FormStep = () => {
   const [errors, setErrors] = useState([]);
@@ -18,8 +19,12 @@ const FormStep = () => {
   const navigate = useNavigate();
 
   const [phoneNumber, setPhoneNumber] = useState("");
-  const { handleSetResendPh, handleSetExpiration, setDefaultPhoneRegister, defaultPhoneLogin } = useGeneralContext();
+  const { handleSetResendPh, handleSetExpiration, setDefaultPhone, defaultPhone } = useGeneralContext();
   const [isShowAlert, setIsShowAlert] = useState(false)
+
+  useEffect(() => {
+    setPhoneNumber(defaultPhone)
+  }, [defaultPhone])
 
   const handleSendOTP = async (e) => {
     e.preventDefault();
@@ -30,6 +35,7 @@ const FormStep = () => {
       if (data.response.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `OTP code has been sent to ${data.response.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
+            secureLocalStorage.clear();
             handleSetResendPh(data.phone_number); // str
             handleSetExpiration(data.expiration); // obj
             navigate("/step2", { replace: true });
@@ -78,7 +84,7 @@ const FormStep = () => {
                     <img src={`/${logoApp}`} alt="" width={100} />
                   </div>
                   <div className="back" style={{ width: "50px" }}>
-                    <Link to={-1} className="btnBack">
+                    <Link to="/landing-page" className="btnBack">
                       <ArrowLeft />
                     </Link>
                   </div>
@@ -98,9 +104,9 @@ const FormStep = () => {
                         placeholder="input phone number"
                         specialLabel={""}
                         country={"id"}
-                        value={phoneNumber.substring(0, 1) === "0" ? "62" + phoneNumber.slice(1) : phoneNumber ? phoneNumber : defaultPhoneLogin}
+                        value={phoneNumber.substring(0, 1) === "0" ? "62" + phoneNumber.slice(1) : phoneNumber ? phoneNumber : defaultPhone}
                         onChange={(phone) => {
-                          setDefaultPhoneRegister(phone); // str
+                          setDefaultPhone(phone); // str
                           setPhoneNumber(phone);
                           setErrors([]);
                         }}
