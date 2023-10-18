@@ -33,7 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
     /** Customer AUTH ROUTES
      * policy/role: auth-handle, admin */
     Route::controller(AuthCustomerController::class)->middleware('customer')->group(function(){
-        Route::post('/send-opt', 'send')->name('send-otp')->withoutMiddleware(['auth:sanctum', 'customer']);
+        Route::post('/send-otp-register', 'register')->name('send-otp-register')->withoutMiddleware(['auth:sanctum', 'customer']);
+        Route::post('/send-otp-login', 'login')->name('send-otp-login')->withoutMiddleware(['auth:sanctum', 'customer']);
         Route::post('/verify-otp', 'verify')->name('verify-otp')->withoutMiddleware(['auth:sanctum', 'customer']);
         Route::post('/logout', 'logout');
         Route::get('/me', 'me');

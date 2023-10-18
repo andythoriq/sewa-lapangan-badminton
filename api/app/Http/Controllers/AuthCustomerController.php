@@ -15,9 +15,15 @@ class AuthCustomerController extends Controller
     //     return response()->json($token, 201, ['success' => 'Login successfully.']);
     // }
 
-    public function send(AuthCustomerRequest $request)
+    public function register(AuthCustomerRequest $request)
     {
-        $result = $request->send_otp();
+        $result = $request->register();
+        return response($result, 201);
+    }
+
+    public function login(AuthCustomerRequest $request)
+    {
+        $result = $request->login();
         return response($result, 201);
     }
 

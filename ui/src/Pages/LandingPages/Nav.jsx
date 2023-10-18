@@ -12,28 +12,17 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { dirIcon } from "../../Components/Services/config";
 
 const Landing = () => {
-  // loader state
-  // const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  // // create sync method to fetch
-  // useEffect(() => {
-  //   const DataFetch = () => {
-  //     setTimeout(() => {
-  //       setIsLoading(false);
-  //     }, 900);
-  //   };
-
-  //   DataFetch();
-  // }, []);
 
   const handleLogout = async () => {
     try {
       await axios.get("/sanctum/csrf-cookie");
       await axios.post("/api/logout");
       secureLocalStorage.clear();
+      Swal.fire({ icon: "success", title: "Logged out!", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500 });
       setTimeout(function () {
         navigate("/landing-page", { replace: true });
-      }, 500);
+      }, 1500);
     } catch (e) {
       if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
         Swal.fire({
@@ -167,13 +156,15 @@ const Landing = () => {
                 </Dropdown>
               </div>
             ) : (
-              <button onClick={() => navigate("/userstep")} className="btn me-3 btn-signin" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
+             <>
+               <button onClick={() => navigate("/userstep")} className="btn me-3 btn-signin" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
                 Sign In
               </button>
-            )}
-            <button onClick={() => navigate("/register")} className="btn me-5 btn-Registrion btn active" style={{ borderRadius: 40, color: "white" }}>
+              <button onClick={() => navigate("/register")} className="btn me-5 btn-Registrion btn active" style={{ borderRadius: 40, color: "white" }}>
                 Registrion
               </button>
+             </>
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>

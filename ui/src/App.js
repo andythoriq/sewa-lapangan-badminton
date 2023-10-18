@@ -226,7 +226,7 @@ export default function App() {
         <Route path="/userstep" element={<FormStep />} />
         <Route path="/step2" element={<Step2 />} />
         <Route path="/register" element={<Register />}/>
-        <Route path="/loginc" element={<LoginCustomer />} />
+        {/* <Route path="/loginc" element={<LoginCustomer />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         {/* Protected */}

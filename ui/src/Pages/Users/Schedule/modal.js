@@ -28,7 +28,7 @@ const ScheduleModal = ({isShow, handleClose, size="md", rentalId, swal}) => {
                         <table id="modalTable" width={'100%'}>
                             <tbody>
                                 <tr>
-                                    <td width={'10%'}>Name&nbsp;customer</td>
+                                    <td width={'10%'}>Customer</td>
                                     <td width={'1%'}>&nbsp;:&nbsp;</td>
                                     <td width={'89%'}>{rental.customer?.name || ''}</td>
                                 </tr>

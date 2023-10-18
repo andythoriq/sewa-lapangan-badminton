@@ -12,19 +12,32 @@ function GeneralProvider({children}) {
 
   const [resendPhoneNumber, setResendPhoneNumber] = useState('')
 
-  const handleSetContact = (data) => {
-    setContact(data)
-    secureLocalStorage.setItem('contact', data)
+  const [defaultPhoneRegister, setDefaultPhoneRegister] = useState('')
+  const [defaultPhoneLogin, setDefaultPhoneLogin] = useState('')
+
+  const handleSetContact = (contact_obj) => {
+    setContact(contact_obj)
+    secureLocalStorage.setItem('contact', contact_obj)
   }
 
-  const handleSetGorName = (data) => {
-    setGorName(data)
-    secureLocalStorage.setItem('gor_name', data)
+  const handleSetGorName = (gorName_string) => {
+    setGorName(gorName_string)
+    secureLocalStorage.setItem('gor_name', gorName_string)
+  }
+
+  const handleSetExpiration = (expiration_obj) => {
+    setExpiration(expiration_obj)
+    secureLocalStorage.setItem('exp', expiration_obj)
+  }
+
+  const handleSetResendPh = (phoneNumber_string) => {
+    setResendPhoneNumber(phoneNumber_string)
+    secureLocalStorage.setItem('resend_ph', phoneNumber_string)
   }
 
   return (
     <GeneralContext.Provider value={
-      {setTriggerNotif, triggerNotif, handleSetGorName, handleSetContact, setResendPhoneNumber, resendPhoneNumber, setExpiration, expiration}
+      { setTriggerNotif, triggerNotif, handleSetGorName, handleSetContact, handleSetResendPh, handleSetExpiration, setDefaultPhoneRegister, defaultPhoneRegister, setDefaultPhoneLogin, defaultPhoneLogin}
     }>
       {children}
     </GeneralContext.Provider>
