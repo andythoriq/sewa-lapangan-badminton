@@ -30,7 +30,7 @@ function Court({ id, label, image_path, description, initial_price, index }) {
               </div>
             </div>
             <div>
-              <p>{description.substring(0, 200) + "....."}</p>
+              <p>{description.length > 254 ? description.substring(0, 254) + "...." : description }</p>
             </div>
           </div>
           <hr style={{ color: "black" }} />

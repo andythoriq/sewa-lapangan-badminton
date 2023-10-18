@@ -53,7 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/rental/{rental}', 'delete');
     });
 
-    Route::get('/schedule', ScheduleController::class)->middleware(['holiday', 'operational']);
+    Route::get('/schedule', ScheduleController::class);
 
     Route::post('/send-booking-code', SendBookingCodeController::class);
     Route::post('/booking-verification', [TransactionController::class, 'booking_verification'])->middleware('admin');
