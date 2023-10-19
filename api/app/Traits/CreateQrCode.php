@@ -19,7 +19,7 @@ trait CreateQrCode
         // Storage::put($qrCodePath, $qrCode->output('png'));
         QrCode::text($frontend_url . '/verification/' . $booking_code)
             ->setSize(12)
-            ->setOutfile('storage/' . $qrCodePath)
+            ->setOutfile('public/storage/' . $qrCodePath)
             ->png();
 
         return $qrCodePath;

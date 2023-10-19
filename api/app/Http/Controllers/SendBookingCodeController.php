@@ -40,7 +40,7 @@ class SendBookingCodeController extends Controller
         // EOT;
 
 
-        $image_link = public_path('storage/qr-code-images/') . $data['booking_code'] . '.png';
+        $image_link = public_path('public/storage/qr-code-images/') . $data['booking_code'] . '.png';
         $caption = 'Your booking code: *' . $data['booking_code'] . '*';
         $user_key = env('ZENZIVA_USER_KEY');
         $api_key = env('ZENZIVA_API_KEY');

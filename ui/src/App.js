@@ -60,27 +60,26 @@ import Register from "./Pages/LandingPages/Login user/register";
 //             <Route path="/create-booking" element={<CreateBookingForm />} />
 //             <Route path="/schedule" element={<Schedule />} />
 
-//             <Route path="/verification/:bookingCodeParam?" element={<Verification/>} />
+//             
 //             <Route path="/history-booking" element={<HistoryBooking />} />
 //             <Route path="/data-master/court" element={<Court />} />
-//             <Route path="/data-master/court/add" element={<CourtForm />} />
-//             <Route path="/data-master/court/edit/:id" element={<CourtForm />} />
+//             
+//             
 //             <Route path="/data-master/regular" element={<Regular />} />
-//             <Route path="/data-master/customer-regular/add" element={<CustomerRegular />} />
-//             <Route path="/data-master/customer-regular/edit/:id" element={<CustomerRegular />} />
+//             
+//             
 //             <Route path="/data-master/member" element={<Member />} />
-//             <Route path="/data-master/customer-member/add" element={<CustomerMember />} />
-//             <Route path="/data-master/customer-member/edit/:id" element={<CustomerMember />} />
+//             
+//             
 //             <Route path="/data-master/calendar" element={<Calendar />} />
 //             <Route path="/data-master/peaktime" element={<PeakTime />} />
-//             <Route path="/data-master/rush/add" element={<Rush />} />
-//             <Route path="/data-master/rush/edit/:id" element={<Rush />} />
+//             
 //             <Route path="/user-management/user-list" element={<UserList />} />
-//             <Route path="/user-management/user-list/add" element={<UserListForm />} />
-//             <Route path="/user-management/user-list/edit/:id" element={<UserListForm />} />
+//             
+//             
 //             <Route path="/user-management/user-role" element={<UserRole />} />
-//             <Route path="/user-management/user-role/add" element={<UserRoleForm />} />
-//             <Route path="/user-management/user-role/edit/:id" element={<UserRoleForm />} />
+//             
+//             
 //             <Route path="/profile" element={<Profile />} />
 //             <Route path="/formprofile/add" element={<FormProfile />} />
 //             <Route path="/setting" element={<Setting />} />
@@ -110,10 +109,6 @@ export default function App() {
       element: <Schedule />,
     },
     {
-      path: "/verification/:bookingCodeParam?",
-      element: <Verification />,
-    },
-    {
       path: "/history-booking",
       element: <HistoryBooking />,
     },
@@ -122,36 +117,12 @@ export default function App() {
       element: <Court />,
     },
     {
-      path: "/data-master/court/add",
-      element: <CourtForm />,
-    },
-    {
-      path: "/data-master/court/edit/:id",
-      element: <CourtForm />,
-    },
-    {
       path: "/data-master/regular",
       element: <Regular />,
     },
     {
-      path: "/data-master/customer-regular/add",
-      element: <CustomerRegular />,
-    },
-    {
-      path: "/data-master/customer-regular/edit/:id",
-      element: <CustomerRegular />,
-    },
-    {
       path: "/data-master/member",
       element: <Member />,
-    },
-    {
-      path: "/data-master/customer-member/add",
-      element: <CustomerMember />,
-    },
-    {
-      path: "/data-master/customer-member/edit/:id",
-      element: <CustomerMember />,
     },
     {
       path: "/data-master/calendar",
@@ -162,36 +133,12 @@ export default function App() {
       element: <PeakTime />,
     },
     {
-      path: "/data-master/rush/add",
-      element: <Rush />,
-    },
-    {
-      path: "/data-master/rush/edit/:id",
-      element: <Rush />,
-    },
-    {
       path: "/user-management/user-list",
       element: <UserList />,
     },
     {
-      path: "/user-management/user-list/add",
-      element: <UserListForm />,
-    },
-    {
-      path: "/user-management/user-list/edit/:id",
-      element: <UserListForm />,
-    },
-    {
       path: "/user-management/user-role",
       element: <UserRole />,
-    },
-    {
-      path: "/user-management/user-role/add",
-      element: <UserRoleForm />,
-    },
-    {
-      path: "/user-management/user-role/edit/:id",
-      element: <UserRoleForm />,
     },
     {
       path: "/setting",
@@ -199,7 +146,7 @@ export default function App() {
     },
   ];
 
-  function arrayIncludesPartial(arr, search) {
+  function filterPath(arr, search) {
     for (let i = 0; i < arr.length; i++) {
       if (arr[i].includes(search)) {
         return true;
@@ -212,7 +159,7 @@ export default function App() {
   if (roleMenus.includes("super-admin") || roleMenus.includes("/super-admin")) {
     filteredMenus = originalMenus.map((val, key) => <Route path={val.path} element={val.element} key={key} />);
   } else {
-    const filteredPaths = originalMenus.filter((val) => arrayIncludesPartial(roleMenus, val.path)).map((val) => val.path);
+    const filteredPaths = originalMenus.filter((val) => filterPath(roleMenus, val.path)).map((val) => val.path);
 
     filteredMenus = originalMenus.filter((val) => filteredPaths.includes(val.path)).map((val, key) => <Route path={val.path} element={val.element} key={key} />);
   }
@@ -239,6 +186,19 @@ export default function App() {
           {filteredMenus}
           <Route path="/profile" element={<Profile />} />
           <Route path="/formprofile/edit" element={<FormProfile />} />
+          <Route path="/user-management/user-role/edit/:id" element={<UserRoleForm />} />
+          <Route path="/user-management/user-role/add" element={<UserRoleForm />} />
+          <Route path="/user-management/user-list/edit/:id" element={<UserListForm />} />
+          <Route path="/user-management/user-list/add" element={<UserListForm />} />
+          <Route path="/data-master/rush/add" element={<Rush />} />
+          <Route path="/data-master/rush/edit/:id" element={<Rush />} />
+          <Route path="/data-master/customer-regular/add" element={<CustomerRegular />} />
+          <Route path="/data-master/customer-regular/edit/:id" element={<CustomerRegular />} />
+          <Route path="/data-master/customer-member/add" element={<CustomerMember />} />
+          <Route path="/data-master/customer-member/edit/:id" element={<CustomerMember />} />
+          <Route path="/data-master/court/add" element={<CourtForm />} />
+          <Route path="/data-master/court/edit/:id" element={<CourtForm />} />
+          <Route path="/verification/:bookingCodeParam?" element={<Verification />} />
         </Route>
       </Route>
       <Route path="*" element={<NotFound />} />

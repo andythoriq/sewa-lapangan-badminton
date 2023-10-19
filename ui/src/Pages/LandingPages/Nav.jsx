@@ -36,10 +36,12 @@ const Landing = () => {
         }).then((result) => {
           if (result.isConfirmed) {
             secureLocalStorage.clear();
+            navigate("/landing-page", { replace: true });
           }
         });
       } else {
         secureLocalStorage.clear();
+        navigate("/landing-page", { replace: true });
       }
     }
   };
