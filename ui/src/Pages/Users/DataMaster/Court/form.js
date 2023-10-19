@@ -183,7 +183,7 @@ const CourtForm = () => {
         <Row className="justify-content-center">
           <Card className="col-4 col-md-4 p-3 mt-5">
             <span className="text-small">Previous image: </span>
-            <Image src={process.env.REACT_APP_BACKEND_URL + "/storage/" + imagePreview} className="imgView" title={values.label} height={250} />
+            <Image src={process.env.REACT_APP_BACKEND_URL + "/public/storage/" + imagePreview} className="imgView" title={values.label} height={250} />
           </Card>
         </Row>
       )}

@@ -154,14 +154,14 @@ const Landing = () => {
                 </Dropdown>
               </div>
             ) : (
-             <>
-               <Link to="/userstep" className="btn me-2 btn-signin ms-auto mt-3" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
+             <div className="ms-auto mt-3">
+               <Link to="/userstep" className="btn me-2 btn-signin" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
                 Sign In
               </Link>
-              <Link to="/register"className="btn me-5 mt-3 btn-Registrion btn active" style={{ borderRadius: 40, color: "white" }}>
+              <Link to="/register"className="btn me-5 btn-Registrion" style={{ borderRadius: 40, color: "white" }}>
                 Registration
               </Link>
-             </>
+             </div>
             )}
           </Navbar.Collapse>
         </Container>
@@ -229,7 +229,7 @@ const Landing = () => {
                 </h1>
                 {!secureLocalStorage.getItem("name") && (
                   <div className="btn btn-lg btn-light mt-3">
-                    <Link to="/userstep">Sign In now</Link>
+                    <Link to="/userstep" className="text-decoration-none text-dark">Sign In now</Link>
                   </div>
                 )}
               </div>
