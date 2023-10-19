@@ -27,7 +27,7 @@ function Court({ id, label, image_path, description, initial_price, index }) {
     <>
       <div className="col g-4">
         <div className="card card-court" onClick={handleShowBooking} style={{ cursor: "pointer" }}>
-          {image_path ? <img src={process.env.REACT_APP_BACKEND_URL + "/storage/" + image_path} className="card-img-top" alt={label} /> : <img src={`./assets/img/court/${index + 1}.jpg`} className="card-img-top" alt={label} />}
+          {image_path ? <img src={process.env.REACT_APP_BACKEND_URL + "/public/storage/" + image_path} className="card-img-top" alt={label} /> : <img src={`./assets/img/court/${index + 1}.jpg`} className="card-img-top" alt={label} />}
           <div className="card-body">
             <div className="rental-prince">
               <h5 className="card-title fw-bold">{label}</h5>

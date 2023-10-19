@@ -196,7 +196,7 @@ const CreateBookingFormRegular = () => {
           <div className="row">
             <div className="col-md-12 d-flex justify-content-center">
               <div className="card card-barcode mt-2 mb-3 shadow text-white" style={{ background: "#dc3545" }}>
-              <img src={process.env.REACT_APP_BACKEND_URL + '/storage/' + transactionResponse.qr_code_image} alt="qr-code" />
+              <img src={process.env.REACT_APP_BACKEND_URL + '/public/storage/' + transactionResponse.qr_code_image} alt="qr-code" />
                 <div className="card-body codeqr d-flex flex-column">
                   <div className="d-flex justify-content-between">
                     <p>Booking Code : </p>
