@@ -158,7 +158,7 @@ const Landing = () => {
                <Link to="/userstep" className="btn me-2 btn-signin ms-auto mt-3" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
                 Sign In
               </Link>
-              <Link to="/register"className="btn me-5 btn-Registrion btn active" style={{ borderRadius: 40, color: "white" }}>
+              <Link to="/register"className="btn me-5 mt-3 btn-Registrion btn active" style={{ borderRadius: 40, color: "white" }}>
                 Registration
               </Link>
              </>
