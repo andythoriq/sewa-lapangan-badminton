@@ -73,60 +73,35 @@ const NavbarPublic = () => {
             </Nav.Link>
           </Nav>
           {secureLocalStorage.getItem("name") ? (
-            <div className="text-white ms-auto" style={{ maxHeight: "100px" }}>
-              <Dropdown>
-                <Dropdown.Menu style={{ marginLeft: "-125px" }}>
-                  `{" "}
-                  <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }}>
-                    <Link to={"/profile-user"}>Profile</Link>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <div style={{ marginRight: "30px", color: "black" }}>
-                      <Link to={"/landing-page"}>Home</Link>
-                    </div>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <div style={{ marginRight: "30px", color: "black" }}>
-                      <Link to={"/dashboard-user"}>Dashboard User</Link>
-                    </div>
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    eventKey="2"
-                    onClick={() => {
-                      const customerExpiration = new Date(secureLocalStorage.getItem("expiration"));
-                      const now = new Date();
-                      const timeDiff = customerExpiration - now;
-                      const minutesRemaining = Math.ceil(timeDiff / 1000 / 60);
-                      Swal.fire({
-                        icon: "warning",
-                        title: "Are you sure?",
-                        html: `Are you sure to logout from this web? <br /> ${minutesRemaining > 0 ? `you cannot login again more than once in ${minutesRemaining <= 1 ? minutesRemaining + " minute" : minutesRemaining + " minutes"}` : ""}`,
-                        showConfirmButton: true,
-                        showCancelButton: true,
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                          handleLogout();
-                        }
-                      });
-                    }}
-                  >
-                    <span>Logout</span>
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-                <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                  <div>
-                    <img src={`${dirIcon}user-circle.png`} alt="" style={{ width: "35px" }} /> <span className="localstorge m-auto">{secureLocalStorage.getItem("name")}</span>
-                  </div>
-                </Dropdown.Toggle>
-              </Dropdown>
-            </div>
-          ) : (
-            <Link to={"/userstep"} className="btn btn-danger ms-2" style={{ borderRadius: 13 }}>
-              Register
-            </Link>
-          )}
+            <div className="text-white ms-auto" style={{ maxHeight: "100px" }} >
+                <Dropdown>
+                  <Dropdown.Menu>
+                    ` <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }}>
+                        <Link to={'/profile-user'}>Profile</Link>
+                      </Dropdown.Item>
+                      <Dropdown.Item>
+                        <div style={{ marginRight: "30px", color: "black" }}>
+                          <Link to={'/landing-page'}>Home</Link>
+                        </div>
+                      </Dropdown.Item>
+                      <Dropdown.Item>
+                          <div style={{ marginRight: "30px", color: "black" }}>
+                            <Link to={'/dashboard-user'}>Dashboard</Link>
+                          </div>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                    <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                      <div>
+                        <img src={`${dirIcon}user-circle.png`} alt="" style={{ width:"35px" }}/>  <span className="localstorge m-auto">{secureLocalStorage.getItem("name")}</span>
+                      </div>
+                    </Dropdown.Toggle>
+                  </Dropdown>
+                </div>
+            ) : (
+              <Link to={'/userstep'} className="btn btn-danger ms-2" style={{ borderRadius: 13 }}>
+                Register
+              </Link>
+            )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

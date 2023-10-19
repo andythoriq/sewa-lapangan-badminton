@@ -62,16 +62,16 @@ const NavbarUser = () => {
         <Navbar.Toggle aria-controls="navbartoggler" type="button" data-bs-toggle="offcanvas" data-bs-target="offcanvasNavbar" ria-controls="offcanvasNavbar" className="navbar-toogler shadow-none border-0 bg-white" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="ms-auto" style={{ maxHeight: "100px" }} navbarScroll>
-              <Nav.Link href="/landing-page" style={{ marginRight: "30px", color: "white" }}>
-                Home
-              </Nav.Link>
-              <Nav.Link href="/dashboard-user" style={{ marginRight: "30px", color: "white" }}>
-                Schedule
-              </Nav.Link>
-              <Nav.Link href="/dashboard-user" style={{ marginRight: "30px", color: "white" }}>
-                History Booking
-              </Nav.Link>
-            </Nav>
+            <Nav.Link href="/landing-page" style={{ marginRight: "30px", color: "white" }}>
+              Home
+            </Nav.Link>
+            <Nav.Link href="/dashboard-user" style={{ marginRight: "30px", color: "white" }}>
+              Schedule
+            </Nav.Link>
+            <Nav.Link href="/dashboard-user" style={{ marginRight: "30px", color: "white" }}>
+              History Booking
+            </Nav.Link>
+          </Nav>
           {secureLocalStorage.getItem("name") ? (
             <div className="text-white ms-auto" style={{ maxHeight: "100px" }}>
               <Dropdown>
@@ -87,36 +87,35 @@ const NavbarUser = () => {
                   </Dropdown.Item>
                   <Dropdown.Item>
                     <div style={{ marginRight: "30px", color: "black" }}>
-                      <Link to={"/dashboard-user"}>Dashboard User</Link>
+                      <Link to={"/dashboard-user"}>Dashboard</Link>
                     </div>
                   </Dropdown.Item>
                   <Dropdown.Item
-                      eventKey="2"
-                      onClick={() => {
-                        const customerExpiration = new Date(secureLocalStorage.getItem("expiration"));
-                        const now = new Date();
-                        const timeDiff = customerExpiration - now;
-                        const minutesRemaining = Math.ceil(timeDiff / 1000 / 60);
-                        Swal.fire({
-                          icon: "warning",
-                          title: "Are you sure?",
-                          html: `Are you sure to logout from this web? <br /> ${
-                            minutesRemaining > 0 ? `you cannot login again more than once in ${minutesRemaining <= 1 ? minutesRemaining + " minute" : minutesRemaining + " minutes"}` : ""
-                          }`,
-                          showConfirmButton: true,
-                          showCancelButton: true,
-                          allowOutsideClick: false,
-                          allowEscapeKey: false,
-                        }).then((result) => {
-                          if (result.isConfirmed) {
-                            handleLogout();
-                          }
-                        });
-                      }}
-                    >
-                      <span>Logout</span>
-                    </Dropdown.Item>
+                    eventKey="2"
+                    onClick={() => {
+                      const customerExpiration = new Date(secureLocalStorage.getItem("expiration"));
+                      const now = new Date();
+                      const timeDiff = customerExpiration - now;
+                      const minutesRemaining = Math.ceil(timeDiff / 1000 / 60);
+                      Swal.fire({
+                        icon: "warning",
+                        title: "Are you sure?",
+                        html: `Are you sure to logout from this web? <br /> ${minutesRemaining > 0 ? `you cannot login again more than once in ${minutesRemaining <= 1 ? minutesRemaining + " minute" : minutesRemaining + " minutes"}` : ""}`,
+                        showConfirmButton: true,
+                        showCancelButton: true,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          handleLogout();
+                        }
+                      });
+                    }}
+                  >
+                    <span>Logout</span>
+                  </Dropdown.Item>
                 </Dropdown.Menu>
+
                 <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                   <div>
                     <img src={`${dirIcon}user-circle.png`} alt="" style={{ width: "35px" }} /> <span className="localstorge m-auto">{secureLocalStorage.getItem("name")}</span>

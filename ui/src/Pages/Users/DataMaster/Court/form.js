@@ -105,10 +105,10 @@ const CourtForm = () => {
           setValues({
             ...values,
             label: data.label,
-            price: data.initial_price,
             description: data.description,
           });
           setImagePreview(data.image_path);
+          setPrice(data.initial_price)
         })
         .catch((e) => {
           Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });

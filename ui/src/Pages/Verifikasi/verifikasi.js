@@ -52,7 +52,7 @@ const Verification = () => {
 
   const openModalTrx = (e) => {
     // console.log(e.substring(30));
-    const bookingCodeNew = e.substring(35);
+    const bookingCodeNew = e.split('/')[4]
     // console.log(bookingCodeNew);
 
     setBookingCode(bookingCodeNew);

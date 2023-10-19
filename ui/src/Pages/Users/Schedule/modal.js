@@ -20,7 +20,7 @@ const ScheduleModal = ({isShow, handleClose, size="md", rentalId, swal}) => {
         <>
         <Modal show={isShow} onHide={handleClose} size={size}>
             <Modal.Header closeButton>
-                <Modal.Title>Court Test</Modal.Title>
+                <Modal.Title>Detail</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Row>

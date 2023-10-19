@@ -54,10 +54,12 @@ const Navbar = () => {
         }).then((result) => {
           if (result.isConfirmed) {
             secureLocalStorage.clear();
+            navigate("/", { replace: true });
           }
         });
       } else {
         secureLocalStorage.clear();
+        navigate("/", { replace: true });
       }
     }
   };

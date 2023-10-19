@@ -1085,7 +1085,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'username' => 'admeen',
             'phone_number' => '087813052727',
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+            // 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => bcrypt('*^dgV!07*P*B$pl9$57b&r1$uEsLa085NmBG%@%B'),
             'status' => 'Y',
             'role_id' => 1
 
@@ -1094,17 +1095,17 @@ class DatabaseSeeder extends Seeder
             [
           'slug'=> 'open_time',
           'description'=> 'Jam buka kami atau operational time adalah waktu kami untuk menerima pesanan booking selain dari waktu ini kami tidak menerima pesanan tersebut.',
-          'value' => '[{"day":"monday","start":"08:00","finish":"17:00"},{"day":"tuesday","start":"09:00","finish":"17:00"},{"day":"wednesday","start":"09:00","finish":"18:00"}]'
+          'value' => '[{"day":"monday","start":"08:00","finish":"17:00"},{"day":"tuesday","start":"08:00","finish":"17:00"},{"day":"wednesday","start":"08:00","finish":"17:00"},{"day":"thursday","start":"08:00","finish":"17:00"},{"day":"friday","start":"08:00","finish":"17:00"}]'
         ],
         [
           'slug' => 'name',
           'description' => 'Nama perusahaan kami akan ditampilkan pada navbar dan tempat informasi yang lainnya.',
-          'value' => 'BFB'
+          'value' => 'Tunggal Karsa'
         ],
         [
           'slug' => 'contact',
           'description' => 'Berisikan nomor Whatsapp, Email, dan Alamat yang sedia untuk dihubungi.',
-          'value' => '{"number":"080878786565","email":"bfb@bfb.com","address":"Jl Durian Runtuh"}'
+          'value' => '{"number":"080878786565","email":"email@email.com","address":"Jl Cemara II"}'
         ],
         [
           'slug' => 'expire_duration',

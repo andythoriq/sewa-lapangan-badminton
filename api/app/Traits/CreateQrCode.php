@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Traits;
+use LaravelQRCode\Facades\QRCode;
 
 // use Illuminate\Support\Facades\Storage;
-use QRCode;
-
+// use QRCode;
 
 trait CreateQrCode
 {
@@ -19,7 +19,7 @@ trait CreateQrCode
         // Storage::put($qrCodePath, $qrCode->output('png'));
         QrCode::text($frontend_url . '/verification/' . $booking_code)
             ->setSize(12)
-            ->setOutfile('storage/' . $qrCodePath)
+            ->setOutfile('public/storage/' . $qrCodePath)
             ->png();
 
         return $qrCodePath;

@@ -36,10 +36,12 @@ const Landing = () => {
         }).then((result) => {
           if (result.isConfirmed) {
             secureLocalStorage.clear();
+            navigate("/landing-page", { replace: true });
           }
         });
       } else {
         secureLocalStorage.clear();
+        navigate("/landing-page", { replace: true });
       }
     }
   };
@@ -117,7 +119,7 @@ const Landing = () => {
                     <Link to={"/profile-user"}>Profile</Link>
                   </Dropdown.Item>
                   <Dropdown.Item style={{ marginRight: "10px", color: "black" }}>
-                    <Link to={"/dashboard-user"}>Dashboard User</Link>
+                    <Link to={"/dashboard-user"}>Dashboard</Link>
                   </Dropdown.Item>
                   <Dropdown.Item
                     eventKey="2"
