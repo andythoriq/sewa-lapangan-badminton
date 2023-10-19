@@ -104,8 +104,8 @@ const ProfilUser = () => {
                 <br />
                 <b className="mb-2">Active period: </b>{customer.membership_status === 'M' && customer.member_active_period}
                 <br />
-                <b className="mb-2">Status: </b>{customer.status === 'Y' ? 'active' : 'in active'}
-                <br />
+                {/* <b className="mb-2">Status: </b>{customer.status === 'Y' ? 'active' : 'in active'}
+                <br /> */}
                 <b className="mt-3">Deposit: </b>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(customer.deposit)}
                 <br />
                 <b className="mt-3">Debt: </b>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(customer.debt)}
@@ -120,11 +120,11 @@ const ProfilUser = () => {
                       <th width={'1%'}>No</th>
                       <th width={'20%'}>start</th>
                       <th width={'20%'}>finish</th>
-                      <th width={'5%'}>status</th>
+                      <th width={'1%'}>status</th>
                       <th width={'15%'}>price</th>
                       <th width={'15%'}>court</th>
                       <th width={'15%'}>booking code</th>
-                      <th width={'15%'}></th>
+                      <th width={'15%'}>booked at</th>
                     </tr>
                   </thead>
                   <tbody>

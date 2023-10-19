@@ -98,12 +98,12 @@ class RentalRequest extends FormRequest
     public function createRental()
     {
         $this->validateDuration($this->start, $this->finish);
-        // $this->startFinishCheck($this->start, $this->finish);
+        $this->startFinishCheck($this->start, $this->finish);
         $this->collideCheck($this->start, $this->finish, $this->getCourtSchedules($this->court_id));
 
         $data = $this->validated();
 
-        $validated_price = $this->getPeakTimePrice($this->court_id, date('l'));
+        $validated_price = $this->getPeakTimePrice($this->court_id, Carbon::now('Asia/Jakarta')->dayName);
 
         $data['price'] = $this->getCost($this->start, $this->finish, $validated_price);
 
@@ -171,10 +171,10 @@ class RentalRequest extends FormRequest
         foreach ($data['rentals'] as &$rental) {
 
             $this->validateDuration($rental['start'], $rental['finish']);
-            // $this->startFinishCheck($rental['start'], $rental['finish']);
+            $this->startFinishCheck($rental['start'], $rental['finish']);
             $this->collideCheck($rental['start'], $rental['finish'], $this->getCourtSchedules($rental['court_id']));
 
-            $validated_price = $this->getPeakTimePrice($rental['court_id'], date('l'));
+            $validated_price = $this->getPeakTimePrice($rental['court_id'], Carbon::now('Asia/Jakarta')->dayName);
             $discount = ConfigModel::getMemberDiscount();
             $discounted = $validated_price - (($discount / 100) * $validated_price);
 

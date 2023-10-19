@@ -1,13 +1,11 @@
 import React from "react";
 import { Navbar, Container } from "react-bootstrap";
 import secureLocalStorage from "react-secure-storage";
-import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { dirIcon } from "./Services/config";
 import { Link } from "react-router-dom";
 
 const NavbarPublic = () => {
-  const navigate = useNavigate();
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <a
       href="/#"
@@ -50,22 +48,16 @@ const NavbarPublic = () => {
                 <Dropdown>
                   <Dropdown.Menu>
                     ` <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }}>
-                        <Link to={'/profile-user'} className="">
-                          Profile
-                        </Link>
+                        <Link to={'/profile-user'}>Profile</Link>
                       </Dropdown.Item>
                       <Dropdown.Item>
                         <div style={{ marginRight: "30px", color: "black" }}>
-                            <div onClick={() => {
-                              navigate('/landing-page')
-                            }}><span>Home</span></div>
-                          </div>
+                          <Link to={'/landing-page'}>Home</Link>
+                        </div>
                       </Dropdown.Item>
                       <Dropdown.Item>
                           <div style={{ marginRight: "30px", color: "black" }}>
-                            <div onClick={() => {
-                              navigate('/dashboard-user')
-                            }}><span>Dashboard User</span></div>
+                            <Link to={'/dashboard-user'}>Dashboard User</Link>
                           </div>
                       </Dropdown.Item>
                     </Dropdown.Menu>
@@ -77,9 +69,9 @@ const NavbarPublic = () => {
                   </Dropdown>
                 </div>
             ) : (
-              <button onClick={() => navigate('/userstep')} className="btn btn-danger ms-2" style={{ borderRadius: 13 }}>
+              <Link to={'/userstep'} className="btn btn-danger ms-2" style={{ borderRadius: 13 }}>
                 Register
-              </button>
+              </Link>
             )}
         </Navbar.Collapse>
       </Container>

@@ -15,9 +15,15 @@ class AuthCustomerController extends Controller
     //     return response()->json($token, 201, ['success' => 'Login successfully.']);
     // }
 
-    public function send(AuthCustomerRequest $request)
+    public function register(AuthCustomerRequest $request)
     {
-        $result = $request->send_otp();
+        $result = $request->register();
+        return response($result, 201);
+    }
+
+    public function login(AuthCustomerRequest $request)
+    {
+        $result = $request->login();
         return response($result, 201);
     }
 
@@ -42,5 +48,12 @@ class AuthCustomerController extends Controller
         }else if(strtoupper($customer->membership_status == 'R')){
             return new RegularResource($customer->loadMissing('rentals', 'rentals.court:id,label', 'rentals.transaction:id,booking_code'));
         }
+    }
+
+    public function get_customer_type(Request $request)
+    {
+        $customer = $request->user('customers');
+
+        return response()->json($customer->membership_status);
     }
 }

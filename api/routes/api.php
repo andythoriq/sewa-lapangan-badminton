@@ -33,10 +33,12 @@ Route::middleware('auth:sanctum')->group(function () {
     /** Customer AUTH ROUTES
      * policy/role: auth-handle, admin */
     Route::controller(AuthCustomerController::class)->middleware('customer')->group(function(){
-        Route::post('/send-opt', 'send')->name('send-otp')->withoutMiddleware(['auth:sanctum', 'customer']);
+        Route::post('/send-otp-register', 'register')->name('send-otp-register')->withoutMiddleware(['auth:sanctum', 'customer']);
+        Route::post('/send-otp-login', 'login')->name('send-otp-login')->withoutMiddleware(['auth:sanctum', 'customer']);
         Route::post('/verify-otp', 'verify')->name('verify-otp')->withoutMiddleware(['auth:sanctum', 'customer']);
         Route::post('/logout', 'logout');
         Route::get('/me', 'me');
+        Route::get('/get-customer-type', 'get_customer_type');
     });
 
     /** Master Rental
@@ -44,15 +46,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(RentalController::class)->group(function () {
         Route::get('/rental', 'index');
         Route::get('/rental/{rental}', 'show');
-        Route::post('/rental', 'create')->name('create-rental');
-        // ->middleware(['holiday', 'operational']);
-        Route::post('/create-multiple-rental', 'create_multiple')->name('create-multiple-rental');
-        // ->middleware(['holiday', 'operational']);
+        Route::post('/rental', 'create')->name('create-rental')->middleware(['holiday', 'operational']);
+        Route::post('/create-multiple-rental', 'create_multiple')->name('create-multiple-rental')->middleware(['holiday', 'operational']);
         Route::put('/rental/{rental}', 'update')->name('update-rental');
         Route::delete('/rental/{rental}', 'delete');
     });
 
-    Route::get('/schedule', ScheduleController::class)->middleware(['holiday', 'operational']);
+    Route::get('/schedule', ScheduleController::class);
 
     Route::post('/send-booking-code', SendBookingCodeController::class);
     Route::post('/booking-verification', [TransactionController::class, 'booking_verification'])->middleware('admin');

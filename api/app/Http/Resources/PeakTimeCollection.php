@@ -21,7 +21,11 @@ class PeakTimeCollection extends ResourceCollection
                 'start' => $peak_time->start,
                 'finish' => $peak_time->finish,
                 'day_name' => $peak_time->day_name,
-                'price_increase' => $peak_time->price_increase
+                'price_increase' => $peak_time->price_increase,
+                'court' => [
+                    'label' => $peak_time->court->label,
+                    'initial_price' => $peak_time->court->initial_price
+                ]
             ];
         });
     }

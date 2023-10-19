@@ -20,7 +20,7 @@ class OnOperationalHours
     {
         $config_open_time = ConfigModel::getOpenTime();
 
-        $today = strtolower(date("l"));
+        $today = strtolower(Carbon::now('Asia/Jakarta')->dayName);
 
         $get_hours = [];
 

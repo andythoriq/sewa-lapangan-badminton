@@ -28,14 +28,14 @@ const ScheduleModal = ({isShow, handleClose, size="md", rentalId, swal}) => {
                         <table id="modalTable" width={'100%'}>
                             <tbody>
                                 <tr>
-                                    <td width={'10%'}>Name&nbsp;customer</td>
+                                    <td width={'10%'}>Customer</td>
                                     <td width={'1%'}>&nbsp;:&nbsp;</td>
-                                    <td width={'89%'}>{rental.customer?.name}</td>
+                                    <td width={'89%'}>{rental.customer?.name || ''}</td>
                                 </tr>
                                 <tr>
                                     <td width={'10%'}>Phone&nbsp;number</td>
                                     <td width={'1%'}>&nbsp;:&nbsp;</td>
-                                    <td width={'89%'}>{rental.customer?.phone_number}</td>
+                                    <td width={'89%'}>{rental.customer?.phone_number || '0'}</td>
                                 </tr>
                                 <tr>
                                     <td>Member&nbsp;status</td>
@@ -45,12 +45,12 @@ const ScheduleModal = ({isShow, handleClose, size="md", rentalId, swal}) => {
                                 <tr>
                                     <td>Booking&nbsp;at</td>
                                     <td>&nbsp;:&nbsp;</td>
-                                    <td>{rental.created_at}</td>
+                                    <td>{rental.created_at || ''}</td>
                                 </tr>
                                 <tr>
                                     <td>Input&nbsp;by</td>
                                     <td>&nbsp;:&nbsp;</td>
-                                    <td>{rental.admin?.name}</td>
+                                    <td>{rental.admin?.name || ''}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -61,17 +61,17 @@ const ScheduleModal = ({isShow, handleClose, size="md", rentalId, swal}) => {
                                 <tr>
                                     <td width={'10%'}>Court</td>
                                     <td width={'1%'}>&nbsp;:&nbsp;</td>
-                                    <td width={'89%'}>{rental.court?.label} ({new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(rental.court?.initial_price)})</td>
+                                    <td width={'89%'}>{rental.court?.label || ''} ({rental.court?.initial_price ? new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(rental.court?.initial_price) : 0})</td>
                                 </tr>
                                 <tr>
                                     <td>Range&nbsp;date</td>
                                     <td>&nbsp;:&nbsp;</td>
-                                    <td>{rental.start} - {rental.finish} ({new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(rental.price)})</td>
+                                    <td>{rental.start || ''} - {rental.finish || ''} ({rental.price ? new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(rental.price) : 0})</td>
                                 </tr>
                                 <tr>
                                     <td>Duration</td>
                                     <td>&nbsp;:&nbsp;</td>
-                                    <td>{rental.duration_hour} hours ({rental.duration_minute} minutes)</td>
+                                    <td>{rental.duration_hour ? (rental.duration_hour > 1 ? rental.duration_hour + ' hours' : rental.duration_hour + ' hour') : 0}  ({rental.duration_minute ? (rental.duration_minute > 1 ? rental.duration_minute + ' minutes' : rental.duration_minute + ' minute') : 0})</td>
                                 </tr>
                                 <tr>
                                     <td>Condition</td>
@@ -81,7 +81,7 @@ const ScheduleModal = ({isShow, handleClose, size="md", rentalId, swal}) => {
                                 <tr>
                                     <td>Booking&nbsp;code</td>
                                     <td>&nbsp;:&nbsp;</td>
-                                    <td>{rental.transaction?.booking_code}</td>
+                                    <td>{rental.transaction?.booking_code || ''}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -92,12 +92,12 @@ const ScheduleModal = ({isShow, handleClose, size="md", rentalId, swal}) => {
                                 <tr>
                                     <td width={'10%'}>Total&nbsp;Hour</td>
                                     <td width={'1%'}>&nbsp;:&nbsp;</td>
-                                    <td width={'89%'}>{rental.transaction?.total_hour > 1 ? rental.transaction?.total_hour + ' hours' : rental.transaction?.total_hour + ' hour'}</td>
+                                    <td width={'89%'}>{rental.transaction?.total_hour ? (rental.transaction?.total_hour > 1 ? rental.transaction?.total_hour + ' hours' : rental.transaction?.total_hour + ' hour') : 0}</td>
                                 </tr>
                                 <tr>
                                     <td width={'10%'}>Total&nbsp;Price</td>
                                     <td width={'1%'}>&nbsp;:&nbsp;</td>
-                                    <td width={'89%'}>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(rental.transaction?.total_price)}</td>
+                                    <td width={'89%'}>{rental.transaction?.total_price ? new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(rental.transaction?.total_price) : 0}</td>
                                 </tr>
                                 <tr>
                                     <td>Status</td>
@@ -107,17 +107,17 @@ const ScheduleModal = ({isShow, handleClose, size="md", rentalId, swal}) => {
                                 <tr>
                                     <td>Pay</td>
                                     <td>&nbsp;:&nbsp;</td>
-                                    <td>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(rental.transaction?.customer_paid)}</td>
+                                    <td>{rental.transaction?.customer_paid ? new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(rental.transaction?.customer_paid) : 0}</td>
                                 </tr>
                                 <tr>
                                     <td>Deposit</td>
                                     <td>&nbsp;:&nbsp;</td>
-                                    <td>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(rental.transaction?.customer_deposit)}</td>
+                                    <td>{rental.transaction?.customer_deposit ? new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(rental.transaction?.customer_deposit) : 0}</td>
                                 </tr>
                                 <tr>
                                     <td>Debt</td>
                                     <td>&nbsp;:&nbsp;</td>
-                                    <td>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(rental.transaction?.customer_debt)}</td>
+                                    <td>{rental.transaction?.customer_debt ? new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(rental.transaction?.customer_debt) : 0}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
-import { Button, Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar } from "react-bootstrap";
 import "./nav.css";
 import Loader from "../../Components/Loader/Loading.js";
 import Court from "../../Components/Court";
@@ -10,30 +10,20 @@ import secureLocalStorage from "react-secure-storage";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { dirIcon } from "../../Components/Services/config";
+import { Link } from "react-router-dom";
 
 const Landing = () => {
-  // loader state
-  // const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  // // create sync method to fetch
-  // useEffect(() => {
-  //   const DataFetch = () => {
-  //     setTimeout(() => {
-  //       setIsLoading(false);
-  //     }, 900);
-  //   };
-
-  //   DataFetch();
-  // }, []);
 
   const handleLogout = async () => {
     try {
       await axios.get("/sanctum/csrf-cookie");
       await axios.post("/api/logout");
       secureLocalStorage.clear();
+      Swal.fire({ icon: "success", title: "Logged out!", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500 });
       setTimeout(function () {
         navigate("/landing-page", { replace: true });
-      }, 500);
+      }, 1500);
     } catch (e) {
       if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
         Swal.fire({
@@ -122,16 +112,12 @@ const Landing = () => {
                 <Dropdown>
                   <Dropdown.Menu>
                     `{" "}
-                    <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }} onClick={() => navigate("/profile-user")}>
-                      <span>Profile</span>
+                    <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }}>
+                      <Link to={'/profile-user'}>Profile</Link>
                     </Dropdown.Item>
                     <Dropdown.Item
-                      style={{ marginRight: "30px", color: "black" }}
-                      onClick={() => {
-                        navigate("/dashboard-user");
-                      }}
-                    >
-                      <span>Dashboard User</span>
+                      style={{ marginRight: "30px", color: "black" }}>
+                      <Link to={'/dashboard-user'}>Dashboard User</Link>
                     </Dropdown.Item>
                     <Dropdown.Item
                       eventKey="2"
@@ -168,13 +154,15 @@ const Landing = () => {
                 </Dropdown>
               </div>
             ) : (
-              <button onClick={() => navigate("/userstep")} className="btn me-2 btn-signin ms-auto mt-3" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
+             <>
+               <Link to="/userstep" className="btn me-2 btn-signin ms-auto mt-3" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
                 Sign In
-              </button>
+              </Link>
+              <Link to="/register"className="btn me-5 btn-Registrion btn active" style={{ borderRadius: 40, color: "white" }}>
+                Registration
+              </Link>
+             </>
             )}
-            <button onClick={() => navigate("/register")} className="btn me-2 btn-Registrion mt-3 btn active" style={{ borderRadius: 40, color: "white" }}>
-              Registration
-            </button>
           </Navbar.Collapse>
         </Container>
       </Navbar>
@@ -240,9 +228,9 @@ const Landing = () => {
                   Enjoy playing badminton at BFB with a special price.
                 </h1>
                 {!secureLocalStorage.getItem("name") && (
-                  <Button onClick={() => navigate("/userstep")} className="btn btn-lg btn-light mt-3">
-                    Sign In now{" "}
-                  </Button>
+                  <div className="btn btn-lg btn-light mt-3">
+                    <Link to="/userstep">Sign In now</Link>
+                  </div>
                 )}
               </div>
             </div>

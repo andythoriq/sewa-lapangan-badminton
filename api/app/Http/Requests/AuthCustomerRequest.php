@@ -43,14 +43,18 @@ class AuthCustomerRequest extends FormRequest
                     'otp_code' => ['required', 'digits:6', 'exists:tb_customer,otp_code']
                 ];
                 break;
-            case 'send-otp':
+            case 'send-otp-register':
                 $rules = [
-                    'name' => ['nullable', 'regex:/^[A-Za-z\s]+$/', 'min:3', 'max:60'],
-                    'phone_number' => ['required', 'numeric', 'digits_between:10,20'],
+                    'name' => ['required', 'regex:/^[A-Za-z\s]+$/', 'min:3', 'max:60'],
+                    'phone_number' => ['required', 'numeric', 'digits_between:10,20', 'unique:tb_customer,phone_number'],
                     // 'status' => ['required', 'string', 'in:Y,N'],
                     // 'password' => ['required', Password::defaults()]
                 ];
                 break;
+            case 'send-otp-login':
+                $rules = [
+                    'phone_number' => ['required', 'exists:tb_customer,phone_number'],
+                ];
         }
         return $rules;
     }
@@ -58,80 +62,24 @@ class AuthCustomerRequest extends FormRequest
     public function messages()
     {
         return [
-            'otp_code.exists' => 'OTP code is invalid, please try again.'
+            'otp_code.exists' => 'OTP code is invalid, please try again.',
+            'phone_number.exists' => 'invalid_phone_number',
+            'phone_number.unique' => 'phone_number_has_been_taken'
         ];
     }
 
-    // private function getToken()
-    // {
-    //     $customer = CustomerModel::select(['password', 'name', 'customer_code'])->where('phone_number', $this->phone_number)->firstOrFail();
-    //     if (! $customer || ! Hash::check($this->password, $customer->password)) {
-    //         throw ValidationException::withMessages([
-    //             'phone_number' => ['The provided credentials are incorrect.'],
-    //         ]);
-    //     }
-    //     return $customer->createToken(str_replace(' ', '', $customer->name) . '-token')->plainTextToken;
-    // }
-
-    public function send_otp()
+    private function generate_otp()
     {
         $otp = random_int(100000, 999999);
         do {
             $otp = random_int(100000, 999999);
         } while (CustomerModel::where('otp_code', $otp)->exists());
 
-        $expire_minutes = ConfigModel::getExpireDuration();
-        $resend_limit = ConfigModel::getResendLimit();
-        $recent_resend = 0;
+        return $otp;
+    }
 
-        $validated = $this->validated();
-        $customer = CustomerModel::where('phone_number', $validated['phone_number'])->first();
-        if ($customer) {
-
-            $recent_resend = OTPModel::where('customer_id', $customer->customer_code)
-                ->where('created_at', '>=', Carbon::now()->subMinutes($expire_minutes))
-                ->count();
-
-            if ($recent_resend > $resend_limit) {
-                throw ValidationException::withMessages([
-                    'phone_number' => ["You can't send OTP more than $expire_minutes minutes."],
-                    'otp_code' => ["You can't resend OTP more than $resend_limit times within $expire_minutes minutes."]
-                ]);
-            }
-
-            if ($customer->expiration && Carbon::now('Asia/Jakarta')->gt(Carbon::parse($customer->expiration, 'Asia/Jakarta'))) {
-                OTPModel::where('customer_id', $customer->customer_code)->whereDate('created_at', date('Y-m-d'))->delete();
-                $recent_resend = 0;
-            }
-
-            OTPModel::create([
-                'customer_id' => $customer->customer_code,
-                'otp_code' => $otp
-            ]);
-            $customer->update([
-                'otp_code' => $otp,
-                'expiration' => Carbon::now('Asia/Jakarta')->addMinutes($expire_minutes)
-            ]);
-            $customer_data = CustomerModel::select(['name', 'membership_status'])->where('phone_number', $validated['phone_number'])->first();
-            NotificationModel::customerLoggedIn($customer_data->name, $validated['phone_number'], $customer_data->membership_status);
-
-        } else {
-            if (empty($this->name)) {
-                throw ValidationException::withMessages([ 'name' => ['Please enter your name.'] ]);
-            }
-            $validated['membership_status'] = 'R';
-            $validated['status'] = 'Y';
-            $validated['otp_code'] = $otp;
-            $validated['expiration'] = Carbon::now('Asia/Jakarta')->addMinutes($expire_minutes);
-            $validated['customer_code'] = $this->getFormattedCode();
-            $customer = CustomerModel::create($validated);
-            OTPModel::create([
-                'customer_id' => $customer->customer_code,
-                'otp_code' => $otp
-            ]);
-            NotificationModel::customerRegistered($customer->name, $customer->phone_number, $customer->membership_status);
-        }
-
+    private function send_otp($otp, $expire_minutes, $recent_resend, $resend_limit, $customer)
+    {
         $message = <<<EOT
         Use *$otp* as OTP to sign in to this app NEVER SHARE OTP with anyone.
 
@@ -140,11 +88,11 @@ class AuthCustomerRequest extends FormRequest
 
         $user_key = env('ZENZIVA_USER_KEY');
         $api_key = env('ZENZIVA_API_KEY');
-        $response = $this->sendWA($validated['phone_number'], $message,  $user_key, $api_key);
-        // $response = [
-        //     'text' => 'Success',
-        //     'to' => $this->phone_number
-        // ];
+        // $response = $this->sendWA($customer->phone_number, $message,  $user_key, $api_key);
+        $response = json_encode([
+            'text' => 'Success',
+            'to' => $this->phone_number
+        ]);
         return [
             'response' => json_decode($response, true),
             'phone_number' => $customer->phone_number,
@@ -154,6 +102,107 @@ class AuthCustomerRequest extends FormRequest
                 'customer_expiration' => $customer->expiration
             ]
         ];
+    }
+
+    public function login() // bisa digunakan untuk login maupun resend/relogin
+    {
+        $expire_minutes = ConfigModel::getExpireDuration();
+        $resend_limit = ConfigModel::getResendLimit();
+        $recent_resend = 0;
+        $otp = $this->generate_otp();
+
+        $validated = $this->validated();
+        $customer = CustomerModel::where('phone_number', $validated['phone_number'])->first();
+
+        $recent_resend = OTPModel::where('customer_id', $customer->customer_code)
+            ->where('created_at', '>=', Carbon::now()->subMinutes($expire_minutes))
+            ->count();
+
+        if ($customer->expiration && Carbon::now('Asia/Jakarta')->gt(Carbon::parse($customer->expiration, 'Asia/Jakarta'))) {
+            OTPModel::where('customer_id', $customer->customer_code)->whereDate('created_at', Carbon::now('Asia/Jakarta')->format('Y-m-d'))->delete();
+            $recent_resend = 0;
+        }
+
+        if ($this->input('normal-login') == 'true' && ($customer->expiration && Carbon::now('Asia/Jakarta')->lte(Carbon::parse($customer->expiration, 'Asia/Jakarta')))) {
+            $expire_time = Carbon::parse($customer->expiration);
+
+            $remaining_seconds = Carbon::now('Asia/Jakarta')->diffInSeconds($expire_time);
+
+            if ($remaining_seconds > 0) {
+                $minutes = floor(($remaining_seconds % 3600) / 60);
+                $seconds = $remaining_seconds % 60;
+
+                $remaining_seconds_text = '';
+                $expire_minutes_text = '';
+
+                if ($minutes > 0) {
+                    if (! empty($remaining_seconds_text)) {
+                        $remaining_seconds_text .= ' and ';
+                    }
+                    $remaining_seconds_text .= "$minutes " . ($minutes > 1 ? 'minutes' : 'minute');
+                }
+                if ($seconds > 0) {
+                    if (! empty($remaining_seconds_text)) {
+                        $remaining_seconds_text .= ' and ';
+                    }
+                    $remaining_seconds_text .= "$seconds " . ($seconds > 1 ? 'seconds' : 'second');
+                }
+                if ($expire_minutes > 0) {
+                    $expire_minutes_text .= "$expire_minutes " . ($expire_minutes > 1 ? 'minutes' : 'minute');
+                }
+            }
+            throw ValidationException::withMessages([
+                'phone_number' => ["expire in $expire_minutes_text already defined since signin/register. Wait until about $remaining_seconds_text."]
+            ]);
+        }
+        else if ($this->input('re-login') == 'true' && ($recent_resend > $resend_limit)) {
+            $expire_minutes_text = '';
+            if ($expire_minutes > 0) {
+                $expire_minutes_text .= "$expire_minutes " . ($expire_minutes > 1 ? 'minutes' : 'minute');
+            }
+
+            throw ValidationException::withMessages([
+                'otp_code' => [
+                    "You can't resend OTP more than $resend_limit times in $expire_minutes_text."
+                ]
+            ]);
+        }
+
+        OTPModel::create([
+            'customer_id' => $customer->customer_code,
+            'otp_code' => $otp
+        ]);
+        $customer->update([
+            'otp_code' => $otp,
+            'expiration' => Carbon::now('Asia/Jakarta')->addMinutes($expire_minutes)
+        ]);
+        $customer_data = CustomerModel::select(['name', 'membership_status'])->where('phone_number', $validated['phone_number'])->first();
+        NotificationModel::customerLoggedIn($customer_data->name, $validated['phone_number'], $customer_data->membership_status);
+
+        return $this->send_otp($otp, $expire_minutes, $recent_resend, $resend_limit, $customer);
+    }
+
+    public function register()
+    {
+        $otp = $this->generate_otp();
+        $expire_minutes = ConfigModel::getExpireDuration();
+        $recent_resend = 0;
+        $resend_limit = ConfigModel::getResendLimit();
+
+        $validated = $this->validated();
+        $validated['membership_status'] = 'R';
+        $validated['status'] = 'Y';
+        $validated['otp_code'] = $otp;
+        $validated['expiration'] = Carbon::now('Asia/Jakarta')->addMinutes($expire_minutes);
+        $validated['customer_code'] = $this->getFormattedCode();
+        $customer = CustomerModel::create($validated);
+        OTPModel::create([
+            'customer_id' => $customer->customer_code,
+            'otp_code' => $otp
+        ]);
+        NotificationModel::customerRegistered($customer->name, $customer->phone_number);
+
+        return $this->send_otp($otp, $expire_minutes, $recent_resend, $resend_limit, $customer);
     }
 
     public function verify_otp()

@@ -6,6 +6,7 @@ use App\Models\HolidayModel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Master\HolidayRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class HolidayController extends Controller
 {
@@ -29,7 +30,16 @@ class HolidayController extends Controller
         $calendars = HolidayModel::select(['id', 'label AS title', 'date AS start'])
             ->orderBy('date', 'asc')
                 ->get();
-        return response()->json($calendars);
+        $response = [
+            'calendars'=>$calendars,
+        ];
+        if (Carbon::now('Asia/Jakarta')->month === 12) {
+            $response['alert'] = [
+                'title' => "it's December already",
+                'message' => 'Time to add a new holiday schedule for the next year'
+            ];
+        }
+        return response()->json($response);
     }
 
     public function create(HolidayRequest $request)
