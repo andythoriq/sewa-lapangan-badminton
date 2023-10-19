@@ -5,7 +5,7 @@ import axios from "../../api/axios";
 import secureLocalStorage from "react-secure-storage";
 import Swal from "sweetalert2";
 
-const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice }) => {
+const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice, label }) => {
   const [ values, setValues ] = useState({ start: "", finish: "" });
   const [ errors, setErrors ] = useState([])
   const [ showSendBookingCode, setShowSendBookingCode ] = useState(false);
@@ -110,17 +110,17 @@ const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice }) => 
     setTotallyPrice(0)
   }}>
     <Modal.Header closeButton>
-      <Modal.Title>Booking</Modal.Title>
+      <Modal.Title>Booking ({label})</Modal.Title>
     </Modal.Header>
     <Modal.Body className="p-5">
       <form onSubmit={handleSubmit}>
         <div className="row justify-content-center">
           <div className="col-6">
-            <FormInput type="datetime-local" name="start" label="Time Start Booking" value={values.start} onChange={onChange} disabled={showSendBookingCode} />
+            <FormInput type="datetime-local" name="start" label="Time Start Booking" value={values.start} onChange={onChange} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 16)} />
             {errors.start && <span className="text-danger">{errors.start[ 0 ]}</span>}
           </div>
           <div className="col-6">
-            <FormInput type="datetime-local" name="finish" label="Time Finish Booking" value={values.finish} onChange={onChange} disabled={showSendBookingCode} />
+            <FormInput type="datetime-local" name="finish" label="Time Finish Booking" value={values.finish} onChange={onChange} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 16)} />
             {errors.finish && <span className="text-danger">{errors.finish[ 0 ]}</span>}
           </div>
         </div>

@@ -46,8 +46,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(RentalController::class)->group(function () {
         Route::get('/rental', 'index');
         Route::get('/rental/{rental}', 'show');
-        Route::post('/rental', 'create')->name('create-rental')->middleware(['holiday', 'operational']);
-        Route::post('/create-multiple-rental', 'create_multiple')->name('create-multiple-rental')->middleware(['holiday', 'operational']);
+        Route::post('/rental', 'create')->name('create-rental')->middleware(['holiday']);
+        Route::post('/create-multiple-rental', 'create_multiple')->name('create-multiple-rental')->middleware(['holiday']);
         Route::put('/rental/{rental}', 'update')->name('update-rental');
         Route::delete('/rental/{rental}', 'delete');
     });

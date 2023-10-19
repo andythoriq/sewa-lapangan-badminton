@@ -160,11 +160,11 @@ const CreateBookingFormRegular = () => {
           </Col>
           
           <Col className="col-6 col-md-3 mt-1">
-            <FormInput type="datetime-local" name="start_time" label="Start Time Booking" value={values.start_time} onChange={onChange} disabled={showSendBookingCode} />
+            <FormInput type="datetime-local" name="start_time" label="Start Time Booking" value={values.start_time} onChange={onChange} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 16)} />
             {errors.start && <span className="text-danger">{errors.start[0]}</span>}
           </Col>
           <Col className="col-6 col-md-3 mt-1" style={{ marginLeft: "20px" }}>
-            <FormInput type="datetime-local" name="finish_time" label="Finish Time Booking" value={values.finish_time} onChange={onChange} disabled={showSendBookingCode} />
+            <FormInput type="datetime-local" name="finish_time" label="Finish Time Booking" value={values.finish_time} onChange={onChange} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 16)} />
             {errors.finish && <span className="text-danger">{errors.finish[0]}</span>}
           </Col>
          

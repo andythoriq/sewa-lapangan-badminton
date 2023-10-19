@@ -27,6 +27,7 @@ class OnOperationalHours
         foreach ($config_open_time as $value) {
             if ($value['day'] === $today) {
                 $get_hours = ['start' => $value['start'], 'finish' => $value['finish']];
+                break;
             }
         }
 

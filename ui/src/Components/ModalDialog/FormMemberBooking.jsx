@@ -140,11 +140,11 @@ const FormMemberBooking = ({ isShow, handleClose, courtProp }) => {
               {errors[ `rentals.${index}.court_id` ] && <span className="text-danger">{errors[ `rentals.${index}.court_id` ][ 0 ]}</span>}
             </div>
             <div className="col-12 col-md-4">
-              <FormInput type="datetime-local" name="start_time" label="Start" value={start_time} onChange={handleChange} disabled={showSendBookingCode} />
+              <FormInput type="datetime-local" name="start_time" label="Start" value={start_time} onChange={handleChange} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 16)} />
               {errors[ `rentals.${index}.start` ] && <span className="text-danger">{errors[ `rentals.${index}.start` ][ 0 ]}</span>}
             </div>
             <div className="col-12 col-md-4">
-              <FormInput type="datetime-local" name="finish_time" label="Finish" value={finish_time} onChange={handleChange} disabled={showSendBookingCode} />
+              <FormInput type="datetime-local" name="finish_time" label="Finish" value={finish_time} onChange={handleChange} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 16)} />
               {errors[ `rentals.${index}.finish` ] && <span className="text-danger">{errors[ `rentals.${index}.finish` ][ 0 ]}</span>}
             </div>
             <div className="col-12 mt-3 text-right">

@@ -41,7 +41,9 @@ const Step2 = () => {
      await axios.get("/sanctum/csrf-cookie")
      const { data } = await axios.post("/api/verify-otp", { otp_code: OTP })
      setErrors('')
-     secureLocalStorage.clear()
+
+     secureLocalStorage.removeItem('exp');secureLocalStorage.removeItem('resend_ph');
+
      secureLocalStorage.setItem('token', data.token)
      secureLocalStorage.setItem('phone_number', data.customer.phone_number)
      secureLocalStorage.setItem('customer_code', data.customer.customer_code)

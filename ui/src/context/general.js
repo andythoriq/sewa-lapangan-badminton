@@ -10,7 +10,7 @@ function GeneralProvider({children}) {
   // const [ contact, setContact ] = useState({})
   // const [expiration, setExpiration] = useState({resend_limit: null, customer_expiration: null, recent_resend: null})
 
-  const [resendPhoneNumber, setResendPhoneNumber] = useState('')
+  // const [resendPhoneNumber, setResendPhoneNumber] = useState('')
 
   const [defaultPhone, setDefaultPhone] = useState('')
 

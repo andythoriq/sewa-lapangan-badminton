@@ -24,7 +24,14 @@ export default function Calendar() {
     })
     .then((alert) => {
       if (alert) {
-        Swal.fire({ position: 'top-end', icon: 'warning', title: alert.title, html: alert.message, width: 350, showConfirmButton: true })
+        Swal.fire({ position: 'top-end', icon: 'warning', title: alert.title, html: alert.message, width: 350, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
+        .then((result) => {
+          if (result.isConfirmed) {
+            axios.get('/api/calendar?year=' + alert.year).then(({data}) => {
+              setHolidays(data.calendars) // saya gak tau gimana caranya biar kegeser ke tahun depannya
+            })
+          }
+          })
       }
     })
     .catch((e) => {
@@ -37,14 +44,14 @@ export default function Calendar() {
   }
 
   const handleEventDrop = (dropInfo) => {
-    console.log(dropInfo);
+    // console.log(dropInfo);
     const { start, end } = dropInfo.oldEvent._instance.range;
-    console.log(start, end);
+    // console.log(start, end);
     const {
       start: newStart,
       end: newEnd
     } = dropInfo.event._instance.range;
-    console.log(newStart, newEnd);
+    // console.log(newStart, newEnd);
     
     if (new Date(start).getDate() === new Date(newStart).getDate()) {
       dropInfo.revert();
@@ -234,7 +241,8 @@ export default function Calendar() {
             right: 'today next'
           }}
           initialView='multiMonthYear'
-          initialEvents={holidays} // alternatively, use the `events` setting to fetch from a feed
+          // initialEvents={holidays} // alternatively, use the `events` setting to fetch from a feed
+          events={holidays}
           selectable={true}
           droppable={true}
           editable={true} // aktifkan eventDrop
@@ -256,6 +264,7 @@ const renderEventContent = (eventInfo) => {
   var datenya = "";
   if ((eventInfo.event.startStr === eventInfo.event.endStr) || eventInfo.event.endStr === "") {
     datenya = eventInfo.event.startStr;
+    // console.log(datenya)
   }else{
     datenya = `From ${eventInfo.event.startStr} to ${eventInfo.event.endStr}`;
   }

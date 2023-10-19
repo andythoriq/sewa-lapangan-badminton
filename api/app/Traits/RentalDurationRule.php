@@ -18,6 +18,7 @@ trait RentalDurationRule
         foreach (ConfigModel::getOpenTime() as $value) {
             if ($value['day'] === $today_l) {
                 $open_time = $value;
+                break;
             }
         }
 
