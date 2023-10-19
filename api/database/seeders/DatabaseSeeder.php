@@ -1115,6 +1115,11 @@ class DatabaseSeeder extends Seeder
           'slug' =>  'member_discount',
           'description' => 'Potongan harga untuk booking member / multiple booking. (in percent)',
           'value' =>  10
+        ],
+        [
+            'slug' => 'resend_limit',
+            'descritpion' => 'Batasan ketika melakukan kirim ulang OTP code ke nomor pelanggan.',
+            'value' => 4
         ]
         ]);
         CustomerModel::create([
