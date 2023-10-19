@@ -28,7 +28,7 @@ const ListData = () => {
                 <span>{val.start}</span> - <span>{val.finish}</span>
               </td>
               <td className="text-center">{val.status === "B" ? "Booked" : val.status === "O" ? "On progress" : "Finished"}</td>
-              <td className=" d-md-flex justify-content-between">
+              <td className=" d-flex justify-content-between">
                 {val.status === "O" || val.status === "F" ? null : (
                   <button className="btn btn-sm btn-success" onClick={(e) => handleStartGame(e, val.id)}>
                     Start Game

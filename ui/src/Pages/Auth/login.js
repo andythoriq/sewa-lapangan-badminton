@@ -112,7 +112,7 @@ const Login = () => {
           </h3>
 
           {isShow === true && (
-            <Alert variant="danger" className="py-1 px-2" style={{ width: "300px", fontSize: "13px" }} onClose={() => setIsShow(false)} dismissible>
+            <Alert variant="danger" className="py-3 px-2" style={{ width: "300px", fontSize: "13px" }}  onClose={() => setIsShow(false)} dismissible>
               {/* <p> Account is not found. Please re-check the username and password you entered. </p> */}
               {errors.username && <p className="mb-0">{errors.username[0]}</p>}
               {errors.password && <p className="mb-0">{errors.password[0]}</p>}

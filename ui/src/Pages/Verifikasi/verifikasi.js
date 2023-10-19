@@ -81,7 +81,7 @@ const Verification = () => {
             </span>
           </td>
           <td className="text-center">{val.status === "B" ? "Booked" : val.status === "O" ? "On progress" : val.status === "F" ? "Finished" : "Canceled"}</td>
-          <td className=" d-md-flex justify-content-center align-items-center">
+          <td className=" d-flex justify-content-center align-items-center">
             {val.status === "O" || val.status === "F" || val.status === "C" ? null : (<>
               <button className="btn btn-sm btn-success" onClick={() => {
                 Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to start this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false })
