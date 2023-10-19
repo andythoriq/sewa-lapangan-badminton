@@ -3,13 +3,22 @@ import FormRegularBooking from "./ModalDialog/FormRegularBooking";
 import secureLocalStorage from "react-secure-storage";
 import { useNavigate } from "react-router-dom";
 import FormMemberBooking from "./ModalDialog/FormMemberBooking";
+import axios from "../api/axios";
+import Swal from "sweetalert2";
 
 function Court({ id, label, image_path, description, initial_price, index }) {
   const [show, setShow] = useState(false);
+  const [membershipType, setMembershipType] = useState("R")
   const navigate = useNavigate();
-  const handleShowBooking = () => {
+  const handleShowBooking = async () => {
     if (secureLocalStorage.getItem("customer_code")) {
-      setShow(true);
+      try {
+        const {data} = await axios.get("/api/get-customer-type");
+        setMembershipType(data)
+        setShow(true);
+      } catch (e) {
+        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      }
     } else {
       navigate("/userstep");
     }
@@ -39,8 +48,8 @@ function Court({ id, label, image_path, description, initial_price, index }) {
           </div>
         </div>
       </div>
-      {secureLocalStorage.getItem("membership_status") === "R" && <FormRegularBooking handleClose={() => setShow(false)} isShow={show} court_id={id} initialPrice={initial_price} />}
-      {secureLocalStorage.getItem("membership_status") === "M" && <FormMemberBooking handleClose={() => setShow(false)} isShow={show} courtProp={{ value: id, label: label, initial_price: initial_price }} />}
+      {membershipType === "R" && <FormRegularBooking handleClose={() => setShow(false)} isShow={show} court_id={id} initialPrice={initial_price} />}
+      {membershipType === "M" && <FormMemberBooking handleClose={() => setShow(false)} isShow={show} courtProp={{ value: id, label: label, initial_price: initial_price }} />}
     </>
   );
 }

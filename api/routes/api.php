@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/verify-otp', 'verify')->name('verify-otp')->withoutMiddleware(['auth:sanctum', 'customer']);
         Route::post('/logout', 'logout');
         Route::get('/me', 'me');
+        Route::get('/get-customer-type', 'get_customer_type');
     });
 
     /** Master Rental

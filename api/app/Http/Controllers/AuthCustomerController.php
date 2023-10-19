@@ -49,4 +49,11 @@ class AuthCustomerController extends Controller
             return new RegularResource($customer->loadMissing('rentals', 'rentals.court:id,label', 'rentals.transaction:id,booking_code'));
         }
     }
+
+    public function get_customer_type(Request $request)
+    {
+        $customer = $request->user('customers');
+
+        return response()->json($customer->membership_status);
+    }
 }

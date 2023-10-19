@@ -44,7 +44,6 @@ const Step2 = () => {
      secureLocalStorage.clear()
      secureLocalStorage.setItem('token', data.token)
      secureLocalStorage.setItem('phone_number', data.customer.phone_number)
-     secureLocalStorage.setItem('membership_status', data.customer.membership_status)
      secureLocalStorage.setItem('customer_code', data.customer.customer_code)
      secureLocalStorage.setItem('name', data.customer.name)
      secureLocalStorage.setItem('role', 'user')
