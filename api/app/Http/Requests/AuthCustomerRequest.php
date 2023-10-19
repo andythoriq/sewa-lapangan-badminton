@@ -119,7 +119,7 @@ class AuthCustomerRequest extends FormRequest
             ->count();
 
         if ($customer->expiration && Carbon::now('Asia/Jakarta')->gt(Carbon::parse($customer->expiration, 'Asia/Jakarta'))) {
-            OTPModel::where('customer_id', $customer->customer_code)->whereDate('created_at', date('Y-m-d'))->delete();
+            OTPModel::where('customer_id', $customer->customer_code)->whereDate('created_at', Carbon::now('Asia/Jakarta')->format('Y-m-d'))->delete();
             $recent_resend = 0;
         }
 

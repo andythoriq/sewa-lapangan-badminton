@@ -103,6 +103,7 @@ const PeakTime = () => {
                 <td>{index + 1}</td>
                 <td>{val.day_name}</td>
                 <td>{ new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(val.price_increase) }</td>
+                <td>{val.court.label} ({new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0}).format(val.court.initial_price)})</td>
                 <td>{val.start}</td>
                 <td>{val.finish}</td>
                 <td className="text-center">
@@ -150,9 +151,10 @@ const PeakTime = () => {
                             <th width={'1%'}>No</th>
                             <th width={'15%'}>Day name</th>
                             <th width={'20%'}>Peak Time Price</th>
+                            <th width={'25%'}>Court</th>
                             <th width={'15%'}>Start</th>
                             <th width={'15%'}>Finish</th>
-                            <th width={'5%'} className="text-center">Action</th>
+                            <th width={'4%'} className="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>

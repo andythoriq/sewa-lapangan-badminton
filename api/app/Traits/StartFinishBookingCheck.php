@@ -3,6 +3,7 @@
 namespace App\Traits;
 use App\Models\ConfigModel;
 use App\Models\HolidayModel;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\ValidationException;
 
 trait StartFinishBookingCheck
@@ -10,8 +11,7 @@ trait StartFinishBookingCheck
     public function startFinishCheck($bookingStart, $bookingFinish)
     {
         $operational_times = ConfigModel::getOpenTime();
-
-        $currentDay = strtolower(date('l'));
+        $currentDay = strtolower(Carbon::now('Asia/Jakarta')->dayName);
 
         $operationalTimeToday = null;
         foreach ($operational_times as $time) {
@@ -22,25 +22,27 @@ trait StartFinishBookingCheck
         }
 
         if ($operationalTimeToday) {
-            $operationalStart = strtotime($operationalTimeToday['start']);
-            $operationalFinish = strtotime($operationalTimeToday['finish']);
+            $operationalStart = Carbon::parse($operationalTimeToday['start'], 'Asia/Jakarta');
+            $operationalFinish = Carbon::parse($operationalTimeToday['finish'], 'Asia/Jakarta');
 
-            $bookingStartTimestamp = strtotime($bookingStart);
-            $bookingFinishTimestamp = strtotime($bookingFinish);
+            $bookingStartTimestamp = Carbon::parse($bookingStart, 'Asia/Jakarta');
+            $bookingFinishTimestamp = Carbon::parse($bookingFinish, 'Asia/Jakarta');
 
-            if (!($bookingStartTimestamp >= $operationalStart && $bookingFinishTimestamp <= $operationalFinish)) {
+            if (! ($bookingStartTimestamp->gte($operationalStart) && $bookingFinishTimestamp->lte($operationalFinish))) {
                 throw ValidationException::withMessages(['start' => ['Your booking time is outside of operational hours.']]);
             }
         } else {
             throw ValidationException::withMessages(['start' => ['We are not operating today.']]);
         }
 
-        $isHolidayCollide = HolidayModel::where('date', '>=', date('Y-m-d', $bookingStartTimestamp))
-            ->where('date', '<=', date('Y-m-d', $bookingFinishTimestamp))
-            ->exists();
+        $bookingStartDate = Carbon::parse($bookingStart, 'Asia/Jakarta')->format('Y-m-d');
+        $bookingFinishDate = Carbon::parse($bookingFinish, 'Asia/Jakarta')->format('Y-m-d');
+
+        $isHolidayCollide = HolidayModel::where('date', '>=', $bookingStartDate)->where('date', '<=', $bookingFinishDate)->exists();
 
         if ($isHolidayCollide) {
-            throw ValidationException::withMessages([ 'start' => ['Booking time collided with holidays.']]);
+            throw ValidationException::withMessages(['start' => ['Booking time collided with holidays.']]);
         }
     }
+
 }

@@ -16,12 +16,19 @@ class PeakTimeController extends Controller
         $keyword = $request->input('keyword');
 
         $peak_times = PeakTimeModel::when($keyword, function ($query) use ($keyword) {
-            return $query->where('start', 'like', '%' . $keyword . '%')
+            $query->where(function ($q) use ($keyword) {
+                return $q->where('start', 'like', '%' . $keyword . '%')
                 ->orWhere('finish', 'like', '%' . $keyword . '%')
                 ->orWhere('day_name', 'like', '%' . $keyword . '%')
-                ->orWhere('price_increase', 'like', '%' . $keyword . '%');
+                ->orWhere('price_increase', 'like', '%' . $keyword . '%')
+                ->orWhereHas('court', function($court) use ($keyword) {
+                    $court->where('label', 'like', '%' . $keyword . '%')
+                        ->orWhere('initial_price', 'like', '%' . $keyword . '%');
+                });
+            });
         })
-            ->select(['id', 'start', 'finish', 'day_name', 'price_increase'])
+            ->with('court:id,label,initial_price')
+            ->select(['id', 'start', 'finish', 'day_name', 'price_increase', 'court_id'])
             ->paginate(10);
 
         return new PeakTimeCollection($peak_times);

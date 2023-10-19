@@ -126,9 +126,10 @@ const Schedule = ({ currentPath = 'schedule' }) => {
           </div>
         </Col>
         <Col className="col-12 mt-1 mb-2 " style={{ textAlign: "right", marginLeft: "-16px" }}>
-          <Link to="/create-booking" className="btn btn-sm" style={{ background: "#B21830", color: "white" }}>
-            New Booking
-          </Link>
+          {currentPath === 'dashboard' || currentPath === 'schedule' && 
+            <Link to="/create-booking" className="btn btn-sm" style={{ background: "#B21830", color: "white" }}>
+              New Booking
+            </Link>}
         </Col>
       </Row>
       <div className="table-responsive">
@@ -163,8 +164,14 @@ const Schedule = ({ currentPath = 'schedule' }) => {
                   </th>
                   {courts.map((court, index) => {
                     return (<React.Fragment key={court.id}>
-                      <td width={"6%"} className={`bg-col-court ${checkBgColor(`${court.id}-${hour.id}:00`)}`} onClick={() => showDetail(`${court.id}-${hour.id}:00`)}></td>
-                      <td width={"6%"} className={`bg-col-court ${checkBgColor(`${court.id}-${hour.id}:30`)}`} onClick={() => showDetail(`${court.id}-${hour.id}:30`)}></td>
+                      <td width={"6%"} className={`bg-col-court ${checkBgColor(`${court.id}-${hour.id}:00`)}`} 
+                        onClick={() => showDetail(`${court.id}-${hour.id}:00`)}
+                        style={{ cursor: currentPath === "customer-dashboard" && "default" }}
+                        ></td>
+                      <td width={"6%"} className={`bg-col-court ${checkBgColor(`${court.id}-${hour.id}:30`)}`} 
+                        onClick={() => showDetail(`${court.id}-${hour.id}:30`)}
+                        style={{ cursor: currentPath === "customer-dashboard" && "default" }}
+                        ></td>
                       {index === courts.length - 1 ? <td width={"2%"} className="bg-col-batas"></td> : <td width={"4%"} className="bg-col-batas"></td>}
                     </React.Fragment>)
                   })}

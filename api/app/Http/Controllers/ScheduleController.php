@@ -6,6 +6,7 @@ use App\Models\ConfigModel;
 use App\Models\CourtModel;
 use App\Models\RentalModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class ScheduleController extends Controller
 {
@@ -15,7 +16,7 @@ class ScheduleController extends Controller
         $f_date = $request->input('date'); // filter by date Y-m-d
         $f_statuses = $request->input('statuses'); // filter by status (B, O, F)
 
-        $today_l = $f_date ? strtolower(date("l", strtotime($f_date))) : strtolower(date("l"));
+        $today_l = $f_date ? strtolower(Carbon::parse($f_date, 'Asia/Jakarta')->dayName) : strtolower(Carbon::now('Asia/Jakarta')->dayName);
 
         $today_Y_m_d = now('Asia/Jakarta')->format('Y-m-d');
 

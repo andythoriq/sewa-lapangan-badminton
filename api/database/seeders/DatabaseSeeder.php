@@ -78,7 +78,7 @@ class DatabaseSeeder extends Seeder
         // CustomerModel::factory(3)
         // ->has(RentalModel::factory(3), 'rentals')->create();
 
-        OpenTimeModel::factory()->count(14)->create();
+        // OpenTimeModel::factory()->count(14)->create();
         DB::table('tb_holiday')->insert([
             [
                 'label' => 'Hari libur nasional tahun baru',
@@ -1075,8 +1075,8 @@ class DatabaseSeeder extends Seeder
 
         RoleModel::create([
 
-            'label' => 'Super_Admin',
-            'menu' => "['/super-admin']",
+            'label' => 'Admin',
+            'menu' => "['/dashboard', '/create-booking', '/schedule', '/history-booking', '/scanner', '/verification', '/data-master/court', '/data-master/regular', '/data-master/member', '/data-master/holidays', '/data-master/calendar', '/data-master/peaktime', '/data-master/rush', '/user-management/user-list', '/user-management/user-role', '/setting']",
             'status' => 'Y'
 
         ]);
