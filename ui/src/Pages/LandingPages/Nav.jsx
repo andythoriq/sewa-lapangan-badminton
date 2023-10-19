@@ -117,7 +117,7 @@ const Landing = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       style={{ marginRight: "30px", color: "black" }}>
-                      <Link to={'/dashboard-user'}>Dashboard User</Link>
+                      <Link to={'/dashboard-user'}>Dashboard</Link>
                     </Dropdown.Item>
                     <Dropdown.Item
                       eventKey="2"
@@ -147,7 +147,7 @@ const Landing = () => {
                     </Dropdown.Item>
                   </Dropdown.Menu>
                   <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                    <div>
+                    <div className="mt-3">
                       <img src={`${dirIcon}user-circle.png`} alt="" style={{ width: "35px" }} /> <span className="localstorge m-auto">{secureLocalStorage.getItem("name")}</span>
                     </div>
                   </Dropdown.Toggle>

@@ -57,7 +57,7 @@ const NavbarPublic = () => {
                       </Dropdown.Item>
                       <Dropdown.Item>
                           <div style={{ marginRight: "30px", color: "black" }}>
-                            <Link to={'/dashboard-user'}>Dashboard User</Link>
+                            <Link to={'/dashboard-user'}>Dashboard</Link>
                           </div>
                       </Dropdown.Item>
                     </Dropdown.Menu>

@@ -126,7 +126,7 @@ const Schedule = ({ currentPath = 'schedule' }) => {
           </div>
         </Col>
         <Col className="col-12 mt-1 mb-2 " style={{ textAlign: "right", marginLeft: "-16px" }}>
-          {currentPath === 'dashboard' || currentPath === 'schedule' && 
+          {(currentPath === 'dashboard' || currentPath === 'schedule') && 
             <Link to="/create-booking" className="btn btn-sm" style={{ background: "#B21830", color: "white" }}>
               New Booking
             </Link>}

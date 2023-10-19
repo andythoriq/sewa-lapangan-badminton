@@ -81,18 +81,18 @@ class AuthCustomerRequest extends FormRequest
     private function send_otp($otp, $expire_minutes, $recent_resend, $resend_limit, $customer)
     {
         $message = <<<EOT
-        Use *$otp* as OTP to sign in to this app NEVER SHARE OTP with anyone.
+        Use $otp as OTP to sign in to this app NEVER SHARE OTP with anyone.
 
         This OTP code is valid for the next $expire_minutes minutes.
         EOT;
 
         $user_key = env('ZENZIVA_USER_KEY');
         $api_key = env('ZENZIVA_API_KEY');
-        // $response = $this->sendWA($customer->phone_number, $message,  $user_key, $api_key);
-        $response = json_encode([
-            'text' => 'Success',
-            'to' => $this->phone_number
-        ]);
+        $response = $this->sendWA($customer->phone_number, $message,  $user_key, $api_key);
+        // $response = json_encode([
+        //     'text' => 'Success',
+        //     'to' => $this->phone_number
+        // ]);
         return [
             'response' => json_decode($response, true),
             'phone_number' => $customer->phone_number,
