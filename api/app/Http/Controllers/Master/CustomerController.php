@@ -126,7 +126,7 @@ class CustomerController extends Controller
     public function update_name(Request $request)
     {
         $data = $request->validate([
-            'name' => ['required', 'regex:/^[A-Za-z\s]+$/', 'min:3', 'max:60'],
+            'name' => ['required', 'regex:/^[A-Z][a-z]+((\s[A-Z][a-z]+)*)$/u', 'min:3', 'max:60'],
             'customer_code' => ['required', 'exists:tb_customer,customer_code']
         ]);
         CustomerModel::where('customer_code', $data['customer_code'])->update([ 'name' => $data['name'] ]);
