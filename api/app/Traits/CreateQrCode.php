@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Traits;
+use LaravelQRCode\Facades\QRCode;
 
 // use Illuminate\Support\Facades\Storage;
-use QRCode;
-
+// use QRCode;
 
 trait CreateQrCode
 {
