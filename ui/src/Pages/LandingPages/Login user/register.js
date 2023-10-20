@@ -14,7 +14,8 @@ const Register = () => {
   const navigate = useNavigate()
   const [phoneNumber, setPhoneNumber] = useState('')
   const [name, setName] = useState('')
-  const [errors, setErrors] = useState([])
+  const [errorName, setErrorName] = useState({})
+  const [errorPh, setErrorPh] = useState({})
   const [ isShowAlert, setIsShowAlert ] = useState(false)
 
   useEffect(() => {
@@ -29,7 +30,8 @@ const Register = () => {
         phone_number: phoneNumber.substring(0, 2) === "62" ? "0" + phoneNumber.slice(2) : phoneNumber,
         name: name
       });
-      setErrors("");
+      setErrorName("");
+      setErrorPh("");
       if (data.response.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `OTP code has been sent to ${data.response.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
@@ -47,7 +49,8 @@ const Register = () => {
         if (e.response.data.errors.phone_number[0] === 'phone_number_has_been_taken') {
           setIsShowAlert(true)
         } else {
-          setErrors(e.response.data.errors);
+          setErrorName(e.response.data.errors.name);
+          setErrorPh(e.response.data.errors.phone_number);
         }
       } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
         Swal.fire({ icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -90,11 +93,13 @@ const Register = () => {
                             <input type="text" id="form3Example1c" placeholder="Example: John Doe"
                               className="form-control" name="name" label="Full name" value={name} onChange={(e) => {
                                 setName(e.target.value)
-                                setErrors([{name: []}])
+                                if (name.length <= 1) {
+                                  setErrorName({})
+                                }
                               }}
                               required minLength={3} maxLength={60}
                               />
-                            {errors.name && <span className="text-danger">{errors.name[ 0 ]}</span>}
+                            {errorName && <span className="text-danger">{errorName[ 0 ]}</span>}
                           </div>
                         </div>
 
@@ -110,10 +115,12 @@ const Register = () => {
                               onChange={(phone) => {
                                 setDefaultPhone(phone)
                                 setPhoneNumber(phone)
-                                setErrors([{phone_number: []}])
+                                if (phone.length <= 1) {
+                                  setErrorPh({})
+                                }
                               }}
                               />
-                              {errors.phone_number && <span className="text-danger">{errors.phone_number[ 0 ]}</span>}
+                              {errorPh && <span className="text-danger">{errorPh[ 0 ]}</span>}
                           </div>
                         </div>
 

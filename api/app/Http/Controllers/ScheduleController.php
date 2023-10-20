@@ -27,6 +27,7 @@ class ScheduleController extends Controller
         foreach ($config_open_time as $value) {
             if ($value['day'] === $today_l) {
                 $filtered_open_time = $value;
+                break;
             }
         }
 

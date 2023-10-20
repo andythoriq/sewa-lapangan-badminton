@@ -111,7 +111,7 @@ class RentalRequest extends FormRequest
 
         $booking_code = $this->getBookingCode();
 
-        $qr_code = $this->createQrCode($booking_code, env('FRONTEND_URL', 'http://localhost:3000'));
+        $qr_code = $this->createQrCode($booking_code);
 
         $transaction = TransactionModel::create([
             'total_price' => $data['price'],
@@ -159,7 +159,7 @@ class RentalRequest extends FormRequest
         $data = $this->validated();
 
         $booking_code = $this->getBookingCode();
-        $qr_code = $this->createQrCode($booking_code, env('FRONTEND_URL', 'http://localhost:3000'));
+        $qr_code = $this->createQrCode($booking_code);
 
         $transaction = TransactionModel::create([
             'total_price' => 0,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormRegularBooking from "./ModalDialog/FormRegularBooking";
 import secureLocalStorage from "react-secure-storage";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,20 @@ function Court({ id, label, image_path, description, initial_price, index }) {
   const [show, setShow] = useState(false);
   const [membershipType, setMembershipType] = useState("R")
   const navigate = useNavigate();
+  useEffect(() => {
+    if (id == secureLocalStorage.getItem('id_to_open')) {
+      if (secureLocalStorage.getItem("customer_code")) {
+        try {
+          axios.get("/api/get-customer-type").then(({data}) => {
+            setMembershipType(data)
+            setShow(true);
+          })
+        } catch (e) {
+          Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+        }
+      }
+    }
+  }, [])
   const handleShowBooking = async () => {
     if (secureLocalStorage.getItem("customer_code")) {
       try {
@@ -20,6 +34,7 @@ function Court({ id, label, image_path, description, initial_price, index }) {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
     } else {
+      secureLocalStorage.setItem('id_to_open', id)
       navigate("/userstep");
     }
   };
@@ -48,7 +63,7 @@ function Court({ id, label, image_path, description, initial_price, index }) {
           </div>
         </div>
       </div>
-      {membershipType === "R" && <FormRegularBooking handleClose={() => setShow(false)} isShow={show} court_id={id} initialPrice={initial_price} />}
+      {membershipType === "R" && <FormRegularBooking handleClose={() => setShow(false)} label={label} isShow={show} court_id={id} initialPrice={initial_price} />}
       {membershipType === "M" && <FormMemberBooking handleClose={() => setShow(false)} isShow={show} courtProp={{ value: id, label: label, initial_price: initial_price }} />}
     </>
   );

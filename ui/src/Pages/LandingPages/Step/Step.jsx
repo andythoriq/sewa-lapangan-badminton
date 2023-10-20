@@ -35,7 +35,6 @@ const FormStep = () => {
       if (data.response.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `OTP code has been sent to ${data.response.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
-            secureLocalStorage.clear();
             handleSetResendPh(data.phone_number); // str
             handleSetExpiration(data.expiration); // obj
             navigate("/step2", { replace: true });

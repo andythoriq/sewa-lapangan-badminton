@@ -45,7 +45,7 @@ class AuthCustomerRequest extends FormRequest
                 break;
             case 'send-otp-register':
                 $rules = [
-                    'name' => ['required', 'regex:/^[A-Za-z\s]+$/', 'min:3', 'max:60'],
+                    'name' => ['required', 'regex:/^[A-Z][a-z]+((\s[A-Z][a-z]+)*)$/u', 'min:3', 'max:60'],
                     'phone_number' => ['required', 'numeric', 'digits_between:10,20', 'unique:tb_customer,phone_number'],
                     // 'status' => ['required', 'string', 'in:Y,N'],
                     // 'password' => ['required', Password::defaults()]
@@ -88,11 +88,11 @@ class AuthCustomerRequest extends FormRequest
 
         $user_key = env('ZENZIVA_USER_KEY');
         $api_key = env('ZENZIVA_API_KEY');
-        $response = $this->sendWA($customer->phone_number, $message,  $user_key, $api_key);
-        // $response = json_encode([
-        //     'text' => 'Success',
-        //     'to' => $this->phone_number
-        // ]);
+        // $response = $this->sendWA($customer->phone_number, $message,  $user_key, $api_key);
+        $response = json_encode([
+            'text' => 'Success',
+            'to' => $this->phone_number
+        ]);
         return [
             'response' => json_decode($response, true),
             'phone_number' => $customer->phone_number,

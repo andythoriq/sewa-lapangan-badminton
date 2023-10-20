@@ -51,12 +51,9 @@ const Verification = () => {
   }, [currentPage, changeStatus]);
 
   const openModalTrx = (e) => {
-    // console.log(e.substring(30));
-    const bookingCodeNew = e.split("/")[4];
-    // console.log(bookingCodeNew);
 
-    setBookingCode(bookingCodeNew);
-    handleCheckDetail(bookingCodeNew);
+    setBookingCode(e);
+    handleCheckDetail(e);
   };
 
   const TableRowsAll = ({ rows }) => {

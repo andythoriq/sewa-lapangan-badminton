@@ -8,7 +8,7 @@ use LaravelQRCode\Facades\QRCode;
 
 trait CreateQrCode
 {
-    public function createQrCode(string $booking_code, string $frontend_url)
+    public function createQrCode(string $booking_code)
     {
         $qrCodePath = 'qr-code-images/' . $booking_code . '.png';
         // QrCode::size(250)->generate(env('APP_URL') . '/api/booking-verification/' . $booking_code, public_path("storage/$qrCodePath"));
@@ -17,7 +17,7 @@ trait CreateQrCode
         // $image = QrCode::format('svg')->size(250)->generate($frontend_url . '/verification/' . $booking_code);
         // Storage::disk('public')->put($qrCodePath, $image);
         // Storage::put($qrCodePath, $qrCode->output('png'));
-        QrCode::text($frontend_url . '/verification/' . $booking_code)
+        QrCode::text($booking_code)
             ->setSize(12)
             ->setOutfile('public/storage/' . $qrCodePath)
             ->png();

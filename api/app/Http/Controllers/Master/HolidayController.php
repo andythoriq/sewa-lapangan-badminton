@@ -25,18 +25,27 @@ class HolidayController extends Controller
         return response()->json($holidays);
     }
 
-    public function calendar()
+    public function calendar(Request $request)
     {
-        $calendars = HolidayModel::select(['id', 'label AS title', 'date AS start'])
+        if ($request->input('year')) {
+            $calendars = HolidayModel::select(['id', 'label AS title', 'date AS start'])
+                        ->orderBy('date', 'asc')
+                        ->whereYear('date', $request->input('year'))
+                        ->get();
+        } else {
+            $calendars = HolidayModel::select(['id', 'label AS title', 'date AS start'])
             ->orderBy('date', 'asc')
-                ->get();
+            ->get();
+        }
         $response = [
             'calendars'=>$calendars,
         ];
-        if (Carbon::now('Asia/Jakarta')->month === 12) {
+        $now = Carbon::now('Asia/Jakarta');
+        if ($now->month === 12) {
             $response['alert'] = [
                 'title' => "it's December already",
-                'message' => 'Time to add a new holiday schedule for the next year'
+                'message' => 'Time to add a new holiday schedule for the next year (' . $now->year + 1 . ')',
+                'year' => $now->year + 1
             ];
         }
         return response()->json($response);

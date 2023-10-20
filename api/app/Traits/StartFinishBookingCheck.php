@@ -13,7 +13,7 @@ trait StartFinishBookingCheck
         $operational_times = ConfigModel::getOpenTime();
         $currentDay = strtolower(Carbon::now('Asia/Jakarta')->dayName);
 
-        $operationalTimeToday = null;
+        $operationalTimeToday = [];
         foreach ($operational_times as $time) {
             if ($time['day'] === $currentDay) {
                 $operationalTimeToday = $time;
@@ -25,8 +25,8 @@ trait StartFinishBookingCheck
             $operationalStart = Carbon::parse($operationalTimeToday['start'], 'Asia/Jakarta');
             $operationalFinish = Carbon::parse($operationalTimeToday['finish'], 'Asia/Jakarta');
 
-            $bookingStartTimestamp = Carbon::parse($bookingStart, 'Asia/Jakarta');
-            $bookingFinishTimestamp = Carbon::parse($bookingFinish, 'Asia/Jakarta');
+            $bookingStartTimestamp = Carbon::parse(Carbon::parse($bookingStart, 'Asia/Jakarta')->format('H:i'), 'Asia/Jakarta');
+            $bookingFinishTimestamp = Carbon::parse(Carbon::parse($bookingFinish, 'Asia/Jakarta')->format('H:i'), 'Asia/Jakarta');
 
             if (! ($bookingStartTimestamp->gte($operationalStart) && $bookingFinishTimestamp->lte($operationalFinish))) {
                 throw ValidationException::withMessages(['start' => ['Your booking time is outside of operational hours.']]);

@@ -30,7 +30,7 @@ class RegularRequest extends FormRequest
         $customer_code = isset($this->customer) ? ($this->customer->customer_code ?? null) : null;
 
         $rule = [
-            'name' => ['required', 'regex:/^[A-Za-z\s]+$/', 'min:3', 'max:60'],
+            'name' => ['required', 'regex:/^[A-Z][a-z]+((\s[A-Z][a-z]+)*)$/u', 'min:3', 'max:60'],
             'phone_number' => ['required', 'numeric', 'digits_between:10,20', Rule::unique('tb_customer', 'phone_number')->ignore($customer_code, 'customer_code')],
             'deposit' => ['nullable', 'numeric', 'max:1000000.00'],
             'debt' => ['nullable', 'numeric', 'max:1000000.00'],
@@ -39,7 +39,7 @@ class RegularRequest extends FormRequest
 
         if ($this->route()->getName() == 'update-regular') {
             $rule = [
-                'name' => ['required', 'regex:/^[A-Za-z\s]+$/', 'min:3', 'max:60'],
+                'name' => ['required', 'regex:/^[A-Z][a-z]+((\s[A-Z][a-z]+)*)$/u', 'min:3', 'max:60'],
                 'phone_number' => ['required', 'numeric', 'digits_between:10,20', Rule::unique('tb_customer', 'phone_number')->ignore($customer_code, 'customer_code')],
                 'deposit' => ['nullable', 'numeric', 'max:1000000.00'],
                 'debt' => ['nullable', 'numeric', 'max:1000000.00'],
