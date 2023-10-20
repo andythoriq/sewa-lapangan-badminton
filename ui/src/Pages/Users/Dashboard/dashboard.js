@@ -92,7 +92,7 @@ const Dashboard = () => {
                   <h3> {dashboard.canceled ?? 0} </h3>
                   <p> Cancelled </p>
                 </div>
-                <img src="./assets/icon/cancel.png" className="img" alt="..." style={{ width: "80px" }} />
+                <img src="./assets/icon/Cancel.png" className="img" alt="..." style={{ width: "80px" }} />
               </div>
             </div>
 
