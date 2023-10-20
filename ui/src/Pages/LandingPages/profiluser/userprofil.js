@@ -10,53 +10,58 @@ import axios from "../../../api/axios";
 import Swal from "sweetalert2";
 import Loader from "../../../Components/Loader/Loading";
 const ProfilUser = () => {
-  const [name, setName] = useState('')
-  const [errors, setErrors] = useState([])
-  const [customer, setCustomer] = useState({})
+  const [name, setName] = useState("");
+  const [errors, setErrors] = useState([]);
+  const [customer, setCustomer] = useState({});
 
-  const [effectTrigger, setEffectTrigger] = useState(false)
+  const [effectTrigger, setEffectTrigger] = useState(false);
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    axios.get('/api/me')
+    axios
+      .get("/api/me")
       .then(({ data }) => {
-        setCustomer(data)
-        setName(data.name)
+        setCustomer(data);
+        setName(data.name);
       })
       .catch((e) => {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       });
-  }, [effectTrigger])
+  }, [effectTrigger]);
 
   const handleUpdate = async () => {
     try {
       await axios.get("/sanctum/csrf-cookie");
-      const response = await axios.post("/api/update-customer-name", { name: name, customer_code: secureLocalStorage.getItem('customer_code') });
+      const response = await axios.post("/api/update-customer-name", { name: name, customer_code: secureLocalStorage.getItem("customer_code") });
       setErrors("");
-      Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false })
-      .then(result => {
+      Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
         if (result.isConfirmed) {
-          handleClose()
-          setName('')
-          setEffectTrigger(!effectTrigger)
-          secureLocalStorage.setItem('name', name)
+          handleClose();
+          setName("");
+          setEffectTrigger(!effectTrigger);
+          secureLocalStorage.setItem("name", name);
         }
-      })
+      });
     } catch (e) {
       if (e?.response?.status === 422) {
-        setErrors(e.response.data.errors)
+        setErrors(e.response.data.errors);
       } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
         Swal.fire({
-          icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
+          icon: "error",
+          title: "Error!",
+          html: e.response.data.message,
+          showConfirmButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         });
       } else {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
       }
     }
-  }
+  };
 
   const TableRows = ({ rows }) => {
     return rows.map((val, index) => {
@@ -71,15 +76,15 @@ const ProfilUser = () => {
           <td>{val.booking_code}</td>
           <td>{val.created_at}</td>
         </tr>
-      )
+      );
     });
-  }
+  };
 
-  return ( customer && customer.rentals ? 
+  return customer && customer.rentals ? (
     <>
       <NavbarPublic />
       <div className="container py-5" style={{ marginTop: "50px", marginBottom: "172px" }}>
-        <div className="row">
+        <div className="row m-auto">
           <div className="col-lg-3">
             <div className="card text-center p-5">
               <div className="card-body">
@@ -96,41 +101,44 @@ const ProfilUser = () => {
             <div className="row">
               <div className="shadow border rounder p-5 mb-4 bg-white ">
                 <h5>Details</h5>
-                <b className="mb-2">Full Name: </b>{customer.name}
+                <b className="mb-2">Full Name</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; {customer.name}
                 <br />
-                <b className="mb-2">Phone number: </b>{customer.phone_number}
+                <b className="mb-2">Phone number</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; {customer.phone_number}
                 <br />
-                <b className="mb-2">Membership status: </b>{customer.membership_status === 'R' ? 'Regular' : 'Member'}
+                <b className="mb-2">Membership status</b>&nbsp;:&nbsp;{customer.membership_status === "R" ? "Regular" : "Member"}
                 <br />
-                <b className="mb-2">Active period: </b>{customer.membership_status === 'M' && customer.member_active_period}
+                <b className="mb-2">Active period</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; {customer.membership_status === "M" && customer.member_active_period}
                 <br />
                 {/* <b className="mb-2">Status: </b>{customer.status === 'Y' ? 'active' : 'in active'}
                 <br /> */}
-                <b className="mt-3">Deposit: </b>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(customer.deposit)}
+                <b className="mt-3">Deposit</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;{" "}
+                {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(customer.deposit)}
                 <br />
-                <b className="mt-3">Debt: </b>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(customer.debt)}
+                <b className="mt-3">Debt</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;{" "}
+                {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(customer.debt)}
                 <br />
               </div>
             </div>
+          </div>
+
+          <div className="card mt-3">
             <div className="row">
               <div className="table-responsive">
-                <table className="table table-hover" border={1}>
+                <table className="table table-hover mt-4" border={1}>
                   <thead>
                     <tr>
-                      <th width={'1%'}>No</th>
-                      <th width={'20%'}>start</th>
-                      <th width={'20%'}>finish</th>
-                      <th width={'1%'}>status</th>
-                      <th width={'15%'}>price</th>
-                      <th width={'15%'}>court</th>
-                      <th width={'15%'}>booking code</th>
-                      <th width={'15%'}>booked at</th>
+                      <th width={"2%"}>No</th>
+                      <th width={"15%"}>start</th>
+                      <th width={"15%"}>finish</th>
+                      <th width={"10%"}>status</th>
+                      <th width={"15%"}>price</th>
+                      <th width={"15%"}>court</th>
+                      <th width={"15%"}>booking code</th>
+                      <th width={"15%"}>booked at</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <TableRows
-                      rows={customer.rentals}
-                    />
+                    <TableRows rows={customer.rentals} />
                   </tbody>
                 </table>
               </div>
@@ -145,14 +153,14 @@ const ProfilUser = () => {
           <Modal.Title>Edit Customer</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <Row>
-              <Col className="col-12 col-md-12">
-                <Form.Group>
-                  <FormInput type="text" name="name" label="Change name" placeholder={customer.name} value={name} onChange={(e) => setName(e.target.value)} />
-                  {errors.name && <span className="text-danger">{errors.name[ 0 ]}</span>}
-                </Form.Group>
-              </Col>
-            </Row>
+          <Row>
+            <Col className="col-12 col-md-12">
+              <Form.Group>
+                <FormInput type="text" name="name" label="Change name" placeholder={customer.name} value={name} onChange={(e) => setName(e.target.value)} />
+                {errors.name && <span className="text-danger">{errors.name[0]}</span>}
+              </Form.Group>
+            </Col>
+          </Row>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="success" className="btn-sm" onClick={handleUpdate}>
@@ -166,7 +174,9 @@ const ProfilUser = () => {
           <p className="copyright"> &copy; Copyright 2023 PKL Cibione. All Rights Reserved</p>
         </div>
       </div>
-    </> : <Loader />
+    </>
+  ) : (
+    <Loader />
   );
 };
 

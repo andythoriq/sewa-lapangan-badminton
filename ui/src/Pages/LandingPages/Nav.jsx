@@ -92,13 +92,13 @@ const Landing = () => {
       {/* navbar */}
       <Navbar expand="lg" className="nav nav-expand-md nav-bg">
         <Container>
-          <Navbar.Brand href="#">
+          <Navbar.Brand href="#" className="mt-3">
             {/* <img src="./brand.png" alt=".." style={{ width: "35px" }} /> */}
             <span className="fw-bold text-light mt-3"> Shuttlebook.</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbar" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-expanded="false" aria-label="Toggle navigation" className="navbar shadow-none border-0 bg-white" />
           <Navbar.Collapse id="navbarNav">
-            <Nav className="ms-auto mt-3" style={{ maxHeight: "100px" }}>
+            <Nav className="mt-3" style={{ maxHeight: "100px", marginLeft: "360px" }}>
               <Nav.Link href="#about" style={{ marginRight: "20px", color: "white" }}>
                 About
               </Nav.Link>
@@ -109,63 +109,60 @@ const Landing = () => {
                 Services
               </Nav.Link>
             </Nav>
-            {secureLocalStorage.getItem("name") ? (
-              <div className="text-white">
-                <Dropdown>
-                  <Dropdown.Menu>
-                    `{" "}
-                    <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }}>
-                      <Link to={'/profile-user'}>Profile</Link>
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      style={{ marginRight: "30px", color: "black" }}>
-                      <Link to={'/dashboard-user'}>Dashboard</Link>
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      eventKey="2"
-                      onClick={() => {
-                        const customerExpiration = new Date(secureLocalStorage.getItem("expiration"));
-                        const now = new Date();
-                        const timeDiff = customerExpiration - now;
-                        const minutesRemaining = Math.ceil(timeDiff / 1000 / 60);
-                        Swal.fire({
-                          icon: "warning",
-                          title: "Are you sure?",
-                          html: `Are you sure to logout from this web? <br /> ${
-                            minutesRemaining > 0 ? `you cannot login again more than once in ${minutesRemaining <= 1 ? minutesRemaining + " minute" : minutesRemaining + " minutes"}` : ""
-                          }`,
-                          showConfirmButton: true,
-                          showCancelButton: true,
-                          allowOutsideClick: false,
-                          allowEscapeKey: false,
-                        }).then((result) => {
-                          if (result.isConfirmed) {
-                            handleLogout();
-                          }
-                        });
-                      }}
-                    >
-                      <span>Logout</span>
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                  <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                    <div className="mt-3">
-                      <img src={`${dirIcon}user-circle.png`} alt="" style={{ width: "35px" }} /> <span className="localstorge m-auto">{secureLocalStorage.getItem("name")}</span>
-                    </div>
-                  </Dropdown.Toggle>
-                </Dropdown>
-              </div>
-            ) : (
-             <div className="ms-auto mt-3">
-               <Link to="/userstep" className="btn me-2 btn-signin" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
+          </Navbar.Collapse>
+          {secureLocalStorage.getItem("name") ? (
+            <div className="text-white">
+              <Dropdown>
+                <Dropdown.Menu style={{ marginLeft: "-125px" }}>
+                  `{" "}
+                  <Dropdown.Item eventKey="1" style={{ marginTop: "-20px" }}>
+                    <Link to={"/profile-user"}>Profile</Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item style={{ marginRight: "10px", color: "black" }}>
+                    <Link to={"/dashboard-user"}>Dashboard</Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    eventKey="2"
+                    onClick={() => {
+                      const customerExpiration = new Date(secureLocalStorage.getItem("expiration"));
+                      const now = new Date();
+                      const timeDiff = customerExpiration - now;
+                      const minutesRemaining = Math.ceil(timeDiff / 1000 / 60);
+                      Swal.fire({
+                        icon: "warning",
+                        title: "Are you sure?",
+                        html: `Are you sure to logout from this web? <br /> ${minutesRemaining > 0 ? `you cannot login again more than once in ${minutesRemaining <= 1 ? minutesRemaining + " minute" : minutesRemaining + " minutes"}` : ""}`,
+                        showConfirmButton: true,
+                        showCancelButton: true,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          handleLogout();
+                        }
+                      });
+                    }}
+                  >
+                    <span>Logout</span>
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+                <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                  <div className="mt-3">
+                    <img src={`${dirIcon}user-circle.png`} alt="" style={{ width: "35px" }} /> <span className="localstorge">{secureLocalStorage.getItem("name")}</span>
+                  </div>
+                </Dropdown.Toggle>
+              </Dropdown>
+            </div>
+          ) : (
+            <div className="ms-auto mt-3">
+              <Link to="/userstep" className="btn me-1 btn-signin" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
                 Sign In
               </Link>
-              <Link to="/register"className="btn me-5 btn-Registrion" style={{ borderRadius: 40, color: "white" }}>
+              <Link to="/register" className="btn btn-Registrion" style={{ borderRadius: 40, color: "white" }}>
                 Registration
               </Link>
-             </div>
-            )}
-          </Navbar.Collapse>
+            </div>
+          )}
         </Container>
       </Navbar>
       {/* akhir navbar */}
@@ -192,7 +189,7 @@ const Landing = () => {
                   <img src="./assets/img/bg-lan.jpg" alt="..." />
                 </div>
               </div>
-              <div className="col-12 col-lg-5  text-container">
+              <div className="col-12 col-lg-6  text-container">
                 <div className="about-text">
                   <h2>
                     Know About <span style={{ color: "#201E37" }}>{contact.gor_name || "..."}</span>
@@ -231,7 +228,9 @@ const Landing = () => {
                 </h1>
                 {!secureLocalStorage.getItem("name") && (
                   <div className="btn btn-lg btn-light mt-3">
-                    <Link to="/userstep" className="text-decoration-none text-dark">Sign In now</Link>
+                    <Link to="/userstep" className="text-decoration-none text-dark">
+                      Sign In now
+                    </Link>
                   </div>
                 )}
               </div>

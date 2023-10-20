@@ -1,11 +1,45 @@
 import React from "react";
-import { Navbar, Container } from "react-bootstrap";
+import { Navbar, Container, Nav } from "react-bootstrap";
 import secureLocalStorage from "react-secure-storage";
 import Dropdown from "react-bootstrap/Dropdown";
+import axios from "../api/axios";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 import { dirIcon } from "./Services/config";
 import { Link } from "react-router-dom";
 
 const NavbarPublic = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await axios.get("/sanctum/csrf-cookie");
+      await axios.post("/api/logout");
+      secureLocalStorage.clear();
+      Swal.fire({ icon: "success", title: "Logged out!", showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500 });
+      setTimeout(function () {
+        navigate("/landing-page", { replace: true });
+      }, 1500);
+    } catch (e) {
+      if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          html: e.response.data.message,
+          showConfirmButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            secureLocalStorage.clear();
+          }
+        });
+      } else {
+        secureLocalStorage.clear();
+      }
+    }
+  };
+
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <a
       href="/#"
@@ -22,27 +56,22 @@ const NavbarPublic = () => {
     <Navbar expand="lg" className="nav-bg">
       <Container>
         <Navbar.Brand href="/landing-page">
-          <img src="./logo.png" alt="bfb" />
-          <b className="text-white" style={{ paddingLeft: 5, fontSize: 22 }}>
-            BFB
-          </b>
+          {/* <img src="./brand.png" alt=".." style={{ width: "35px" }} /> */}
+          <span className="fw-bold text-light mt-3"> Shuttlebook.</span>
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbartoggler" type="button" data-bs-toggle="offcanvas" data-bs-target="offcanvasNavbar" ria-controls="offcanvasNavbar" className="navbar-toogler bg-white"/>
+        <Navbar.Toggle aria-controls="navbartoggler" type="button" data-bs-toggle="offcanvas" data-bs-target="offcanvasNavbar" ria-controls="offcanvasNavbar" className="navbar-toogler bg-white" />
         <Navbar.Collapse id="navbarScroll">
-          {/* <Nav className="ms-auto" style={{ maxHeight: "100px" }} navbarScroll>
-            <Nav.Link href="/landing-page" style={{ marginRight: "30px", color: "white" }}>
-              About
-            </Nav.Link>
-            <Nav.Link href="/landing-page" style={{ marginRight: "30px", color: "white" }}>
-              Court
-            </Nav.Link>
-            <Nav.Link href="/landing-page" style={{ marginRight: "30px", color: "white" }}>
-              Services
-            </Nav.Link>
+          <Nav className="ms-auto" style={{ maxHeight: "100px" }} navbarScroll>
             <Nav.Link href="/landing-page" style={{ marginRight: "30px", color: "white" }}>
               Home
             </Nav.Link>
-          </Nav> */}
+            <Nav.Link href="/landing-page" style={{ marginRight: "30px", color: "white" }}>
+              Schedule
+            </Nav.Link>
+            <Nav.Link href="/landing-page" style={{ marginRight: "30px", color: "white" }}>
+              History Booking
+            </Nav.Link>
+          </Nav>
           {secureLocalStorage.getItem("name") ? (
             <div className="text-white ms-auto" style={{ maxHeight: "100px" }} >
                 <Dropdown>
