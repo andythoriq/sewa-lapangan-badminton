@@ -209,7 +209,7 @@ const CreateBookingFormMember = () => {
   return (
     <>
       <Form>
-        <Col className="m-2 col-12 col-md-9 mb-3">
+        <Col className="m-2 col-12 col-md-6 mb-3">
           <Form.Label>Customer</Form.Label>
           <Form.Select name="customer" className="form-select form-select-sm" onChange={onChangeSelectCustomer} disabled={showSendBookingCode}>
             <option value="">-- Choose Customer --</option>
