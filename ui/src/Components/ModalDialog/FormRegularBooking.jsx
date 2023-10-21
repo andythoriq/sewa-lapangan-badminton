@@ -33,6 +33,23 @@ const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice, label
     }
   }, [ values.start, values.finish ])
 
+  useEffect(() => {
+    if (values.start) {
+      const defaultFinish = new Date(values.start)
+      defaultFinish.setHours(defaultFinish.getHours() + 1)
+
+      defaultFinish.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })
+
+      const year = defaultFinish.getFullYear()
+      const month = (defaultFinish.getMonth() + 1).toString().padStart(2, '0')
+      const day = defaultFinish.getDate().toString().padStart(2, '0')
+      const hours = defaultFinish.getHours().toString().padStart(2, '0')
+      const minutes = defaultFinish.getMinutes().toString().padStart(2, '0')
+
+      setValues({ ...values, finish: `${year}-${month}-${day}T${hours}:${minutes}` })
+    }
+  }, [values.start])
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (showSendBookingCode) {

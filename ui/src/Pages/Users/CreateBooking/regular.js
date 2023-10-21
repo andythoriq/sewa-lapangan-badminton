@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage';
 import { useGeneralContext } from "../../../context/generalContext";
+import Datetime from "react-datetime"
 
 const CreateBookingFormRegular = () => {
   const navigate = useNavigate();
@@ -52,6 +53,23 @@ const CreateBookingFormRegular = () => {
       setTotallyHour(Math.round(diffInHours * 100) / 100)
     }
   }, [values.start_time, values.finish_time])
+
+  useEffect(() => {
+    if (values.start_time) {
+      const defaultFinish = new Date(values.start_time)
+      defaultFinish.setHours(defaultFinish.getHours() + 1)
+
+      defaultFinish.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })
+
+      const year = defaultFinish.getFullYear();
+      const month = (defaultFinish.getMonth() + 1).toString().padStart(2, '0'); 
+      const day = defaultFinish.getDate().toString().padStart(2, '0');
+      const hours = defaultFinish.getHours().toString().padStart(2, '0');
+      const minutes = defaultFinish.getMinutes().toString().padStart(2, '0');
+
+      setValues({ ...values, finish_time: `${year}-${month}-${day}T${hours}:${minutes}` })
+    }
+  }, [values.start_time])
 
   useEffect(() => {
     const court = dataCourt.find(court => parseInt(court.value) === parseInt(values.court))

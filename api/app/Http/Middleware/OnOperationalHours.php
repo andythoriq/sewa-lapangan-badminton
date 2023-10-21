@@ -37,6 +37,6 @@ class OnOperationalHours
             }
         }
 
-        abort(403, 'You are outside of operational hours.');
+        abort(403, 'You are outside of operational hours. We\'re not open today.');
     }
 }

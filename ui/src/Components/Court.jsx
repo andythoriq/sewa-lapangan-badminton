@@ -17,13 +17,14 @@ function Court({ id, label, image_path, description, initial_price, index }) {
           axios.get("/api/get-customer-type").then(({data}) => {
             setMembershipType(data)
             setShow(true);
+            secureLocalStorage.removeItem('id_to_open')
           })
         } catch (e) {
           Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
         }
       }
     }
-  }, [])
+  }, [secureLocalStorage.getItem('id_to_open')])
   const handleShowBooking = async () => {
     if (secureLocalStorage.getItem("customer_code")) {
       try {

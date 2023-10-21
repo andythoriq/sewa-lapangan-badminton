@@ -194,6 +194,20 @@ const FormMemberBooking = ({ isShow, handleClose, courtProp }) => {
           onUpdate={(index, name, value) => {
             const newRowData = [ ...rows ];
             newRowData[ index ][ name ] = value;
+            if (newRowData[index]['start_time']) {
+              const defaultFinish = new Date(newRowData[index]['start_time'])
+              defaultFinish.setHours(defaultFinish.getHours() + 1)
+
+              defaultFinish.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })
+
+              const year = defaultFinish.getFullYear();
+              const month = (defaultFinish.getMonth() + 1).toString().padStart(2, '0');
+              const day = defaultFinish.getDate().toString().padStart(2, '0');
+              const hours = defaultFinish.getHours().toString().padStart(2, '0');
+              const minutes = defaultFinish.getMinutes().toString().padStart(2, '0');
+
+              newRowData[index]['finish_time'] = `${year}-${month}-${day}T${hours}:${minutes}`
+            }
             setRows(newRowData);
           }} />
         <div className="row justify-content-center">

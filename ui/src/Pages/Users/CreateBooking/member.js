@@ -3,6 +3,7 @@ import { Form, Row, Col } from "react-bootstrap";
 import FormSelect from "../../../Components/Form/select";
 import FormInput from "../../../Components/Form/input";
 // import { Trash3 } from "react-bootstrap-icons";
+// import Datetime from "react-datetime"
 import "./form.css";
 import axios from "../../../api/axios";
 import Swal from "sweetalert2";
@@ -54,25 +55,21 @@ const CreateBookingFormMember = () => {
 
   const BoxRow = ({ row, onRemove, onUpdate, index }) => {
     const { court, start_time, finish_time } = row;
-    const handleChange = (event) => {
-      const { name, value } = event.target;
-      onUpdate(name, value);
-    };
     return (
       <div>
         <Row className="m-1 p-2 box-border">
           <Col className="col-12 column">
             <Row>
               <Col className="col-12 col-md-4">
-                <FormSelect plugin={pluginSelect} name="court" label="Court" menuPlacement="top" options={dataCourt} selected={court} onChange={(value) => onUpdate("court", value)} isDisabled={showSendBookingCode} />
+                <FormSelect plugin={pluginSelect} label="Court" menuPlacement="top" options={dataCourt} selected={court} onChange={(value) => onUpdate("court", value)} isDisabled={showSendBookingCode} />
                 {errors[`rentals.${index}.court_id`] && <span className="text-danger">{errors[`rentals.${index}.court_id`][0]}</span>}
               </Col>
               <Col className="col-12 col-md-4">
-                <FormInput type="datetime-local" name="start_time" label="Start Time Booking" value={start_time} onChange={handleChange} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 16)} />
+                <FormInput type="datetime-local" label="Start Time Booking" value={start_time} onChange={(e) => onUpdate("start_time", e.target.value)} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 16)} />
                 {errors[`rentals.${index}.start`] && <span className="text-danger">{errors[`rentals.${index}.start`][0]}</span>}
               </Col>
               <Col className="col-12 col-md-4">
-                <FormInput type="datetime-local" name="finish_time" label="Finish Time Booking" value={finish_time} onChange={handleChange} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 16)} />
+                <FormInput type="datetime-local" label="Finish Time Booking" value={finish_time} onChange={(e) => onUpdate("finish_time", e.target.value)} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 16)} />
                 {errors[`rentals.${index}.finish`] && <span className="text-danger">{errors[`rentals.${index}.finish`][0]}</span>}
               </Col>
               <Col className="col-12 mt-3 text-right">
@@ -111,6 +108,21 @@ const CreateBookingFormMember = () => {
   const updateRow = (index, name, value) => {
     const newRowData = [...rows];
     newRowData[index][name] = value;
+    if (newRowData[index]['start_time'] && !newRowData[index]['finish_time']) {
+      const defaultFinish = new Date(newRowData[index]['start_time'])
+      defaultFinish.setHours(defaultFinish.getHours() + 1)
+
+      defaultFinish.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })
+
+      const year = defaultFinish.getFullYear();
+      const month = (defaultFinish.getMonth() + 1).toString().padStart(2, '0');
+      const day = defaultFinish.getDate().toString().padStart(2, '0');
+      const hours = defaultFinish.getHours().toString().padStart(2, '0');
+      const minutes = defaultFinish.getMinutes().toString().padStart(2, '0');
+
+      newRowData[ index ][ 'finish_time' ] = `${year}-${month}-${day}T${hours}:${minutes}`
+    }
+
     setRows(newRowData);
   };
 

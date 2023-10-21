@@ -22,7 +22,7 @@ class OnHoliday
         $isHoliday = HolidayModel::where('date', $currentDate)->exists();
 
         if ($isHoliday) {
-            abort(403, 'Access Restricted on Holiday.');
+            abort(403, 'Access Restricted on Holiday. We\'re not open today.');
         }
         return $next($request);
     }
