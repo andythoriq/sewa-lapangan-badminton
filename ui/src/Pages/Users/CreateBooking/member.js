@@ -3,7 +3,7 @@ import { Form, Row, Col } from "react-bootstrap";
 import FormSelect from "../../../Components/Form/select";
 import FormInput from "../../../Components/Form/input";
 // import { Trash3 } from "react-bootstrap-icons";
-// import Datetime from "react-datetime"
+import Datetime from "react-datetime"
 import "./form.css";
 import axios from "../../../api/axios";
 import Swal from "sweetalert2";
@@ -54,31 +54,79 @@ const CreateBookingFormMember = () => {
   const pluginSelect = "react-select";
 
   const BoxRow = ({ row, onRemove, onUpdate, index }) => {
-    const { court, start_time, finish_time } = row;
+    const { court, start_time, finish_time, date, s_open, f_open } = row;
+
+    const handleChangeTime = (timeName, value) => {
+      const hours = String(value.getHours()).padStart(2, '0');
+      const minutes = String(value.getMinutes()).padStart(2, '0');
+      onUpdate(timeName, `${hours}:${minutes}`)
+    }
+
     return (
       <div>
         <Row className="m-1 p-2 box-border">
           <Col className="col-12 column">
             <Row>
-              <Col className="col-12 col-md-4">
+              <Col className="col-12 col-md-3">
                 <FormSelect plugin={pluginSelect} label="Court" menuPlacement="top" options={dataCourt} selected={court} onChange={(value) => onUpdate("court", value)} isDisabled={showSendBookingCode} />
                 {errors[`rentals.${index}.court_id`] && <span className="text-danger">{errors[`rentals.${index}.court_id`][0]}</span>}
               </Col>
-              <Col className="col-12 col-md-4">
-                <FormInput type="datetime-local" label="Start Time Booking" value={start_time} onChange={(e) => onUpdate("start_time", e.target.value)} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 16)} />
+              <Col className="col-12 col-md-3">
+                <FormInput type="date" label="Date" value={date} onChange={(e) => onUpdate("date", e.target.value)} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 10)} />
+              </Col>
+              <Col className="col-12 col-md-3">
+                <Form.Label className="mb-1" onClick={() => onUpdate('s_open', !s_open)}>Start {s_open && <small>click to close</small>}</Form.Label>
+                <Datetime
+                  value={start_time}
+                  isValidDate={current => current.isSameOrAfter(new Date().setDate(new Date().getDate() - 1))}
+                  onChange={value => handleChangeTime("start_time", value._d)}
+                  dateFormat={false}
+                  timeFormat="HH:mm"
+                  timeConstraints={{ minutes: { step: 30 } }}
+                  inputProps={{ disabled: (showSendBookingCode || !date), readOnly: true, onClick: () => onUpdate('s_open', !s_open)}}
+                  open={s_open}
+                />
                 {errors[`rentals.${index}.start`] && <span className="text-danger">{errors[`rentals.${index}.start`][0]}</span>}
               </Col>
-              <Col className="col-12 col-md-4">
-                <FormInput type="datetime-local" label="Finish Time Booking" value={finish_time} onChange={(e) => onUpdate("finish_time", e.target.value)} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 16)} />
+              <Col className="col-12 col-md-3">
+                <Form.Label className="mb-1" onClick={() => onUpdate('f_open', !f_open)}>Finish {f_open && <small>click to close</small>}</Form.Label>
+                <Datetime
+                  value={finish_time}
+                  onChange={value => handleChangeTime("finish_time", value._d)}
+                  dateFormat={false}
+                  timeFormat="HH:mm"
+                  timeConstraints={{ minutes: { step: 30 } }}
+                  inputProps={{ disabled: (showSendBookingCode || !date), readOnly: true, onClick: () => {
+                    onUpdate('f_open', !f_open)
+                    if (start_time && !finish_time) {
+                      const [ hours, minutes ] = start_time.split(':');
+
+                      const date = new Date();
+                      date.setHours(parseInt(hours, 10));
+                      date.setMinutes(parseInt(minutes, 10));
+                      date.setSeconds(0);
+
+                      date.setHours(date.getHours() + 1);
+
+                      const finishHours = String(date.getHours()).padStart(2, '0');
+                      const finishMinutes = String(date.getMinutes()).padStart(2, '0');
+
+                      onUpdate("finish_time", `${finishHours}:${finishMinutes}`)
+                    }
+                  }}}
+                  open={f_open}
+                />
                 {errors[`rentals.${index}.finish`] && <span className="text-danger">{errors[`rentals.${index}.finish`][0]}</span>}
               </Col>
               <Col className="col-12 mt-3 text-right">
                 {index === rows.length - 1 && (
                   <>
-                    <button type="button" className="btn btn-sm me-md-2 text-white" onClick={onRemove} disabled={showSendBookingCode} style={{ background: "#B21830", color: "white" }}>
-                      {/* <Trash3 className="text-white" style={{ marginTop: -5 }} /> */}
-                      Delete
-                    </button>
+                    {rows.length > 1 && (
+                      <button type="button" className="btn btn-sm me-md-2 text-white" onClick={onRemove} disabled={showSendBookingCode} style={{ background: "#B21830", color: "white" }}>
+                        {/* <Trash3 className="text-white" style={{ marginTop: -5 }} /> */}
+                        Delete
+                      </button>
+                    )}
                     <button type="button" className="btn btn-sm me-md-2" onClick={addRowBox} disabled={showSendBookingCode} style={{ background: "#B21830", color: "white" }}>
                       Add
                     </button>
@@ -92,7 +140,7 @@ const CreateBookingFormMember = () => {
     );
   };
 
-  const dataDefault = { court: "", start_time: "", finish_time: "" };
+  const dataDefault = { court: "", start_time: "", finish_time: "", date: "", start_datetime: "", finish_datetime: "", s_open: false, f_open: false };
   const [rows, setRows] = useState([dataDefault]);
 
   const addRowBox = () => {
@@ -107,20 +155,14 @@ const CreateBookingFormMember = () => {
 
   const updateRow = (index, name, value) => {
     const newRowData = [...rows];
-    newRowData[index][name] = value;
-    if (newRowData[index]['start_time'] && !newRowData[index]['finish_time']) {
-      const defaultFinish = new Date(newRowData[index]['start_time'])
-      defaultFinish.setHours(defaultFinish.getHours() + 1)
+    newRowData[index][name] = value; 
 
-      defaultFinish.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })
+    if (newRowData[index]['start_time']) {
+      newRowData[index]['start_datetime'] = `${newRowData[index]['date']} ${newRowData[index]['start_time']}:00`
+    }
 
-      const year = defaultFinish.getFullYear();
-      const month = (defaultFinish.getMonth() + 1).toString().padStart(2, '0');
-      const day = defaultFinish.getDate().toString().padStart(2, '0');
-      const hours = defaultFinish.getHours().toString().padStart(2, '0');
-      const minutes = defaultFinish.getMinutes().toString().padStart(2, '0');
-
-      newRowData[ index ][ 'finish_time' ] = `${year}-${month}-${day}T${hours}:${minutes}`
+    if (newRowData[index]['finish_time']) {
+      newRowData[index]['finish_datetime'] = `${newRowData[index]['date']} ${newRowData[index]['finish_time']}:00`
     }
 
     setRows(newRowData);
@@ -130,9 +172,9 @@ const CreateBookingFormMember = () => {
     let totalHour = 0;
     let totalPrice = 0;
     rows.forEach((row) => {
-      if (row.start_time && row.finish_time && row.court) {
-        const start = new Date(row.start_time).getTime();
-        const finish = new Date(row.finish_time).getTime();
+      if (row.start_datetime && row.finish_datetime && row.court) {
+        const start = new Date(row.start_datetime).getTime();
+        const finish = new Date(row.finish_datetime).getTime();
         const diffInSeconds = (finish - start) / 1000;
         const diffInHours = diffInSeconds / (60 * 60);
         totalHour += Math.round(diffInHours * 100) / 100;
@@ -164,8 +206,8 @@ const CreateBookingFormMember = () => {
           customer_id: customerCode,
           user_id: secureLocalStorage.getItem("id") ?? "",
           rentals: rows.map((item) => ({
-            start: item.start_time,
-            finish: item.finish_time,
+            start: item.start_datetime,
+            finish: item.finish_datetime,
             court_id: item.court.value,
           })),
         });
