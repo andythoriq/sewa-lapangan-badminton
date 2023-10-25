@@ -70,6 +70,7 @@ const Landing = () => {
 
   const [courts, setCourts] = useState([]);
   const [contact, setContact] = useState({});
+  const [openTime, setOpenTime] = useState({})
 
   useEffect(() => {
     axios
@@ -77,6 +78,7 @@ const Landing = () => {
       .then(({ data }) => {
         setCourts(data.courts);
         setContact(data.contact);
+        setOpenTime(data.operational)
       })
       .catch((e) => {
         Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -248,13 +250,14 @@ const Landing = () => {
                 Our Courts
               </h2>
               <p className="text-dark">BFB is a sports hall that rents out courts specifically for badminton.</p>
+              <p className="text-dark">{openTime === 'not_open_today' ? <h2 className="bg-warning p-2 rounded-3">We are close today!</h2> : `On ${openTime?.day?.charAt(0).toUpperCase() + openTime?.day?.slice(1)} we are open from ${openTime?.start} to ${openTime?.finish}. `}</p>
             </div>
           </div>
 
           {/* card */}
           <div className="row row-cols-1 row-cols-md-3 g-4 py-5">
             {courts.map((court, index) => {
-              return <Court key={court.id} id={court.id} label={court.label} image_path={court.image_path} description={court.description} initial_price={court.initial_price} index={index} />;
+              return <Court key={court.id} id={court.id} label={court.label} image_path={court.image_path} description={court.description} initial_price={court.initial_price} index={index} closeToday={openTime === 'not_open_today'} />;
             })}
             {/* <div className="col">
               <div className="card card-court">

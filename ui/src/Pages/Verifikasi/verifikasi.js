@@ -80,7 +80,7 @@ const Verification = () => {
             </span>
           </td>
           <td className="text-center">{val.status === "B" ? "Booked" : val.status === "O" ? "On progress" : val.status === "F" ? "Finished" : "Canceled"}</td>
-          <td className=" d-flex justify-content-center align-items-center">
+          <td className="text-center pt-3">
             {val.status === "O" || val.status === "F" || val.status === "C" ? null : (
               <>
                 <button
@@ -109,7 +109,6 @@ const Verification = () => {
                 </button>
               </>
             )}
-            &nbsp;
             {val.status === "B" || val.status === "F" || val.status === "C" ? null : (
               <button
                 className="btn btn-sm btn-danger"
@@ -128,6 +127,15 @@ const Verification = () => {
                 finish
               </button>
             )}
+          </td>
+          <td className="text-center pt-3">
+            <button
+              className="btn btn-sm btn-danger"
+              onClick={() => {
+                handleCheckDetail(val.transaction.booking_code)
+              }} >
+              Detail
+            </button>
           </td>
         </tr>
       );
@@ -446,14 +454,17 @@ const Verification = () => {
                   <tr>
                     <th width={"1%"}>No</th>
                     <th width={"20%"}>Booking Code</th>
-                    <th width={"20%"}>Name Customer</th>
+                    <th width={"15%"}>Name Customer</th>
                     <th width={"15%"}>Court</th>
                     <th width={"24%"}>Start - Finish</th>
-                    <th width={"10%"} className="text-center">
+                    <th width={"5%"} className="text-center">
                       Status
                     </th>
-                    <th width={"10%"} className="text-center">
+                    <th width={"13%"} className="text-center">
                       Action
+                    </th>
+                    <th width="7%" className="text-center">
+                      Detail
                     </th>
                   </tr>
                 </thead>

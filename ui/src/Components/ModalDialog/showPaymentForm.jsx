@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import axios from "../../api/axios";
 
@@ -9,11 +9,21 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
 
   const [customerPaid, setCustomerPaid] = useState(0);
   const [depositInput, setDepositInput] = useState(0);
+  const [customerUpdateDeposit, setCustomerUpdateDeposit] = useState(0);
 
   const [showUseDeposit, setShowUseDeposit] = useState(false);
 
   const [errorDeposit, setErrorDeposit] = useState("");
   const [errors, setErrors] = useState([]);
+
+  useEffect(() => {
+    setCustomerPaid(0)
+    setDepositInput(0)
+    setCustomerUpdateDeposit(0)
+    setShowUseDeposit(false)
+    setErrorDeposit("")
+    setErrors([])
+  }, [isShow])
 
   const validateDepositInput = (e) => {
     const input = e.target.value;
@@ -33,6 +43,7 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
         customer_paid: customerPaid,
         input_deposit: depositInput,
         customer_deposit: 0,
+        customer_update_deposit: customerUpdateDeposit,
         total_price: transaction_total_price,
         phone_number: transaction.customer?.phone_number,
         booking_code: transaction.booking_code,
@@ -64,18 +75,28 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
                     setShowDetail(true)
                   }
                 });
+              }).catch((e) => {
+                if (e.response.status === 422) { setErrors(e.response.data.errors); } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) { 
+                  swal.fire({ icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }); 
+                } else { swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }); }
               });
             }
           });
       } else {
-        const { data } = await axios.post("/api/pay", dataRequest);
-        swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
-          if (result.isConfirmed) {
-            handleClose()
-            updateTransaction(data.transaction)
-            setShowDetail(true)
-          }
-        });
+        try {
+          const { data } = await axios.post("/api/pay", dataRequest);
+          swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+            if (result.isConfirmed) {
+              handleClose()
+              updateTransaction(data.transaction)
+              setShowDetail(true)
+            }
+          });
+        } catch (e) {
+          if (e.response.status === 422) {setErrors(e.response.data.errors);} else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
+            swal.fire({ icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+          } else {swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });}
+        }
       }
     } catch (e) {
       if (e.response.status === 422) {
@@ -102,9 +123,10 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
         <form onSubmit={(e) => {
           e.preventDefault()
           swal.fire({ icon: "warning", title: "Check before confirm!", 
-            html: `<span>Total price: ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transaction_total_price)}</span><br/>
+            html: `<strong>Total price: ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transaction_total_price)}</strong><br/>
             <span>Customer pay: ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(customerPaid)}</span><br/>
-            <span>Deposit input: ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(depositInput)}</span><br/>`, 
+            <span>Deposit input: ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(depositInput)}</span><br/>
+            <span>Update deposit: ${new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(customerUpdateDeposit)}</span><br/>`, 
             showConfirmButton: true, showCancelButton:true, allowOutsideClick: false, allowEscapeKey: false 
           }).then((result) => {
             if (result.isConfirmed) {
@@ -115,7 +137,7 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
           <div className="form-group">
             <label htmlFor="customer_paid">Payment Money</label>
             <br />
-            <input className="form-control" type="number" min={500} id="customer_paid" value={customerPaid} onChange={(e) => {
+            <input className="form-control" type="number" min={0} id="customer_paid" value={customerPaid} onChange={(e) => {
               setCustomerPaid(e.target.value)
               if (customerPaid > transaction_total_price && transaction_customer_deposit > 0) {
                 setDepositInput('')
@@ -124,17 +146,24 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
             <div id="validationServer03Feedback" className="invalid-feedback">
               Please provide a valid city.
             </div>
+            <label htmlFor="customer_update_deposit">Update Deposit</label>
+            <input className="form-control" type="number" min={0} id="customer_update_deposit" value={customerUpdateDeposit}
+             onChange={(e)=>setCustomerUpdateDeposit(e.target.value)}/>
           </div>
 
           {errors.customer_paid && <span className="text-danger">{errors.customer_paid[0]}</span>}
           {errors.phone_number && <span className="text-danger">{errors.phone_number[0]}</span>}
           {errors.booking_code && <span className="text-danger">{errors.booking_code[0]}</span>}
+          {errors.customer_deposit && <span className="text-danger">{errors.customer_deposit[0]}</span>}
+          {errors.input_deposit && <span className="text-danger">{errors.input_deposit[0]}</span>}
+          {errors.customer_update_deposit && <span className="text-danger">{errors.customer_update_deposit[0]}</span>}
           {customerPaid < transaction_total_price && transaction_customer_deposit > 0 && (
             <>
               <hr />
               <button
                 className="btn btn-sm btn-warning "
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault()
                   setShowUseDeposit(!showUseDeposit);
                   setDepositInput("");
                 }}

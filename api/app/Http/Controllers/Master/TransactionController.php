@@ -81,12 +81,13 @@ class TransactionController extends Controller
     public function pay(Request $request)
     {
         $data = $request->validate([
-            'customer_deposit' => ['nullable', 'numeric'],
-            'input_deposit' => ['nullable', 'numeric'],
-            'customer_paid' => ['required', 'numeric'],
-            'total_price' => ['required', 'numeric'],
+            'customer_deposit' => ['nullable', 'numeric', 'max:1000000.00'],
+            'input_deposit' => ['nullable', 'numeric', 'max:1000000.00'],
+            'customer_paid' => ['required', 'numeric', 'max:1000000.00'],
+            'total_price' => ['required', 'numeric', 'max:1000000.00'],
             'phone_number' => ['required', 'exists:tb_customer,phone_number'],
             'booking_code' => ['required', 'exists:tb_transaction,booking_code'],
+            'customer_update_deposit' => ['nullable', 'numeric', 'max:1000000.00']
         ]);
 
         $customer = CustomerModel::where('phone_number', $data['phone_number'])->firstOrFail();
@@ -105,6 +106,10 @@ class TransactionController extends Controller
 
         if ((float) $data['customer_deposit'] > 0) { // jika bayarnya lebih, dijadikan deposit
             $customer->deposit += (float) $data['customer_deposit'];
+        }
+
+        if ((float) $data['customer_update_deposit'] > 0) { // jika ingin menambah deposit
+            $customer->deposit += (float) $data['customer_update_deposit'];
         }
 
         if ((float) $data['input_deposit'] > 0) { // jika depositnya dipakai
