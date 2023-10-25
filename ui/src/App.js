@@ -23,7 +23,7 @@ import Step2 from "./Pages/LandingPages/Step/Step2";
 import Landing2 from "./Pages/LandingPages/Landing2";
 import Setting from "./Pages/Users/setting";
 import Rush from "./Pages/Users/DataMaster/Rush Hour/rush";
-import LoginCustomer from "./Pages/LandingPages/Step/LoginC";
+// import LoginCustomer from "./Pages/LandingPages/Step/LoginC";
 import Regular from "./Pages/Users/DataMaster/Customer/Regular";
 import Member from "./Pages/Users/DataMaster/Customer/Member";
 // import LandingBookUser from "./Pages/LandingPages/Booking/LandingBooking";
@@ -35,6 +35,7 @@ import Calendar from "./Pages/Users/DataMaster/Holidays/calendar";
 import secureLocalStorage from "react-secure-storage";
 import ProfilUser from "./Pages/LandingPages/profiluser/userprofil";
 import Register from "./Pages/LandingPages/Login user/register";
+import OTPUser from "./Pages/LandingPages/Login user/otpuser";
 // import FormProfileUser from "./Pages/LandingPages/profiluser/edituser";
 
 // export default class App extends Component {
@@ -173,6 +174,7 @@ export default function App() {
         <Route path="/userstep" element={<FormStep />} />
         <Route path="/step2" element={<Step2 />} />
         <Route path="/register" element={<Register />}/>
+        <Route path="/userotp" element={<OTPUser />}/>
         {/* <Route path="/loginc" element={<LoginCustomer />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />

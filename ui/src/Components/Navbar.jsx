@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Dropdown from "react-bootstrap/Dropdown";
 import { dirIcon } from "./Services/config";
-import { XMarkIcon, Bars3BottomLeftIcon} from "@heroicons/react/24/solid";
+import { XMarkIcon, Bars3BottomLeftIcon } from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { setToggle } from "../Reducers/menuSlice";
 import { Bars3Icon } from "@heroicons/react/24/solid";
@@ -16,7 +16,7 @@ import { useGeneralContext } from "../context/generalContext";
 
 const Navbar = () => {
   // const [selected, setSelected] = useState([]);
-  const {gorName} = useGeneralContext()
+  const { gorName } = useGeneralContext();
   const navigate = useNavigate();
   const { menuSidebar } = useSelector((state) => state.menu);
   const dispatch = useDispatch();
@@ -25,11 +25,21 @@ const Navbar = () => {
   const handleToggle = () => {
     toggle();
     document.body.classList.toggle("sb-sidenav-toggled");
+    if (window.innerWidth <= 767) {
+      Swal.fire({
+        html: "",
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        background: "transparent",
+      });
+    }
   };
 
   const handleToggle2 = () => {
     dispatch(setToggle({ menuSidebar: !menuSidebar }));
     document.body.classList.toggle("sb-sidenav-toggled");
+    Swal.close();
   };
 
   let curLoc = useLocation();
@@ -100,8 +110,8 @@ const Navbar = () => {
         {/* <div className="menu" onClick={toggle}>
           { menuOpen ? <XMarkIcon/> : <FunnelIcon /> }
         </div> */}
-        <div onClick={handleToggle} className={`sidebar-heading text-white menu_sidebar mb-3 ${menuOpen ? "open" : ""}`}>
-          {menuOpen ? <Bars3Icon style={{ color: "#fff", width: "50px" }} className="mt-0"/> : <Bars3Icon style={{ color: "#fff", width: "50px"}} className="mt-3"/>}
+        <div onClick={handleToggle} className={`sidebar-heading text-white menu_sidebar ${menuOpen ? "open" : ""}`}>
+          {menuOpen ? <Bars3Icon style={{ color: "#fff", width: "50px" }} className="mt-0" /> : <Bars3Icon style={{ color: "#fff", width: "50px" }} className="mt-0" />}
         </div>
         {/* <img src={`/${logoApp}`} alt="" />
           <b className="text-white" style={{ paddingLeft: 5, fontSize: 20 }}>
@@ -133,11 +143,11 @@ const Navbar = () => {
             </Row> */}
           </div>
         )}
-        
+
         <ul className={`menu2 m-0 align-items-center`}>
-        <div className="text-gor d-flex text-white">
-          <b style={{ marginLeft: "-20px" }}>Gor { gorName || (secureLocalStorage.getItem('gor_name') || '') }</b>
-        </div>
+          <div className="text-gor d-flex text-white">
+            <b style={{ marginLeft: "-20px" }}>Gor {gorName || secureLocalStorage.getItem("gor_name") || ""}</b>
+          </div>
           <li className="mx-2 notification-icon-menu">
             <Notification swal={Swal} />
           </li>

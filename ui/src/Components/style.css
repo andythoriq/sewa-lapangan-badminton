@@ -15,3 +15,21 @@
 #sidebar-wrapper{
     background: rgb(235, 235, 235);
 }
+
+.SideBarbtnClose {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .sb-sidenav-toggled .SideBarbtnClose {
+        display: block;
+        position: absolute;
+        margin-left: 250px;
+        margin-top: -5px;
+        color: white;
+        font-size: 20px;
+        z-index: 2001;
+        cursor: pointer;
+        font-weight: bold;
+    }
+}
