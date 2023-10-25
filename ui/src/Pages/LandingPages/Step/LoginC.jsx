@@ -57,7 +57,7 @@ const LoginCustomer = () => {
               <div className="text-danger mt-4 text-heading">Management Booking</div>
               <div className="mb-3 text-heading">Court Badminton</div>
               <div style={{ fontSize: 12 }}>
-                BFB provides various features that support the operational
+                Shuttlebook. provides various features that support the operational
                 <br />
                 management of yout Badminton sport facility
               </div>
@@ -68,7 +68,7 @@ const LoginCustomer = () => {
               <div className="d-md-none d-md-block text-center mb-2">
                 <img src={`/${logoApp}`} alt="" width={100} />
               </div>
-              <p style={{ fontSize: 20 }}>Let's login to your BFB account first</p>
+              <p style={{ fontSize: 20 }}>Let's login to your Shuttlebook. account first</p>
               <br />
               <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
                 {inputs.map((input) => (

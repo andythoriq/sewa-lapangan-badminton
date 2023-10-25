@@ -264,7 +264,7 @@ const CreateBookingFormMember = () => {
         {/* card qrcode */}
         
       </Form>
-      <div className="col-lg-6">
+      <div className="col-lg-12 d-flex justify-content-center">
           {showSendBookingCode === true && (
             <>
               <hr className="my-4 text-dark"></hr>

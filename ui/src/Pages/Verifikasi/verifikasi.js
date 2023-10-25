@@ -220,7 +220,7 @@ const Verification = () => {
             {val.court.label} ({new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(val.court.initial_price)})
           </td>
 
-          <td className=" d-md-flex justify-content-between">
+          <td className="d-flex justify-content-between">
             {val.status === "O" || val.status === "F" || val.status === "C" ? null : (
               <>
                 <button
@@ -236,7 +236,7 @@ const Verification = () => {
                   start
                 </button>
                 <button
-                  className="btn btn-sm btn-warning"
+                  className="btn btn-sm btn-warning text-white"
                   onClick={() => {
                     Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to cancel this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
                       if (result.isConfirmed) {

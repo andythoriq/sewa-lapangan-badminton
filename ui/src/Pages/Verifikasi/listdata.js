@@ -136,7 +136,7 @@ const ListData = () => {
                 <th width={"10%"}>Booking Code</th>
                 <th width={"20%"}>Name Customer</th>
                 <th width={"10%"}>Court</th>
-                <th width={"25%"}>Start - Finish</th>
+                <th width={"30%"}>Start - Finish</th>
                 <th width={"10%"} className="text-center">
                   Status
                 </th>
