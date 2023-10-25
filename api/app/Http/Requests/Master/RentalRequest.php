@@ -39,7 +39,7 @@ class RentalRequest extends FormRequest
     public function rules()
     {
         $validation = [
-            'finish' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after:start'],
+            'finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:start'],
             // 'status' => ['required', 'string', 'in:B,O,F'],
             'court_id' => ['required', 'exists:tb_court,id'],
             // 'transaction_id' => ['required', 'integer', 'exists:tb_transaction,id'],
@@ -49,11 +49,11 @@ class RentalRequest extends FormRequest
 
         switch ($this->route()->getName()) {
             case 'create-rental':
-                $validation['start'] = ['required', 'date', 'date_format:Y-m-d\TH:i', 'after_or_equal:now'];
+                $validation['start'] = ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'];
                 break;
 
             case 'update-rental':
-                $validation['start'] = ['required', 'date', 'date_format:Y-m-d\TH:i', 'after_or_equal:' . $this->created_at];
+                $validation['start'] = ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:' . $this->created_at];
                 break;
 
             case 'create-multiple-rental':
@@ -61,8 +61,8 @@ class RentalRequest extends FormRequest
                     'customer_id' => ['required', 'exists:tb_customer,customer_code'],
                     'user_id' => ['nullable', 'exists:users,id'],
                     'rentals' => ['required', 'array', 'min:1'],
-                    'rentals.*.start' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after_or_equal:now'],
-                    'rentals.*.finish' => ['required', 'date', 'date_format:Y-m-d\TH:i', 'after:rentals.*.start'],
+                    'rentals.*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'],
+                    'rentals.*.finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:rentals.*.start'],
                     // 'rentals.*.status' => ['required', 'string', 'in:B,O,F'],
                     'rentals.*.court_id' => ['required', 'exists:tb_court,id'],
                     // 'rentals.*.transaction_id' => ['required', 'integer', 'exists:tb_transaction,id'],
@@ -75,7 +75,9 @@ class RentalRequest extends FormRequest
 
     public function messages()
     {
-        $messages = [];
+        $messages = [
+            'finish.after_or_equal' => 'The start must be a date after or equal to its created date.'
+        ];
        if ($this->route()->getName() === 'create-multiple-rental') {
             foreach ($this->request->get('rentals') as $key => $val) {
                 $messages['rentals.' . $key . '.court_id.required'] = 'Court field is required.';
@@ -83,12 +85,12 @@ class RentalRequest extends FormRequest
 
                 $messages['rentals.' . $key . '.start.required'] = 'Start field is required.';
                 $messages['rentals.' . $key . '.start.date'] = 'The Start is not a valid date.';
-                $messages['rentals.' . $key . '.start.date_format'] = 'The Start does not match the Y-m-d\TH:i format.';
+                $messages['rentals.' . $key . '.start.date_format'] = 'The Start does not match the Y-m-d H:i:s format.';
                 $messages['rentals.' . $key . '.start.after_or_equal'] = 'The Start must be a date after or equal to now.';
 
                 $messages['rentals.' . $key . '.finish.required'] = 'Finish field is required.';
                 $messages['rentals.' . $key . '.finish.date'] = 'The Finish is not a valid date.';
-                $messages['rentals.' . $key . '.finish.date_format'] = 'The Finish does not match the Y-m-d\TH:i format.';
+                $messages['rentals.' . $key . '.finish.date_format'] = 'The Finish does not match the Y-m-d H:i:s format.';
                 $messages['rentals.' . $key . '.finish.after'] = 'The Finish must be a date after Start.';
             }
         }

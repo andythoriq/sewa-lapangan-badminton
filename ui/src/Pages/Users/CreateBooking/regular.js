@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import secureLocalStorage from 'react-secure-storage';
 import { useGeneralContext } from "../../../context/generalContext";
+import Datetime from "react-datetime";
 
 const CreateBookingFormRegular = () => {
   const navigate = useNavigate();
@@ -38,20 +39,55 @@ const CreateBookingFormRegular = () => {
     })
   }, [])
 
-  const [values, setValues] = useState({ court: "", customer_id: "", start_time: "", finish_time: "" });
+  const [values, setValues] = useState({ court: "", customer_id: "", start_time: "", finish_time: "", date: "" });
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
+  const handleChangeTime = (time_name, value) => {
+    const hours = String(value.getHours()).padStart(2, '0');
+    const minutes = String(value.getMinutes()).padStart(2, '0');
+
+    setValues({ ...values, [time_name]: `${hours}:${minutes}` });
+  }
+
   useEffect(() => {
     if (values.start_time && values.finish_time) {
-      const start = new Date(values.start_time).getTime()
-      const finish = new Date(values.finish_time).getTime()
-      const diffInSeconds = (finish - start) / 1000
-      const diffInHours = diffInSeconds / (60 * 60)
-      setTotallyHour(Math.round(diffInHours * 100) / 100)
+      const [ startHours, startMinutes ] = values.start_time.split(':').map(Number);
+      const [ finishHours, finishMinutes ] = values.finish_time.split(':').map(Number);
+
+      let diffHours = finishHours - startHours;
+      let diffMinutes = finishMinutes - startMinutes;
+
+      // negative handle
+      if (diffMinutes < 0) {
+        diffHours--;
+        diffMinutes += 60;
+      }
+
+      const totalHours = diffHours + diffMinutes / 60;
+
+      setTotallyHour(totalHours);
     }
   }, [values.start_time, values.finish_time])
+
+  useEffect(() => {
+    if (values.start_time) {
+      const [ hours, minutes ] = values.start_time.split(':');
+
+      const date = new Date();
+      date.setHours(parseInt(hours, 10));
+      date.setMinutes(parseInt(minutes, 10));
+      date.setSeconds(0);
+
+      date.setHours(date.getHours() + 1);
+
+      const finishHours = String(date.getHours()).padStart(2, '0');
+      const finishMinutes = String(date.getMinutes()).padStart(2, '0');
+
+      setValues({ ...values, finish_time: `${finishHours}:${finishMinutes}` });
+    }
+  }, [ values.start_time ])
 
   useEffect(() => {
     const court = dataCourt.find(court => parseInt(court.value) === parseInt(values.court))
@@ -77,8 +113,8 @@ const CreateBookingFormRegular = () => {
         const { data } = await axios.post('/api/rental', {
           court_id: values.court,
           customer_id: values.customer_id,
-          start: values.start_time,
-          finish: values.finish_time,
+          start: `${values.date} ${values.start_time}:00`,
+          finish: `${values.date} ${values.finish_time}:00`,
           user_id: secureLocalStorage.getItem('id') ?? '',
         });
         setErrors("");
@@ -158,16 +194,34 @@ const CreateBookingFormRegular = () => {
             </Form.Select>
             {errors.court_id && <span className="text-danger">{errors.court_id[0]}</span>}
           </Col>
-          
-          <Col className="col-6 col-md-3 mt-1">
-            <FormInput type="datetime-local" name="start_time" label="Start Time Booking" value={values.start_time} onChange={onChange} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 16)} />
+          <Col className="col-6 col-md-3 mt-1" style={{ marginLeft: "20px" }}>
+            <FormInput type="date" name="date" label="Date" value={values.date} onChange={onChange} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 10)} />
+          </Col>
+          <Col className="col-6 col-md-3">
+            <Form.Label className="mb-1">Start</Form.Label>
+            <Datetime
+              value={values.start_time}
+              isValidDate={current => current.isSameOrAfter(new Date().setDate(new Date().getDate() - 1))}
+              onChange={value => handleChangeTime("start_time", value._d)}
+              dateFormat={false}
+              timeFormat="HH:mm"
+              timeConstraints={{ minutes: { step: 30 } }}
+              inputProps={{ disabled: (showSendBookingCode || !values.date), readOnly:true }}
+            />
             {errors.start && <span className="text-danger">{errors.start[0]}</span>}
           </Col>
-          <Col className="col-6 col-md-3 mt-1" style={{ marginLeft: "20px" }}>
-            <FormInput type="datetime-local" name="finish_time" label="Finish Time Booking" value={values.finish_time} onChange={onChange} disabled={showSendBookingCode} min={new Date().toISOString().slice(0, 16)} />
+          <Col className="col-6 col-md-3" style={{ marginLeft: "20px" }}>
+            <Form.Label className="mb-1">Finish</Form.Label>
+            <Datetime 
+              value={values.finish_time}
+              onChange={value => handleChangeTime("finish_time", value._d)}
+              dateFormat={false}
+              timeFormat="HH:mm"
+              timeConstraints={{ minutes: { step: 30 } }}
+              inputProps={{ disabled: (showSendBookingCode || !values.date), readOnly:true }}
+            />
             {errors.finish && <span className="text-danger">{errors.finish[0]}</span>}
           </Col>
-         
           <Col className="col-12"></Col>
           <Col className="col-12 col-md-6 mt-3 text-center">
             <b>Totally hour booking:</b>
