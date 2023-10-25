@@ -172,7 +172,7 @@ const Landing = () => {
           <h1 className=" fw-bold" style={{ textAlign: "center", marginTop: "65px", fontWeight: 200, color: "white" }}>
             Top Quality Badminton Sports Venue
           </h1>
-          <p style={{ textAlign: "center", color: "white" }}>bfb is an application that allows you to book a court or facility online or offline. </p>
+          <p style={{ textAlign: "center", color: "white" }}>Shuttlebook is an application that allows you to book a court or facility online or offline. </p>
           <a href="#about">
             <div className="scroll-down"></div>
           </a>
@@ -223,8 +223,8 @@ const Landing = () => {
                   Booking
                 </p>
                 <h1 className="mt-2" style={{ fontWeight: "bold" }}>
-                  Play badminton with special price! <br />
-                  Enjoy playing badminton at BFB with a special price.
+                  Play badminton at a special price! <br />
+                  Enjoy playing badminton by booking through Shuttlebook at a special price.
                 </h1>
                 {!secureLocalStorage.getItem("name") && (
                   <div className="btn btn-lg btn-light mt-3">
@@ -247,7 +247,7 @@ const Landing = () => {
               <h2 className="fw-bold" style={{ color: "#201E37" }}>
                 Our Courts
               </h2>
-              <p className="text-dark">BFB is a sports hall that rents out courts specifically for badminton.</p>
+              <p className="text-dark">Shuttlebook is a sports hall that rents out courts specifically for badminton.</p>
             </div>
           </div>
 
@@ -348,7 +348,7 @@ const Landing = () => {
                 <h2 className="fw-bold" style={{ color: "#201E37" }}>
                   Our Services
                 </h2>
-                <p>Services we provide at bfb that can make it easier for you to book the court</p>
+                <p>Services we provide at Shuttlebook that can make it easier for you to book the court</p>
               </div>
             </div>
           </div>
