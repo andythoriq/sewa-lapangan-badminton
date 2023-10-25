@@ -124,3 +124,28 @@
     margin: auto;
   }
 }
+
+@media (max-width: 741px) {
+  .scroll-down { bottom: 30%; }
+}
+
+@media (max-width: 721px) {
+  .scroll-down { bottom: 25%; }
+}
+
+@media (max-width: 448px) {
+  .scroll-down { bottom: 20%; }
+  #navbarNav.show .navbar-nav { margin-left:0px !important; float:right !important; }
+}
+
+@media (max-width: 429px) {
+  .scroll-down { bottom: 25%; }
+}
+
+@media (max-width: 329px) {
+  .scroll-down { bottom: 23%; }
+}
+
+@media (max-width: 297px) {
+  .scroll-down { bottom: 20%; }
+}
