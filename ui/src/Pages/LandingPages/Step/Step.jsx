@@ -35,6 +35,7 @@ const FormStep = () => {
       if (data.response.text === "Success") {
         Swal.fire({ icon: "success", title: "Success!", html: `OTP code has been sent to ${data.response.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
           if (result.isConfirmed) {
+            secureLocalStorage.clear();
             handleSetResendPh(data.phone_number); // str
             handleSetExpiration(data.expiration); // obj
             navigate("/step2", { replace: true });
@@ -96,7 +97,7 @@ const FormStep = () => {
                       <Link to='/register'>Go Register</Link>
                     </Alert>
                   : <sub>There are thousands of people who love to exercise just like you. Let's start our exercise journey together.</sub>}
-                  <Form onSubmit={handleSendOTP} style={{ width: "120%" }}>
+                  <Form onSubmit={handleSendOTP} className="formnya">
                     <Form.Group className="mb-2 mt-3 col-12">
                       <label>Phone Number</label>
                       <PhoneInput
