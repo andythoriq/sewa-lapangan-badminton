@@ -33,10 +33,13 @@ class RentalController extends Controller
                     });
             });
         })
-            ->whereNotIn('status', ['F', 'C'])
+            ->where('status', '!=', 'C')
             ->select(['id', 'start', 'finish', 'price', 'status', 'transaction_id', 'customer_id', 'court_id'])
+            ->whereHas('transaction', function($trx) {
+                $trx->where('isPaid', 'N')->where('isDebt', 'N')->where('isDeposit', 'N');
+            })
             ->with([
-                'transaction:id,total_price,total_hour,booking_code,isPaid,isDebt,isDeposit',
+                'transaction:id,total_price,total_hour,booking_code',
                 'customer:customer_code,name,phone_number',
                 'court:id,label,initial_price'
             ])

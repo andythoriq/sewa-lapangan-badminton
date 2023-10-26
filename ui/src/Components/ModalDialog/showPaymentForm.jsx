@@ -110,7 +110,10 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
   };
 
   return (
-    <Modal show={isShow} onHide={handleClose}>
+    <Modal show={isShow} onHide={() => {
+        handleClose()
+        setShowDetail(true)
+      }}>
       <Modal.Header closeButton>
         <Modal.Title>Payment Form</Modal.Title>
       </Modal.Header>

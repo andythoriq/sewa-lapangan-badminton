@@ -62,7 +62,8 @@ const Verification = () => {
         <tr key={val.id}>
           <td>{index + 1}</td>
           <td>
-            {val.transaction.booking_code} <span className={val.transaction.isPaymentDone ? "text-success" : "text-danger"}>({val.transaction.isPaymentDone ? "paid" : "not paid"})</span>
+            {val.transaction.booking_code} 
+            {/* <span className={val.transaction.isPaymentDone ? "text-success" : "text-danger"}>({val.transaction.isPaymentDone ? "paid" : "not paid"})</span> */}
           </td>
           <td>
             {val.customer.name} ({val.customer.phone_number})
@@ -113,15 +114,11 @@ const Verification = () => {
               <button
                 className="btn btn-sm btn-danger"
                 onClick={() => {
-                  if (!val.transaction.isPaymentDone) {
-                    Swal.fire({ icon: "warning", title: "Warning", html: "You can't finish it before paying", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
-                  } else {
-                    Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to finish this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
-                      if (result.isConfirmed) {
-                        handleActionGame(val.id, "finish-rental");
-                      }
-                    });
-                  }
+                  Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to finish this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+                    if (result.isConfirmed) {
+                      handleActionGame(val.id, "finish-rental");
+                    }
+                  });
                 }}
               >
                 finish
@@ -132,6 +129,7 @@ const Verification = () => {
             <button
               className="btn btn-sm btn-danger"
               onClick={() => {
+                setBookingCode(val.transaction.booking_code)
                 handleCheckDetail(val.transaction.booking_code)
               }} >
               Detail
@@ -189,10 +187,10 @@ const Verification = () => {
         allowEscapeKey: false,
       }).then((result) => {
         if (result.isConfirmed) {
-          setChangeStatus(!changeStatus);
           if (isCheckDetail) {
             handleCheckDetail(bookingCode);
           }
+          setChangeStatus(!changeStatus);
         }
       });
     } catch (e) {
@@ -262,15 +260,11 @@ const Verification = () => {
               <button
                 className="btn btn-sm btn-danger"
                 onClick={() => {
-                  if (!transaction.isPaymentDone) {
-                    Swal.fire({ icon: "warning", title: "Warning", html: "You can't finish it before paying", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
-                  } else {
-                    Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to finish this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
-                      if (result.isConfirmed) {
-                        handleActionGame(val.id, "finish-rental", true);
-                      }
-                    });
-                  }
+                  Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to finish this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+                    if (result.isConfirmed) {
+                      handleActionGame(val.id, "finish-rental", true);
+                    }
+                  });
                 }}
               >
                 End Game
@@ -408,14 +402,21 @@ const Verification = () => {
                       </tbody>
                     </table>
                     <div className="d-flex justify-content-between align-items-center">
-                      <span className={transaction.isPaymentDone ? "text-success" : "text-danger"}>{transaction.isPaymentDone ? " Already paid" : " Not paid yet"}</span>
+                      {!rentals.every(rental => rental.status === 'C') && <span className={transaction.isPaymentDone ? "text-success" : "text-danger"}>{transaction.isPaymentDone ? " Already paid" : " Not paid yet"}</span>}
+                      <div></div>
                       <button
                         className="btn btn-primary"
                         onClick={() => {
-                          setShowPaymentForm(true);
-                          setShowDetail(false);
+                          const hasUnfinished = rentals.some(rental => rental.status !== 'F' && rental.status !== 'C');
+
+                          if (hasUnfinished) {
+                            Swal.fire({ icon: "warning", title: "Warning", html: "You can't pay it before finishing all", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+                          } else {
+                            setShowPaymentForm(true);
+                            setShowDetail(false);
+                          }
                         }}
-                        disabled={transaction.isPaymentDone}
+                        disabled={transaction.isPaymentDone || rentals.every(rental => rental.status === 'C')}
                       >
                         Pay Now
                       </button>
@@ -453,10 +454,10 @@ const Verification = () => {
                 <thead>
                   <tr>
                     <th width={"1%"}>No</th>
-                    <th width={"20%"}>Booking Code</th>
+                    <th width={"10%"}>Booking Code</th>
                     <th width={"15%"}>Name Customer</th>
                     <th width={"15%"}>Court</th>
-                    <th width={"24%"}>Start - Finish</th>
+                    <th width={"28%"}>Start - Finish</th>
                     <th width={"5%"} className="text-center">
                       Status
                     </th>

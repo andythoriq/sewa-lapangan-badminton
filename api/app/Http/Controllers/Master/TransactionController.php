@@ -45,6 +45,9 @@ class TransactionController extends Controller
             })
             ->select(['id', 'start', 'finish', 'price', 'status', 'transaction_id', 'customer_id', 'court_id'])
             ->whereIn('status', ['F', 'C'])
+            ->orWhereHas('transaction', function($trx) {
+                $trx->where('isPaid', 'Y')->orWhere('isDebt', 'Y')->orWhere('isDeposit', 'Y');
+            })
             ->with([
                 'transaction:id,total_price,total_hour,booking_code,customer_paid,customer_debt,customer_deposit',
                 'customer:customer_code,name,phone_number',

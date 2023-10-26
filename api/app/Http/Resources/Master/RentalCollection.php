@@ -27,13 +27,13 @@ class RentalCollection extends ResourceCollection
                 'status' => $rental->status,
                 'transaction' => [
                     // 'id' => $rental->transaction->id,
-                    'isPaid' => $rental->transaction->isPaid,
-                    'isDeposit' => $rental->transaction->isDeposit,
-                    'isDebt' => $rental->transaction->isDebt,
+                    // 'isPaid' => $rental->transaction->isPaid,
+                    // 'isDeposit' => $rental->transaction->isDeposit,
+                    // 'isDebt' => $rental->transaction->isDebt,
                     'total_hour' => $rental->transaction->total_hour,
                     'total_price' => $rental->transaction->total_price,
                     'booking_code' => $rental->transaction->booking_code,
-                    'isPaymentDone' => ($rental->transaction->isPaid == 'Y' || $rental->transaction->isDebt == 'Y' || $rental->transaction->isDeposit == 'Y'),
+                    // 'isPaymentDone' => ($rental->transaction->isPaid == 'Y' || $rental->transaction->isDebt == 'Y' || $rental->transaction->isDeposit == 'Y'),
                 ],
                 'customer' => [
                     // 'customer_code' => $rental->customer->customer_code,
