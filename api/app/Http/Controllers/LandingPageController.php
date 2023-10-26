@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ConfigModel;
 use App\Models\CourtModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class LandingPageController extends Controller
 {
@@ -13,6 +14,15 @@ class LandingPageController extends Controller
         $courts = CourtModel::select(['id', 'label', 'initial_price', 'image_path', 'description'])
             ->get();
 
+        $operational_time = [];
+        $today = strtolower(Carbon::now('Asia/Jakarta')->dayName);
+        foreach(ConfigModel::getOpenTime() as $schedule){
+            if ($schedule['day'] === $today) {
+                $operational_time = $schedule;
+                break;
+            }
+        }
+
         $contact = ConfigModel::getContact();
         $gor_name = ConfigModel::getCompanyName();
         $contact['gor_name'] = $gor_name;
@@ -20,6 +30,7 @@ class LandingPageController extends Controller
         return response()->json([
             'contact' => $contact,
             'courts' => $courts,
+            'operational' => $operational_time ?: 'not_open_today'
         ]);
     }
 }
