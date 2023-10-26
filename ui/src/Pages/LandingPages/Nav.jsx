@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
-import { Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar, Button } from "react-bootstrap";
 import "./nav.css";
 import Loader from "../../Components/Loader/Loading.js";
 import Court from "../../Components/Court";
@@ -98,9 +98,9 @@ const Landing = () => {
             {/* <img src="./brand.png" alt=".." style={{ width: "35px" }} /> */}
             <span className="fw-bold text-light mt-3"> Shuttlebook.</span>
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbar" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-expanded="false" aria-label="Toggle navigation" className="navbar shadow-none border-0 bg-white" />
+          <Navbar.Toggle aria-controls="navbar" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav, #button" aria-expanded="false" aria-label="Toggle navigation" className="navbar shadow-none border-0 bg-white" />
           <Navbar.Collapse id="navbarNav">
-            <Nav className="mt-3" style={{ maxHeight: "100px", marginLeft: "360px" }}>
+            <Nav className="mt-3 ms-auto" style={{ maxHeight: "100px" }}>
               <Nav.Link href="#about" style={{ marginRight: "20px", color: "white" }}>
                 About
               </Nav.Link>
@@ -156,11 +156,11 @@ const Landing = () => {
               </Dropdown>
             </div>
           ) : (
-            <div className="ms-auto mt-3">
-              <Link to="/userstep" className="btn me-1 btn-signin" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
+            <div className="mt-3">
+              <Link to="/userstep" className="btn btn-danger me-1" style={{ borderRadius: 40, color: "white", background: "#7F1122" }}>
                 Sign In
               </Link>
-              <Link to="/register" className="btn btn-Registrion" style={{ borderRadius: 40, color: "white" }}>
+              <Link to="/register" className="btn btn-regis" style={{ borderRadius: 40, color: "white" }}>
                 Registration
               </Link>
             </div>
