@@ -82,7 +82,7 @@ const Sidebar = () => {
 
   return (
     <>
-    <div class="SideBarbtnClose" onClick={() => handleToggle2(0, "close")}>x</div>
+    <div className="SideBarbtnClose" onClick={() => handleToggle2(0, "close")}>x</div>
     <div className="border-end text-dark" id="sidebar-wrapper">
       <div className="profile_info">
         <img src="./brand.png" className="profile_image" alt="" style={{ width: "45px", marginLeft: "25px" }} />

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import axios from "../../api/axios";
 
-const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction, setShowDetail }) => {
+const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction, setShowDetail, sendReceipt }) => {
 
   const transaction_customer_deposit = transaction.customer?.deposit;
   const transaction_total_price = transaction.total_price;
@@ -68,12 +68,14 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
               dataRequest.customer_deposit = rest;
               dataRequest.customer_paid = dataRequest.customer_paid - rest;
               axios.post("/api/pay", dataRequest).then(({ data }) => {
-                swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+                swal.fire({ icon: "success", title: "Transaction Success!", html: data.message, showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
                   if (result.isConfirmed) {
-                    handleClose()
-                    updateTransaction(data.transaction)
-                    setShowDetail(true)
+                    sendReceipt(data.transaction.booking_code)
                   }
+                }).finally(() => {
+                  updateTransaction(data.transaction)
+                  handleClose()
+                  setShowDetail(true)
                 });
               }).catch((e) => {
                 if (e.response.status === 422) { setErrors(e.response.data.errors); } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) { 
@@ -85,12 +87,14 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
       } else {
         try {
           const { data } = await axios.post("/api/pay", dataRequest);
-          swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+          swal.fire({ icon: "success", title: "Transaction Success!", html: data.message, showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
             if (result.isConfirmed) {
-              handleClose()
-              updateTransaction(data.transaction)
-              setShowDetail(true)
+              sendReceipt(data.transaction.booking_code)
             }
+          }).finally(() => {
+            updateTransaction(data.transaction)
+            handleClose()
+            setShowDetail(true)
           });
         } catch (e) {
           if (e.response.status === 422) {setErrors(e.response.data.errors);} else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {

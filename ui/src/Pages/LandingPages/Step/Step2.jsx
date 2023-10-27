@@ -112,7 +112,7 @@ const Step2 = () => {
                           }
                         })
                       }}>Resend OTP</span> 
-                      <span> {secureLocalStorage.getItem('exp')?.recent_resend}x</span>
+                      {/* <span> {secureLocalStorage.getItem('exp')?.recent_resend}x</span> */}
                     </div>
               </Form>
             </div>

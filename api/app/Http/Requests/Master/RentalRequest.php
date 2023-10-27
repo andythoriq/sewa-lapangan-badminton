@@ -187,6 +187,7 @@ class RentalRequest extends FormRequest
 
             $rental['transaction_id'] = $transaction->id;
             $rental['customer_id'] = $this->customer_id;
+            $rental['user_id'] = $this->user_id;
             $rental['created_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
             $rental['updated_at'] = now('Asia/Jakarta')->format('Y-m-d H:i:s');
         }

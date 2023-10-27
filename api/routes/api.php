@@ -64,6 +64,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::post('/pay', [TransactionController::class, 'pay'])->middleware('admin');
+    Route::post('/send-receipt', [TransactionController::class, 'send_receipt'])->middleware('admin');
     Route::get('/booking-history', [TransactionController::class, 'booking_history']);
 
     Route::get('/admin-role-menu-list', GetRoleMenusController::class)->middleware('admin');

@@ -63,7 +63,6 @@ const Verification = () => {
           <td>{index + 1}</td>
           <td>
             {val.transaction.booking_code} 
-            {/* <span className={val.transaction.isPaymentDone ? "text-success" : "text-danger"}>({val.transaction.isPaymentDone ? "paid" : "not paid"})</span> */}
           </td>
           <td>
             {val.customer.name} ({val.customer.phone_number})
@@ -81,7 +80,8 @@ const Verification = () => {
             </span>
           </td>
           <td className="text-center">{val.status === "B" ? "Booked" : val.status === "O" ? "On progress" : val.status === "F" ? "Finished" : "Canceled"}</td>
-          <td className="text-center pt-3">
+          <td>
+            <div className="d-flex justify-content-evenly">
             {val.status === "O" || val.status === "F" || val.status === "C" ? null : (
               <>
                 <button
@@ -124,8 +124,10 @@ const Verification = () => {
                 finish
               </button>
             )}
+            </div>
           </td>
-          <td className="text-center pt-3">
+          <td>
+            <div className="d-flex justify-content-evenly">
             <button
               className="btn btn-sm btn-danger"
               onClick={() => {
@@ -134,6 +136,7 @@ const Verification = () => {
               }} >
               Detail
             </button>
+            </div>
           </td>
         </tr>
       );
@@ -173,10 +176,7 @@ const Verification = () => {
       await axios.get("/sanctum/csrf-cookie");
       const { data } = await axios.post(
         "/api/" + action, // cancel-rental, start-rental, finish-rental
-        {
-          id: id,
-        
-        }
+        {id}
       );
       Swal.fire({
         icon: "success",
@@ -209,7 +209,32 @@ const Verification = () => {
     }
   };
 
-  const TableRows = ({ rows, transaction }) => {
+  const sendReceipt = async (booking_code) => {
+    try {
+      await axios.get("/sanctum/csrf-cookie");
+      const {data} = await axios.post("/api/send-receipt", {booking_code});
+      if (data.text === "Success") {
+        Swal.fire({ icon: "success", title: "Success!", html: `Receipt been sent to ${data.to}`, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      } else {
+        Swal.fire({ icon: "error", title: "Error!", html: data.text, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      }
+    } catch (e) {
+      if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          html: e.response.data.message,
+          showConfirmButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        });
+      } else {
+        Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
+      }
+    }
+  }
+
+  const TableRows = ({ rows }) => {
     return rows.map((val, index) => {
       return (
         <tr key={val.id}>
@@ -226,7 +251,8 @@ const Verification = () => {
             {val.court.label} ({new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(val.court.initial_price)})
           </td>
 
-          <td className="d-flex justify-content-between">
+          <td>
+            <div className="d-flex justify-content-evenly">
             {val.status === "O" || val.status === "F" || val.status === "C" ? null : (
               <>
                 <button
@@ -255,7 +281,6 @@ const Verification = () => {
                 </button>
               </>
             )}
-            &nbsp;
             {val.status === "B" || val.status === "F" || val.status === "C" ? null : (
               <button
                 className="btn btn-sm btn-danger"
@@ -270,6 +295,7 @@ const Verification = () => {
                 End Game
               </button>
             )}
+            </div>
           </td>
         </tr>
       );
@@ -387,8 +413,8 @@ const Verification = () => {
                     <table className="table table-hover mt-2" border={1}>
                       <thead>
                         <tr className="text-center">
-                          <th width={"1%"}>Id</th>
-                          <th width={"40%"}>Start - Finish</th>
+                          <th width={"1%"}>No</th>
+                          <th width={"40%"}>Start s/d Finish</th>
                           <th width={"5%"}>Status</th>
                           <th width={"15%"}>Price</th>
                           <th width={"20%"}>Court</th>
@@ -398,7 +424,7 @@ const Verification = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        <TableRows rows={rentals} transaction={transaction} />
+                        <TableRows rows={rentals} />
                       </tbody>
                     </table>
                     <div className="d-flex justify-content-between align-items-center">
@@ -461,10 +487,10 @@ const Verification = () => {
                     <th width={"5%"} className="text-center">
                       Status
                     </th>
-                    <th width={"13%"} className="text-center">
+                    <th width={"10%"} className="text-center">
                       Action
                     </th>
-                    <th width="7%" className="text-center">
+                    <th width="6%" className="text-center">
                       Detail
                     </th>
                   </tr>
@@ -492,7 +518,7 @@ const Verification = () => {
           </Card>
         </div>
       </div>
-      <PaymentForm isShow={showPaymentForm} handleClose={() => setShowPaymentForm(false)} transaction={transaction} swal={Swal} updateTransaction={updateTransaction} setShowDetail={setShowDetail} />
+      <PaymentForm isShow={showPaymentForm} handleClose={() => setShowPaymentForm(false)} transaction={transaction} swal={Swal} updateTransaction={updateTransaction} setShowDetail={setShowDetail} sendReceipt={sendReceipt} />
     </>
   );
 };
