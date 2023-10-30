@@ -17,6 +17,7 @@ const CourtForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
   const [values, setValues] = useState({ label: "", description: "" });
   const [price, setPrice] = useState(0)
   const [errors, setErrors] = useState([]);
@@ -69,6 +70,7 @@ const CourtForm = () => {
     formData.append("initial_price", data.initial_price);
     formData.append("description", data.description);
     formData.append("image_path", data.image_path);
+    formData.append("status", selectedStatus)
 
     try {
       await axios.get("/sanctum/csrf-cookie");
@@ -109,6 +111,7 @@ const CourtForm = () => {
           });
           setImagePreview(data.image_path);
           setPrice(data.initial_price)
+          setSelectedStatus(data.status)
         })
         .catch((e) => {
           Swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
@@ -170,6 +173,21 @@ const CourtForm = () => {
                 </center>
               </div>
               {errors.image_path && <span className="text-danger">{errors.image_path[0]}</span>}
+            </Col>
+            <Col className="col-12 col-md-6">
+              <label>Status</label>
+              <div className="d-flex">
+                <div className="form-check">
+                  <input id="activeId" type="radio" className="form-check-input" name="status" value={selectedStatus} onChange={() => setSelectedStatus('Y')} checked={selectedStatus === 'Y'} />
+                  <label htmlFor="activeId">Active</label>
+                </div>
+                &nbsp;&nbsp;&nbsp;
+                <div className="form-check form-check-inline">
+                  <input id="inActiveId" type="radio" className="form-check-input" name="status" value={selectedStatus} onChange={() => setSelectedStatus('N')} checked={selectedStatus === 'N'} />
+                  <label htmlFor="inActiveId">In active</label>
+                </div>
+              </div>
+              {errors.status && <span className="text-danger">{errors.status[ 0 ]}</span>}
             </Col>
             <Col className="col-12 text-right pt-3">
               <button onClick={handleSubmitClick} type="button" className="btn me-md-4" style={{ background: "#B21830", color: "white" }}>

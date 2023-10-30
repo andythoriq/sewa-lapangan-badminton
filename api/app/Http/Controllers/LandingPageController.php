@@ -12,6 +12,7 @@ class LandingPageController extends Controller
     public function __invoke(Request $request)
     {
         $courts = CourtModel::select(['id', 'label', 'initial_price', 'image_path', 'description'])
+            ->where('status', 'Y')
             ->get();
 
         $operational_time = [];

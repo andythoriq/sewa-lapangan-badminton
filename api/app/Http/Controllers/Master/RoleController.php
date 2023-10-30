@@ -24,7 +24,7 @@ class RoleController extends Controller
 
     public function select()
     {
-        $roles = RoleModel::select(['id', 'label'])->get();
+        $roles = RoleModel::select(['id', 'label'])->where('status', 'Y')->get();
         return response()->json($roles);
     }
 

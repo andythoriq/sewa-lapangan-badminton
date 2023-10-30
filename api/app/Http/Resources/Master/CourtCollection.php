@@ -23,7 +23,8 @@ class CourtCollection extends ResourceCollection
                 'label' => $court->label,
                 'image_path' => $court->image_path,
                 'initial_price' => $court->initial_price,
-                'description' => $court->description
+                'description' => $court->description,
+                'status' => $court->status
             ];
         });
     }

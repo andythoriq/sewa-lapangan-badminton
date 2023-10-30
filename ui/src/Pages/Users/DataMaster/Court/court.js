@@ -111,6 +111,7 @@ const Court = () => {
                       <span>No Image</span>
                   )}</td>
                 <td>{val.description}</td>
+                <td className="text-center"><label className={`badge text-bg-${val.status === 'Y' ? 'green' : 'danger'} text-dark`}>{(val.status === 'Y' ? 'active' : 'in active' )}</label></td>
                 <td className="text-center">
                     <Link to={'/data-master/court/edit/'+val.id} className="edit">
                         <Pencil className="material-icons ms-1" color="dark" title="Edit"/>
@@ -160,9 +161,10 @@ const Court = () => {
                         <tr>
                             <th width={'1%'}></th>
                             <th width={'10%'}>Court</th>
-                            <th width={'15%'}>Price</th>
+                            <th width={'10%'}>Price</th>
                             <th width={'15%'}>Image</th>
                             <th width={'45%'}>Description</th>
+                            <th width={'5%'}>status</th>
                             <th width={'4%'} className="text-center">Action</th>
                         </tr>
                     </thead>

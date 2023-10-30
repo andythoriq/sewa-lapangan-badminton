@@ -38,7 +38,7 @@ const Register = () => {
             secureLocalStorage.clear();
             handleSetResendPh(data.phone_number); // string
             handleSetExpiration(data.expiration); // object
-            navigate("/userotp", { replace: true });
+            navigate("/step2", { replace: true });
           }
         });
       } else {

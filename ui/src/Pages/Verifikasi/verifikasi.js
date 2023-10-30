@@ -171,6 +171,14 @@ const Verification = () => {
     }
   };
 
+  function startCheck(start, id) {
+
+  }
+
+  function finishCheck(finish, id) {
+
+  }
+
   const handleActionGame = async (id, action, isCheckDetail = false) => {
     try {
       await axios.get("/sanctum/csrf-cookie");

@@ -26,7 +26,7 @@ class RentalResource extends JsonResource
             'status' => $this->status,
             'price' => $this->price,
             'created_at'=> $this->created_at->diffForHumans(),
-            'duration_hour' => Carbon::parse($this->start, 'Asia/Jakarta')->floatDiffInHours($this->finish),
+            'duration_hour' => $this->hour,
             'duration_minute' => Carbon::parse($this->start, 'Asia/Jakarta')->diffInMinutes($this->finish),
             'court' => [
                 'label' => $this->court->label,

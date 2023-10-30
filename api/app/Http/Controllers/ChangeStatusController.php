@@ -51,7 +51,7 @@ class ChangeStatusController extends Controller
 
         $transaction->update([
             'total_price' => (float) $transaction->total_price - (float) $rental->price,
-            'total_hour' => (float) $transaction->total_hour - (Carbon::parse($rental->start, 'Asia/Jakarta')->floatDiffInHours($rental->finish))
+            'total_hour' => (float) $transaction->total_hour - (Carbon::parse($rental->hour, 'Asia/Jakarta'))
         ]);
 
         return response()->json(['message' => 'Rental Canceled'], 202, ['success' => 'Rental finished.']);

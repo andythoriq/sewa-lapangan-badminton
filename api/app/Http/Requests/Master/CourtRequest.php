@@ -34,6 +34,7 @@ class CourtRequest extends FormRequest
             'image_path' => ['nullable', 'image', 'max:5000', 'mimes:png,jpg,jpeg'],
             'description' => ['required', 'min:128', 'max:254'],
             'initial_price' => ['required', 'numeric', 'min:0.01', 'max:1000000.00'],
+            'status' => ['required', 'in:Y,N'],
             'old_image' => ['nullable'],
         ];
     }
@@ -41,12 +42,14 @@ class CourtRequest extends FormRequest
     public function createCourt()
     {
         $court = new CourtModel($this->except('old_image'));
+        $court->status = strtoupper($court->status);
         $this->saveCourt($court);
     }
 
     public function updateCourt(CourtModel $court)
     {
         $court->fill($this->except('old_image'));
+        $court->status = strtoupper($court->status);
         $this->saveCourt($court);
     }
 
