@@ -17,6 +17,7 @@ class RentalModel extends Model
         'finish',
         'status',
         'price',
+        'hour',
         'court_id',
         'transaction_id',
         'customer_id',

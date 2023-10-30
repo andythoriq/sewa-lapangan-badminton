@@ -54,7 +54,8 @@ class ScheduleController extends Controller
         $courts = CourtModel::when($f_courts, function ($query) use ($f_courts) {
             $query->whereIn('id', explode(',', $f_courts));
         })
-        ->select(['id', 'label']);
+        ->select(['id', 'label'])
+        ->where('status', 'Y');
 
         $courts = $courts->get();
 

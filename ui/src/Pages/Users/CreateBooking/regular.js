@@ -113,8 +113,8 @@ const CreateBookingFormRegular = () => {
         const { data } = await axios.post('/api/rental', {
           court_id: values.court,
           customer_id: values.customer_id,
-          start: `${values.date} ${values.start_time}:00`,
-          finish: `${values.date} ${values.finish_time}:00`,
+          start: values.start_time ? `${values.date} ${values.start_time}:00` : '',
+          finish: values.finish_time ? `${values.date} ${values.finish_time}:00` : '',
           user_id: secureLocalStorage.getItem('id') ?? '',
         });
         setErrors("");

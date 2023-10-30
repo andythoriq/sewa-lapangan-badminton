@@ -49,7 +49,17 @@ class RentalRequest extends FormRequest
 
         switch ($this->route()->getName()) {
             case 'create-rental':
-                $validation['start'] = ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'];
+                $validation['start'] = ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now', 'bail',
+                    function ($attr, $value, $fail) {
+                        $this->validateDuration($value, $this->finish, $fail);
+                    },
+                    function ($attr, $value, $fail) {
+                        $this->holidayOperationalCollideCheck($value, $this->finish, $fail);
+                    },
+                    function ($attr, $value, $fail) {
+                        $this->collideCheck2($value, $this->finish, $this->getCourtSchedules($this->court_id), $fail);
+                    }
+                ];
                 break;
 
             case 'update-rental':
@@ -61,7 +71,19 @@ class RentalRequest extends FormRequest
                     'customer_id' => ['required', 'exists:tb_customer,customer_code'],
                     'user_id' => ['nullable', 'exists:users,id'],
                     'rentals' => ['required', 'array', 'min:1'],
-                    'rentals.*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now'],
+                    'rentals.*.start' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:now', 'bail',
+                        function ($attr, $value, $fail) {
+                            $finishAttr = str_replace('start', 'finish', $attr);
+                            $finishValue = $this->input($finishAttr);
+                            if ($finishValue) {
+                                $this->validateDuration($value, $finishValue, $fail);
+                                $this->holidayOperationalCollideCheck($value, $finishValue, $fail);
+                                $courtIdAttr = str_replace('start', 'court_id', $attr);
+                                $courtIdValue = $this->input($courtIdAttr);
+                                $this->collideCheck2($value, $finishValue, $this->getCourtSchedules($courtIdValue), $fail);
+                            }
+                        },
+                    ],
                     'rentals.*.finish' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after:rentals.*.start'],
                     // 'rentals.*.status' => ['required', 'string', 'in:B,O,F'],
                     'rentals.*.court_id' => ['required', 'exists:tb_court,id'],
@@ -99,9 +121,9 @@ class RentalRequest extends FormRequest
 
     public function createRental()
     {
-        $this->validateDuration($this->start, $this->finish);
-        $this->startFinishCheck($this->start, $this->finish);
-        $this->collideCheck($this->start, $this->finish, $this->getCourtSchedules($this->court_id));
+        // $this->validateDuration($this->start, $this->finish);
+        // $this->holidayOperationalCollideCheck($this->start, $this->finish);
+        // $this->collideCheck($this->start, $this->finish, $this->getCourtSchedules($this->court_id));
 
         $data = $this->validated();
 
@@ -144,16 +166,16 @@ class RentalRequest extends FormRequest
     {
         // $this->regularRentalsCheck($this->customer_id);
 
-        $this->validateDuration($this->start, $this->finish);
+        // $this->validateDuration($this->start, $this->finish);
 
-        $this->collideCheck($this->start, $this->finish, $this->getCourtSchedules($this->court_id));
+        // $this->collideCheck($this->start, $this->finish, $this->getCourtSchedules($this->court_id));
 
-        $rental->load(['court:id,initial_price', 'customer:customer_code']);
+        // $rental->load(['court:id,initial_price', 'customer:customer_code']);
 
-        $data = $this->validated();
-        $data['price'] = $this->getCost($this->start, $this->finish, $rental->court->initial_price);
+        // $data = $this->validated();
+        // $data['price'] = $this->getCost($this->start, $this->finish, $rental->court->initial_price);
 
-        $rental->updateOrFail($data);
+        // $rental->updateOrFail($data);
     }
 
     public function createMultipleRental()
@@ -161,6 +183,8 @@ class RentalRequest extends FormRequest
         $this->regularRentalsCheck($this->customer_id);
 
         $data = $this->validated();
+
+        $this->createMultipleCollideCheck($data['rentals']);
 
         $booking_code = $this->getBookingCode();
         $qr_code = $this->createQrCode($booking_code);
@@ -174,9 +198,9 @@ class RentalRequest extends FormRequest
 
         foreach ($data['rentals'] as &$rental) {
 
-            $this->validateDuration($rental['start'], $rental['finish']);
-            $this->startFinishCheck($rental['start'], $rental['finish']);
-            $this->collideCheck($rental['start'], $rental['finish'], $this->getCourtSchedules($rental['court_id']));
+            // $this->validateDuration($rental['start'], $rental['finish']);
+            // $this->holidayOperationalCollideCheck($rental['start'], $rental['finish']);
+            // $this->collideCheck($rental['start'], $rental['finish'], $this->getCourtSchedules($rental['court_id']));
 
             $validated_price = $this->getPeakTimePrice($rental['court_id'], Carbon::now('Asia/Jakarta')->dayName);
             $discount = ConfigModel::getMemberDiscount();

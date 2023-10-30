@@ -4,35 +4,37 @@ namespace App\Traits;
 use App\Models\ConfigModel;
 use App\Models\HolidayModel;
 use Illuminate\Support\Carbon;
-use Illuminate\Validation\ValidationException;
+// use Illuminate\Validation\ValidationException;
 
 trait StartFinishBookingCheck
 {
-    public function startFinishCheck($bookingStart, $bookingFinish)
+    public function holidayOperationalCollideCheck($bookingStart, $bookingFinish, $fail)
     {
         $operational_times = ConfigModel::getOpenTime();
-        $currentDay = strtolower(Carbon::now('Asia/Jakarta')->dayName);
+        $rentalDay = strtolower(Carbon::parse($bookingStart, 'Asia/Jakarta')->dayName);
 
-        $operationalTimeToday = [];
+        $operationalTime = [];
         foreach ($operational_times as $time) {
-            if ($time['day'] === $currentDay) {
-                $operationalTimeToday = $time;
+            if ($time['day'] === $rentalDay) {
+                $operationalTime = $time;
                 break;
             }
         }
 
-        if ($operationalTimeToday) {
-            $operationalStart = Carbon::parse($operationalTimeToday['start'], 'Asia/Jakarta');
-            $operationalFinish = Carbon::parse($operationalTimeToday['finish'], 'Asia/Jakarta');
+        if ($operationalTime) {
+            $operationalStart = Carbon::parse($operationalTime['start'], 'Asia/Jakarta');
+            $operationalFinish = Carbon::parse($operationalTime['finish'], 'Asia/Jakarta');
 
             $bookingStartTimestamp = Carbon::parse(Carbon::parse($bookingStart, 'Asia/Jakarta')->format('H:i'), 'Asia/Jakarta');
             $bookingFinishTimestamp = Carbon::parse(Carbon::parse($bookingFinish, 'Asia/Jakarta')->format('H:i'), 'Asia/Jakarta');
 
             if (! ($bookingStartTimestamp->gte($operationalStart) && $bookingFinishTimestamp->lte($operationalFinish))) {
-                throw ValidationException::withMessages(['start' => ['Your booking time is outside of operational hours.']]);
+                // throw ValidationException::withMessages([$attr => ['Your booking time is outside of ' . $rentalDay . ' operational hours.']]);
+                $fail('Your booking time is outside of ' . $rentalDay . ' operational hours.');
             }
         } else {
-            throw ValidationException::withMessages(['start' => ['We are not operating today.']]);
+            // throw ValidationException::withMessages([$attr => ['We are not operating today.']]);
+            $fail('We are not operating today.');
         }
 
         $bookingStartDate = Carbon::parse($bookingStart, 'Asia/Jakarta')->format('Y-m-d');
@@ -41,7 +43,8 @@ trait StartFinishBookingCheck
         $isHolidayCollide = HolidayModel::where('date', '>=', $bookingStartDate)->where('date', '<=', $bookingFinishDate)->exists();
 
         if ($isHolidayCollide) {
-            throw ValidationException::withMessages(['start' => ['Booking time collided with holidays.']]);
+            // throw ValidationException::withMessages([$attr => ['Booking time collided with holidays.']]);
+            $fail('Booking time collided with holidays.');
         }
     }
 
