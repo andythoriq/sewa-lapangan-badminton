@@ -34,7 +34,7 @@ trait StartFinishBookingCheck
             }
         } else {
             // throw ValidationException::withMessages([$attr => ['We are not operating today.']]);
-            $fail('We are not operating today.');
+            $fail('We are not operating on ' . $rentalDay . '.');
         }
 
         $bookingStartDate = Carbon::parse($bookingStart, 'Asia/Jakarta')->format('Y-m-d');

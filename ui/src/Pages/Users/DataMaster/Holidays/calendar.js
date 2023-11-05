@@ -200,7 +200,7 @@ export default function Calendar() {
       calendarApi.addEvent(newEvent)
       Swal.fire({ icon: "success", title: "Success!", html: response.data.message, showConfirmButton: false, allowOutsideClick: false, allowEscapeKey: false, timer: 1500 });
     } catch (e) {
-      if (e.response.status === 422) {
+      if (e?.response?.status === 422) {
         Swal.fire({
           icon: "error", title: "Error!", html: e.response.data?.errors?.label[ 0 ] + "<br/>" + e.response.data?.errors?.date[ 0 ], showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false
         });

@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { Search } from "react-bootstrap-icons";
 import { useGeneralContext } from "../../context/generalContext";
+import FormUpdateStartFinish from "../../Components/ModalDialog/FormUpdateStartFinish";
 
 const Verification = () => {
   // let listData = [{ start: "10-00", finish: "12-00", status: "on progress", price: "Rp150.000", court: "Court A", customer: "Budi - (0892347826382)" }];
@@ -23,6 +24,10 @@ const Verification = () => {
   const [transaction, setTransaction] = useState({});
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [changeStatus, setChangeStatus] = useState(false);
+
+  const [showUpdateRental, setShowUpdateRental] = useState(false)
+  const [rentalWillUpdated, setRentalWillUpdated] = useState({start: '', finish: ''})
+  const [bookingData, setBookingData] = useState({rentalId: '', bookingCode: '', isCheckDetail: false})
 
   const [showDetail, setShowDetail] = useState(false);
 
@@ -87,9 +92,16 @@ const Verification = () => {
                 <button
                   className="btn btn-sm btn-success"
                   onClick={() => {
-                    Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to start this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+                    Swal.fire({ icon: "warning", title: "Start Game", html: "start/finish times will adjust to the current time <br/> or <br/> changing the start/finish times before starting", showConfirmButton: true, confirmButtonText: "Just start the booking", showDenyButton: true, denyButtonColor: "indigo", denyButtonText: "change start/finish", showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
                       if (result.isConfirmed) {
                         handleActionGame(val.id, "start-rental");
+                      } else if (result.isDenied) {
+                        if (showDetail === true) {
+                          document.getElementById("modal-show-detail").classList.toggle('invisible')
+                        }
+                        setShowUpdateRental(true)
+                        setRentalWillUpdated({start: val.start, finish: val.finish})
+                        setBookingData({ rentalId: val.id, bookingCode: val.transaction.booking_code, isCheckDetail: false })
                       }
                     });
                   }}
@@ -99,7 +111,7 @@ const Verification = () => {
                 <button
                   className="btn btn-sm btn-warning"
                   onClick={() => {
-                    Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to cancel this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+                    Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to cancel this game?", showConfirmButton: true, showCancelButton: true, cancelButtonText: 'No', allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
                       if (result.isConfirmed) {
                         handleActionGame(val.id, "cancel-rental");
                       }
@@ -114,8 +126,10 @@ const Verification = () => {
               <button
                 className="btn btn-sm btn-danger"
                 onClick={() => {
-                  Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to finish this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+                  Swal.fire({ icon: "warning", title: "Finish game?", html: "finish adjusts to the current time <br/> or <br/> finish based on the original time", showConfirmButton: true, confirmButtonText: "Just finish", showDenyButton: true, denyButtonColor: "indigo", denyButtonText: "finish proportionally", showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
                     if (result.isConfirmed) {
+                      handleActionGame(val.id, "force-finish-rental");
+                    } else if (result.isDenied) {
                       handleActionGame(val.id, "finish-rental");
                     }
                   });
@@ -170,14 +184,6 @@ const Verification = () => {
       }
     }
   };
-
-  function startCheck(start, id) {
-
-  }
-
-  function finishCheck(finish, id) {
-
-  }
 
   const handleActionGame = async (id, action, isCheckDetail = false) => {
     try {
@@ -266,9 +272,16 @@ const Verification = () => {
                 <button
                   className="btn btn-sm btn-success"
                   onClick={() => {
-                    Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to start this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+                    Swal.fire({ icon: "warning", title: "Start Game", html: "start/finish times will adjust to the current time <br/> or </br/> changing the start/finish times before starting", showConfirmButton: true, confirmButtonText: "Just start the booking", showDenyButton: true, denyButtonColor: "indigo", denyButtonText: "change start/finish", showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
                       if (result.isConfirmed) {
                         handleActionGame(val.id, "start-rental", true);
+                      } else if (result.isDenied) {
+                        if (showDetail === true) {
+                          document.getElementById("modal-show-detail").classList.toggle('invisible')
+                        }
+                        setShowUpdateRental(true)
+                        setRentalWillUpdated({start: val.start, finish: val.finish})
+                        setBookingData({rentalId: val.id, bookingCode: transaction.booking_code, isCheckDetail: true})
                       }
                     });
                   }}
@@ -278,7 +291,7 @@ const Verification = () => {
                 <button
                   className="btn btn-sm btn-warning text-white"
                   onClick={() => {
-                    Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to cancel this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+                    Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to cancel this game?", showConfirmButton: true, showCancelButton: true, cancelButtonText: 'No', allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
                       if (result.isConfirmed) {
                         handleActionGame(val.id, "cancel-rental", true);
                       }
@@ -293,8 +306,10 @@ const Verification = () => {
               <button
                 className="btn btn-sm btn-danger"
                 onClick={() => {
-                  Swal.fire({ icon: "warning", title: "Are you sure?", html: "Are you sure to finish this game?", showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+                  Swal.fire({ icon: "warning", title: "End game?", html: "finish adjusts to the current time <br/> or <br/> finish based on the original time", showConfirmButton: true, confirmButtonText: "Just finish", showDenyButton: true, denyButtonColor: "indigo", denyButtonText: "finish proportionally", showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
                     if (result.isConfirmed) {
+                      handleActionGame(val.id, "force-finish-rental", true);
+                    } else if (result.isDenied) {
                       handleActionGame(val.id, "finish-rental", true);
                     }
                   });
@@ -392,7 +407,7 @@ const Verification = () => {
             </div>
           </div>
 
-          <Modal show={showDetail} onHide={() => setShowDetail(false)} size="lg" width="90%">
+          <Modal show={showDetail} onHide={() => setShowDetail(false)} size="lg" width="90%" id="modal-show-detail">
             <Modal.Header closeButton>
               <Modal.Title>Detail Rental</Modal.Title>
             </Modal.Header>
@@ -527,6 +542,12 @@ const Verification = () => {
         </div>
       </div>
       <PaymentForm isShow={showPaymentForm} handleClose={() => setShowPaymentForm(false)} transaction={transaction} swal={Swal} updateTransaction={updateTransaction} setShowDetail={setShowDetail} sendReceipt={sendReceipt} />
+      <FormUpdateStartFinish isShow={showUpdateRental} handleClose={() => {
+        if (showDetail === true) {
+          document.getElementById("modal-show-detail").classList.toggle('invisible')
+        }
+        setShowUpdateRental(false)
+      }} dataBefore={rentalWillUpdated} booking={bookingData} swal={Swal} setChangeStatus={setChangeStatus} changeStatus={changeStatus} handleCheckDetail={handleCheckDetail} />
     </>
   );
 };

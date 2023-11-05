@@ -257,7 +257,13 @@ const FormMemberBooking = ({ isShow, handleClose, courtProp }) => {
           <div className="col-6 mt-3 text-center">
             <b>Totally price:</b>
             <br />
-            <br />
+            {transactionResponse.total_price ? (
+              <div>
+                <del>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(totallyPrice)}</del>
+              </div>
+            ) : (
+              <br />
+            )}
             {transactionResponse.total_price ? <span>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(transactionResponse.total_price)}</span> : <span>{totallyPrice ? new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(totallyPrice) : '...'}</span>}
           </div>
           <div className="row justify-content-center">

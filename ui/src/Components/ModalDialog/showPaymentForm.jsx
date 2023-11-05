@@ -78,7 +78,7 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
                   setShowDetail(true)
                 });
               }).catch((e) => {
-                if (e.response.status === 422) { setErrors(e.response.data.errors); } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) { 
+                if (e?.response?.status === 422) { setErrors(e.response.data.errors); } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) { 
                   swal.fire({ icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }); 
                 } else { swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }); }
               });
@@ -97,13 +97,13 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
             setShowDetail(true)
           });
         } catch (e) {
-          if (e.response.status === 422) {setErrors(e.response.data.errors);} else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
+          if (e?.response?.status === 422) {setErrors(e.response.data.errors);} else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
             swal.fire({ icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });
           } else {swal.fire({ icon: "error", title: "Error!", html: "something went wrong", showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });}
         }
       }
     } catch (e) {
-      if (e.response.status === 422) {
+      if (e?.response?.status === 422) {
         setErrors(e.response.data.errors);
       } else if (e?.response?.status === 404 || e?.response?.status === 403 || e?.response?.status === 401) {
         swal.fire({ icon: "error", title: "Error!", html: e.response.data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false });

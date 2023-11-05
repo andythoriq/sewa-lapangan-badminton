@@ -257,7 +257,7 @@ const Landing = () => {
           {/* card */}
           <div className="row row-cols-1 row-cols-md-3 g-4 py-5">
             {courts.map((court, index) => {
-              return <Court key={court.id} id={court.id} label={court.label} image_path={court.image_path} description={court.description} initial_price={court.initial_price} index={index} closeToday={openTime === 'not_open_today'} />;
+              return <Court key={court.id} id={court.id} label={court.label} image_path={court.image_path} description={court.description} initial_price={court.initial_price} index={index} />;
             })}
             {/* <div className="col">
               <div className="card card-court">

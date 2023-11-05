@@ -22,11 +22,15 @@ trait RentalDurationRule
             }
         }
 
-        if ($start->floatDiffInHours($finish) > Carbon::parse($open_time['start'])->floatDiffInHours($open_time['finish'])) {
-            // throw ValidationException::withMessages([
-            //     $attr => ['Start and Finish can\'t be more than ' . $rental_day_l . ' operational time.'],
-            // ]);
-            $fail('Start and Finish can\'t be more than ' . $rental_day_l . ' operational time.');
+        if ($open_time) {
+            if ($start->floatDiffInHours($finish) > Carbon::parse($open_time['start'])->floatDiffInHours($open_time['finish'])) {
+                // throw ValidationException::withMessages([
+                //     $attr => ['Start and Finish can\'t be more than ' . $rental_day_l . ' operational time.'],
+                // ]);
+                $fail('Start and Finish can\'t be more than ' . $rental_day_l . ' operational time.');
+            }
+        } else {
+            $fail('We are not operating on ' . $rental_day_l . '.');
         }
 
         $minDuration = 60;

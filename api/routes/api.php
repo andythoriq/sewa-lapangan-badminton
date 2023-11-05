@@ -46,8 +46,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(RentalController::class)->group(function () {
         Route::get('/rental', 'index');
         Route::get('/rental/{rental}', 'show');
-        Route::post('/rental', 'create')->name('create-rental')->middleware(['holiday', 'operational']);
-        Route::post('/create-multiple-rental', 'create_multiple')->name('create-multiple-rental')->middleware(['holiday']);
+        Route::post('/rental', 'create')->name('create-rental');
+        Route::post('/create-multiple-rental', 'create_multiple')->name('create-multiple-rental');
         Route::put('/rental/{rental}', 'update')->name('update-rental');
         Route::delete('/rental/{rental}', 'delete');
     });
@@ -57,10 +57,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/send-booking-code', SendBookingCodeController::class);
     Route::post('/booking-verification', [TransactionController::class, 'booking_verification'])->middleware('admin');
 
-    Route::controller(ChangeStatusController::class)->middleware('admin')->group(function () {
+    Route::controller(ChangeStatusController::class)->middleware(['admin', 'holiday', 'operational'])->group(function () {
         Route::post('/start-rental', 'start');
         Route::post('/finish-rental', 'finish');
-        Route::post('/cancel-rental', 'cancel');
+        Route::post('/force-finish-rental', 'force_finish');
+        Route::post('/cancel-rental', 'cancel')->withoutMiddleware(['operational', 'holiday']);
     });
 
     Route::post('/pay', [TransactionController::class, 'pay'])->middleware('admin');

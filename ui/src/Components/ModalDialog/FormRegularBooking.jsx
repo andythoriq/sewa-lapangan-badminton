@@ -79,8 +79,8 @@ const FormRegularBooking = ({ isShow, handleClose, court_id, initialPrice, label
         const { data } = await axios.post('/api/rental', {
           court_id: court_id,
           customer_id: secureLocalStorage.getItem('customer_code') ?? '',
-          start: values.start ? `${values.date} ${values.start}:00` : '',
-          finish: values.finish ? `${values.date} ${values.finish}:00` : ''
+          start: (values.start && values.date) ? `${values.date} ${values.start}:00` : '',
+          finish: (values.finish && values.date) ? `${values.date} ${values.finish}:00` : ''
         }, {headers: {Authorization: `Bearer ${secureLocalStorage.getItem('token')}`}});
         setErrors("");
         Swal.fire({ icon: "success", title: "Success!", html: data.message, showConfirmButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
