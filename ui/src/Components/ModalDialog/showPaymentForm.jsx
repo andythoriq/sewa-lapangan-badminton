@@ -68,7 +68,7 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
               dataRequest.customer_deposit = rest;
               dataRequest.customer_paid = dataRequest.customer_paid - rest;
               axios.post("/api/pay", dataRequest).then(({ data }) => {
-                swal.fire({ icon: "success", title: "Transaction Success!", html: data.message, showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+                swal.fire({ icon: "success", title: "Transaction Success!", html: data.message, showConfirmButton: true, showCancelButton: true, cancelButtonText: 'No', allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
                   if (result.isConfirmed) {
                     sendReceipt(data.transaction.booking_code)
                   }
@@ -87,7 +87,7 @@ const PaymentForm = ({ isShow, handleClose, transaction, swal, updateTransaction
       } else {
         try {
           const { data } = await axios.post("/api/pay", dataRequest);
-          swal.fire({ icon: "success", title: "Transaction Success!", html: data.message, showConfirmButton: true, showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+          swal.fire({ icon: "success", title: "Transaction Success!", html: data.message, showConfirmButton: true, showCancelButton: true, cancelButtonText: 'No', allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
             if (result.isConfirmed) {
               sendReceipt(data.transaction.booking_code)
             }

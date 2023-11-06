@@ -126,7 +126,7 @@ const Verification = () => {
               <button
                 className="btn btn-sm btn-danger"
                 onClick={() => {
-                  Swal.fire({ icon: "warning", title: "Finish game?", html: "finish adjusts to the current time <br/> or <br/> finish based on the original time", showConfirmButton: true, confirmButtonText: "Just finish", showDenyButton: true, denyButtonColor: "indigo", denyButtonText: "finish proportionally", showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+                  Swal.fire({ icon: "warning", title: "Finish game?", html: "finish adjusts to the current time <br/> or <br/> finish based on the original time", showConfirmButton: new Date() < new Date(val.finish) ? true : false, confirmButtonText: "Just finish", showDenyButton: true, denyButtonColor: "indigo", denyButtonText: "finish proportionally", showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
                     if (result.isConfirmed) {
                       handleActionGame(val.id, "force-finish-rental");
                     } else if (result.isDenied) {
@@ -306,7 +306,7 @@ const Verification = () => {
               <button
                 className="btn btn-sm btn-danger"
                 onClick={() => {
-                  Swal.fire({ icon: "warning", title: "End game?", html: "finish adjusts to the current time <br/> or <br/> finish based on the original time", showConfirmButton: true, confirmButtonText: "Just finish", showDenyButton: true, denyButtonColor: "indigo", denyButtonText: "finish proportionally", showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
+                  Swal.fire({ icon: "warning", title: "End game?", html: "finish adjusts to the current time <br/> or <br/> finish based on the original time", showConfirmButton: new Date() < new Date(val.finish) ? true : false, confirmButtonText: "Just finish", showDenyButton: true, denyButtonColor: "indigo", denyButtonText: "finish proportionally", showCancelButton: true, allowOutsideClick: false, allowEscapeKey: false }).then((result) => {
                     if (result.isConfirmed) {
                       handleActionGame(val.id, "force-finish-rental", true);
                     } else if (result.isDenied) {
