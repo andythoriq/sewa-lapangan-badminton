@@ -18,8 +18,8 @@ trait CollideCheck
             $existingFinish = Carbon::parse($schedule->finish, 'Asia/Jakarta');
 
             if (
-                ($newStart->between($existingStart, $existingFinish) || $newFinish->between($existingStart, $existingFinish)) ||
-                ($existingStart->between($newStart, $newFinish) || $existingFinish->between($newStart, $newFinish))
+                ($newStart->betweenExcluded($existingStart, $existingFinish) || $newFinish->betweenExcluded($existingStart, $existingFinish)) ||
+                ($existingStart->betweenExcluded($newStart, $newFinish) || $existingFinish->betweenExcluded($newStart, $newFinish))
             ) {
                 throw ValidationException::withMessages([
                     $attr => ['Start and Finish collide with existing ones.'],
@@ -38,10 +38,28 @@ trait CollideCheck
             $existingFinish = Carbon::parse($schedule->finish, 'Asia/Jakarta');
 
             if (
-                ($newStart->between($existingStart, $existingFinish) || $newFinish->between($existingStart, $existingFinish)) ||
-                ($existingStart->between($newStart, $newFinish) || $existingFinish->between($newStart, $newFinish))
+                ($newStart->betweenExcluded($existingStart, $existingFinish) || $newFinish->betweenExcluded($existingStart, $existingFinish)) ||
+                ($existingStart->betweenExcluded($newStart, $newFinish) || $existingFinish->betweenExcluded($newStart, $newFinish))
             ) {
                 $fail('Start and Finish collide with existing ones.');
+            }
+        }
+    }
+
+    public function collideCheck3(string $start, string $finish, iterable $schedules)
+    {
+        $newStart = Carbon::parse($start, 'Asia/Jakarta');
+        $newFinish = Carbon::parse($finish, 'Asia/Jakarta');
+
+        foreach ($schedules as $schedule) {
+            $existingStart = Carbon::parse($schedule->start, 'Asia/Jakarta');
+            $existingFinish = Carbon::parse($schedule->finish, 'Asia/Jakarta');
+
+            if (
+                ($newStart->betweenExcluded($existingStart, $existingFinish) || $newFinish->betweenExcluded($existingStart, $existingFinish)) ||
+                ($existingStart->betweenExcluded($newStart, $newFinish) || $existingFinish->betweenExcluded($newStart, $newFinish))
+            ) {
+                abort(403, 'Start and Finish collide with existing ones.');
             }
         }
     }

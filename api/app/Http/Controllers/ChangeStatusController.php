@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\RentalModel;
 use App\Models\TransactionModel;
+use App\Traits\CollideCheck;
 use App\Traits\PeakTimeCheck;
 use App\Traits\RentalPriceCalculation;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ use Illuminate\Support\Carbon;
 
 class ChangeStatusController extends Controller
 {
-    use PeakTimeCheck, RentalPriceCalculation;
+    use PeakTimeCheck, RentalPriceCalculation, CollideCheck;
 
     public function start(Request $request)
     {
@@ -24,14 +25,24 @@ class ChangeStatusController extends Controller
 
         $now = Carbon::now('Asia/Jakarta');
 
-        if ($now->minute > 0 && $now->minute < 30) {
-            $now->startOfHour();
+        if ($now->minute >= 0 && $now->minute <= 14) {
+            $now->minute = 0;
+            $now->second = 0;
+        } else if ($now->minute >= 15 && $now->minute <= 29) {
+            $now->minute = 30;
+            $now->second = 0;
+        } else if ($now->minute >= 30 && $now->minute <= 44) {
+            $now->minute = 30;
+            $now->second = 0;
         } else {
-            $now->startOfHour();
-            $now->addMinutes(30);
+            $now->minute = 0;
+            $now->second = 0;
+            $now->addHour();
         }
 
         $new_finish = $now->copy()->addHours($rental->hour);
+
+        $this->collideCheck3($now->format('Y-m-d H:i:s'), $new_finish->format('Y-m-d H:i:s'), $this->getCourtSchedules($rental->court_id));
 
         $validated_price = $this->getPeakTimePrice($rental->court_id, $now->dayName);
         $new_price = $this->getCost($now->format('Y-m-d H:i:s'), $new_finish->format('Y-m-d H:i:s'), $validated_price);
@@ -77,16 +88,16 @@ class ChangeStatusController extends Controller
         $priceBefore = (float) $rental->price;
         $hourBefore = (float) $rental->hour;
 
-        if ($now->minute >= 30) {
-            $updated_finish = $now->copy()->addHour()->startOfHour();
+        if ($now->minute >= 0 && $now->minute <= 44) {
+            $updated_finish = $now->copy()->startOfHour()->addMinutes(30);
         } else {
-            $updated_finish = $now->startOfHour()->addMinutes(30);
+            $updated_finish = $now->copy()->addHour()->startOfHour();
         }
 
         $updated_hour = Carbon::parse($rental->start, 'Asia/Jakarta')->floatDiffInHours($updated_finish);
 
         $validated_price = $this->getPeakTimePrice($rental->court_id, $now->dayName);
-        $updated_price = $this->getCost($rental->start, $updated_finish, $validated_price);
+        $updated_price = $this->getCost($rental->start, $updated_finish->format('Y-m-d H:i:s'), $validated_price);
 
         $rental->update([
             'status' => 'F',
@@ -127,5 +138,10 @@ class ChangeStatusController extends Controller
         ]);
 
         return response()->json(['message' => 'Rental Canceled'], 202, ['success' => 'Rental finished.']);
+    }
+
+    private function getCourtSchedules(?int $court_id)
+    {
+        return RentalModel::select(['start', 'finish'])->where('court_id', $court_id)->whereNotIn('status', ['C', 'F'])->get();
     }
 }

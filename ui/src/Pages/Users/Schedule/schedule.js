@@ -65,21 +65,31 @@ const Schedule = ({ currentPath = 'schedule' }) => {
     }
   }
 
-  const checkBgColor = (id) => {
-    const result = rentals.find(item => item.court_id === id)
-    const color = {
-      C: "bg-col-red", F: "bg-col-green", B: "bg-col-cyan", O: "bg-col-orange"
-    }
-    if (result) {
-      return color[ result.status ]
+  const getBgColor = (id) => {
+    const filteredRentals = rentals.filter(item => item.court_id === id);
+    const order = { O: 1, B: 2, F: 3, C: 4 };
+
+    if (filteredRentals.length > 0) {
+      const sortedRentals = filteredRentals.sort((a, b) => order[ a.status ] - order[ b.status ]);
+      const color = {
+        C: "bg-col-red",
+        F: "bg-col-green",
+        B: "bg-col-cyan",
+        O: "bg-col-orange"
+      };
+
+      return color[ sortedRentals[0].status ];
     }
   }
 
   const showDetail = (id) => {
     if (currentPath === 'dashboard' || currentPath === 'schedule') {
-      const rental = rentals.find(item => item.court_id === id)
-      if (rental) {
-        setRentalId(rental.rental_id)
+      const filteredRentals = rentals.filter(item => item.court_id === id);
+      const order = { O: 1, B: 2, F: 3, C: 4 };
+
+      if (filteredRentals.length > 0) {
+        const sortedRentals = filteredRentals.sort((a, b) => order[ a.status ] - order[ b.status ]);
+        setRentalId(sortedRentals[0].rental_id)
         setIsShow(true)
       }
     }
@@ -164,11 +174,11 @@ const Schedule = ({ currentPath = 'schedule' }) => {
                   </th>
                   {courts.map((court, index) => {
                     return (<React.Fragment key={court.id}>
-                      <td width={"6%"} className={`bg-col-court ${checkBgColor(`${court.id}-${hour.id}:00`)}`} 
+                      <td width={"6%"} className={`bg-col-court ${getBgColor(`${court.id}-${hour.id}:00`)}`} 
                         onClick={() => showDetail(`${court.id}-${hour.id}:00`)}
                         style={{ cursor: currentPath === "customer-dashboard" && "default" }}
                         ></td>
-                      <td width={"6%"} className={`bg-col-court ${checkBgColor(`${court.id}-${hour.id}:30`)}`} 
+                      <td width={"6%"} className={`bg-col-court ${getBgColor(`${court.id}-${hour.id}:30`)}`} 
                         onClick={() => showDetail(`${court.id}-${hour.id}:30`)}
                         style={{ cursor: currentPath === "customer-dashboard" && "default" }}
                         ></td>
