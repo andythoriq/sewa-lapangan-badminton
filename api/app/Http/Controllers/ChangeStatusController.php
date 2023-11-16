@@ -42,7 +42,7 @@ class ChangeStatusController extends Controller
 
         $new_finish = $now->copy()->addHours($rental->hour);
 
-        $this->collideCheck3($now->format('Y-m-d H:i:s'), $new_finish->format('Y-m-d H:i:s'), $this->getCourtSchedules($rental->court_id));
+        $this->collideCheck3($now->format('Y-m-d H:i:s'), $new_finish->format('Y-m-d H:i:s'), $this->getCourtSchedules($rental->court_id, $rental->id));
 
         $validated_price = $this->getPeakTimePrice($rental->court_id, $now->dayName);
         $new_price = $this->getCost($now->format('Y-m-d H:i:s'), $new_finish->format('Y-m-d H:i:s'), $validated_price);
@@ -140,8 +140,8 @@ class ChangeStatusController extends Controller
         return response()->json(['message' => 'Rental Canceled'], 202, ['success' => 'Rental finished.']);
     }
 
-    private function getCourtSchedules(?int $court_id)
+    private function getCourtSchedules(?int $court_id, $rental_id)
     {
-        return RentalModel::select(['start', 'finish'])->where('court_id', $court_id)->whereNotIn('status', ['C', 'F'])->get();
+        return RentalModel::select(['start', 'finish'])->where('court_id', $court_id)->where('id', '!=', $rental_id)->whereNotIn('status', ['C', 'F'])->get();
     }
 }
