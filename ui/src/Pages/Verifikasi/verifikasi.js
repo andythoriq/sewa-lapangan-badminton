@@ -26,7 +26,7 @@ const Verification = () => {
   const [changeStatus, setChangeStatus] = useState(false);
 
   const [showUpdateRental, setShowUpdateRental] = useState(false)
-  const [rentalWillUpdated, setRentalWillUpdated] = useState({start: '', finish: ''})
+  const [rentalWillUpdated, setRentalWillUpdated] = useState({start: '', finish: '', court_id: ''})
   const [bookingData, setBookingData] = useState({rentalId: '', bookingCode: '', isCheckDetail: false})
 
   const [showDetail, setShowDetail] = useState(false);
@@ -100,7 +100,7 @@ const Verification = () => {
                           document.getElementById("modal-show-detail").classList.toggle('invisible')
                         }
                         setShowUpdateRental(true)
-                        setRentalWillUpdated({start: val.start, finish: val.finish})
+                        setRentalWillUpdated({start: val.start, finish: val.finish, court_id: val.court.id})
                         setBookingData({ rentalId: val.id, bookingCode: val.transaction.booking_code, isCheckDetail: false })
                       }
                     });
@@ -280,7 +280,7 @@ const Verification = () => {
                           document.getElementById("modal-show-detail").classList.toggle('invisible')
                         }
                         setShowUpdateRental(true)
-                        setRentalWillUpdated({start: val.start, finish: val.finish})
+                        setRentalWillUpdated({start: val.start, finish: val.finish, court_id: val.court.id})
                         setBookingData({rentalId: val.id, bookingCode: transaction.booking_code, isCheckDetail: true})
                       }
                     });

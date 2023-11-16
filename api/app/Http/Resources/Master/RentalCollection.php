@@ -40,7 +40,7 @@ class RentalCollection extends ResourceCollection
                     'phone_number' => $rental->customer->phone_number
                 ],
                 'court' => [
-                    // 'id' => $rental->court->id,
+                    'id' => $rental->court->id,
                     'label' => $rental->court->label,
                     'initial_price' => $rental->court->initial_price
                 ]

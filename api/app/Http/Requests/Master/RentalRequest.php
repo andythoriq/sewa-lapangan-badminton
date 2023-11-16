@@ -76,7 +76,8 @@ class RentalRequest extends FormRequest
                                 $this->validateDuration($value, $this->finish, $fail);
                             }
                             if (isset($this->finish) && isset($this->court_id)) {
-                                $this->collideCheck2($value, $this->finish, $this->getCourtSchedules($this->court_id), $fail);
+                                $rental_id = isset($this->rental) ? ($this->rental->id ?? null) : null;
+                                $this->collideCheck2($value, $this->finish, $this->getCourtSchedules($this->court_id, $rental_id), $fail);
                             }
                         }
                     ],
@@ -257,8 +258,11 @@ class RentalRequest extends FormRequest
         ];
     }
 
-    private function getCourtSchedules(?int $court_id)
+    private function getCourtSchedules(?int $court_id, $rental_id = null)
     {
+        if ($rental_id) {
+            return RentalModel::select(['start', 'finish'])->where('court_id', $court_id)->where('id', '!=', $rental_id)->whereNotIn('status', ['C', 'F'])->get();
+        }
         return RentalModel::select(['start', 'finish'])->where('court_id', $court_id)->whereNotIn('status', ['C', 'F'])->get();
     }
 }

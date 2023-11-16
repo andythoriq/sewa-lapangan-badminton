@@ -44,6 +44,7 @@ class BookingDetailResource extends JsonResource
                 'status' => $rental->status,
                 'price' => $rental->price,
                 'court' => [
+                    'id' => $rental->court->id,
                     'label' => $rental->court->label,
                     'initial_price' => $rental->court->initial_price
                 ],

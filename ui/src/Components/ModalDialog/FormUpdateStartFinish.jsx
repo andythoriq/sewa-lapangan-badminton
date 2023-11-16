@@ -68,6 +68,7 @@ const FormUpdateStartFinish = ({ isShow, handleClose, dataBefore, booking, swal,
     axios.put('/api/rental/' + booking.rentalId, {
       start: (values.start && values.date) ? `${values.date} ${values.start}:00` : '',
       finish: (values.finish && values.date) ? `${values.date} ${values.finish}:00` : '',
+      court_id: dataBefore.court_id,
     })
     .then(() => { 
       handleClose() 
