@@ -27,7 +27,7 @@ class MemberCollection extends ResourceCollection
                 'deposit' => $customer->deposit,
                 'debt' => $customer->debt,
                 'status' => $customer->status,
-                'member_active_period' => $this->checkActivePeriod($customer->code, $customer->member_active_period)
+                'member_active_period' => $this->checkActivePeriod($customer->customer_code, $customer->member_active_period)
             ];
         });
     }

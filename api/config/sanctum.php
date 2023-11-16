@@ -44,7 +44,9 @@ return [
     |
     */
 
-    'expiration' => null,
+    // 'expiration' => null,
+    'expiration' => 43200,
+    // 43800
 
     /*
     |--------------------------------------------------------------------------
@@ -62,7 +64,6 @@ return [
         'encrypt_cookies' => App\Http\Middleware\EncryptCookies::class,
     ],
 
-    'expiration_time' => 60 * 24 * 7, // one week
     'rememberable' => true,
     // 'identification' => 'phone_number',
 
