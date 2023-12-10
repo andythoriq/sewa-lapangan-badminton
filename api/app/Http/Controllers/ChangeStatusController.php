@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\RentalModel;
 use App\Models\TransactionModel;
 use App\Traits\CollideCheck;
+use App\Traits\LampControl;
 use App\Traits\PeakTimeCheck;
 use App\Traits\RentalPriceCalculation;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ use Illuminate\Support\Carbon;
 
 class ChangeStatusController extends Controller
 {
-    use PeakTimeCheck, RentalPriceCalculation, CollideCheck;
+    use PeakTimeCheck, RentalPriceCalculation, CollideCheck, LampControl;
 
     public function start(Request $request)
     {
@@ -60,7 +61,9 @@ class ChangeStatusController extends Controller
 
         $transaction->update([ 'total_price' => (float) $transaction->total_price - $priceBefore + $new_price ]);
 
-        return response()->json(['message' => 'Rental is on progress'], 202, ['success' => 'Rental is on progress.']);
+        $lamp_request = $this->turn_on_lamp();
+
+        return response()->json(['message' => 'Rental is on progress'], 202, ['success' => 'Rental is on progress.', 'lamp-value' => $lamp_request]);
     }
 
     public function finish(Request $request)
@@ -73,7 +76,9 @@ class ChangeStatusController extends Controller
             'status' => 'F'
         ]);
 
-        return response()->json(['message' => 'Rental finished'], 202, ['success' => 'Rental finished.']);
+        $lamp_request = $this->turn_off_lamp();
+
+        return response()->json(['message' => 'Rental finished'], 202, ['success' => 'Rental finished.', 'lamp-value' => $lamp_request]);
     }
 
     public function force_finish(Request $request)
@@ -115,7 +120,9 @@ class ChangeStatusController extends Controller
             'total_hour' => (float) $transaction->total_hour - $hourBefore + $updated_hour
         ]);
 
-        return response()->json(['message' => 'Rental finished'], 202, ['success' => 'Rental finished.']);
+        $lamp_request = $this->turn_off_lamp();
+
+        return response()->json(['message' => 'Rental finished'], 202, ['success' => 'Rental finished.', 'lamp-value' => $lamp_request]);
     }
 
     public function cancel(Request $request)
